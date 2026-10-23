@@ -91,7 +91,7 @@ extern s32 RestoreFighterHp(s32 amount, s32 fighterIndex);
 extern s32 RestoreFighterMp(s32 amount, s32 fighterIndex);
 extern void SetMonsterActorAnim(Actor *actor, u8 state);  // 0x0801539C, monster gfx tables + shadow
 extern void SetPlayerActorAnim(Actor *actor, s32 state);   // 0x08015484, party fighter anim tables
-extern void UpdateMonsterScreenShake(Actor *actor);
+extern void FlipMonsterForIntroSweep(Actor *actor);
 extern void TickMonsterActionState(Actor *actor);  // 0x08015608
 extern void ShowAttackResult(Actor *actor, s32 targetIndex);
 extern void TickPlayerActionState(Actor *actor);

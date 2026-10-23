@@ -130,9 +130,9 @@ Room17V1Chain0:
     End
 Room17V1Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room17V1Route1_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain2:
     SetOverworldMonstersDisabled
@@ -140,15 +140,15 @@ Room17V1Chain2:
     End
 Room17V1Chain3:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room17V1Route0_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain4:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route0_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room17V1Route0_id, 2, 1, 0, 0, 0
     End
 Room17V1Chain5:
     ArmChainYield 1
@@ -157,12 +157,12 @@ Room17V1Chain5:
     RespawnRowAndRunChain Room17V1Group3_id, 0
     RespawnRowAndRunChain Room17V1Group2_id, 0
     ArmChainYield 0
-    StartActorAnimSequence Room17V1Group1_id, 14, 0, 0, Room17V1Route2_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room17V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room17V1Group1_id, 14, 0, 0, Room17V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room17V1Route3_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain6:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "May I see it? Hmm. And there was no note at all, Potter?"
     @ "No."
     @ "I see. Well, I'm afraid I will have to take this, Potter."
@@ -191,7 +191,7 @@ Room17V1Chain6:
     StartMinigame 0, 0, 1, 0, Room17V1Chain7_id
     End
 Room17V1Chain7:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 1
     @ "That was a lot of fun."
     @ "Yes, it was!"
@@ -200,7 +200,7 @@ Room17V1Chain7:
     ShowRoomDialog 465
     QueueTileActorMove Room17V1Group1_id, 15, 0, 0, 2000, 0
     ArmChainYield 0
-    StartActorAnimSequence Room17V1Group1_id, 15, 0, 0, Room17V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room17V1Group1_id, 15, 0, 0, Room17V1Route4_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain8:
     ArmChainYield 1
@@ -210,7 +210,7 @@ Room17V1Chain8:
     ShowRoomDialog 483
     QueueTileActorMove 0, 255, 0, 0, 1000, 0
     ArmChainYield 0
-    StartActorAnimSequence Room17V1Group1_id, 15, 0, 0, Room17V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room17V1Group1_id, 15, 0, 0, Room17V1Route5_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain9:
     ArmChainYield 1
@@ -234,7 +234,7 @@ Room17V1Chain11:
     @ "Miss Granger has recently informed me that you have been sent a broomstick, Potter."
     ShowRoomDialog 460
     ArmChainYield 0
-    StartActorAnimSequence Room17V1Group1_id, 14, 0, 0, Room17V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room17V1Group1_id, 14, 0, 0, Room17V1Route6_id, 0, 1, 0, 0, 0
     End
 Room17V1Chain12:
     @ "I love the Christmas feast!"

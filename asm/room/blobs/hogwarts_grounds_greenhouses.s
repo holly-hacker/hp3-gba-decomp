@@ -56,13 +56,13 @@ Room10V1Chain0:
     End
 Room10V1Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetOverworldMonstersDisabled
     PlayMusicModuleAndFlagIfChain1 16
     QueueTileActorMove Room10V1Group1_id, 1, 0, 0, 1800, 0
     ArmChainYield 0
-    StartActorAnimSequence Room10V1Group1_id, 1, 0, 0, Room10V1Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room10V1Group1_id, 0, 0, 0, Room10V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room10V1Group1_id, 1, 0, 0, Room10V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room10V1Group1_id, 0, 0, 0, Room10V1Route1_id, 0, 1, 0, 0, 0
     End
 Room10V1Chain2:
     ArmChainYield 1

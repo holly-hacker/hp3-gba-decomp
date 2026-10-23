@@ -190,25 +190,25 @@ Room50V1Chain0:
     DelayedRespawnRowAndRunChain 0, 0, Room50V1Chain1_id
     End
 Room50V1Chain1:
-    StartActorAnimSequence Room50V1Group0_id, 6, 0, 0, Room50V1Route0_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 7, 0, 0, Room50V1Route1_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 8, 0, 0, Room50V1Route2_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 11, 0, 0, Room50V1Route3_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 9, 0, 0, Room50V1Route4_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 10, 0, 0, Room50V1Route5_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 13, 0, 0, Room50V1Route6_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 12, 0, 0, Room50V1Route7_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 14, 0, 0, Room50V1Route8_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 15, 0, 0, Room50V1Route9_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 16, 0, 0, Room50V1Route10_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 17, 0, 0, Room50V1Route11_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 18, 0, 0, Room50V1Route12_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 19, 0, 0, Room50V1Route13_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 20, 0, 0, Room50V1Route14_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 21, 0, 0, Room50V1Route15_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 22, 0, 0, Room50V1Route16_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 23, 0, 0, Room50V1Route17_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 24, 0, 0, Room50V1Route18_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room50V1Group0_id, 25, 0, 0, Room50V1Route19_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 6, 0, 0, Room50V1Route0_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 7, 0, 0, Room50V1Route1_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 8, 0, 0, Room50V1Route2_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 11, 0, 0, Room50V1Route3_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 9, 0, 0, Room50V1Route4_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 10, 0, 0, Room50V1Route5_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 13, 0, 0, Room50V1Route6_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 12, 0, 0, Room50V1Route7_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 14, 0, 0, Room50V1Route8_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 15, 0, 0, Room50V1Route9_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 16, 0, 0, Room50V1Route10_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 17, 0, 0, Room50V1Route11_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 18, 0, 0, Room50V1Route12_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 19, 0, 0, Room50V1Route13_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 20, 0, 0, Room50V1Route14_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 21, 0, 0, Room50V1Route15_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 22, 0, 0, Room50V1Route16_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 23, 0, 0, Room50V1Route17_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 24, 0, 0, Room50V1Route18_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room50V1Group0_id, 25, 0, 0, Room50V1Route19_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room50V1End

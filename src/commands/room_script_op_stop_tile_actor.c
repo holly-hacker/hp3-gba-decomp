@@ -4,13 +4,13 @@
 #include "move.h"
 #include "hero.h"
 
-typedef struct CancelActorAnimSequenceRecord {
+typedef struct StopTileActorRecord {
     u32 dwOpcode;
     u8 bTileX;
     u8 bTileY;
-} CancelActorAnimSequenceRecord;
+} StopTileActorRecord;
 
-void RoomScriptOpCancelActorAnimSequence(CancelActorAnimSequenceRecord *pRecord)
+void RoomScriptOpStopTileActor(StopTileActorRecord *pRecord)
 {
     Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 

@@ -99,7 +99,7 @@ Room42TalkFudge1:
     ShowRoomDialog 0
     ArmChainYield 0
     SetTileActorMoveSpeed Room42V1Group2_id, 1, 2
-    StartActorAnimSequence Room42V1Group2_id, 1, 0, 4, Room42V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V1Group2_id, 1, 0, 4, Room42V1Route0_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     SetQuestState 1, 224
     SetQuestState 1, QUEST_STORY_STAGE
@@ -255,12 +255,12 @@ Room42V2Chain3:
     End
 Room42V2Chain4:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ClearTileActorFlagBit 0, 255, 9
     StartTileActorScript 548, 166, 1, 0, 255, 0, 0, 0, 255, 255, 255
     ArmChainYield 0
-    StartActorAnimSequence Room42V2Group2_id, 1, 0, 0, Room42V2Route3_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room42V2Group2_id, 0, 0, 0, Room42V2Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V2Group2_id, 1, 0, 0, Room42V2Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V2Group2_id, 0, 0, 0, Room42V2Route2_id, 0, 1, 0, 0, 0
     End
 Room42V2Chain5:
     @ "Excuse me, Tom, I don't suppose you have any Rat Tonic?"
@@ -287,9 +287,9 @@ Room42V2Chain8:
     ShowRoomDialog 15
     SetQuestState 1, 232
     ArmChainYield 0
-    StartActorAnimSequence Room42V2Group2_id, 1, 0, 0, Room42V2Route4_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room42V2Group2_id, 0, 0, 0, Room42V2Route5_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room42V2Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V2Group2_id, 1, 0, 0, Room42V2Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V2Group2_id, 0, 0, 0, Room42V2Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room42V2Route0_id, 0, 1, 0, 0, 0
     End
 Room42V2Chain9:
     RespawnRowAndRunChain Room42V2Group4_id, 0
@@ -523,7 +523,7 @@ Room42V3Chain0:
     GotoIfStoryStageCompare 3, 6, Room42V3Chain41_id, 0, 0, 0
     End
 Room42V3Chain1:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 1, 249
     ArmChainYield 1
     QueueTileActorMove Room42V3Group1_id, 3, 0, 0, 1350, 0
@@ -537,7 +537,7 @@ Room42V3Chain1:
 Room42V3Chain2:
     ConsumeRoomItem 62
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 688, 129, 1, 0, 255, 0, 0, 2, 255, 255, 255
     SetTileActorFacing 0, 255, 2
     @ "There you are, Harry! Did you manage to get any Rat Tonic?"
@@ -556,7 +556,7 @@ Room42V3Chain3:
     SetTileActorMoveSpeed Room42V3Group0_id, 1, 2
     SetTileActorMoveSpeed Room42V3Group0_id, 0, 2
     StartTileActorScript 523, 140, 1, Room42V3Group0_id, 1, 0, 0, 4, 255, 255, 255
-    StartActorAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V3Group0_id, 0, 0, 0, Room42V3Route3_id, 0, 1, 0, 0, 0
     ArmChainYield 1
     DelayedRespawnRowAndRunChainFrames 30, 0, Room42V3Chain9_id
     End
@@ -580,7 +580,7 @@ Room42V3Chain5:
     ArmChainYield 0
     SetTileActorMoveSpeed Room42V3Group2_id, 1, 3
     SetTileActorMoveSpeed Room42V3Group0_id, 1, 3
-    StartActorAnimSequence Room42V3Group0_id, 1, 0, 0, Room42V3Route6_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V3Group0_id, 1, 0, 0, Room42V3Route6_id, 2, 1, 0, 0, 0
     ArmChainYield 1
     QueueTileActorMove Room42V3Group0_id, 1, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChainFrames 0, 0, Room42V3Chain13_id
@@ -593,7 +593,7 @@ Room42V3Chain7:
     End
 Room42V3Chain8:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     QueueTileActorMove 0, 255, 0, 0, 1000, 0
     RespawnRowAndRunChain 0, Room42V3Chain6_id
     ArmChainYield 1
@@ -615,7 +615,7 @@ Room42V3Chain8:
     InvokeChainIfEnabled 0, Room42V3Chain35_id
     End
 Room42V3Chain9:
-    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room42V3Route5_id, 0, 1, 0, 0, 0
     End
 Room42V3Chain10:
     SetTileActorFacing Room42V3Group0_id, 1, 4
@@ -628,11 +628,11 @@ Room42V3Chain12:
     End
 Room42V3Chain13:
     PlaySoundById 50
-    StartActorAnimSequence Room42V3Group2_id, 1, 0, 0, Room42V3Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V3Group2_id, 1, 0, 0, Room42V3Route7_id, 0, 1, 0, 0, 0
     End
 Room42V3Chain14:
     ArmChainYield 1
-    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room42V3Route0_id, 0, 1, 0, 0, 0
     SetTileActorFacing 0, 255, 2
     SetTileActorFacing Room42V3Group1_id, 1, 6
     SetTileActorFacing Room42V3Group1_id, 0, 6
@@ -645,8 +645,8 @@ Room42V3Chain14:
     ShowRoomDialog 42
     ArmChainYield 0
     DelayedRespawnRowAndRunChainFrames 14, 0, Room42V3Chain15_id
-    StartActorAnimSequence Room42V3Group1_id, 1, 0, 0, Room42V3Route1_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room42V3Group1_id, 0, 0, 0, Room42V3Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V3Group1_id, 1, 0, 0, Room42V3Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V3Group1_id, 0, 0, 0, Room42V3Route2_id, 0, 1, 0, 0, 0
     DelayedRespawnRowAndRunChain 6, Room42V3Group3_id, 0
     End
 Room42V3Chain15:
@@ -768,29 +768,29 @@ Room42V3Chain41:
     End
 Room42V3Chain42:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
-    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route8_id, 0, 1, 0, 0, 0
+    StopTileActor 0, 255
+    StartTileActorRouteWalk 0, 255, 0, 0, Room42V3Route8_id, 0, 1, 0, 0, 0
     DespawnTileActor Room42V3Group2_id, 0
     RecruitPartyFollower 6
     SetQuestState QUEST_OBJ_FIND_CROOKSHANKS, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group7_id, Room42V3Chain32_id
     ArmChainYield 1
     SetTileActorMoveSpeed Room42V3Group0_id, 0, 3
-    StartActorAnimSequence Room42V3Group0_id, 0, 0, 0, Room42V3Route11_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V3Group0_id, 0, 0, 0, Room42V3Route11_id, 0, 1, 0, 0, 0
     DespawnTileActor Room42V3Group0_id, 0
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room42V3Chain43:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
-    StartActorAnimSequence 0, 255, 0, 0, Room42V3Route9_id, 0, 1, 0, 0, 0
+    StopTileActor 0, 255
+    StartTileActorRouteWalk 0, 255, 0, 0, Room42V3Route9_id, 0, 1, 0, 0, 0
     DespawnTileActor Room42V3Group0_id, 0
     RecruitPartyFollower 7
     SetQuestState QUEST_OBJ_FIND_SCABBERS_LEAKY_CAULDRON, QUEST_OBJECTIVE_INDEX
     DelayedRespawnRowAndRunChain 0, Room42V3Group6_id, Room42V3Chain32_id
     ArmChainYield 1
     SetTileActorMoveSpeed Room42V3Group2_id, 0, 3
-    StartActorAnimSequence Room42V3Group2_id, 0, 0, 0, Room42V3Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room42V3Group2_id, 0, 0, 0, Room42V3Route10_id, 0, 1, 0, 0, 0
     DespawnTileActor Room42V3Group2_id, 0
     SetTileActorAnimStateWithSpeed 0, 255
     End

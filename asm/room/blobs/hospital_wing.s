@@ -72,7 +72,7 @@ Room33V1Chain2:
     End
 Room33V1Chain3:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChain 3, 0, 0
     PlayCutscene 9, 0, Room33V1Chain5_id
     End
@@ -87,18 +87,18 @@ Room33V1Chain4:
     End
 Room33V1Chain5:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence Room33V1Group1_id, 1, 0, 0, Room33V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room33V1Group1_id, 1, 0, 0, Room33V1Route0_id, 0, 1, 0, 0, 0
     End
 Room33V1Chain6:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "What are we supposed to do?"
     @ "We're going to use the Time-Turner to go back three hours, rescue Buckbeak and then release Sirius from the West Tower."
     ShowRoomDialog 588
     ArmChainYield 0
-    StartActorAnimSequence Room33V1Group1_id, 0, 0, 0, Room33V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room33V1Group1_id, 0, 0, 0, Room33V1Route1_id, 0, 1, 0, 0, 0
     End
 Room33V1Chain7:
     GotoIfQuestStateCompare QUEST_SCRATCH_RESULT, 0, 1, Room33V1Chain1_id, 0, 0, 0

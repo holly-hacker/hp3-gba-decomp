@@ -56,7 +56,7 @@ Room07V1Chain1:
     End
 Room07V1Chain2:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Have you seen the conductor?"
     @ "He was going towards the front of the train, looking very cross, I might add."
     ShowRoomDialog 129
@@ -64,7 +64,7 @@ Room07V1Chain2:
     End
 Room07V1Chain3:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room07V1Chain4:
@@ -81,7 +81,7 @@ Room07V1Chain4:
     End
 Room07V1Chain5:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Better return to your seat, miss. We'll be at Hogsmeade very shortly."
     ShowRoomDialog 133
     SetTileActorAnimStateWithSpeed 0, 255
@@ -115,14 +115,14 @@ Room07V2Chain0:
     End
 Room07V2Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "I've sold out of chocolate, I'm afraid."
     ShowRoomDialog 137
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room07V2Chain2:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 1, 227
     SetQuestState 1, 226
     QueueTileActorMove Room07V2Group0_id, 0, 0, 0, 1700, 0

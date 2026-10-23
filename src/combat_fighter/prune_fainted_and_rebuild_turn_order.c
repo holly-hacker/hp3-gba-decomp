@@ -2,7 +2,7 @@
 #include "combat_fighter.h"
 #include "combat.h"
 
-// Removes every fighter marked fainted (nFaintedFlag == -1) from pFighters,
+// Removes every fighter marked fainted (nTurnKey == -1) from pFighters,
 // moving fainted party members to pFaintedAllies, then tears down
 // and respawns all turn-order icons, renumbers the fighters' turn keys and
 // records the key of the fighter after the active one.
@@ -32,7 +32,7 @@ void PruneFaintedAndRebuildTurnOrder(s32 addRevivedAlly)
     count = g_pFightState->bFighterCount;
 
     for (i = 0, j = 0; i < count; i++, j++) {
-        if ((u16)g_pFightState->pFighters[j].nFaintedFlag == 0xFFFF) {
+        if ((u16)g_pFightState->pFighters[j].nTurnKey == 0xFFFF) {
             g_pFightState->bFighterCount--;
 
             if (g_pFightState->pFighters[j].bFighterType != Enemy) {
@@ -55,7 +55,7 @@ void PruneFaintedAndRebuildTurnOrder(s32 addRevivedAlly)
     }
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
-        g_pFightState->pFighters[i].nFaintedFlag = g_pFightState->bTurnKeyStep * (i + 2);
+        g_pFightState->pFighters[i].nTurnKey = g_pFightState->bTurnKeyStep * (i + 2);
         g_pFightState->pFighters[i].pActor->bFighterIndex = i;
 
         if (g_pFightState->pFighters[i].bFighterType != Enemy) {
@@ -70,7 +70,7 @@ void PruneFaintedAndRebuildTurnOrder(s32 addRevivedAlly)
     }
 
     if (g_pFightState->bActiveFighterIndex + 1 == g_pFightState->bFighterCount)
-        g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[0].nFaintedFlag;
+        g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[0].nTurnKey;
     else
-        g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[g_pFightState->bActiveFighterIndex + 1].nFaintedFlag;
+        g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[g_pFightState->bActiveFighterIndex + 1].nTurnKey;
 }

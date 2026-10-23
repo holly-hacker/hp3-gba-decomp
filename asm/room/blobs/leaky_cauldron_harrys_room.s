@@ -70,7 +70,7 @@ Room41V1Chain5:
     SetQuestState 1, 244
     ArmChainYield 1
     SetStoryStage 2
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "You have a new item. To equip it, press START and then select Status/Equip. Select a character, move the cursor over the boxes surrounding that character, and press the A Button to change items."
     ShowRoomDialog 612
     @ "Thank goodness for that! I think I'll turn in for the night."
@@ -83,7 +83,7 @@ Room41V1Chain5:
     End
 Room41V1Chain6:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 103, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     @ "There's a package on my bed..."
     @ "There's a card... It's from Hagrid! He remembered my birthday!"
@@ -101,7 +101,7 @@ Room41V1Chain6:
     End
 Room41V1Chain7:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 103, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
     PlayTileActorAnimation Room41V1Group1_id, 0, 11
@@ -136,7 +136,7 @@ Room41V2Chain0:
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
     End
 Room41V2Chain1:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     FullHealParty
     @ "Harry! You must be more careful. Tom found you lying on the floor unconscious. I had to give you some Wiggenweld Potion to make you feel better."
     ShowRoomDialog 44
@@ -147,7 +147,7 @@ Room41V2Chain1:
     End
 Room41V2Chain2:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
     PlayTileActorAnimation Room41V2Group1_id, 0, 11
@@ -159,7 +159,7 @@ Room41V2Chain3:
     ArmChainYield 1
     SetQuestState 0, 5
     SetQuestState 1, 244
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Thank goodness for that! I think I'll turn in for the night."
     ShowRoomDialog 23
     StartTileActorScript 94, 182, 0, 0, 255, 0, 0, 0, 255, 255, 255

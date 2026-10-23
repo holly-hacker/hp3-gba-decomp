@@ -63,7 +63,7 @@ void TickActorWalkRouteOnce(Actor *actor)
             SetActorActionState(actor, 3);
             SetActorActionSubState(actor, 2);
         }
-        if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartActorAnimSequence) {
+        if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartTileActorRouteWalk) {
             actor->dwFlags &= ~ActorFlagRoomScriptYield;
             ResumeRoomScriptChain();
         }

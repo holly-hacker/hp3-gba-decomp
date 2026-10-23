@@ -149,7 +149,7 @@ Room04V1Chain2:
     End
 Room04V1Chain3:
     PlaySoundById 22
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room04V1Group0_id, 4
     DelayedRespawnRowAndRunChainFrames 3, 0, Room04V1Chain12_id
     GotoIfQuestStateCompare 225, 1, 73, Room04V1Chain21_id, 0, 0, 0
@@ -163,7 +163,7 @@ Room04V1Chain5:
     End
 Room04V1Chain6:
     PlaySoundById 22
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room04V1Group8_id, 4
     DelayedRespawnRowAndRunChainFrames 3, 0, Room04V1Chain12_id
     GotoIfQuestStateCompare 229, 1, 19, Room04V1Chain22_id, 0, 0, 0
@@ -172,11 +172,11 @@ Room04V1Chain7:
     StartBattle 4, 0, Room04V1Chain8_id
     End
 Room04V1Chain8:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorMoveSpeed Room04V1Group1_id, 1, 3
     SetTileActorMoveSpeed Room04V1Group1_id, 0, 3
-    StartActorAnimSequence Room04V1Group1_id, 0, 0, 0, Room04V1Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room04V1Group1_id, 1, 0, 0, Room04V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room04V1Group1_id, 0, 0, 0, Room04V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room04V1Group1_id, 1, 0, 0, Room04V1Route1_id, 0, 1, 0, 0, 0
     SetQuestState 23, 5
     GrantPartyExperience 10, 65535
     DelayedRespawnRowAndRunChainFrames 5, 0, Room04V1Chain23_id
@@ -189,22 +189,22 @@ Room04V1Chain10:
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room04V1Chain11:
-    StartActorAnimSequence Room04V1Group2_id, 0, 0, 0, Room04V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room04V1Group2_id, 0, 0, 0, Room04V1Route2_id, 0, 1, 0, 0, 0
     End
 Room04V1Chain12:
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room04V1Chain13:
-    StartActorAnimSequence Room04V1Group2_id, 0, 0, 0, Room04V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room04V1Group2_id, 0, 0, 0, Room04V1Route3_id, 0, 1, 0, 0, 0
     End
 Room04V1Chain14:
     GrantPartyExperience 10, 65535
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     PlayTileActorAnimation Room04V1Group2_id, 0, 10
     DespawnRoomRowActors Room04V1Group2_id
     DelayedRespawnRowAndRunChainFrames 0, Room04V1Group3_id, 0
     DelayedRespawnRowAndRunChainFrames 0, Room04V1Group7_id, 0
-    StartActorAnimSequence Room04V1Group3_id, 0, 0, 0, Room04V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room04V1Group3_id, 0, 0, 0, Room04V1Route4_id, 0, 1, 0, 0, 0
     SetTileActorFacing 0, 255, 6
     SetTileActorAnimStateValue Room04V1Group9_id, 0, 5
     SetTileActorAnimStateValue Room04V1Group9_id, 1, 5
@@ -255,7 +255,7 @@ Room04V1Chain22:
     DespawnTileActor Room04V1Group8_id, 12
     End
 Room04V1Chain23:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     End
 Room04V1Chain24:
     SubtractQuestState 1, 226

@@ -388,7 +388,7 @@ typedef struct Actor {
             u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
             u8 pad_69;
             u8 bNoPlatePress;       // 0x6A, nonzero: pressure plates ignore the actor; set by
-                                    // RoomScriptOpStartActorAnimSequence
+                                    // RoomScriptOpStartTileActorRouteWalk
             u8 pad_6B;
             u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnGroupAndRunChain
             u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
@@ -493,7 +493,7 @@ typedef struct Actor {
     u8 bEncounterVariant;   // 0x93, wandering monsters: random-encounter variant
     u8 bTypeFlags;          // 0x94, NPCs: 0x1 talked to (until the cooldown ends), 0x2 not
                              // interactable, 0x4 keeps the sprite frame TickNpcActor would set
-                             // (also set by RoomScriptOpSetTileActorSpecialFlag). Wandering
+                             // (also set by RoomScriptOpLockTileActorSprite). Wandering
                              // monsters: 0x1 chasing the player at full speed
     void (*pfnTick)(struct Actor *actor);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
     void (*pfnDestructor)(struct Actor *actor);  // 0x9C, called by FreeActor if non-null

@@ -511,8 +511,8 @@ Room29V1Chain1:
     @ "I think that's everything of importance. Hermione Granger, please come and speak to me immediately."
     ShowRoomDialog 184
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group1_id, 0, 0, 0, Room29V1Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 0, 0, 0, Room29V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group2_id, 0, 0, 0, Room29V1Route1_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain2:
     ResetPartyLeaderSelection
@@ -520,24 +520,24 @@ Room29V1Chain2:
     End
 Room29V1Chain3:
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group1_id, 2, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group1_id, 3, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group1_id, 4, 0, 0, Room29V1Route54_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group1_id, 5, 0, 0, Room29V1Route54_id, 2, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group1_id, 6, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group1_id, 7, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route53_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group1_id, 0, 0, 0, Room29V1Route52_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 2, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 3, 0, 0, Room29V1Route54_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 4, 0, 0, Room29V1Route54_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 5, 0, 0, Room29V1Route54_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 6, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 7, 0, 0, Room29V1Route53_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group2_id, 0, 0, 0, Room29V1Route53_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group1_id, 0, 0, 0, Room29V1Route52_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain4:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ResetPartyLeaderSelection
     ArmChainYield 0
     InvokeChainIfEnabled 0, Room29V1Chain5_id
     End
 Room29V1Chain5:
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route3_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain6:
     ArmChainYield 1
@@ -547,7 +547,7 @@ Room29V1Chain6:
     @ "I hope she isn't in trouble."
     ShowRoomDialog 185
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group2_id, 0, 0, 0, Room29V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group2_id, 0, 0, 0, Room29V1Route2_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain7:
     ArmChainYield 1
@@ -564,7 +564,7 @@ Room29V1Chain8:
     PlayCutscene 1, 0, Room29V1Chain17_id
     End
 Room29V1Chain9:
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route4_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain10:
     ArmChainYield 1
@@ -573,24 +573,24 @@ Room29V1Chain10:
     End
 Room29V1Chain11:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 1, 245
     SetTileActorMoveSpeed Room29V1Group4_id, 0, 2
     PlaySoundById 52
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route6_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route7_id, 0, 1, 20, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group4_id, 0, 0, 0, Room29V1Route7_id, 0, 1, 20, 0, 0
     End
 Room29V1Chain12:
-    StartActorAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group4_id, 1, 0, 0, Room29V1Route8_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain13:
     ArmChainYield 1
     @ "Meowrr!"
     ShowRoomDialog 354
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route9_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group4_id, 0, 0, 0, Room29V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group4_id, 1, 0, 0, Room29V1Route10_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain14:
     ArmChainYield 1
@@ -602,9 +602,9 @@ Room29V1Chain14:
     SetTileActorMoveSpeed Room29V1Group4_id, 1, 4
     QueueTileActorMove Room29V1Group4_id, 0, 0, 0, 1700, 0
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group4_id, 0, 0, 0, Room29V1Route11_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group4_id, 1, 0, 0, Room29V1Route12_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route13_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group4_id, 0, 0, 0, Room29V1Route11_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group4_id, 1, 0, 0, Room29V1Route12_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route13_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain15:
     ArmChainYield 1
@@ -622,13 +622,13 @@ Room29V1Chain16:
     End
 Room29V1Chain17:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RemovePartyFollower 7
     RespawnRowAndRunChain Room29V1Group20_id, 0
     RespawnRowAndRunChain Room29V1Group17_id, 0
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group17_id, 0, 0, 0, Room29V1Route55_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route57_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group17_id, 0, 0, 0, Room29V1Route55_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route57_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain18:
     @ "Did you know that you can visit our shop on the seventh floor? You can buy items from George and me at very reasonable prices..."
@@ -636,10 +636,10 @@ Room29V1Chain18:
     End
 Room29V1Chain19:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group8_id, 0, 0, 0, Room29V1Route15_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route60_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group8_id, 0, 0, 0, Room29V1Route15_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route60_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain20:
     ArmChainYield 1
@@ -654,19 +654,19 @@ Room29V1Chain20:
     @ "That class does seem to take a toll on its teachers. Let's get going."
     ShowRoomDialog 408
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group8_id, 0, 0, 0, Room29V1Route58_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route59_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group8_id, 0, 0, 0, Room29V1Route58_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route59_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain21:
     GotoIfQuestStateCompare 230, 0, 1, 0, 0, Room29V1Group9_id, 0
     End
 Room29V1Chain22:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetOverworldMonstersDisabled
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route17_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group9_id, 2, 0, 0, Room29V1Route18_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route17_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group9_id, 2, 0, 0, Room29V1Route18_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain23:
     ArmChainYield 1
@@ -678,9 +678,9 @@ Room29V1Chain23:
     DespawnRoomRowActors Room29V1Group18_id
     GrantRoomReward 67, 0
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group9_id, 2, 0, 0, Room29V1Route20_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route19_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group9_id, 1, 0, 0, Room29V1Route16_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group9_id, 2, 0, 0, Room29V1Route20_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route19_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group9_id, 1, 0, 0, Room29V1Route16_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room29V1Group9_id, 1, 0, 0, 800, 0
     End
 Room29V1Chain24:
@@ -693,8 +693,8 @@ Room29V1Chain24:
     SetTileActorFacing Room29V1Group9_id, 1, 0
     ArmChainYield 0
     QueueTileActorMove Room29V1Group9_id, 3, 0, 0, 800, 0
-    StartActorAnimSequence Room29V1Group9_id, 3, 0, 0, Room29V1Route21_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route23_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group9_id, 3, 0, 0, Room29V1Route21_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route23_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain25:
     ArmChainYield 1
@@ -706,14 +706,14 @@ Room29V1Chain25:
     ShowRoomDialog 499
     ArmChainYield 0
     QueueTileActorMove 0, 255, 0, 0, 1400, 0
-    StartActorAnimSequence Room29V1Group9_id, 3, 0, 0, Room29V1Route65_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group9_id, 3, 0, 0, Room29V1Route65_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain26:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DespawnRoomRowActors Room29V1Group9_id
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route24_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route24_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain27:
     ArmChainYield 1
@@ -725,7 +725,7 @@ Room29V1Chain27:
     ShowRoomDialog 501
     SetTileActorMoveSpeed Room29V1Group10_id, 2, 2
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group10_id, 2, 0, 0, Room29V1Route26_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 2, 0, 0, Room29V1Route26_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain28:
     ArmChainYield 1
@@ -734,25 +734,25 @@ Room29V1Chain28:
     @ "You gave Malfoy one heck of a fright!"
     ShowRoomDialog 503
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group10_id, 5, 0, 0, Room29V1Route27_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 5, 0, 0, Room29V1Route27_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain29:
     DespawnTileActor Room29V1Group10_id, 2
-    StartActorAnimSequence Room29V1Group10_id, 3, 0, 0, Room29V1Route25_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 3, 0, 0, Room29V1Route25_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain30:
     ArmChainYield 1
     @ "I know that you all want to celebrate, but I think we've had quite enough excitement for one day. Off to your dormitories, please!"
     ShowRoomDialog 504
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group10_id, 5, 0, 0, Room29V1Route29_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group10_id, 3, 0, 0, Room29V1Route61_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group10_id, 7, 0, 0, Room29V1Route31_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group10_id, 1, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group10_id, 0, 0, 0, Room29V1Route28_id, 2, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group10_id, 4, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group10_id, 6, 0, 0, Room29V1Route28_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group10_id, 8, 0, 0, Room29V1Route32_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 5, 0, 0, Room29V1Route29_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 3, 0, 0, Room29V1Route61_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 7, 0, 0, Room29V1Route31_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 1, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 0, 0, 0, Room29V1Route28_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 4, 0, 0, Room29V1Route30_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 6, 0, 0, Room29V1Route28_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group10_id, 8, 0, 0, Room29V1Route32_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain31:
     ArmChainYield 1
@@ -774,10 +774,10 @@ Room29V1Chain32:
     End
 Room29V1Chain33:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route34_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 0, 0, 0, Room29V1Route33_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route34_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 0, 0, 0, Room29V1Route33_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain34:
     ArmChainYield 1
@@ -787,7 +787,7 @@ Room29V1Chain34:
     ShowRoomDialog 508
     SetTileActorMoveSpeed Room29V1Group12_id, 2, 3
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group12_id, 2, 0, 0, Room29V1Route35_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 2, 0, 0, Room29V1Route35_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room29V1Group12_id, 0, 0, 0, 1000, 0
     End
 Room29V1Chain35:
@@ -799,7 +799,7 @@ Room29V1Chain35:
     ShowRoomDialog 509
     ArmChainYield 0
     QueueTileActorMove Room29V1Group12_id, 3, 0, 0, 1000, 0
-    StartActorAnimSequence Room29V1Group12_id, 3, 0, 0, Room29V1Route36_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 3, 0, 0, Room29V1Route36_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain36:
     ArmChainYield 1
@@ -808,14 +808,14 @@ Room29V1Chain36:
     ShowRoomDialog 510
     QueueTileActorMove 0, 255, 0, 0, 1000, 0
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group12_id, 7, 0, 0, Room29V1Route40_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 0, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 1, 0, 0, Room29V1Route37_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 3, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 4, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 6, 0, 0, Room29V1Route64_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 5, 0, 0, Room29V1Route38_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group12_id, 2, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 7, 0, 0, Room29V1Route40_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 0, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 1, 0, 0, Room29V1Route37_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 3, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 4, 0, 0, Room29V1Route66_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 6, 0, 0, Room29V1Route64_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 5, 0, 0, Room29V1Route38_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group12_id, 2, 0, 0, Room29V1Route39_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain37:
     GotoIfQuestStateCompare 231, 0, 2, Room29V1Chain32_id, 0, 0, 0
@@ -838,9 +838,9 @@ Room29V1Chain39:
     GotoIfQuestStateCompare 233, 0, 0, Room29V1Chain61_id, 0, Room29V1Group13_id, 0
     End
 Room29V1Chain40:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route41_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route41_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain41:
     ArmChainYield 1
@@ -868,7 +868,7 @@ Room29V1Chain44:
     ArmChainYield 1
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route45_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route45_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain45:
     ArmChainYield 1
@@ -887,7 +887,7 @@ Room29V1Chain45:
     @ "Wingardium Leviosa!"
     ShowRoomDialog 432
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route48_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route48_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain46:
     ArmChainYield 1
@@ -897,9 +897,9 @@ Room29V1Chain46:
     ShowRoomDialog 435
     SetTileActorMoveSpeed Room29V1Group14_id, 2, 2
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group14_id, 2, 0, 0, Room29V1Route47_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group16_id, 0, 0, 0, Room29V1Route49_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route46_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group14_id, 2, 0, 0, Room29V1Route47_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group16_id, 0, 0, 0, Room29V1Route49_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route46_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain47:
     ArmChainYield 1
@@ -909,7 +909,7 @@ Room29V1Chain47:
     RecruitPartyFollower 6
     DespawnTileActor Room29V1Group14_id, 2
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route51_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route51_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain48:
     ArmChainYield 1
@@ -933,9 +933,9 @@ Room29V1Chain48:
     End
 Room29V1Chain49:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route50_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route50_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain50:
     ArmChainYield 1
@@ -943,8 +943,8 @@ Room29V1Chain50:
     @ "Okay, let's go."
     ShowRoomDialog 197
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group17_id, 0, 0, 0, Room29V1Route56_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group20_id, 0, 0, 0, Room29V1Route62_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group17_id, 0, 0, 0, Room29V1Route56_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group20_id, 0, 0, 0, Room29V1Route62_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain51:
     ArmChainYield 1
@@ -953,7 +953,7 @@ Room29V1Chain51:
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room29V1Chain52:
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route5_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain53:
     ArmChainYield 1
@@ -988,7 +988,7 @@ Room29V1Chain57:
     RecruitPartyFollower 6
     DespawnRoomRowActors Room29V1Group17_id
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route63_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route63_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain58:
     DespawnTileActor Room29V1Group12_id, 5
@@ -1001,9 +1001,9 @@ Room29V1Chain60:
     @ "Let's go!"
     ShowRoomDialog 533
     ArmChainYield 0
-    StartActorAnimSequence Room29V1Group13_id, 1, 0, 0, Room29V1Route43_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room29V1Group13_id, 2, 0, 0, Room29V1Route42_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room29V1Route44_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group13_id, 1, 0, 0, Room29V1Route43_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room29V1Group13_id, 2, 0, 0, Room29V1Route42_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room29V1Route44_id, 0, 1, 0, 0, 0
     End
 Room29V1Chain61:
     SetQuestState 0, QUEST_ALT_PRESENTATION

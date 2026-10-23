@@ -130,7 +130,7 @@ Room27V1Chain1:
     End
 Room27V1Chain2:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Now, please return to your common room."
     @ "The Riddikulus Boggart Challenge can now be accessed from the Mini-Games menu found on the Title Screen."
     ShowRoomDialog 351
@@ -155,15 +155,15 @@ Room27V1Chain2:
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room27V1Chain3:
-    StartActorAnimSequence Room27V1Group1_id, 0, 0, 0, Room27V1Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group1_id, 5, 0, 0, Room27V1Route0_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group1_id, 2, 0, 0, Room27V1Route0_id, 2, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group1_id, 3, 0, 0, Room27V1Route0_id, 3, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group1_id, 4, 0, 0, Room27V1Route1_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group1_id, 6, 0, 0, Room27V1Route1_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group1_id, 7, 0, 0, Room27V1Route1_id, 2, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group2_id, 0, 0, 0, Room27V1Route2_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group3_id, 0, 0, 0, Room27V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 0, 0, 0, Room27V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 5, 0, 0, Room27V1Route0_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 2, 0, 0, Room27V1Route0_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 3, 0, 0, Room27V1Route0_id, 3, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 4, 0, 0, Room27V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 6, 0, 0, Room27V1Route1_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 7, 0, 0, Room27V1Route1_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group2_id, 0, 0, 0, Room27V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group3_id, 0, 0, 0, Room27V1Route3_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain4:
     DespawnTileActor Room27V1Group1_id, 0
@@ -176,7 +176,7 @@ Room27V1Chain4:
     End
 Room27V1Chain5:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 288, 21, 1, 0, 255, 0, 0, 2, 255, 255, 255
     StartTileActorScript 288, 21, 1, Room27V1Group3_id, 0, 0, 0, 2, 255, 255, 255
     StartTileActorScript 288, 21, 1, Room27V1Group2_id, 0, 0, 0, 2, 255, 255, 255
@@ -198,12 +198,12 @@ Room27V1Chain7:
     SetTileActorFacing Room27V1Group2_id, 0, 6
     End
 Room27V1Chain8:
-    StartActorAnimSequence Room27V1Group1_id, 0, 0, 0, Room27V1Route4_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group1_id, 4, 0, 0, Room27V1Route6_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room27V1Group2_id, 0, 0, 0, Room27V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 0, 0, 0, Room27V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 4, 0, 0, Room27V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group2_id, 0, 0, 0, Room27V1Route5_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain9:
-    StartActorAnimSequence Room27V1Group1_id, 2, 0, 0, Room27V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room27V1Group1_id, 2, 0, 0, Room27V1Route7_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain10:
     ArmChainYield 1
@@ -223,7 +223,7 @@ Room27V1Chain11:
     End
 Room27V1Chain12:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DespawnTileActor Room27V1Group1_id, 8
     DespawnTileActor Room27V1Group1_id, 9
     SetQuestState 1, 229
@@ -231,7 +231,7 @@ Room27V1Chain12:
     End
 Room27V1Chain13:
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room27V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room27V1Route8_id, 0, 1, 0, 0, 0
     End
 Room27V1Chain14:
     SetOverworldMonstersDisabled

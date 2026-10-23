@@ -70,7 +70,7 @@ Room47V1Chain3:
     DespawnTileActor Room47V1Group3_id, 0
     DespawnRoomRowActors Room47V1Group4_id
     SetQuestState 2, 230
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room47V0Group0_id, 1
     DelayedRespawnRowAndRunChain 2, 0, 0
     PlaySoundById 39
@@ -97,7 +97,7 @@ Room47V1Chain5:
     PlaySoundById 37
     End
 Room47V1Chain6:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room47V0Group0_id, 1
     SetTileActorAnimState Room47V0Group0_id, 2
     DelayedRespawnRowAndRunChainFrames 0, Room47V1Group1_id, 0

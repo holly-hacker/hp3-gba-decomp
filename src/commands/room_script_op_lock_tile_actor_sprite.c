@@ -2,14 +2,14 @@
 #include "area.h"
 #include "commands.h"
 
-typedef struct SetTileActorSpecialFlagRecord {
+typedef struct LockTileActorSpriteRecord {
     u32 dwOpcode;
     u8 bTileX;
     u8 bTileY;
     u8 bSet;
-} SetTileActorSpecialFlagRecord;
+} LockTileActorSpriteRecord;
 
-void RoomScriptOpSetTileActorSpecialFlag(SetTileActorSpecialFlagRecord *pRecord)
+void RoomScriptOpLockTileActorSprite(LockTileActorSpriteRecord *pRecord)
 {
     Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 

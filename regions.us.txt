@@ -615,7 +615,7 @@ c-file 0x080152CC _ src/combat_fighter/restore_fighter_hp.c RestoreFighterHp
 c-file 0x08015334 _ src/combat_fighter/restore_fighter_mp.c RestoreFighterMp
 c-file 0x0801539C _ src/combat_fighter/set_monster_actor_anim.c SetMonsterActorAnim
 c-file 0x08015484 _ src/combat_fighter/set_player_actor_anim.c SetPlayerActorAnim
-c-file 0x08015574 _ src/combat_fighter/update_monster_screen_shake.c UpdateMonsterScreenShake
+c-file 0x08015574 _ src/combat_fighter/flip_monster_for_intro_sweep.c FlipMonsterForIntroSweep
 c-file 0x08015608 _ src/combat_fighter/tick_monster_action_state.c TickMonsterActionState
 c-file 0x08015F50 _ src/combat_fighter/show_attack_result.c ShowAttackResult
 c-file 0x0801602C _ src/combat_fighter/tick_player_action_state.c TickPlayerActionState
@@ -694,7 +694,7 @@ c-file 0x0801BEDC _ src/combo_info/exit_card_combo_description.c ExitCardComboDe
 c-file 0x0801BEF8 _ src/commands/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
 c-file 0x0801BF58 _ src/commands/room_script_op_queue_tile_actor_move.c RoomScriptOpQueueTileActorMove
 c-file 0x0801C04C _ src/commands/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
-c-file 0x0801C0E8 _ src/commands/room_script_op_start_actor_anim_sequence.c RoomScriptOpStartActorAnimSequence
+c-file 0x0801C0E8 _ src/commands/room_script_op_start_tile_actor_route_walk.c RoomScriptOpStartTileActorRouteWalk
 c-file 0x0801C1D8 _ src/commands/room_script_op_start_tile_actor_script.c RoomScriptOpStartTileActorScript
 c-file 0x0801C280 _ src/commands/room_script_op_play_special_scene_effect.c RoomScriptOpPlaySpecialSceneEffect
 c-file 0x0801C3EC _ src/commands/room_script_op_full_heal_party.c RoomScriptOpFullHealParty
@@ -729,7 +729,7 @@ c-file 0x0801CA88 _ src/commands/room_script_op_goto_if_quest_state_compare.c Ro
 c-file 0x0801CAB8 _ src/commands/room_script_op_goto_if_quest_state_pair_compare.c RoomScriptOpGotoIfQuestStatePairCompare
 c-file 0x0801CAEC _ src/commands/room_script_op_set_quest_state.c RoomScriptOpSetQuestState
 c-file 0x0801CAFC _ src/commands/room_script_op_copy_quest_state.c RoomScriptOpCopyQuestState
-c-file 0x0801CB10 _ src/commands/room_script_op_cancel_actor_anim_sequence.c RoomScriptOpCancelActorAnimSequence
+c-file 0x0801CB10 _ src/commands/room_script_op_stop_tile_actor.c RoomScriptOpStopTileActor
 c-file 0x0801CB70 _ src/commands/room_script_op_set_tile_actor_anim_state_with_speed.c RoomScriptOpSetTileActorAnimStateWithSpeed
 c-file 0x0801CB9C _ src/commands/room_script_op_patch_room_background_tile.c RoomScriptOpPatchRoomBackgroundTile
 c-file 0x0801CBB4 _ src/commands/room_script_op_show_choose_character.c RoomScriptOpShowChooseCharacter
@@ -769,8 +769,8 @@ c-file 0x0801CFCC _ src/commands/room_script_op_despawn_room_row_actors.c RoomSc
 c-file 0x0801D020 _ src/commands/room_script_op_grant_party_spell.c RoomScriptOpGrantPartySpell
 c-file 0x0801D04C _ src/commands/room_script_op_set_overworld_monsters_disabled.c RoomScriptOpSetOverworldMonstersDisabled
 c-file 0x0801D058 _ src/commands/room_script_op_clear_overworld_monsters_disabled.c RoomScriptOpClearOverworldMonstersDisabled
-c-file 0x0801D064 _ src/commands/room_script_op_set_tile_actor_facing_and_script_page.c RoomScriptOpSetTileActorFacingAndScriptPage
-c-file 0x0801D0A4 _ src/commands/room_script_op_set_tile_actor_special_flag.c RoomScriptOpSetTileActorSpecialFlag
+c-file 0x0801D064 _ src/commands/room_script_op_start_tile_actor_turn_around.c RoomScriptOpStartTileActorTurnAround
+c-file 0x0801D0A4 _ src/commands/room_script_op_lock_tile_actor_sprite.c RoomScriptOpLockTileActorSprite
 c-file 0x0801D0C8 _ src/commands/room_script_op_unlock_minigame.c RoomScriptOpUnlockMinigame
 c-file 0x0801D138 _ src/commands/room_script_op_show_reward_pickup_message.c RoomScriptOpShowRewardPickupMessage
 c-file 0x0801D1A0 _ src/commands/room_script_op_show_item_removed_message.c RoomScriptOpShowItemRemovedMessage

@@ -32,11 +32,11 @@ void BuildTurnOrder(void)
 
         while (innerIdx < g_pFightState->bFighterCount) {
             if (STAGING(innerIdx).stats.wHp == 0) {
-                STAGING(innerIdx).nFaintedFlag = -1;
+                STAGING(innerIdx).nTurnKey = -1;
             } else if (STAGING(innerIdx).bAgility < bestAgility && STAGING(innerIdx).bAgility > prevWinnerAgility) {
                 bestAgility = STAGING(innerIdx).bAgility;
                 winnerIdx = innerIdx;
-            } else if (STAGING(innerIdx).bAgility == bestAgility && (u16)STAGING(innerIdx).nFaintedFlag == 0) {
+            } else if (STAGING(innerIdx).bAgility == bestAgility && (u16)STAGING(innerIdx).nTurnKey == 0) {
                 // Tie with the current best: bump this fighter's agility by 1
                 // so it sorts after its twin instead of being picked again.
                 STAGING(innerIdx).bAgility = STAGING(innerIdx).bAgility + 1;
@@ -48,27 +48,25 @@ void BuildTurnOrder(void)
         // place the lowest agility at the start
         SLOT(outerIdx) = STAGING(winnerIdx);
 
-        // Use nFaintedFlag to mark the enemy as placed
-        // TODO: unsure what this multiply does. nFaintedFlag is only used to indicate placement so this multiplication
-        // by a static value doesn't accomplish anything.
-        SLOT(outerIdx).nFaintedFlag = g_pFightState->bTurnKeyStep * (outerIdx + 2);
+        // Mark both copies placed with the slot's turn key.
+        SLOT(outerIdx).nTurnKey = g_pFightState->bTurnKeyStep * (outerIdx + 2);
 
         prevWinnerAgility = STAGING(winnerIdx).bAgility;
-        STAGING(winnerIdx).nFaintedFlag = SLOT(outerIdx).nFaintedFlag;
+        STAGING(winnerIdx).nTurnKey = SLOT(outerIdx).nTurnKey;
 
         outerIdx = outerIdx + 1;
     }
 
-    // Leftover pass: the one fighter never picked above (nFaintedFlag
+    // Leftover pass: the one fighter never picked above (nTurnKey
     // still 0) goes into the last pFighters slot, unless it's fainted.
     innerIdx = 0;
     while (innerIdx < g_pFightState->bFighterCount) {
-        if ((u16)STAGING(innerIdx).nFaintedFlag == 0
+        if ((u16)STAGING(innerIdx).nTurnKey == 0
             && STAGING(innerIdx).stats.wHp != 0) {
             SLOT(outerIdx) = STAGING(innerIdx);
-            SLOT(outerIdx).nFaintedFlag = g_pFightState->bTurnKeyStep * (outerIdx + 2);
+            SLOT(outerIdx).nTurnKey = g_pFightState->bTurnKeyStep * (outerIdx + 2);
         } else if (STAGING(innerIdx).stats.wHp == 0) {
-            STAGING(innerIdx).nFaintedFlag = -1;
+            STAGING(innerIdx).nTurnKey = -1;
         }
 
         innerIdx = innerIdx + 1;

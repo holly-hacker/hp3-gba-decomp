@@ -51,7 +51,7 @@ Room08V1Chain2:
     End
 Room08V1Chain3:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RecruitPartyFollower 8
     SetQuestState 1, 130
     SetTileActorAnimStateWithSpeed 0, 255

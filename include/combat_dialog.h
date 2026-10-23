@@ -17,7 +17,7 @@ typedef enum {
     SpecialAbilityText = 3,
     ActionAnnounce    = 4,
     AttackResult      = 5,
-    FaintResult       = 6,
+    HitResults        = 6,
     PotionUseAnnounce = 7,
     StatusRestore     = 8,
     SpAmount          = 9,

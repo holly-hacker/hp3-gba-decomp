@@ -23,7 +23,7 @@ void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex)
 
         g_pFightState->dwFighterFainted = 1;
         g_pFightState->pFighters[fighterIndex].stats.wHp = 0;
-        g_pFightState->pFighters[fighterIndex].nFaintedFlag = -1;
+        g_pFightState->pFighters[fighterIndex].nTurnKey = -1;
 
         {
             u8 idx = fighterIndex;

@@ -36,7 +36,7 @@ void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex)
         g_nBattleXpReward = MonsterTable[FIGHTER(fighterIndex).bRosterIndex].wRewardXp + g_nBattleXpReward;
         g_nBattleGoldReward = MonsterTable[FIGHTER(fighterIndex).bRosterIndex].wRewardGold + g_nBattleGoldReward;
         FIGHTER(fighterIndex).stats.wHp = 0;
-        FIGHTER(fighterIndex).nFaintedFlag = -1;
+        FIGHTER(fighterIndex).nTurnKey = -1;
         SetActorActionState(FIGHTER(fighterIndex).pActor, 1);
     }
 }

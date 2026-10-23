@@ -60,10 +60,10 @@ Room26V1Chain1:
 Room26V1Chain2:
     ArmChainYield 1
     SetQuestState 1, 230
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room26V1Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room26V1Group1_id, 0, 0, 0, Room26V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room26V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room26V1Group1_id, 0, 0, 0, Room26V1Route1_id, 0, 1, 0, 0, 0
     End
 Room26V1Chain3:
     ArmChainYield 1

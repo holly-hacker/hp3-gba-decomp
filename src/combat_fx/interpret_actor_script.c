@@ -711,7 +711,7 @@ void InterpretActorScript(Actor *actor)
         case BSOP_KillTarget:  // faints the target and grants its XP and gold
             {
                 targetFighter->stats.wHp = 0;
-                targetFighter->nFaintedFlag = 0xFFFF;
+                targetFighter->nTurnKey = 0xFFFF;
                 targetFighter->pActor->bActionState = 1;
                 targetFighter->pActor->dwStateTimer = 3;
                 g_pFightState->dwFighterFainted = 1;
@@ -1063,7 +1063,7 @@ void InterpretActorScript(Actor *actor)
                 for (n = 0; n < g_pFightState->bFighterCount; n++)
                 {
                     if (g_pFightState->pFighters[n].bFighterType == Enemy && g_pFightState->pFighters[n].stats.wHp != 0
-                        && (u16)g_pFightState->pFighters[n].nFaintedFlag != 0xFFFF && g_effectStaging.bTargetIndex == 0xFF)
+                        && (u16)g_pFightState->pFighters[n].nTurnKey != 0xFFFF && g_effectStaging.bTargetIndex == 0xFF)
                         g_effectStaging.bTargetIndex = n;
                 }
                 targetFighter = g_pFightState->pFighters + g_effectStaging.bTargetIndex;
@@ -1078,7 +1078,7 @@ void InterpretActorScript(Actor *actor)
                 for (; n < g_pFightState->bFighterCount; n++)
                 {
                     if (g_pFightState->pFighters[n].bFighterType == Enemy && g_pFightState->pFighters[n].stats.wHp != 0
-                        && (u16)g_pFightState->pFighters[n].nFaintedFlag != 0xFFFF && g_effectStaging.bTargetIndex == 0xFF)
+                        && (u16)g_pFightState->pFighters[n].nTurnKey != 0xFFFF && g_effectStaging.bTargetIndex == 0xFF)
                         g_effectStaging.bTargetIndex = n;
                 }
                 if (g_effectStaging.bTargetIndex == 0xFF)

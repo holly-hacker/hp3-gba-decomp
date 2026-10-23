@@ -24,7 +24,7 @@ void ReviveFighter(u8 faintedIndex)
     g_aPartyMasterStats[pRevived->bFighterType].stats.wHp = pRevived->stats.wHp;
     pRevived->stats.wMp = pRevived->wMp_max;
     g_aPartyMasterStats[pRevived->bFighterType].stats.wMp = pRevived->stats.wMp;
-    pRevived->nFaintedFlag = 0xFF;
+    pRevived->nTurnKey = 0xFF;
     SetActorActionState(pRevived->pActor, 0);
 
     for (i = 0; i < g_pFightState->bFighterCount; i++)

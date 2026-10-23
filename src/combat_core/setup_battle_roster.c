@@ -135,7 +135,7 @@ void SetupBattleRoster(void)
                 BattleFighter *stage = g_pFightState->pStagingFighters;
                 BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage); // dst = g_pFightState->pStagingFighters[idx]
                 memcpy(dst, g_pFightState->pFighters + slot, sizeof(BattleFighter));
-                g_pFightState->pStagingFighters[idx].nFaintedFlag = 0;
+                g_pFightState->pStagingFighters[idx].nTurnKey = 0;
                 idx++;
             } else {
                 g_pFightState->bFighterCount--;
@@ -153,7 +153,7 @@ void SetupBattleRoster(void)
                 BattleFighter *stage = g_pFightState->pStagingFighters;
                 BattleFighter *dst = (BattleFighter *)(idx * sizeof(BattleFighter) + (u32)stage); // dst = g_pFightState->pStagingFighters[idx]
                 memcpy(dst, g_pFightState->pFighters + slot, sizeof(BattleFighter));
-                g_pFightState->pStagingFighters[idx].nFaintedFlag = hp;
+                g_pFightState->pStagingFighters[idx].nTurnKey = hp;
                 idx++;
             }
         }

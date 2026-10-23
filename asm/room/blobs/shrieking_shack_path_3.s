@@ -47,10 +47,10 @@ Room46V1Chain0:
     End
 Room46V1Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ClearTileActorFlagBit 0, 255, 9
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room46V1Route0_id, 0, 6, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room46V1Route0_id, 0, 6, 0, 0, 0
     End
 Room46V1Chain2:
     SetTileActorAnimStateWithSpeed 0, 255

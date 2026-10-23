@@ -128,15 +128,15 @@ Room06V1Chain0:
     End
 Room06V1Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ClearTileActorFlagBit 0, 255, 9
     StartTileActorScript 174, 153, 0, 0, 255, 0, 0, 7, 255, 255, 255
     RespawnRowAndRunChain Room06V1Group2_id, 0
     RemovePartyFollower 7
     RemovePartyFollower 6
     ArmChainYield 0
-    StartActorAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route2_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room06V1Group2_id, 0, 0, 0, Room06V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room06V1Group2_id, 1, 0, 0, Room06V1Route5_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain2:
     PlaySoundById 63
@@ -148,7 +148,7 @@ Room06V1Chain2:
     End
 Room06V1Chain3:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorFacing 0, 255, 6
     @ "We'd better hurry up and find seats."
     ShowRoomDialog 86
@@ -164,25 +164,25 @@ Room06V1Chain3:
     End
 Room06V1Chain4:
     SetTileActorAnimState Room06V0Group0_id, 0
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V1Chain27_id
     End
 Room06V1Chain5:
     SetTileActorAnimState Room06V0Group0_id, 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V1Chain27_id
     End
 Room06V1Chain6:
     SetTileActorAnimState Room06V0Group0_id, 2
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V1Chain27_id
     End
 Room06V1Chain7:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StopSoundEffectChannels
     PlaySpecialSceneEffect 1
     DelayedRespawnRowAndRunChain 5, 0, 0
@@ -197,7 +197,7 @@ Room06V1Chain7:
     StartTileActorScript 170, 147, 0, 0, 255, 0, 0, 4, 255, 255, 255
     SetTileActorMoveSpeed Room06V1Group9_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence Room06V1Group9_id, 0, 0, 0, Room06V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room06V1Group9_id, 0, 0, 0, Room06V1Route0_id, 0, 1, 0, 0, 0
     SetQuestState 0, 8
     End
 Room06V1Chain8:
@@ -217,7 +217,7 @@ Room06V1Chain11:
     StartTileActorScript 195, 239, 0, 0, 255, 0, 0, 2, 255, 255, 255
     SetTileActorFacing 0, 255, 2
     ArmChainYield 0
-    StartActorAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room06V1Group2_id, 0, 0, 0, Room06V1Route3_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain12:
     DespawnTileActor Room06V1Group0_id, 0
@@ -312,9 +312,9 @@ Room06V1Chain30:
     @ "Don't worry, Neville, we'll find him for you."
     @ "Thanks, Harry. I'll wait here for you."
     ShowRoomDialog 143
-    StartActorAnimSequence Room06V1Group2_id, 0, 0, 0, Room06V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room06V1Group2_id, 0, 0, 0, Room06V1Route1_id, 0, 1, 0, 0, 0
     SetTileActorFacing Room06V1Group2_id, 0, 2
-    StartActorAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room06V1Group2_id, 1, 0, 0, Room06V1Route6_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain31:
     SetTileActorFacing Room06V1Group2_id, 1, 2
@@ -330,7 +330,7 @@ Room06V1Chain32:
     SetTileActorFacing Room06V1Group2_id, 0, 2
     End
 Room06V1Chain33:
-    StartActorAnimSequence Room06V1Group2_id, 1, 0, 0, Room06V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room06V1Group2_id, 1, 0, 0, Room06V1Route4_id, 0, 1, 0, 0, 0
     End
 Room06V1Chain34:
     SetPartyLeaderCharacter 5
@@ -379,7 +379,7 @@ Room06V2Chain2:
     End
 Room06V2Chain3:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
     @ "Here's the chocolate, Professor!"
     @ "Well done, Mr. Weasley."
@@ -388,13 +388,13 @@ Room06V2Chain3:
     End
 Room06V2Chain4:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
     StartTileActorScript 173, 216, 0, 0, 255, 0, 0, 4, 255, 255, 255
     End
 Room06V2Chain5:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
     @ "There you are, Harry!"
     @ "Um... Hello..."
@@ -410,7 +410,7 @@ Room06V2Chain5:
     End
 Room06V2Chain6:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 189, 153, 0, 0, 255, 0, 0, 1, 255, 255, 255
     @ "Job done, Professor Lupin."
     @ "Thank you, Miss Granger."
@@ -421,7 +421,7 @@ Room06V2Chain7:
     DelayedRespawnRowAndRunChain 0, Room06V2Group3_id, 0
     SetAllQueuedMoveParams 0, 1, 0, 0, 65535
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 190, 148, 0, 0, 255, 0, 0, 6, 255, 255, 255
     @ "Job done, Professor Lupin."
     @ "Thank you, Miss Granger."
@@ -431,7 +431,7 @@ Room06V2Chain7:
 Room06V2Chain8:
     DelayedRespawnRowAndRunChain 0, Room06V2Group4_id, 0
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 187, 126, 0, 0, 255, 0, 0, 5, 255, 255, 255
     StartTileActorScript 182, 232, 0, 0, 255, 0, 0, 4, 255, 255, 255
     End
@@ -528,19 +528,19 @@ Room06V3Chain0:
     DelayedRespawnRowAndRunChain 0, 0, Room06V3Chain16_id
     End
 Room06V3Chain1:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room06V0Group0_id, 0
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V3Chain23_id
     End
 Room06V3Chain2:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room06V0Group0_id, 1
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V3Chain23_id
     End
 Room06V3Chain3:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room06V0Group0_id, 2
     PlaySoundById 14
     DelayedRespawnRowAndRunChainFrames 15, 0, Room06V3Chain23_id
@@ -594,10 +594,10 @@ Room06V3Chain15:
     ShowRoomDialog 98
     End
 Room06V3Chain16:
-    StartActorAnimSequence Room06V3Group0_id, 4, 0, 0, Room06V3Route0_id, 0, 0, 60, 0, 0
-    StartActorAnimSequence Room06V3Group0_id, 9, 0, 0, Room06V3Route1_id, 0, 0, 60, 0, 0
-    StartActorAnimSequence Room06V3Group0_id, 12, 0, 0, Room06V3Route2_id, 0, 0, 60, 0, 0
-    StartActorAnimSequence Room06V3Group0_id, 16, 0, 0, Room06V3Route3_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room06V3Group0_id, 4, 0, 0, Room06V3Route0_id, 0, 0, 60, 0, 0
+    StartTileActorRouteWalk Room06V3Group0_id, 9, 0, 0, Room06V3Route1_id, 0, 0, 60, 0, 0
+    StartTileActorRouteWalk Room06V3Group0_id, 12, 0, 0, Room06V3Route2_id, 0, 0, 60, 0, 0
+    StartTileActorRouteWalk Room06V3Group0_id, 16, 0, 0, Room06V3Route3_id, 0, 0, 0, 0, 0
     End
 Room06V3Chain17:
     SetStoryStage 0
@@ -643,7 +643,7 @@ Room06V3Chain27:
     ShowRoomDialog 624
     End
 Room06V3Chain28:
-    StartActorAnimSequence Room06V3Group1_id, 0, 0, 0, Room06V3Route4_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room06V3Group1_id, 0, 0, 0, Room06V3Route4_id, 0, 0, 0, 0, 0
     End
 Room06V3Chain29:
     PlaySpecialSceneEffect 3

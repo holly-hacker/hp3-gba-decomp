@@ -173,25 +173,25 @@ Room00V1Chain0:
     End
 Room00V1Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DespawnTileActor Room00V1Group5_id, 0
     @ "Sorry we're late - oh, Professor Snape!"
     ShowRoomDialog 409
     ArmChainYield 0
-    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group1_id, 0, 0, 0, Room00V1Route5_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room00V1Group1_id, 0, 0, 0, 2200, 0
     End
 Room00V1Chain2:
     ArmChainYield 0
-    StartActorAnimSequence Room00V1Group4_id, 0, 0, 0, Room00V1Route6_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group4_id, 1, 0, 0, Room00V1Route1_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group4_id, 2, 0, 0, Room00V1Route1_id, 2, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group3_id, 0, 0, 0, Room00V1Route4_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route2_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group2_id, 0, 0, 0, Room00V1Route3_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group4_id, 3, 0, 0, Room00V1Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group4_id, 4, 0, 0, Room00V1Route0_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group4_id, 5, 0, 0, Room00V1Route0_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group4_id, 0, 0, 0, Room00V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group4_id, 1, 0, 0, Room00V1Route1_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group4_id, 2, 0, 0, Room00V1Route1_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group3_id, 0, 0, 0, Room00V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group2_id, 0, 0, 0, Room00V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group4_id, 3, 0, 0, Room00V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group4_id, 4, 0, 0, Room00V1Route0_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group4_id, 5, 0, 0, Room00V1Route0_id, 2, 1, 0, 0, 0
     QueueTileActorMove 0, 255, 0, 0, 400, 0
     End
 Room00V1Chain3:
@@ -238,7 +238,7 @@ Room00V1Chain8:
     @ "This lesson began ten minutes ago, Potter. Sit down."
     ShowRoomDialog 410
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route19_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route19_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain9:
     ArmChainYield 1
@@ -264,18 +264,18 @@ Room00V1Chain11:
     End
 Room00V1Chain12:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ResetPartyLeaderSelection
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route10_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group1_id, 0, 0, 0, Room00V1Route8_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain13:
     ArmChainYield 1
     @ "Potter, Weasley... where is your research?"
     ShowRoomDialog 423
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route11_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route11_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain14:
     ArmChainYield 1
@@ -289,8 +289,8 @@ Room00V1Chain14:
     RespawnRowAndRunChain Room00V1Group10_id, 0
     SetTileActorMoveSpeed Room00V1Group8_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route9_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route16_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group8_id, 0, 0, 0, Room00V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route16_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain15:
     ArmChainYield 1
@@ -307,7 +307,7 @@ Room00V1Chain15:
     QueueTileActorMove 0, 255, 0, 0, 1800, 0
     SetTileActorFacing 0, 255, 6
     ArmChainYield 0
-    StartActorAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route12_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group8_id, 0, 0, 0, Room00V1Route12_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain16:
     ArmChainYield 1
@@ -316,7 +316,7 @@ Room00V1Chain16:
     @ "Umm... like I said, I'd read the book before. See you later..."
     ShowRoomDialog 426
     ArmChainYield 0
-    StartActorAnimSequence Room00V1Group8_id, 0, 0, 0, Room00V1Route13_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group8_id, 0, 0, 0, Room00V1Route13_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain17:
     ArmChainYield 1
@@ -334,14 +334,14 @@ Room00V1Chain18:
     @ "Uhhh..."
     ShowRoomDialog 428
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route15_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route15_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain19:
     ArmChainYield 1
     QueueTileActorMove Room00V1Group1_id, 0, 0, 0, 500, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route17_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group1_id, 0, 0, 0, Room00V1Route17_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain20:
     ArmChainYield 1
@@ -351,16 +351,16 @@ Room00V1Chain20:
     RecruitPartyFollower 6
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route18_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route18_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain21:
     @ "Locked."
     ShowRoomDialog 624
     End
 Room00V1Chain22:
-    StartActorAnimSequence 0, 255, 0, 0, Room00V1Route14_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room00V1Route14_id, 0, 1, 0, 0, 0
     End
 Room00V1Chain23:
-    StartActorAnimSequence Room00V1Group1_id, 0, 0, 0, Room00V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room00V1Group1_id, 0, 0, 0, Room00V1Route7_id, 0, 1, 0, 0, 0
     End
     EndSubBlock Room00V1End

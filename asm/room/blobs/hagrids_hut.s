@@ -181,11 +181,11 @@ Room11V1Chain1:
     End
 Room11V1Chain2:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ResetPartyLeaderSelection
     RespawnRowAndRunChain Room11V1Group5_id, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room11V1Route0_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain3:
     ArmChainYield 1
@@ -198,9 +198,9 @@ Room11V1Chain3:
     RemovePartyFollower 7
     RespawnRowAndRunChain Room11V1Group4_id, 0
     ArmChainYield 0
-    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route4_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route2_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group5_id, 0, 0, 0, Room11V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group3_id, 0, 0, 0, Room11V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group4_id, 0, 0, 0, Room11V1Route1_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room11V1Group5_id, 0, 0, 0, 1000, 0
     End
 Room11V1Chain4:
@@ -210,10 +210,10 @@ Room11V1Chain4:
     ShowRoomDialog 437
     DespawnRoomRowActors Room11V1Group11_id
     ArmChainYield 0
-    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route3_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route5_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route6_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group5_id, 0, 0, 0, Room11V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room11V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group4_id, 0, 0, 0, Room11V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group3_id, 0, 0, 0, Room11V1Route7_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain5:
     ArmChainYield 1
@@ -234,9 +234,9 @@ Room11V1Chain5:
     End
 Room11V1Chain6:
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route10_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group4_id, 0, 0, 0, Room11V1Route8_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room11V1Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group4_id, 0, 0, 0, Room11V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
     End
 Room11V1Chain7:
     ArmChainYield 1
@@ -250,15 +250,15 @@ Room11V1Chain7:
     End
 Room11V1Chain8:
     ArmChainYield 0
-    StartActorAnimSequence Room11V1Group3_id, 0, 0, 0, Room11V1Route9_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group3_id, 0, 0, 0, Room11V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group5_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
     End
 Room11V1Chain9:
     ArmChainYield 1
     SetPartyLeaderCharacter 6
     RespawnRowAndRunChain Room11V1Group2_id, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route11_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room11V1Route11_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain10:
     ReturnToOverworld 15, 5
@@ -268,13 +268,13 @@ Room11V1Chain11:
     End
 Room11V1Chain12:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route13_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room11V1Route13_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room11V1Group7_id, 1, 0, 0, 700, 0
     End
 Room11V1Chain13:
-    StartActorAnimSequence Room11V1Group7_id, 1, 0, 0, Room11V1Route14_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group7_id, 1, 0, 0, Room11V1Route14_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain14:
     ArmChainYield 1
@@ -286,15 +286,15 @@ Room11V1Chain14:
     RemovePartyFollower 7
     RemovePartyFollower 6
     ArmChainYield 0
-    StartActorAnimSequence Room11V1Group8_id, 0, 0, 0, Room11V1Route15_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group8_id, 1, 0, 0, Room11V1Route16_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group8_id, 0, 0, 0, Room11V1Route15_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group8_id, 1, 0, 0, Room11V1Route16_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain15:
     ArmChainYield 1
     RespawnRowAndRunChain Room11V1Group9_id, 0
     SetTileActorMoveSpeed Room11V1Group9_id, 0, 3
     ArmChainYield 0
-    StartActorAnimSequence Room11V1Group9_id, 0, 0, 0, Room11V1Route17_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group9_id, 0, 0, 0, Room11V1Route17_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain16:
     ArmChainYield 1
@@ -308,8 +308,8 @@ Room11V1Chain16:
     ShowRoomDialog 548
     ArmChainYield 0
     QueueTileActorMove 0, 255, 0, 0, 1000, 0
-    StartActorAnimSequence Room11V1Group8_id, 0, 0, 0, Room11V1Route18_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room11V1Group8_id, 1, 0, 0, Room11V1Route19_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group8_id, 0, 0, 0, Room11V1Route18_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group8_id, 1, 0, 0, Room11V1Route19_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain17:
     ArmChainYield 1
@@ -317,7 +317,7 @@ Room11V1Chain17:
     RecruitPartyFollower 6
     DespawnRoomRowActors Room11V1Group8_id
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room11V1Route20_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room11V1Route20_id, 0, 1, 0, 0, 0
     End
 Room11V1Chain18:
     @ "They're comin' - Macnair, the executioner, and Fudge. Yeh'd best leave now."
@@ -342,7 +342,7 @@ Room11V1Chain22:
     DelayedRespawnRowAndRunChainFrames 5, 0, 0
     GotoIfQuestStateCompare 230, 0, 1, Room11V1Chain25_id, 0, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence Room11V1Group13_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room11V1Group13_id, 0, 0, 0, Room11V1Route12_id, 0, 0, 0, 0, 0
     End
 Room11V1Chain23:
     @ "Harry. Hurry up!"

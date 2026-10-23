@@ -88,6 +88,6 @@ Room44V1Chain10:
     DespawnTileActor Room44V1Group2_id, 0
     End
 Room44V1Chain11:
-    StartActorAnimSequence Room44V1Group2_id, 0, 0, 0, Room44V1Route0_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room44V1Group2_id, 0, 0, 0, Room44V1Route0_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room44V1End

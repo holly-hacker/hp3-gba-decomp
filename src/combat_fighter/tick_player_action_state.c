@@ -42,7 +42,7 @@ static inline void PlayActionWindupFlash(Actor *actor)
     actor->bActionFlags &= 0xfe;
 }
 
-static inline void WaitForMoveThenApplyDamageNumber(Actor *actor)
+static inline void IdleWhenStopped(Actor *actor)
 {
     if (actor->vel.x != 0)
         return;
@@ -51,7 +51,7 @@ static inline void WaitForMoveThenApplyDamageNumber(Actor *actor)
     SetActorActionState(actor, 0);
 }
 
-static inline void ApplyDamageNumberAnimState(Actor *actor)
+static inline void PlayHurtAndApplyDamage(Actor *actor)
 {
     if (actor->bActionFlags & 1) {
         PlayFighterHurtSound(actor->modeState.actor.wStagedDamage, (u8)actor->wActorType);
@@ -124,12 +124,12 @@ void TickPlayerActionState(Actor *actor)
         PlayActionWindupFlash(actor);
         return;
     case 0xf:
-        WaitForMoveThenApplyDamageNumber(actor);
+        IdleWhenStopped(actor);
         return;
     case 2:
-        ApplyDamageNumberAnimState(actor);
+        PlayHurtAndApplyDamage(actor);
         return;
-    case 0x1a: // ExecutePlayerAttackSequence?
+    case 0x1a: // casts the queued spell
     {
         // bAttackOutcomeState tails, checked in order below: 1 shows the
         // damage number, 2 resolves item use, 3 applies staged damage,
@@ -379,7 +379,7 @@ void TickPlayerActionState(Actor *actor)
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             if (g_pFightState->dwBattleResultPending != 0)
                 return;
-            ShowBattleMessage(FaintResult, 0, 0);
+            ShowBattleMessage(HitResults, 0, 0);
             return;
         }
         if (actor->scriptState.bytes.bAttackOutcomeState == 5) {
@@ -609,7 +609,7 @@ void TickPlayerActionState(Actor *actor)
              * intervening calls make actor->scriptState.bytes.bAttackOutcomeState unprovably
              * unchanged, so neither store folds away. */
             actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
-            ShowBattleMessage(FaintResult, 0, 0);
+            ShowBattleMessage(HitResults, 0, 0);
             PostActionBattleCheck();
             ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
             if (actor->bActionState == 0x15)
@@ -645,7 +645,7 @@ void TickPlayerActionState(Actor *actor)
         g_pFightState->pAttackOutcomeActor = 0;
         g_pFightState->bAttackOutcomeState = 0;
         actor->scriptState.bytes.bAttackOutcomeState = AttackOutcome_None;
-        ShowBattleMessage(FaintResult, 0, 0);
+        ShowBattleMessage(HitResults, 0, 0);
         PostActionBattleCheck();
         ACTIVE_FIGHTER.bSelectedActionIndex = 0xff;
         if (actor->bActionState != 0x15)
@@ -653,7 +653,7 @@ void TickPlayerActionState(Actor *actor)
         SetActorActionState(actor, 0);
         return;
     }
-    case 4: // ApplyStatusRestoreItemEffect?
+    case 4: // uses the queued potion
     {
         u32 result;
         s32 targetIdx, code;

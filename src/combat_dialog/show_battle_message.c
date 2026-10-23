@@ -189,7 +189,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         }
         break;
 
-    case FaintResult:
+    case HitResults:
         while (g_pFightState->bHitResultCount != 0) {
             SelectTextFont(1, 0, -1);
             g_pFightState->bHitResultCount--;

@@ -123,7 +123,7 @@
 .set RSOP_PlayCutscene, 21
 .set RSOP_CloseRoomDialog, 22
 .set RSOP_SetTileActorFollowTarget, 23
-.set RSOP_StartActorAnimSequence, 24
+.set RSOP_StartTileActorRouteWalk, 24
 .set RSOP_StartTileActorScript, 25
 .set RSOP_PlayTileActorAnimation, 26
 .set RSOP_OpenMainMenu, 27
@@ -132,7 +132,7 @@
 .set RSOP_GotoIfQuestStatePairCompare, 30
 .set RSOP_SetQuestState, 31
 .set RSOP_CopyQuestState, 32
-.set RSOP_CancelActorAnimSequence, 33
+.set RSOP_StopTileActor, 33
 .set RSOP_SetTileActorAnimStateWithSpeed, 34
 .set RSOP_PatchRoomBackgroundTile, 35
 .set RSOP_ShowChooseCharacter, 36
@@ -175,8 +175,8 @@
 .set RSOP_GrantPartySpell, 73
 .set RSOP_SetOverworldMonstersDisabled, 74
 .set RSOP_ClearOverworldMonstersDisabled, 75
-.set RSOP_SetTileActorFacingAndScriptPage, 76
-.set RSOP_SetTileActorSpecialFlag, 77
+.set RSOP_StartTileActorTurnAround, 76
+.set RSOP_LockTileActorSprite, 77
 .set RSOP_UnlockMinigame, 78
 .set RSOP_ShowRewardPickupMessage, 79
 .set RSOP_ShowItemRemovedMessage, 80
@@ -312,11 +312,11 @@
 .endm
 
 @ Starts room actor (group, member) walking route `route` from `waypoint`: action state
-@ 7 + `animStateSelector` (6 also clears ActorFlagHasAnimation), waiting `waitTicks` at each
+@ 7 + `walkMode` (6 also clears ActorFlagHasAnimation), waiting `waitTicks` at each
 @ waypoint. A walk-once route ends with RespawnGroupAndRunChain(finishRespawnRow,
 @ finishChainRow). A nonzero `noPlatePress` keeps pressure plates from reacting to it. Yields.
-.macro StartActorAnimSequence group, member, finishRespawnRow, finishChainRow, route, waypoint, animStateSelector, waitTicks, noPlatePress, unused0
-    .byte RSOP_StartActorAnimSequence, 0, 0, 0, (\group), (\member), (\finishRespawnRow), (\finishChainRow), (\route), (\waypoint), (\animStateSelector), (\waitTicks), (\noPlatePress), (\unused0), (255), (255)
+.macro StartTileActorRouteWalk group, member, finishRespawnRow, finishChainRow, route, waypoint, walkMode, waitTicks, noPlatePress, unused0
+    .byte RSOP_StartTileActorRouteWalk, 0, 0, 0, (\group), (\member), (\finishRespawnRow), (\finishChainRow), (\route), (\waypoint), (\walkMode), (\waitTicks), (\noPlatePress), (\unused0), (255), (255)
 .endm
 
 @ Starts room actor (group, member) walking to pixel (targetX, targetY) in action state 15
@@ -356,10 +356,10 @@
     .byte RSOP_CopyQuestState, 0, 0, 0, (\srcIndex), (\dstIndex), (\unused0), (\unused1)
 .endm
 
-@ Cancels room actor (group, member)'s move and animation counters, ends an active field spell, and sets
+@ Stops room actor (group, member)'s move and resets its animation counters, ends an active field spell, and sets
 @ the actor's action state and the player's previous action state to 0.
-.macro CancelActorAnimSequence group, member
-    .byte RSOP_CancelActorAnimSequence, 0, 0, 0, (\group), (\member), (255), (255)
+.macro StopTileActor group, member
+    .byte RSOP_StopTileActor, 0, 0, 0, (\group), (\member), (255), (255)
 .endm
 
 @ Sets room actor (group, member)'s action state and previous action state to 0x21 and its move speed
@@ -558,13 +558,13 @@
 
 @ Sets room actor (group, member) to action state 0x1B facing `facing` (halved for four-way actors)
 @ and turning around every `turnInterval` ticks.
-.macro SetTileActorFacingAndScriptPage group, member, facing, turnInterval
-    .byte RSOP_SetTileActorFacingAndScriptPage, 0, 0, 0, (\group), (\member), (\facing), (\turnInterval)
+.macro StartTileActorTurnAround group, member, facing, turnInterval
+    .byte RSOP_StartTileActorTurnAround, 0, 0, 0, (\group), (\member), (\facing), (\turnInterval)
 .endm
 
 @ If `set`, sets bit 0x4 of room actor (group, member)'s bTypeFlags (NPCs: keep the sprite frame).
-.macro SetTileActorSpecialFlag group, member, set
-    .byte RSOP_SetTileActorSpecialFlag, 0, 0, 0, (\group), (\member), (\set), (255)
+.macro LockTileActorSprite group, member, set
+    .byte RSOP_LockTileActorSprite, 0, 0, 0, (\group), (\member), (\set), (255)
 .endm
 
 @ Sets the save header's unlock flag for minigame `minigameId` (0-4).

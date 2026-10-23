@@ -111,7 +111,7 @@ Room38V1Chain4:
     End
 Room38V1Chain5:
     GotoIfQuestStateCompare QUEST_CELLAR1_RAT_TONIC_FOUND, 0, 1, 0, 0, 0, 0
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 1
     StartTileActorScript 335, 211, 0, 0, 255, 0, 0, 2, 255, 255, 255
     @ "There's the Rat Tonic!"
@@ -364,19 +364,19 @@ Room38V3Chain0:
     End
 Room38V3Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 1, 253
     QueueTileActorMove Room38V3Group3_id, 0, 0, 0, 1200, 0
     SetTileActorMoveSpeed Room38V3Group3_id, 0, 4
     SetTileActorMoveSpeed Room38V3Group3_id, 1, 4
     ArmChainYield 0
-    StartActorAnimSequence Room38V3Group3_id, 1, 0, 0, Room38V3Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room38V3Group3_id, 0, 0, 0, Room38V3Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room38V3Group3_id, 1, 0, 0, Room38V3Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room38V3Group3_id, 0, 0, 0, Room38V3Route1_id, 0, 1, 0, 0, 0
     End
 Room38V3Chain2:
     DespawnTileActor Room38V3Group3_id, 0
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     QueueTileActorMove 0, 255, 0, 0, 1200, 0
     SetTileActorAnimStateWithSpeed 0, 255
     End

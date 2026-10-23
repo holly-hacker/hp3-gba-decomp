@@ -147,7 +147,7 @@ Room05V1Chain2:
     End
 Room05V1Chain3:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState QUEST_OBJ_FIND_TREVOR, QUEST_OBJECTIVE_INDEX
     @ "There he is!"
     @ "Let's get him and get back to..."
@@ -209,7 +209,7 @@ Room05V1Chain4:
     PlaySoundById 32
     DelayedRespawnRowAndRunChain 0, Room05V1Group13_id, 0
     QueueTileActorMove Room05V1Group13_id, 0, 0, 0, 1500, 2
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorFacing 0, 255, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group14_id, 0
     @ "Oh no! It's broken through!"
@@ -291,7 +291,7 @@ Room05V1Chain11:
     DelayedRespawnRowAndRunChain 0, Room05V1Group1_id, 0
     SetTileActorAnimState Room05V1Group1_id, 0
     PlaySoundById 32
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorFacing 0, 255, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group7_id, 0
     QueueTileActorMove Room05V1Group7_id, 0, 0, 0, 1500, 1
@@ -325,7 +325,7 @@ Room05V1Chain12:
     DespawnTileActor Room05V0Group0_id, 9
     DelayedRespawnRowAndRunChain 0, Room05V1Group1_id, 0
     SetTileActorAnimState Room05V1Group1_id, 0
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorFacing 0, 255, 0
     DelayedRespawnRowAndRunChain 0, Room05V1Group7_id, 0
     QueueTileActorMove Room05V1Group7_id, 0, 0, 0, 1500, 2
@@ -362,7 +362,7 @@ Room05V1Chain13:
     End
 Room05V1Chain14:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     QueueTileActorMove 0, 255, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     RemovePartyFollower 6
@@ -377,7 +377,7 @@ Room05V1Chain14:
     End
 Room05V1Chain15:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     QueueTileActorMove 0, 255, 0, 0, 1200, 0
     DelayedRespawnRowAndRunChain 1, 0, 0
     RemovePartyFollower 7
@@ -393,7 +393,7 @@ Room05V1Chain15:
     End
 Room05V1Chain16:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 0, 246
     SetQuestState 0, QUEST_CAMERA_Y_OFFSET
     DespawnRoomRowActors Room05V1Group28_id
@@ -409,7 +409,7 @@ Room05V1Chain17:
     SetPauseMenuLocked 1, 255, 255, 255
     PlayMusicModuleAndFlagIfChain1 9
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChain 0, Room05V1Group17_id, 0
     SetQuestState 0, 249
     StartTileActorScript 196, 23, 1, 0, 255, 0, 0, 2, 255, 255, 255
@@ -510,7 +510,7 @@ Room05V2Chain0:
     End
 Room05V2Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Job done, Professor Lupin."
     @ "Thank you, Miss Granger."
     ShowRoomDialog 139
@@ -546,7 +546,7 @@ Room05V2Chain4:
     End
 Room05V2Chain5:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Here's the chocolate, Professor!"
     @ "Well done, Mr. Weasley."
     ShowRoomDialog 138
@@ -607,7 +607,7 @@ Room05V3Chain0:
     End
 Room05V3Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Here's the chocolate, Professor!"
     @ "Well done, Mr. Weasley."
     ShowRoomDialog 138
@@ -726,6 +726,6 @@ Room05V4Chain13:
     GotoIfQuestStateCompare 250, 0, 2, Room05V4Chain9_id, Room05V4Chain12_id, 0, 0
     End
 Room05V4Chain14:
-    StartActorAnimSequence Room05V4Group1_id, 0, 0, 0, Room05V4Route0_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room05V4Group1_id, 0, 0, 0, Room05V4Route0_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room05V4End

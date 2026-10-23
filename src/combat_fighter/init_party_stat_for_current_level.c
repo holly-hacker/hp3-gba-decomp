@@ -18,5 +18,5 @@ void InitPartyStatForCurrentLevel(u32 index)
     fighter->bDefenseFactorPercent = 100;
     fighter->bMagicDefensePercent = 100;
     fighter->bStatusFlags = StatusNone;
-    fighter->nFaintedFlag = 0;
+    fighter->nTurnKey = 0;
 }

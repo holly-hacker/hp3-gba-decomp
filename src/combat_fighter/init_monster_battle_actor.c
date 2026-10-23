@@ -117,7 +117,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     fighter->stats.bLevel = MonsterTable[type].bLevel;
     fighter->wRewardGold = MonsterTable[type].wRewardGold;
     fighter->bStatusFlags = StatusNone;
-    fighter->nFaintedFlag = 0;
+    fighter->nTurnKey = 0;
     fighter->bRosterIndex = type;
     fighter->unk3E = -1;
     fighter->bSlotParam = slot;

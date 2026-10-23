@@ -179,22 +179,22 @@ Room13V1Chain0:
     End
 Room13V1Chain1:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     PlayMusicModuleAndFlagIfChain1 9
     RespawnRowAndRunChain Room13V1Group2_id, 0
     ArmChainYield 0
-    StartActorAnimSequence Room13V1Group2_id, 0, 0, 0, Room13V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group2_id, 0, 0, 0, Room13V1Route1_id, 0, 1, 0, 0, 0
     DespawnRoomRowActors Room13V1Group1_id
     End
 Room13V1Chain2:
     SetOverworldMonstersDisabled
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RespawnRowAndRunChain Room13V1Group12_id, 0
     SetQuestState QUEST_OBJ_RETURN_TO_HOGWARTS, QUEST_OBJECTIVE_INDEX
     RecruitPartyFollower 6
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room13V1Route17_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room13V1Route17_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain3:
     ArmChainYield 1
@@ -202,24 +202,24 @@ Room13V1Chain3:
     RespawnRowAndRunChain Room13V1Group4_id, 0
     RespawnRowAndRunChain Room13V1Group5_id, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room13V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room13V1Route0_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain4:
-    StartActorAnimSequence Room13V1Group3_id, 0, 0, 0, Room13V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group3_id, 0, 0, 0, Room13V1Route2_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain5:
-    StartActorAnimSequence Room13V1Group4_id, 0, 0, 0, Room13V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group4_id, 0, 0, 0, Room13V1Route3_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain6:
     ArmChainYield 1
     StartTileActorScript 88, 127, 1, 0, 255, 0, 0, 6, 255, 255, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room13V1Route5_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room13V1Group5_id, 0, 0, 0, Room13V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room13V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group5_id, 0, 0, 0, Room13V1Route4_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain7:
-    StartActorAnimSequence Room13V1Group2_id, 0, 0, 0, Room13V1Route7_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room13V1Group4_id, 0, 0, 0, Room13V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group2_id, 0, 0, 0, Room13V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group4_id, 0, 0, 0, Room13V1Route8_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain8:
     ArmChainYield 1
@@ -234,7 +234,7 @@ Room13V1Chain8:
     End
 Room13V1Chain9:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Dad?"
     ShowRoomDialog 586
     SetQuestState QUEST_OBJ_SECRET_PATH_TO_HAGRIDS_HUT, QUEST_OBJECTIVE_INDEX
@@ -242,12 +242,12 @@ Room13V1Chain9:
     End
 Room13V1Chain10:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 1, 130
     SetQuestState 2, 129
     RespawnRowAndRunChain Room13V1Group12_id, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room13V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room13V1Route9_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain11:
     ArmChainYield 1
@@ -255,7 +255,7 @@ Room13V1Chain11:
     ShowRoomDialog 595
     QueueTileActorMove Room13V1Group7_id, 1, 0, 0, 2000, 0
     ArmChainYield 0
-    StartActorAnimSequence Room13V1Group7_id, 0, 0, 0, Room13V1Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group7_id, 0, 0, 0, Room13V1Route10_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain12:
     ArmChainYield 1
@@ -271,7 +271,7 @@ Room13V1Chain12:
     ShowRoomDialog 597
     ArmChainYield 0
     QueueTileActorMove 0, 255, 0, 0, 1000, 0
-    StartActorAnimSequence Room13V1Group7_id, 0, 0, 0, Room13V1Route11_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group7_id, 0, 0, 0, Room13V1Route11_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain13:
     ArmChainYield 1
@@ -290,10 +290,10 @@ Room13V1Chain13:
     RemovePartyFollower 6
     RespawnRowAndRunChain Room13V1Group8_id, 0
     ArmChainYield 0
-    StartActorAnimSequence Room13V1Group9_id, 0, 0, 0, Room13V1Route13_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room13V1Group9_id, 1, 0, 0, Room13V1Route14_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room13V1Group9_id, 2, 0, 0, Room13V1Route15_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room13V1Group9_id, 3, 0, 0, Room13V1Route16_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group9_id, 0, 0, 0, Room13V1Route13_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group9_id, 1, 0, 0, Room13V1Route14_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group9_id, 2, 0, 0, Room13V1Route15_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room13V1Group9_id, 3, 0, 0, Room13V1Route16_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain14:
     ArmChainYield 1
@@ -305,12 +305,12 @@ Room13V1Chain14:
     PlayCutscene 14, 0, Room13V1Chain16_id
     End
 Room13V1Chain15:
-    StartActorAnimSequence 0, 255, 0, 0, Room13V1Route12_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room13V1Route12_id, 0, 1, 0, 0, 0
     QueueTileActorMove 0, 255, 0, 0, 2000, 0
     End
 Room13V1Chain16:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "What did you do?"
     @ "I just saved our lives! Listen, I'll fly Buckbeak up to the West Tower's window... You go there on foot. Maybe one of us will get there in time to rescue Sirius."
     @ "And whoever gets there first can set Sirius free! Let's go!"
@@ -335,14 +335,14 @@ Room13V1Chain18:
     End
 Room13V1Chain19:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChainFrames 5, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room13V1Route19_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room13V1Route19_id, 0, 1, 0, 0, 0
     End
 Room13V1Chain20:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 270, 215, 2, 0, 255, 0, 0, 0, 255, 255, 255
     SetTileActorFacing 0, 255, 0
     @ "Here comes Lupin! Help, Buckbeak!"

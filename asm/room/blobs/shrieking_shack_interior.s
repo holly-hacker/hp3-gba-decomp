@@ -119,13 +119,13 @@ Room43V1Chain1:
     SetTileActorAnimStateWithSpeed 0, 255
     End
 Room43V1Chain2:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RemovePartyFollower 6
     RespawnRowAndRunChain Room43V1Group2_id, 0
     SetTileActorMoveSpeed Room43V1Group2_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route0_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room43V1Group2_id, 0, 0, 0, Room43V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room43V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room43V1Group2_id, 0, 0, 0, Room43V1Route1_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain3:
     GotoIfStoryStageCompare 0, 23, Room43V1Chain13_id, 0, Room43V1Group1_id, Room43V1Group4_id
@@ -140,7 +140,7 @@ Room43V1Chain4:
     SetTileActorFacing 0, 255, 2
     ArmChainYield 0
     QueueTileActorMove Room43V1Group3_id, 0, 0, 0, 600, 0
-    StartActorAnimSequence Room43V1Group3_id, 0, 0, 0, Room43V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room43V1Group3_id, 0, 0, 0, Room43V1Route6_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain5:
     ArmChainYield 1
@@ -156,7 +156,7 @@ Room43V1Chain5:
     @ "Ah, there you are, Peter. Ready, Sirius?"
     ShowRoomDialog 574
     ArmChainYield 0
-    StartActorAnimSequence Room43V1Group3_id, 0, 0, 0, Room43V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room43V1Group3_id, 0, 0, 0, Room43V1Route3_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain6:
     ArmChainYield 1
@@ -173,7 +173,7 @@ Room43V1Chain6:
     PlayCutscene 8, 0, Room43V1Chain7_id
     End
 Room43V1Chain7:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 1
     @ "S-Sirius... R-Remus... My friends... my old friends..."
     @ "I broke out of Azkaban, not to get at you, Harry, but to seek revenge on Pettigrew. It was Pettigrew who betrayed your parents, and made it look like I had betrayed them."
@@ -188,15 +188,15 @@ Room43V1Chain7:
     ShowRoomDialog 576
     RespawnRowAndRunChain Room43V1Group4_id, 0
     ArmChainYield 0
-    StartActorAnimSequence Room43V1Group2_id, 0, 0, 0, Room43V1Route5_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room43V1Group2_id, 0, 0, 0, Room43V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room43V1Route7_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain8:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorMoveSpeed Room43V1Group3_id, 1, 2
     ArmChainYield 0
-    StartActorAnimSequence Room43V1Group3_id, 1, 0, 0, Room43V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room43V1Group3_id, 1, 0, 0, Room43V1Route2_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room43V1Group3_id, 1, 0, 0, 800, 0
     End
 Room43V1Chain9:
@@ -204,10 +204,10 @@ Room43V1Chain9:
     DespawnTileActor Room43V1Group2_id, 0
     RecruitPartyFollower 6
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room43V1Route8_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain10:
-    StartActorAnimSequence Room43V1Group3_id, 1, 0, 0, Room43V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room43V1Group3_id, 1, 0, 0, Room43V1Route4_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain11:
     ArmChainYield 1
@@ -222,10 +222,10 @@ Room43V1Chain12:
     End
 Room43V1Chain13:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
     SetQuestState QUEST_OBJ_FIND_RON, QUEST_OBJECTIVE_INDEX
-    StartActorAnimSequence 0, 255, 0, 0, Room43V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room43V1Route9_id, 0, 1, 0, 0, 0
     End
 Room43V1Chain14:
     ResetPartyLeaderSelection

@@ -2,15 +2,15 @@
 #include "area.h"
 #include "commands.h"
 
-typedef struct SetTileActorFacingAndScriptPageRecord {
+typedef struct StartTileActorTurnAroundRecord {
     u32 dwOpcode;
     u8 bTileX;
     u8 bTileY;
     u8 bFacing;
     u8 bTurnInterval;
-} SetTileActorFacingAndScriptPageRecord;
+} StartTileActorTurnAroundRecord;
 
-void RoomScriptOpSetTileActorFacingAndScriptPage(SetTileActorFacingAndScriptPageRecord *pRecord)
+void RoomScriptOpStartTileActorTurnAround(StartTileActorTurnAroundRecord *pRecord)
 {
     Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 

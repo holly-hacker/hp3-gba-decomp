@@ -212,20 +212,20 @@ Room39V1Chain15:
     DelayedRespawnRowAndRunChain 0, 0, 0
     End
 Room39V1Chain16:
-    CancelActorAnimSequence 0, 255
-    StartActorAnimSequence Room39V1Group4_id, 0, 0, 0, Room39V1Route0_id, 0, 1, 0, 0, 0
+    StopTileActor 0, 255
+    StartTileActorRouteWalk Room39V1Group4_id, 0, 0, 0, Room39V1Route0_id, 0, 1, 0, 0, 0
     SetQuestState QUEST_OBJ_SPEAK_TO_WEASLEYS, QUEST_OBJECTIVE_INDEX
     End
 Room39V1Chain17:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     StartTileActorScript 183, 128, 0, Room39V1Group5_id, 0, 0, 0, 0, 255, 255, 255
     @ "I found Crookshanks. Did you manage to find Scabbers?"
     @ "Yes, I did - no thanks to your cat."
     @ "Bad Crookshanks! Don't run away again!"
     ShowRoomDialog 57
-    StartActorAnimSequence 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room39V1Group5_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room39V1Group5_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
     DespawnTileActor Room39V1Group5_id, 0
     RemovePartyFollower 6
     RecruitPartyFollower 6
@@ -235,7 +235,7 @@ Room39V1Chain17:
     DelayedRespawnRowAndRunChainFrames 0, 0, Room39V1Chain35_id
     End
 Room39V1Chain18:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 1
     StartTileActorScript 183, 140, 0, Room39V1Group5_id, 0, 0, 0, 0, 255, 255, 255
     NoOpAlt 0xffffff0a
@@ -247,7 +247,7 @@ Room39V1Chain18:
     SetStoryStage 8
     End
 Room39V1Chain19:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 1
     @ "Scabbers, where are you?"
     ShowRoomDialog 48
@@ -277,13 +277,13 @@ Room39V1Chain24:
     End
 Room39V1Chain25:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "I found Crookshanks. Did you manage to find Scabbers?"
     @ "Yes, I did - no thanks to your cat."
     @ "Bad Crookshanks! Don't run away again!"
     ShowRoomDialog 56
-    StartActorAnimSequence 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room39V1Group4_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room39V1Group4_id, 0, 0, 0, Room39V1Route4_id, 0, 1, 0, 0, 0
     DespawnTileActor Room39V1Group4_id, 0
     RemovePartyFollower 7
     RecruitPartyFollower 7
@@ -309,13 +309,13 @@ Room39V1Chain29:
     End
 Room39V1Chain30:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChain 1, 0, 0
     QueueTileActorMove Room39V1Group2_id, 0, 0, 0, 1200, 0
     @ "Thanks!"
     ShowRoomDialog 85
     ArmChainYield 0
-    StartActorAnimSequence Room39V1Group2_id, 0, 0, 0, Room39V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room39V1Group2_id, 0, 0, 0, Room39V1Route3_id, 0, 1, 0, 0, 0
     End
 Room39V1Chain31:
     DespawnRoomRowActors Room39V1Group2_id
@@ -327,7 +327,7 @@ Room39V1Chain32:
     End
 Room39V1Chain33:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorFacing 0, 255, 6
     QueueTileActorMove Room39V1Group1_id, 0, 0, 0, 1200, 0
     PlayTileActorAnimation Room39V1Group1_id, 0, 4
@@ -345,12 +345,12 @@ Room39V1Chain34:
     ShowRoomDialog 624
     End
 Room39V1Chain35:
-    StartActorAnimSequence 0, 255, 0, 0, Room39V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room39V1Route1_id, 0, 1, 0, 0, 0
     SetQuestState QUEST_OBJ_GREET_WEASLEYS, QUEST_OBJECTIVE_INDEX
     End
 Room39V1Chain36:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "This door's locked!"
     ShowRoomDialog 81
     @ "I can use the Alohomora Spell to unlock it."
@@ -359,7 +359,7 @@ Room39V1Chain36:
     End
 Room39V1Chain37:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "These stairs are broken!"
     ShowRoomDialog 78
     @ "I can fix them with the Reparo Spell."
@@ -368,7 +368,7 @@ Room39V1Chain37:
     End
 Room39V1Chain38:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "These stairs are broken!"
     ShowRoomDialog 78
     @ "I think we should look for another way in."
@@ -377,7 +377,7 @@ Room39V1Chain38:
     End
 Room39V1Chain39:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "This door's locked!"
     ShowRoomDialog 81
     @ "I think we should look for another way in."

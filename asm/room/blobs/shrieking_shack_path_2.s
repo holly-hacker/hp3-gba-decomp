@@ -224,7 +224,7 @@ Room45V1Chain9:
     End
 Room45V1Chain10:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     QueueTileActorMove Room45V0Group0_id, 1, 0, 0, 1610, 0
     DelayedRespawnRowAndRunChainFrames 48, 0, 0
     DelayedRespawnRowAndRunChain 0, 0, Room45V1Chain1_id
@@ -241,7 +241,7 @@ Room45V1Chain11:
     StartBattle 11, 0, Room45V1Chain44_id
     End
 Room45V1Chain12:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 2, 231
     SetQuestState 2, 224
     DespawnRoomRowActors Room45V1Group21_id
@@ -251,7 +251,7 @@ Room45V1Chain12:
     DelayedRespawnRowAndRunChain 0, 0, Room45V1Chain73_id
     End
 Room45V1Chain13:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorAnimState Room45V1Group0_id, 8
     SetTileActorAnimState Room45V1Group0_id, 7
     SetQuestState 2, 231
@@ -263,7 +263,7 @@ Room45V1Chain13:
     DelayedRespawnRowAndRunChain 0, Room45V1Group5_id, 0
     ArmChainYield 1
     QueueTileActorMove Room45V1Group5_id, 0, 0, 0, 1200, 0
-    StartActorAnimSequence Room45V1Group5_id, 0, 0, 33, Room45V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room45V1Group5_id, 0, 0, 33, Room45V1Route1_id, 0, 1, 0, 0, 0
     @ "Any luck?"
     @ "No. You?"
     @ "I'm afraid not. They must have gone this way."
@@ -311,7 +311,7 @@ Room45V1Chain24:
     DespawnTileActor Room45V0Group0_id, 0
     End
 Room45V1Chain25:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 1, 224
     ArmChainYield 1
     StartTileActorScript 567, 120, 0, 0, 255, 0, 0, 4, 255, 255, 255
@@ -352,17 +352,17 @@ Room45V1Chain28:
     SetTileActorFacing Room45V1Group4_id, 0, 6
     End
 Room45V1Chain29:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group18_id, 0
     DelayedRespawnRowAndRunChain 1, 0, Room45V1Chain65_id
     End
 Room45V1Chain30:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChainFrames 0, Room45V1Group19_id, 0
     DelayedRespawnRowAndRunChain 1, 0, Room45V1Chain66_id
     End
 Room45V1Chain31:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     QueueTileActorMove Room45V0Group0_id, 3, 0, 60, 1500, 30
     End
 Room45V1Chain32:

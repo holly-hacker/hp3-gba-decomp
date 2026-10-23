@@ -139,11 +139,11 @@ Room28V1Chain1:
     End
 Room28V1Chain2:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorMoveSpeed 0, 255, 2
     SetTileActorMoveSpeed Room28V0Group0_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room28V1Route8_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain3:
     ArmChainYield 1
@@ -156,7 +156,7 @@ Room28V1Chain3:
     ShowRoomDialog 506
     SetTileActorMoveSpeed Room28V1Group5_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence Room28V1Group5_id, 0, 0, 0, Room28V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room28V1Group5_id, 0, 0, 0, Room28V1Route1_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain4:
     ArmChainYield 1
@@ -165,10 +165,10 @@ Room28V1Chain4:
     SetTileActorMoveSpeed Room28V0Group0_id, 0, 2
     QueueTileActorMove 0, 255, 0, 0, 1000, 0
     ArmChainYield 0
-    StartActorAnimSequence Room28V1Group5_id, 1, 0, 0, Room28V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room28V1Group5_id, 1, 0, 0, Room28V1Route2_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain5:
-    StartActorAnimSequence Room28V1Group5_id, 0, 0, 0, Room28V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room28V1Group5_id, 0, 0, 0, Room28V1Route3_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain6:
     ArmChainYield 1
@@ -188,9 +188,9 @@ Room28V1Chain7:
     End
 Room28V1Chain8:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room28V1Route4_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain9:
     ArmChainYield 1
@@ -209,17 +209,17 @@ Room28V1Chain10:
     DespawnRoomRowActors Room28V1Group3_id
     DespawnRoomRowActors Room28V1Group2_id
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route11_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room28V1Route11_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain11:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetQuestState 1, QUEST_ALT_PRESENTATION
     SetTileActorAnimState Room28V0Group0_id, 1
     @ "AAARRRGGGHHH! NOOOOOOOOOOOO!"
     ShowRoomDialog 505
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room28V1Route0_id, 0, 1, 0, 0, 0
     QueueTileActorMove Room28V1Group5_id, 1, 0, 0, 2000, 0
     End
 Room28V1Chain12:
@@ -229,14 +229,14 @@ Room28V1Chain12:
     ShowRoomDialog 526
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room28V1Route9_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain13:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RespawnRowAndRunChain Room28V1Group4_id, 0
     RespawnRowAndRunChain Room28V1Group3_id, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route12_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room28V1Route12_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain14:
     ArmChainYield 1
@@ -252,10 +252,10 @@ Room28V1Chain14:
     End
 Room28V1Chain15:
     ArmChainYield 0
-    StartActorAnimSequence Room28V1Group3_id, 0, 0, 0, Room28V1Route5_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room28V1Group3_id, 2, 0, 0, Room28V1Route7_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room28V1Group3_id, 1, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room28V1Group3_id, 3, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room28V1Group3_id, 0, 0, 0, Room28V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room28V1Group3_id, 2, 0, 0, Room28V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room28V1Group3_id, 1, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room28V1Group3_id, 3, 0, 0, Room28V1Route6_id, 0, 1, 0, 0, 0
     End
 Room28V1Chain16:
     ArmChainYield 1
@@ -272,12 +272,12 @@ Room28V1Chain18:
     End
 Room28V1Chain19:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorFacing 0, 255, 4
     @ "It's a black dog!"
     ShowRoomDialog 529
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room28V1Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room28V1Route10_id, 0, 1, 0, 0, 0
     End
     EndSubBlock Room28V1End

@@ -21,7 +21,7 @@ void TickMonsterActionState(Actor *actor)
     if (actor->dwFlags & ActorFlagPendingDestroy)
         return;
 
-    UpdateMonsterScreenShake(actor);
+    FlipMonsterForIntroSweep(actor);
 
     switch (actor->bActionState) {
     case 0:
@@ -138,7 +138,7 @@ void TickMonsterActionState(Actor *actor)
                     candidate = (BattleFighter *)(roll * sizeof(BattleFighter) + (u32)fighters);
                 } while (candidate->bFighterType == Enemy
                          || candidate->pActor == 0
-                         || (u16)candidate->nFaintedFlag == 0xffff);
+                         || (u16)candidate->nTurnKey == 0xffff);
                 active->bSelectedActionIndex = roll;
             }
 
@@ -336,7 +336,7 @@ void TickMonsterActionState(Actor *actor)
                     }
                 }
                 if (g_pFightState->dwBattleResultPending == 0)
-                    ShowBattleMessage(FaintResult, 0, 0);
+                    ShowBattleMessage(HitResults, 0, 0);
             }
             if (actor->anim.param.bEventMarker != 0xff || actor->scriptState.bytes.bAttackOutcomeState != 3)
                 goto skipPhase0;

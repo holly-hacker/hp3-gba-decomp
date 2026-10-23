@@ -71,7 +71,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
             fighter->bMagicDefensePercent = g_aPartyMasterStats[type].bMagicDefensePercent;
             fighter->stats.wRewardXp = g_aPartyMasterStats[type].stats.wRewardXp;
             fighter->bStatusFlags = StatusNone;
-            fighter->nFaintedFlag = 0;
+            fighter->nTurnKey = 0;
             fighter->unk3E |= 0xFF;
         }
         else
@@ -90,7 +90,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
             fighter->bMagicDefensePercent = 100;
             fighter->stats.wRewardXp = 0;
             fighter->bStatusFlags = StatusNone;
-            fighter->nFaintedFlag = 0;
+            fighter->nTurnKey = 0;
             fighter->unk3E |= 0xFF;
 
             // Back up into slot 3, past the three party entries; via a
@@ -111,7 +111,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
         pActor->bActionFlags = hp;  // hp == 0 on this path; keeps hp in sb
         pActor->dwFlags &= ~ActorFlagHasAnimation;
         SnapActorPosition(pActor, (0xD4 - slot * 9 * 4) << 16, slot * 0x40000 + 0x6E0000);
-        fighter->nFaintedFlag = -1;
+        fighter->nTurnKey = -1;
     }
     else
     {

@@ -4,7 +4,7 @@
 #include "commands.h"
 #include "move.h"
 
-typedef struct StartActorAnimSequenceRecord {
+typedef struct StartTileActorRouteWalkRecord {
     u32 dwOpcode;
     u8 bX;
     u8 bY;
@@ -12,13 +12,13 @@ typedef struct StartActorAnimSequenceRecord {
     u8 bFinishChainRow;
     u8 bRoute;
     u8 bWaypoint;
-    u8 bActionSelector;
+    u8 bWalkMode;
     u8 bWaitTicks;
     u8 bNoPlatePress;
     u8 bUnused6B;
-} StartActorAnimSequenceRecord;
+} StartTileActorRouteWalkRecord;
 
-void RoomScriptOpStartActorAnimSequence(StartActorAnimSequenceRecord *pRecord)
+void RoomScriptOpStartTileActorRouteWalk(StartTileActorRouteWalkRecord *pRecord)
 {
     Actor *pActor;
     u8 actionState = 0;
@@ -35,7 +35,7 @@ void RoomScriptOpStartActorAnimSequence(StartActorAnimSequenceRecord *pRecord)
     if (g_dwRoomScriptRunState == 2)
         pActor->dwFlags |= ActorFlagRoomScriptYield;
 
-    switch (pRecord->bActionSelector)
+    switch (pRecord->bWalkMode)
     {
     case 0:
         actionState = 7;

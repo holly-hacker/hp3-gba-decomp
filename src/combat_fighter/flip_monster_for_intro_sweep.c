@@ -6,7 +6,7 @@
 // Mirrors the battle screen shake on a monster and, for monsters 45-47, its
 // shadow: flipped for the first half of the shake, unflipped for the second,
 // and restored on its last frame.
-void UpdateMonsterScreenShake(Actor *actor)
+void FlipMonsterForIntroSweep(Actor *actor)
 {
     if (g_pFightState->bIntroSweepTimer == 0)
         return;

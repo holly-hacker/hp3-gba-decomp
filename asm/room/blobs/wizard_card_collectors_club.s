@@ -133,7 +133,7 @@ Room37V1Chain20:
     ShowPartyLevelUpMessage 1
     End
 Room37V1Chain21:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     GotoIfAllQuestFlagsSet Room37V1Chain34_id, Room37V1Chain24_id, 0, 0
     End
 Room37V1Chain22:

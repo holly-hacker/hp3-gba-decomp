@@ -91,7 +91,7 @@ Room02V1Chain1:
     End
 Room02V1Chain2:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     GrantPartyExperience 10, 65535
     PlayRoomSoundEffect 24
     DelayedRespawnRowAndRunChain 0, Room02V1Group1_id, 0
@@ -113,6 +113,6 @@ Room02V1Chain5:
     SetQuestState 17, 14
     End
 Room02V1Chain6:
-    StartActorAnimSequence Room02V1Group2_id, 1, 0, 0, Room02V1Route0_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room02V1Group2_id, 1, 0, 0, Room02V1Route0_id, 0, 0, 0, 0, 0
     End
     EndSubBlock Room02V1End

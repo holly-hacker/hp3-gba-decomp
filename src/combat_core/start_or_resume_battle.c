@@ -19,7 +19,7 @@ void StartOrResumeBattle(void)
         if (g_PrevGameModeStackContext.dwCurrentGameMode != HelpTopicScreen) {
             g_pFightState->wBattleStateTimer = 0;
             g_pFightState->bActiveFighterIndex = 0xFF;
-            g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[0].nFaintedFlag;
+            g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[0].nTurnKey;
             i = 0;
             g_pFightState->bMenuFighterIndex = 0xFF;
 

@@ -229,10 +229,10 @@ Room03V1Chain10:
     End
 Room03V1Chain11:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ResetPartyLeaderSelection
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room03V1Route0_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain12:
     RespawnRowAndRunChain Room03V1Group2_id, 0
@@ -251,13 +251,13 @@ Room03V1Chain13:
     SetTileActorMoveSpeed Room03V1Group7_id, 3, 2
     SetTileActorMoveSpeed Room03V1Group7_id, 5, 2
     ArmChainYield 0
-    StartActorAnimSequence Room03V1Group7_id, 0, 0, 0, Room03V1Route2_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room03V1Group7_id, 1, 0, 0, Room03V1Route2_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room03V1Group7_id, 2, 0, 0, Room03V1Route2_id, 2, 1, 0, 0, 0
-    StartActorAnimSequence Room03V1Group7_id, 4, 0, 0, Room03V1Route3_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room03V1Group7_id, 3, 0, 0, Room03V1Route3_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room03V1Group7_id, 5, 0, 0, Room03V1Route5_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group7_id, 0, 0, 0, Room03V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group7_id, 1, 0, 0, Room03V1Route2_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group7_id, 2, 0, 0, Room03V1Route2_id, 2, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group7_id, 4, 0, 0, Room03V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group7_id, 3, 0, 0, Room03V1Route3_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group7_id, 5, 0, 0, Room03V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room03V1Route4_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain14:
     ArmChainYield 1
@@ -285,7 +285,7 @@ Room03V1Chain15:
     RespawnRowAndRunChain Room03V1Group2_id, 0
     DespawnTileActor Room03V1Group6_id, 1
     ArmChainYield 0
-    StartActorAnimSequence Room03V1Group4_id, 0, 0, 0, Room03V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group4_id, 0, 0, 0, Room03V1Route1_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain16:
     ArmChainYield 1
@@ -293,7 +293,7 @@ Room03V1Chain16:
     RecruitPartyFollower 6
     DespawnTileActor Room03V1Group2_id, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room03V1Route6_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain17:
     ArmChainYield 1
@@ -307,11 +307,11 @@ Room03V1Chain18:
     End
 Room03V1Chain19:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RespawnRowAndRunChain Room03V1Group7_id, 0
     RespawnRowAndRunChain Room03V1Group3_id, 0
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room03V1Route8_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain20:
     ArmChainYield 1
@@ -321,7 +321,7 @@ Room03V1Chain20:
     StartTileActorScript 310, 18, 2, 0, 255, 0, 0, 0, 255, 255, 255
     SetTileActorMoveSpeed Room03V1Group2_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence Room03V1Group2_id, 0, 0, 0, Room03V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group2_id, 0, 0, 0, Room03V1Route7_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain21:
     SetOverworldMonstersDisabled
@@ -341,14 +341,14 @@ Room03V1Chain23:
     GrantPartySpell 5
     ShowSpellLearnedMessage 7, 1
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room03V1Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room03V1Route10_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain24:
     ArmChainYield 1
     RespawnRowAndRunChain Room03V1Group8_id, 0
     RemovePartyFollower 6
     ArmChainYield 0
-    StartActorAnimSequence Room03V1Group8_id, 0, 0, 0, Room03V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room03V1Group8_id, 0, 0, 0, Room03V1Route9_id, 0, 1, 0, 0, 0
     End
 Room03V1Chain25:
     ClearOverworldMonstersDisabled

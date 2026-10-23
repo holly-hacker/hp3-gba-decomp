@@ -199,8 +199,8 @@ Room20V1Chain15:
     ShowRoomDialog 626
     End
 Room20V1Chain16:
-    StartActorAnimSequence Room20V1Group6_id, 1, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group6_id, 0, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group6_id, 1, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group6_id, 0, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain17:
     @ "The Defense Against the Dark Arts class is on the third floor."
@@ -211,8 +211,8 @@ Room20V1Chain18:
     ShowRoomDialog 333
     End
 Room20V1Chain19:
-    StartActorAnimSequence Room20V1Group8_id, 1, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group8_id, 0, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group8_id, 1, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group8_id, 0, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain20:
     @ "I'd love a new broom for Christmas. I still have my sister's old one!"
@@ -287,46 +287,46 @@ Room20V1Chain37:
     ShowRoomDialog 366
     End
 Room20V1Chain38:
-    StartActorAnimSequence Room20V1Group7_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group7_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group7_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group7_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain39:
-    StartActorAnimSequence Room20V1Group1_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group1_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group1_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group1_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain40:
-    StartActorAnimSequence Room20V1Group2_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group2_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group2_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group2_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain41:
-    StartActorAnimSequence Room20V1Group3_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group3_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group3_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group3_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain42:
-    StartActorAnimSequence Room20V1Group4_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group4_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group4_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group4_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain43:
-    StartActorAnimSequence Room20V1Group5_id, 3, 0, 0, Room20V1Route0_id, 0, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group5_id, 4, 0, 0, Room20V1Route1_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group5_id, 3, 0, 0, Room20V1Route0_id, 0, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group5_id, 4, 0, 0, Room20V1Route1_id, 0, 0, 0, 0, 0
     End
 Room20V1Chain44:
-    StartActorAnimSequence Room20V1Group9_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group9_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group9_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group9_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain45:
-    StartActorAnimSequence Room20V1Group10_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group10_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group10_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group10_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain46:
-    StartActorAnimSequence Room20V1Group11_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group11_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
     End
 Room20V1Chain47:
-    StartActorAnimSequence Room20V1Group12_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group12_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group12_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group12_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
 Room20V1Chain48:
-    StartActorAnimSequence Room20V1Group13_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
-    StartActorAnimSequence Room20V1Group13_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group13_id, 0, 0, 0, Room20V1Route0_id, 1, 0, 0, 0, 0
+    StartTileActorRouteWalk Room20V1Group13_id, 1, 0, 0, Room20V1Route1_id, 2, 0, 0, 0, 0
     End
     EndSubBlock Room20V1End

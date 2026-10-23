@@ -167,7 +167,7 @@ Room01V1Chain0:
     GotoIfStoryStageCompare 2, 4, 0, 0, Room01V1Group17_id, 0
     End
 Room01V1Chain1:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RespawnRowAndRunChain Room01V1Group1_id, 0
     DelayedRespawnRowAndRunChainFrames 10, 0, 0
     SetTileActorAnimStateWithSpeed 0, 255
@@ -186,7 +186,7 @@ Room01V1Chain2:
     ShowRoomDialog 295
     SetTileActorMoveSpeed Room01V1Group2_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence Room01V1Group2_id, 0, 0, 0, Room01V1Route0_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group2_id, 0, 0, 0, Room01V1Route0_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain3:
     @ "I wonder why Professor Snape appears to dislike Gryffindors so much?"
@@ -210,7 +210,7 @@ Room01V1Chain7:
     End
 Room01V1Chain8:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RemovePartyFollower 5
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group6_id, 0
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group9_id, 0
@@ -227,7 +227,7 @@ Room01V1Chain8:
     End
 Room01V1Chain9:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     RemovePartyFollower 7
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group7_id, 0
     DelayedRespawnRowAndRunChainFrames 1, Room01V1Group10_id, 0
@@ -256,7 +256,7 @@ Room01V1Chain12:
     ShowRoomDialog 294
     End
 Room01V1Chain13:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 1
     ClearTileActorFlagBit 0, 255, 9
     StartTileActorScript 122, 115, 1, 0, 255, 0, 0, 0, 255, 255, 255
@@ -274,7 +274,7 @@ Room01V1Chain13:
     InvokeChainIfEnabled 0, Room01V1Chain2_id
     End
 Room01V1Chain14:
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     ArmChainYield 1
     ClearTileActorFlagBit 0, 255, 9
     StartTileActorScript 239, 121, 1, 0, 255, 0, 0, 0, 255, 255, 255
@@ -296,10 +296,10 @@ Room01V1Chain15:
     SetTileActorMoveSpeed Room01V1Group1_id, 8, 3
     DelayedRespawnRowAndRunChain 1, 0, 0
     ArmChainYield 0
-    StartActorAnimSequence Room01V1Group1_id, 8, 0, 0, Room01V1Route1_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group1_id, 8, 0, 0, Room01V1Route1_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain16:
-    StartActorAnimSequence Room01V1Group2_id, 0, 0, 0, Room01V1Route2_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group2_id, 0, 0, 0, Room01V1Route2_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain17:
     GotoIfQuestStateCompare 224, 0, 0, Room01V1Chain1_id, 0, Room01V1Group8_id, 0
@@ -323,7 +323,7 @@ Room01V1Chain20:
     End
 Room01V1Chain21:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChainFrames 5, 0, 0
     GotoIfQuestStateCompare 231, 4, 4, Room01V1Chain25_id, Room01V1Chain27_id, 0, 0
     End
@@ -332,7 +332,7 @@ Room01V1Chain22:
     End
 Room01V1Chain23:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     GotoIfQuestStateCompare 231, 4, 4, Room01V1Chain24_id, Room01V1Chain26_id, 0, 0
     End
 Room01V1Chain24:
@@ -426,29 +426,29 @@ Room01V1Chain30:
     End
 Room01V1Chain31:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     SetTileActorMoveSpeed Room01V1Group16_id, 0, 2
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route3_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route13_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room01V1Route3_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group16_id, 0, 0, 0, Room01V1Route13_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain32:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Do not think of this as an opportunity to avoid the lesson, Weasley. Tardiness will be punished."
     @ "Yes, Professor."
     ShowRoomDialog 319
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain33:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     @ "Do not think of this as an opportunity to avoid the lesson, Potter."
     @ "Yes, Professor."
     ShowRoomDialog 320
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room01V1Route4_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain34:
     SetTileActorAnimStateWithSpeed 0, 255
@@ -459,25 +459,25 @@ Room01V1Chain35:
     ReturnToOverworld 2, 0
     End
 Room01V1Chain36:
-    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route5_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room01V1Route5_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain37:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
     SetTileActorFacing 0, 255, 4
     ArmChainYield 0
-    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group12_id, 0, 0, 0, Room01V1Route12_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group12_id, 0, 0, 0, Room01V1Route12_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain38:
     ArmChainYield 1
-    CancelActorAnimSequence 0, 255
+    StopTileActor 0, 255
     DelayedRespawnRowAndRunChainFrames 1, 0, 0
     SetTileActorFacing 0, 255, 4
     ArmChainYield 0
-    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group13_id, 0, 0, 0, Room01V1Route6_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group16_id, 0, 0, 0, Room01V1Route7_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group13_id, 0, 0, 0, Room01V1Route6_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain39:
     ArmChainYield 1
@@ -518,13 +518,13 @@ Room01V1Chain42:
     End
 Room01V1Chain43:
     ArmChainYield 0
-    StartActorAnimSequence 0, 255, 0, 0, Room01V1Route8_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group1_id, 2, 0, 0, Room01V1Route9_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group1_id, 6, 0, 0, Room01V1Route9_id, 3, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group1_id, 3, 0, 0, Room01V1Route9_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group1_id, 4, 0, 0, Room01V1Route10_id, 0, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group1_id, 7, 0, 0, Room01V1Route10_id, 1, 1, 0, 0, 0
-    StartActorAnimSequence Room01V1Group1_id, 8, 0, 0, Room01V1Route11_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk 0, 255, 0, 0, Room01V1Route8_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group1_id, 2, 0, 0, Room01V1Route9_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group1_id, 6, 0, 0, Room01V1Route9_id, 3, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group1_id, 3, 0, 0, Room01V1Route9_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group1_id, 4, 0, 0, Room01V1Route10_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group1_id, 7, 0, 0, Room01V1Route10_id, 1, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group1_id, 8, 0, 0, Room01V1Route11_id, 0, 1, 0, 0, 0
     End
 Room01V1Chain44:
     @ "Good evening, Sirius. How I hoped I would be the one to catch you¸"
@@ -539,6 +539,6 @@ Room01V1Chain46:
     ShowRoomDialog 346
     End
 Room01V1Chain47:
-    StartActorAnimSequence Room01V1Group16_id, 0, 0, 0, Room01V1Route14_id, 0, 1, 0, 0, 0
+    StartTileActorRouteWalk Room01V1Group16_id, 0, 0, 0, Room01V1Route14_id, 0, 1, 0, 0, 0
     End
     EndSubBlock Room01V1End

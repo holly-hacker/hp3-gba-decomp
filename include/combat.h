@@ -67,10 +67,10 @@ typedef struct BattleFighter {
     /*0x3C*/ u8 bSpellId;
     /*0x3D*/ u8 bSpellLevel;
     /*0x3E*/ u8 unk3E;
-    // -1 when fainted (wHp == 0); 0 while alive; BuildTurnOrder also reuses
-    // this as scratch space, temporarily overwriting it with a nonzero
-    // "already placed in turn order" marker during its sort.
-    /*0x40*/ s16 nFaintedFlag;
+    // bTurnKeyStep * (turn position + 2) once BuildTurnOrder or
+    // PruneFaintedAndRebuildTurnOrder places the fighter; 0 while unplaced,
+    // -1 when fainted. Only zero, nonzero and -1 are tested.
+    /*0x40*/ s16 nTurnKey;
     /*0x42*/ u8 bStatusFlags;
     /*0x43*/ u8 bPoisonDamage;
     /*0x44*/ u8 bParalysisEscapeChance;
@@ -147,7 +147,7 @@ typedef struct FightState {
     /*0x1062*/ u8 bSavedBattleState;         // bBattleState stashed across BattleStateMessage, restored after
     /*0x1064*/ u32 dwStateJustEntered;       // one-shot flag consumed by each state's own tick, set whenever bBattleState changes
     /*0x1068*/ u16 wBattleStateTimer;        // generic per-state countdown, meaning is state-specific
-    /*0x106A*/ u16 wNextFighterTurnKey;  // nFaintedFlag of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder; never read
+    /*0x106A*/ u16 wNextFighterTurnKey;  // nTurnKey of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder; never read
     /*0x106C*/ u8 bActiveFighterIndex;
     /*0x106D*/ u8 bMenuFighterIndex;
     /*0x106E*/ u8 bUnused;     // zeroed by InitializeBattle on a fresh battle, never read
@@ -181,7 +181,7 @@ typedef struct FightState {
     /*0x14A8*/ u8 bPendingStatusMessageVariant;  // AttackResult line to add (3 poisoned, 4 paralyzed);
                                                   // NO_PENDING_STATUS_MESSAGE_VARIANT for none
     // One entry per target of an attack that hits several, printed by
-    // ShowBattleMessage(FaintResult).
+    // ShowBattleMessage(HitResults).
     /*0x14AC*/ struct {
         u16 wDamage;      // above 999 adds "Critical hit!"
         u8 bTargetKind;   // the target's wActorType: FighterType, or 4 + monster id
