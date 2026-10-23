@@ -51,6 +51,17 @@ typedef enum {
     ActorFlagExtraOamPass             = 0x80000000, // TickActorList's extra UpdateActorOamCells pass
 } ActorFlags;
 
+// Actor.bTerrainBlockResponse: what RespondToTerrain does when the actor runs into
+// blocking terrain.
+typedef enum {
+    TerrainBlockNone = 0,       // nothing
+    TerrainBlockStop = 1,       // undoes the move and sets action sub-state 2
+    TerrainBlockReverse = 2,    // ReverseActorDirection; no actor uses it
+    TerrainBlockIgnore = 3,     // nothing; no actor uses it
+    TerrainBlockEndFlight = 4,  // undoes the move and sets action sub-state 5 (field spell effects)
+    TerrainBlockSlide = 5,      // undoes the move and tries TrySlideAlongSlope, else stops
+} TerrainBlockResponse;
+
 // Actor.bDrawFlags. With neither tile-sharing bit set, the actor owns
 // its VRAM tiles; otherwise they are refcounted in its actor pool aux record
 // (see ReleaseActorOffscreenVramTiles).
@@ -232,12 +243,11 @@ typedef struct ActorAnimState {
     u8 bLastAnimFrameValue; // 0x03, current cycling frame index for non-scripted (cursor-less)
                              // animations; see TickActorAnimation
     union {
-        u8 bEnemyAttackPhase_candidate;  // TickFighterAttackAnimState_candidate's own
-                             // multi-step sentinel: 0xff idle, 0/2/3/4 successive phases
-                             // -- real compares it unsigned against 0xff, not as a signed -1
+        u8 bEventMarker;     // last ANIM_EVENT marker; TickFighterAttackAnimState_candidate
+                             // also uses 0xff as its idle value and 0 to restart
         u16 wOamStripCount;  // copies of oam UpdateActorOamCells queues, each 32 pixels
                              // right of the last, while bForceOnscreen_candidate is set
-    } unk_DC;               // 0x04, agbcc rounds the union to 4 bytes (-> 0x08)
+    } param;                // 0x04, agbcc rounds the union to 4 bytes (-> 0x08)
     ActorAssetRecord *pAnimTable;  // 0x08, set by SetActorAssetRecord; its pFrameData
                              // holds the animation frames
     u8 *pAnimFrameCursor;   // 0x0C
@@ -450,8 +460,7 @@ typedef struct Actor {
                             // Spongify pad move ends
     u8 bPadFinalFacing;     // 0x7A, action state 0x11
     u8 pad_7B[0x01];        // -> 0x7C
-    u8 bUnk_0x7C;           // 0x7C, set to 5 by AllocActorOfType, zeroed by
-                             // InitPlayerBattleActor_candidate
+    u8 bTerrainBlockResponse;  // 0x7C, TerrainBlockResponse
     u8 bTerrainType;        // 0x7D, collision type under the actor, set by RespondToTerrain
     u32 dwStateTimer;       // 0x80
     union __attribute__((packed)) {
@@ -629,21 +638,20 @@ extern ActorPoolAuxRecord *g_pActorPoolAuxBuffer;
 extern u32 g_dwActorDepthSortEnabled;
 extern void SetActorDepthSortEnabled(u32 enabled);
 // Rounding bias for WriteActorOamCells' scaled cell offsets; always 0.
-extern u32 g_dwUnk03001DC4;
+extern u32 g_dwOamScaleRoundBias;
 // Set to 1 by every TickActiveActors call and never cleared, so it is 0
 // only until the active list's first tick. FreeActor releases the actor's
 // shared VRAM tile allocation (ReleaseActorOffscreenVramTiles) only when it
 // is 1; those allocations are made by UpdateActorSpriteFrame during a tick.
 extern u32 g_dwActorListTicked_candidate;
 
-// pHead/pUnk4 are adjacent words (0x030015B0/0x030015B4) -- FreeActor loads
-// the base address once and reaches pUnk4 through it at +4, so this stays
+// pHead/pTail are adjacent words (0x030015B0/0x030015B4) -- FreeActor loads
+// the base address once and reaches pTail through it at +4, so this stays
 // one struct rather than two independent globals (see ActorPoolState for
 // the same pattern).
 typedef struct ActiveActorListState {
     ListNode *pHead;  // actors join it via AllocObjectFromFreeList and List_MoveToHead
-    ListNode *pUnk4;  // FreeActor advances this to the freed actor's pPrev when
-                       // it points at that actor. Not enough evidence yet for a real name.
+    ListNode *pTail;  // oldest actor; TickActorList usually ticks from here via pPrev
 } ActiveActorListState;
 extern ActiveActorListState g_ActiveActorListState;
 

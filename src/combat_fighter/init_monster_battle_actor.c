@@ -23,7 +23,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     pActor = AllocDefaultActor();
     actorType = type + 4;
     pActor->wActorType = actorType;
-    pActor->bUnk_0x7C = 0;
+    pActor->bTerrainBlockResponse = TerrainBlockNone;
 
     // Slot anchor in pixels, stored 16.16; the move target reuses X + 24.
     xBase = slot * 36;
@@ -72,7 +72,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     {
         pShadowActor = AllocDefaultActor();
         pShadowActor->wActorType = actorType;
-        pShadowActor->bUnk_0x7C = 0;
+        pShadowActor->bTerrainBlockResponse = TerrainBlockNone;
 
         SetActorOrbitY(pShadowActor, 0, 0x400, -0xC);
 

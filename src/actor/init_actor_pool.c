@@ -21,5 +21,5 @@ void InitActorPool(void)
     bios_CPUSet(CheckActorCollisions, CheckActorCollisionsIwram, 0x400007D);
 
     g_dwActorDepthSortEnabled = 1;
-    g_dwUnk03001DC4 = 0;
+    g_dwOamScaleRoundBias = 0;
 }

@@ -30,6 +30,6 @@
 // Continues at the stream's command `index` (counted in 2-byte commands from
 // the base SetActorAnimData was given).
 #define ANIM_JUMP(index)            0xFE, (index)
-// Sets ActorFlagSpecialMoveTrigger and stores `marker` in Actor.unk_DC for
+// Sets ActorFlagSpecialMoveTrigger and stores `marker` in anim.param.bEventMarker for
 // one tick.
 #define ANIM_EVENT(marker)          0xFF, (marker)

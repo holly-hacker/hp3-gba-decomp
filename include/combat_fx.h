@@ -292,7 +292,7 @@ enum BattleStatusEffect {
 #define BS_UnmuteMusic() BSOP_UnmuteMusic
 // (frames): waits `frames` ticks, then resumes.
 #define BS_WaitFrames(a) BSOP_WaitFrames, (a)
-// Waits until anim.unk_DC.bEnemyAttackPhase_candidate reaches its current value + 1, or
+// Waits until anim.param.bEventMarker reaches its current value + 1, or
 // ActorFlagActionAnimDone is set.
 #define BS_WaitForCounter() BSOP_WaitForCounter
 // Waits at least one tick, until the actor's wMoveDuration is 0.

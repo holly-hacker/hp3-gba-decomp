@@ -67,9 +67,9 @@ void TickActor(Actor *actor, u32 mode)
             == (ActorFlagHasSpriteCells | ActorFlagVisible))
             g_apSpriteFrameQueue[g_bSpriteFrameQueueCount++] = actor;
 
-        if (g_dwUnk03003234 != 0)
+        if (g_dwIceStepSoundPending != 0)
         {
-            g_dwUnk03003234 = 0;
+            g_dwIceStepSoundPending = 0;
             if (actor->pos.x != actor->posPrev.x || actor->pos.y != actor->posPrev.y)
                 PlaySoundById(0x47);
         }

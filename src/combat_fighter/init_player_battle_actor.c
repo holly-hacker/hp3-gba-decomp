@@ -20,7 +20,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
 
     pActor = AllocDefaultActor();
     pActor->wActorType = type;
-    pActor->bUnk_0x7C = 0;
+    pActor->bTerrainBlockResponse = TerrainBlockNone;
 
     pActor->oam.priority = 1;
     posY = slot * 0x40000 + 0x6E0000;

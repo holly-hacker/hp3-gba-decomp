@@ -20,7 +20,7 @@ void TickGlaciusEffect(Actor *effect)
     {
     case 0:
         effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
-        effect->bUnk_0x7C = 4;
+        effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->dwStateTimer = 45;
         SetActorActionSubState(effect, 3);
         emitter = AllocParticleEmitter((const ObjPalette *)gGlaciusEffectPalette, 2, 4);

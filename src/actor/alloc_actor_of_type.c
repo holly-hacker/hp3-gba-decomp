@@ -7,7 +7,7 @@ Actor *AllocActorOfType(s32 type)
 
     if (actor != NULL) {
         actor->wActorType = type;
-        actor->bUnk_0x7C = 5;
+        actor->bTerrainBlockResponse = TerrainBlockSlide;
     }
     return actor;
 }

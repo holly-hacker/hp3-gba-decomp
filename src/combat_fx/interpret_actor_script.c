@@ -93,7 +93,7 @@ void InterpretActorScript(Actor *actor)
             actor->pfnTick = WaitFramesTick;
             return;
         case BSOP_WaitForCounter:
-            actor->wActionVariant = actor->anim.unk_DC.bEnemyAttackPhase_candidate + 1;
+            actor->wActionVariant = actor->anim.param.bEventMarker + 1;
             actor->pfnTick = WaitForCounterTick;
             return;
         case BSOP_WaitForFieldClear:

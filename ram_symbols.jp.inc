@@ -31,7 +31,7 @@
 .set g_ActorPoolState,              0x03001C08
 .set g_pActorPoolAuxBuffer,         0x03001DBC
 .set g_dwActorListTicked_candidate, 0x03001DC0
-.set g_dwUnk03001DC4,                0x03001DC4
+.set g_dwOamScaleRoundBias,                0x03001DC4
 .set g_ReceivedItemGfx,              0x03001DC8
 
 @ --- include/area.h ---
@@ -226,7 +226,7 @@
 
 @ --- include/game_state.h ---
 .set g_saveStateBlock,                                 0x030031E0
-.set g_dwUnk03003234,                                  0x03003294
+.set g_dwIceStepSoundPending,                                  0x03003294
 
 @ --- include/gamecube.h ---
 .set g_JoybusLinkState,          0x03003298

@@ -7,7 +7,7 @@ u32 AreWizardCrackerPopItCrackersIdle(void)
     Actor *pActor;
     Actor *pNext;
 
-    for (pActor = (Actor *)g_ActiveActorListState.pUnk4; pActor != NULL; pActor = pNext)
+    for (pActor = (Actor *)g_ActiveActorListState.pTail; pActor != NULL; pActor = pNext)
     {
         pNext = (Actor *)pActor->node.pPrev;
         if (pActor->wActorType == WizardCrackerPopItActorType_Cracker && pActor->bActionState != 0)

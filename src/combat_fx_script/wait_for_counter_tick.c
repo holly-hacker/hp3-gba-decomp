@@ -9,7 +9,7 @@ void WaitForCounterTick(Actor *actor)
 {
     TickParticleEmitters();
     actor->dwStateTimer++;
-    if (actor->anim.unk_DC.bEnemyAttackPhase_candidate == actor->wActionVariant)
+    if (actor->anim.param.bEventMarker == actor->wActionVariant)
         actor->pfnTick = InterpretActorScript;
     if (actor->dwFlags & ActorFlagActionAnimDone)
         actor->pfnTick = InterpretActorScript;

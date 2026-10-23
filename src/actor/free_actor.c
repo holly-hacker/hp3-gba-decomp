@@ -29,8 +29,8 @@ void FreeActor(Actor *actor)
     if (g_dwActorListTicked_candidate == 1)
         ReleaseActorOffscreenVramTiles(actor);
 
-    if (g_ActiveActorListState.pUnk4 == (ListNode *)actor)
-        g_ActiveActorListState.pUnk4 = actor->node.pPrev;
+    if (g_ActiveActorListState.pTail == (ListNode *)actor)
+        g_ActiveActorListState.pTail = actor->node.pPrev;
 
     List_MoveToHead((ListNode **)&g_ActorPoolState.pFreeListHead, &g_ActiveActorListState.pHead, (ListNode *)actor);
 }

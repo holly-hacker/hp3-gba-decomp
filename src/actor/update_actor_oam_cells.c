@@ -10,7 +10,7 @@
 // for CommitQueuedActorTileUpdates.
 //
 // A nonzero bForceOnscreen_candidate draws a horizontal strip: actor->oam itself
-// is queued unk_DC.wOamStripCount times, 32 pixels apart. Otherwise the cells
+// is queued param.wOamStripCount times, 32 pixels apart. Otherwise the cells
 // of the current animation frame are drawn, either inline (while
 // ActorFlagSkipSpriteFrameUpdate is set) or with WriteActorOamCells, from
 // the animation table or from each variant slot in bDrawOrder order.
@@ -169,7 +169,7 @@ u8 UpdateActorOamCells(Actor *actor)
             actor->oam.y = ((s32)actor->posPrev.y >> 16) - screenPos[1];
         }
         actor->oam.tileNum = actor->wVramTileAllocId;
-        for (count = actor->anim.unk_DC.wOamStripCount; count != 0; count--) {
+        for (count = actor->anim.param.wOamStripCount; count != 0; count--) {
             if (actor->bDrawFlags & ActorDrawFlagBlink)
                 HideOamEntryOnAlternateVblanks(g_bOamEntryCount);
             if (actor->bDrawFlags & ActorDrawFlagPostActionFlash)

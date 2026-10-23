@@ -30,7 +30,7 @@ void DrawTextActorText(Actor *pActor, const u8 **ppText)
 
     pSrc = pTiles;
     pDest = (Tile4bpp *)&OBJ_VRAM_TILES[pActor->wVramTileAllocId * 32];
-    strips = pActor->anim.unk_DC.wOamStripCount;
+    strips = pActor->anim.param.wOamStripCount;
     if (TEXT_ACTOR_HEIGHT(pActor) <= 8)
     {
         pActor->oam.size = 1;  // 32x8

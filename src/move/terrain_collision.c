@@ -172,16 +172,16 @@ u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type)
     return type;
 }
 
-// Reacts to the terrain an actor has run into according to bUnk_0x7C: undoes the move,
-// reverses the actor's direction, or ends an ice slide. Always records the terrain type under
-// the actor.
+// Reacts to the terrain an actor has run into according to bTerrainBlockResponse: undoes the
+// move, reverses the actor's direction, or ends an ice slide. Always records the terrain type
+// under the actor.
 void RespondToTerrain(Actor *actor, u32 type)
 {
     if (IsBlockingCollisionType(type))
     {
-        switch (actor->bUnk_0x7C)
+        switch (actor->bTerrainBlockResponse)
         {
-        case 5:
+        case TerrainBlockSlide:
             actor->posPrev.x = actor->pos.x;
             actor->posPrev.y = actor->pos.y;
             if (!TrySlideAlongSlope(actor, type))
@@ -195,20 +195,20 @@ void RespondToTerrain(Actor *actor, u32 type)
                 }
             }
             break;
-        case 1:
+        case TerrainBlockStop:
             actor->posPrev.x = actor->pos.x;
             actor->posPrev.y = actor->pos.y;
             SetActorActionSubState(actor, 2);
             break;
-        case 4:
+        case TerrainBlockEndFlight:
             actor->posPrev.x = actor->pos.x;
             actor->posPrev.y = actor->pos.y;
             SetActorActionSubState(actor, 5);
             break;
-        case 2:
+        case TerrainBlockReverse:
             ReverseActorDirection(actor);
             break;
-        case 3:
+        case TerrainBlockIgnore:
             break;
         }
     }

@@ -37,7 +37,7 @@ void TickPlayerControl(Actor *actor)
             SetPartyMemberAnim(actor, PartyAnimWalk);
         }
         if (actor->bTerrainType == 0x2D && stopped)
-            g_dwUnk03003234 = 1;
+            g_dwIceStepSoundPending = 1;
     }
     else if ((actor->bTerrainType != 0x2D || stopped) && actor->bActionSubState != 2) {
         SetActorActionSubState(actor, 2);

@@ -22,7 +22,7 @@ Actor *SpawnWanderingMonsterActor(u8 monsterId, u16 x, u16 y, u8 encounterId, u8
     pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation
                       | ActorFlagTerrainCollisionA_candidate | ActorFlagFourWayDirections_candidate
                       | ActorFlagTerrainDrawLayer;
-    pActor->bUnk_0x7C = 0;
+    pActor->bTerrainBlockResponse = TerrainBlockNone;
     pActor->anim.bAnimFrameDelay = 1;
     pActor->pfnTick = TickWanderingMonsterActor;
     pActor->apfnCollisionCallback[0] = HandleWanderingMonsterCollision;

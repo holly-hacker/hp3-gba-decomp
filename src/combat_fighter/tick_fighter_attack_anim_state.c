@@ -233,15 +233,15 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             }
 
             if (actor->wActorType == 0x3e) {
-                actor->anim.unk_DC.bEnemyAttackPhase_candidate = 0xff;
+                actor->anim.param.bEventMarker = 0xff;
                 actor->scriptState.bytes.bAttackOutcomeState = 2;
             }
 
             actor->dwFlags &= ~ActorFlagSpecialMoveTrigger;
         }
 
-        if (((actor->dwFlags & ActorFlagActionAnimDone) == 0) || (actor->anim.unk_DC.bEnemyAttackPhase_candidate == 0xff)) {
-            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
+        if (((actor->dwFlags & ActorFlagActionAnimDone) == 0) || (actor->anim.param.bEventMarker == 0xff)) {
+            if (actor->anim.param.bEventMarker != 0xff)
                 goto skipPhase0;
 
             if (actor->scriptState.bytes.bAttackOutcomeState != 1)
@@ -253,7 +253,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             // exactly one of the two ResolveEnemyAttack calls fires per
             // attack (bSpecialChance==100 there, <=99 here), and this tail
             // always reads whichever one just ran.
-            actor->anim.unk_DC.bEnemyAttackPhase_candidate = 0;
+            actor->anim.param.bEventMarker = 0;
 
             if (MonsterTable[monsterIndex].bSpecialChance <= 99) {
                 g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, active->bSelectedActionIndex);
@@ -273,7 +273,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             ShowAttackResult(actor, active->bSelectedActionIndex);
 
             phase2:
-            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
+            if (actor->anim.param.bEventMarker != 0xff)
                 goto skipPhase0;
 
             if (actor->scriptState.bytes.bAttackOutcomeState == 2) {
@@ -290,7 +290,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                 ShowAttackResult(actor, active->bSelectedActionIndex);
             }
 
-            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff)
+            if (actor->anim.param.bEventMarker != 0xff)
                 goto skipPhase0;
 
             if (actor->scriptState.bytes.bAttackOutcomeState == 4) {
@@ -338,7 +338,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                 if (g_pFightState->dwBattleResultPending == 0)
                     ShowBattleMessage(FaintResult, 0, 0);
             }
-            if (actor->anim.unk_DC.bEnemyAttackPhase_candidate != 0xff || actor->scriptState.bytes.bAttackOutcomeState != 3)
+            if (actor->anim.param.bEventMarker != 0xff || actor->scriptState.bytes.bAttackOutcomeState != 3)
                 goto skipPhase0;
             goto finish;
         }
@@ -353,7 +353,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         g_pFightState->bAttackAnimState_candidate = 0;
         actor->scriptState.bytes.bAttackOutcomeState = 0;
         active->bSpellId = Flipendo;
-        actor->anim.unk_DC.bEnemyAttackPhase_candidate = 0;
+        actor->anim.param.bEventMarker = 0;
         actor->bActionFlags = 0x41;
         actor->dwFlags &= ~ActorFlagActionAnimDone;
         return;

@@ -26,7 +26,7 @@ void ResizeTextActor(Actor *pActor, const u8 *pText)
     // Strips are 32 pixels wide, sized from the unclamped width.
     size = width + 31;
     size /= 32;
-    pActor->anim.unk_DC.wOamStripCount = size;
+    pActor->anim.param.wOamStripCount = size;
     width = size * 4;
     height = (height + 7) / 8;
     pixelCount = width * height * 64;

@@ -9,8 +9,8 @@ Actor *AllocDefaultActor(void)
         (ListNode **)&g_ActorPoolState.pFreeListHead,
         &g_ActiveActorListState.pHead, sizeof(Actor));
 
-    if (g_ActiveActorListState.pUnk4 == NULL) {
-        g_ActiveActorListState.pUnk4 = (ListNode *)actor;
+    if (g_ActiveActorListState.pTail == NULL) {
+        g_ActiveActorListState.pTail = (ListNode *)actor;
     }
     actor->wFlags_0xAC |= 1;
     actor->wActorType = 0xFFFF;

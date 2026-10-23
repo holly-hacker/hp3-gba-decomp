@@ -19,7 +19,7 @@ void TickDiffindoEffect(Actor *effect)
     {
     case 0:
         effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
-        effect->bUnk_0x7C = 4;
+        effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->dwStateTimer = 5;
         SetActorVelocityFromFacing(effect);
         SetActorActionSubState(effect, 3);

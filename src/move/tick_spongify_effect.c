@@ -20,7 +20,7 @@ void TickSpongifyEffect(Actor *effect)
     {
     case 0:
         effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
-        effect->bUnk_0x7C = 4;
+        effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->dwStateTimer = 45;
         SetActorActionSubState(effect, 3);
         InitSpongifyParticleEmitter0(AllocParticleEmitter((const ObjPalette *)gSpongifyEffectPalette, 2, 0), effect);

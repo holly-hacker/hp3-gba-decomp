@@ -24,7 +24,7 @@ Actor *SpawnPlayerActor(u8 characterId)
     g_pPlayerActor->oam.bpp8 = 0;
     g_pPlayerActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasTickLogic
         | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate | ActorFlagTerrainDrawLayer;
-    g_pPlayerActor->bUnk_0x7C = 5;
+    g_pPlayerActor->bTerrainBlockResponse = TerrainBlockSlide;
     SetActorActionState(g_pPlayerActor, 0x21);
     SetActorPrevActionState(g_pPlayerActor, 0x21);
     g_pPlayerActor->nMoveSpeed = 0x28000;

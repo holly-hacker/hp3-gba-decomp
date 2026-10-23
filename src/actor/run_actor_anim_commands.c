@@ -25,7 +25,7 @@ void RunActorAnimCommands(Actor *actor)
             switch (cursor[0]) {
             case 0xFF:
                 actor->dwFlags |= ActorFlagSpecialMoveTrigger;
-                actor->anim.unk_DC.bEnemyAttackPhase_candidate = cursor[1];
+                actor->anim.param.bEventMarker = cursor[1];
                 actor->anim.bAnimFrameCounter = 1;
                 running = 0;
                 break;

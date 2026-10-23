@@ -49,7 +49,7 @@ u32 SettleWizardCrackerPopItBoard(void)
                 {
                     cell = column + row * WIZARD_CRACKER_POP_IT_COLUMNS;
                     noneMoved = 0;
-                    for (pActor = (Actor *)g_ActiveActorListState.pUnk4; pActor != NULL; pActor = pNext)
+                    for (pActor = (Actor *)g_ActiveActorListState.pTail; pActor != NULL; pActor = pNext)
                     {
                         pNext = (Actor *)pActor->node.pPrev;
                         if (pActor->wActorType == WizardCrackerPopItActorType_Cracker

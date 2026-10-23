@@ -20,7 +20,7 @@
                                           @ HandleTimer2Interrupt
 
 @ --- include/actor.h ---
-.set g_ActiveActorListState, 0x030015B0  @ {ListNode *pHead; ListNode *pUnk4;}
+.set g_ActiveActorListState, 0x030015B0  @ {ListNode *pHead; ListNode *pTail;}
 .set g_apOamQueue,             0x030015B8  @ Actor *[0x69]: onscreen actors drawn in depth order
 .set g_dwOamQueueCount,        0x0300175C
 .set g_apSpriteFrameQueue,     0x03001760  @ Actor *[15]: visible actors with sprite cells
@@ -33,7 +33,7 @@
 .set g_ActorPoolState,              0x03001C08  @ ActorPoolState, 0x1B4 bytes
 .set g_pActorPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
 .set g_dwActorListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveActors, never cleared; gates FreeActor's VRAM tile release
-.set g_dwUnk03001DC4,                0x03001DC4  @ zeroed by InitActorPool
+.set g_dwOamScaleRoundBias,                0x03001DC4  @ zeroed by InitActorPool
 .set g_ReceivedItemGfx,              0x03001DC8  @ ActorGfxRecord: the item TickActorReceiveReward holds up
 
 @ --- include/area.h ---
@@ -228,7 +228,7 @@
 
 @ --- include/game_state.h ---
 .set g_saveStateBlock,                                 0x03003180  @ live save-adjacent state (money, playtime, flags, ...); doc-level array at +0x10
-.set g_dwUnk03003234,                                  0x03003234  @ u32: one-shot flag TickActor clears; see src/actor/tick_actor.c
+.set g_dwIceStepSoundPending,                                  0x03003234  @ u32: see include/game_state.h
 
 @ --- include/gamecube.h ---
 .set g_JoybusLinkState,          0x03003238  @ JoybusLinkState: GameCube link (JOYBUS) session state

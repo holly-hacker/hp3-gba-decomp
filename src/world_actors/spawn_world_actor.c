@@ -16,7 +16,7 @@ Actor *SpawnWorldActor(u8 bColumn, u8 bRow)
                       | ActorFlagTerrainCollisionA_candidate | ActorFlagUnk2000
                       | ActorFlagTerrainDrawLayer;
     SetActorActionState(pActor, 0);
-    pActor->bUnk_0x7C = 5;
+    pActor->bTerrainBlockResponse = TerrainBlockSlide;
     pActor->anim.bAnimFrameDelay = 1;
     WORLD_ACTOR_STATE(pActor)->bKind = pRecord->bKind;
     kind = pRecord->bKind;

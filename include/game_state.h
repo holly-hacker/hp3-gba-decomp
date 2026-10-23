@@ -24,6 +24,7 @@ extern const Playtime g_stPlaytimeFrameDelta;
 extern const Playtime g_stPlaytimeHourLimit;
 
 extern SaveStateBlock g_saveStateBlock;
-// Cleared by the next TickActor pass that ticks an actor's movement; that
-// actor plays sound 0x47 if its position changed. Its writer is unidentified.
-extern u32 g_dwUnk03003234;
+// Set by TickPlayerControl when the player starts walking from a standstill
+// on ice (terrain 0x2D); TickActor clears it after the player's movement and
+// plays sound 0x47 if the player moved.
+extern u32 g_dwIceStepSoundPending;

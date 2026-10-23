@@ -56,7 +56,7 @@ Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell)
         break;
     case FieldSpellGlacius:
         LoadParticleGfx(2, 4, (const ActorAssetRecord *)&g_GlaciusParticleGfx);
-        effect->bUnk_0x7C = 4;
+        effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->pfnTick = TickGlaciusEffect;
         effect->nMoveSpeed = 0x38000;
         effect->bFacing = caster->bFacing;
@@ -65,14 +65,14 @@ Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell)
     case FieldSpellSpongify:
         LoadParticleGfx(2, 0, (const ActorAssetRecord *)&g_SpongifyParticleGfx0);
         LoadParticleGfx(2, 1, (const ActorAssetRecord *)&g_SpongifyParticleGfx1);
-        effect->bUnk_0x7C = 4;
+        effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->pfnTick = TickSpongifyEffect;
         effect->nMoveSpeed = 0x38000;
         effect->bFacing = caster->bFacing;
         PlaySoundById(0x56);
         break;
     case FieldSpellDiffindo:
-        effect->bUnk_0x7C = 4;
+        effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         PlaySoundById(0x53);
         effect->pfnTick = TickDiffindoEffect;
         effect->nMoveSpeed = 0x38000;

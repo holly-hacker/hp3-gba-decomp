@@ -47,7 +47,7 @@ void RestoreFighterActors_candidate(void)
         if (FighterHasShadowActor(i)) {
             shadow = AllocDefaultActor();
             shadow->wActorType = FIGHTER(i).pActor->wActorType;
-            shadow->bUnk_0x7C = 0;
+            shadow->bTerrainBlockResponse = TerrainBlockNone;
             shadow->oam.priority = 1;
             shadow->bDepthSortBias = 0xC8;
             shadow->nMoveSpeed = 1;

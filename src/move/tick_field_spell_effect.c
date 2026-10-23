@@ -43,7 +43,7 @@ void TickFieldSpellEffect(Actor *effect)
         {
         case FieldSpellWingardiumLeviosa:
             effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
-            effect->bUnk_0x7C = 4;
+            effect->bTerrainBlockResponse = TerrainBlockEndFlight;
             SetActorActionState(effect, 0xF);
             effect->bFacing = effect->pLinkedActor_candidate->bFacing;
             effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].x << 16;
@@ -56,7 +56,7 @@ void TickFieldSpellEffect(Actor *effect)
                              g_aaFieldSpellFlightAnims[effect->pLinkedActor_candidate->bFacing], 0);
             effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > DirectionDown;
             effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
-            effect->bUnk_0x7C = 4;
+            effect->bTerrainBlockResponse = TerrainBlockEndFlight;
             SetActorActionState(effect, 0xF);
             effect->bFacing = effect->pLinkedActor_candidate->bFacing;
             effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].x << 16;
@@ -68,7 +68,7 @@ void TickFieldSpellEffect(Actor *effect)
                              g_aaFieldSpellFlightAnims[effect->pLinkedActor_candidate->bFacing], 0);
             effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > DirectionDown;
             effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
-            effect->bUnk_0x7C = 4;
+            effect->bTerrainBlockResponse = TerrainBlockEndFlight;
             SetActorActionState(effect, 0xF);
             effect->bFacing = effect->pLinkedActor_candidate->bFacing;
             effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].x << 16;

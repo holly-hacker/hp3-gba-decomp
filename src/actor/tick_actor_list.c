@@ -38,7 +38,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
         }
     }
     else {
-        actor = (Actor *)list->pUnk4;
+        actor = (Actor *)list->pTail;
         while (actor != NULL) {
             next = (Actor *)actor->node.pPrev;
             TickActor(actor, mode);

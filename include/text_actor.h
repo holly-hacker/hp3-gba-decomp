@@ -5,7 +5,7 @@
 
 // Text actors: SpawnTextActor spawns an actor that draws *ppText and files it in
 // g_apTextActors[slot]; SetTextActorCenterPosition_candidate centers it on x.
-// The actor draws as a row of anim.unk_DC.wOamStripCount 32x8 or 32x16 sprites
+// The actor draws as a row of anim.param.wOamStripCount 32x8 or 32x16 sprites
 // (bForceOnscreen_candidate set; see UpdateActorOamCells), and keeps its slot in
 // wCharacterId_candidate for ClearTextActorSlot.
 

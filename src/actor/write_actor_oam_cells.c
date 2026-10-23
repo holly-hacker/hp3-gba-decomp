@@ -43,9 +43,9 @@ void WriteActorOamCells(ActorFrameData *frameData, u16 frame, u8 cellFlags, s32 
         else {
             x = (frameCell->x + dims[0] / 2) * scaleX;
             if (x >= 0)
-                x = (x + g_dwUnk03001DC4) >> 16;
+                x = (x + g_dwOamScaleRoundBias) >> 16;
             else
-                x = -((g_dwUnk03001DC4 - x) >> 16);
+                x = -((g_dwOamScaleRoundBias - x) >> 16);
             if (cell.affineMode == 3)
                 x -= dims[0];
             else
@@ -67,9 +67,9 @@ void WriteActorOamCells(ActorFrameData *frameData, u16 frame, u8 cellFlags, s32 
         else {
             y = (frameCell->y + dims[1] / 2) * scaleY;
             if (y >= 0)
-                y = (y + g_dwUnk03001DC4) >> 16;
+                y = (y + g_dwOamScaleRoundBias) >> 16;
             else
-                y = -((g_dwUnk03001DC4 - y) >> 16);
+                y = -((g_dwOamScaleRoundBias - y) >> 16);
             if (cell.affineMode == 3)
                 y -= dims[1];
             else

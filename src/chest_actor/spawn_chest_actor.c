@@ -18,7 +18,7 @@ Actor *SpawnChestActor(u8 bColumn, u8 bRow)
                       | ActorFlagUnk2000 | ActorFlagTerrainDrawLayer;
     SetActorActionState(pActor, 0);
     SetActorActionSubState(pActor, 1);
-    pActor->bUnk_0x7C = 1;
+    pActor->bTerrainBlockResponse = TerrainBlockStop;
     pActor->anim.bAnimFrameDelay = 1;
     // The flag id is kept in the actor script PC slot.
     pActor->scriptState.wScriptPc = pRecord->wFlagId;
