@@ -15,10 +15,10 @@ u8 *BuildRoomRouteTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock
     defaultCount = 0;
     if (g_wRoomResourceFlags_candidate & 1)
     {
-        pDefaultTable = (const RoomBlobTable *)((const u8 *)pDefault + pDefault->wWarpTableOffset);
+        pDefaultTable = (const RoomBlobTable *)((const u8 *)pDefault + pDefault->wRouteTableOffset);
         defaultCount = pDefaultTable->wCount;
     }
-    pVariantTable = (const RoomBlobTable *)((const u8 *)pVariant + pVariant->wWarpTableOffset);
+    pVariantTable = (const RoomBlobTable *)((const u8 *)pVariant + pVariant->wRouteTableOffset);
     defaultCount += pVariantTable->wCount;
     g_pRoomRouteTable->wCount = defaultCount;
     pOut += GetRoomOffsetTableSize(defaultCount + 1);

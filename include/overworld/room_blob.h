@@ -3,8 +3,8 @@
 #include "types.h"
 
 // Per-room resource blob. ParseRoomResourceBlob builds the room's runtime tables
-// from it in one buffer, in the order header records, actor table, warp trigger
-// table, switch-state table.
+// from it in one buffer, in the order header records, actor table, route table, script
+// chain table.
 
 // A player spawn point: a room blob header record, or a default record. FindRoomEntryPoint
 // matches bEntryId and bIndex against its two arguments.
@@ -14,7 +14,7 @@ typedef struct RoomEntryPoint {
     u8 bEntryId;
     u8 bIndex;   // also indexes g_aDefaultRoomEntryPoints; both callers pass 0
     u8 bFacing;
-    u8 pad_07;
+    u8 bUnused;  // always 0xFF
 } RoomEntryPoint;
 
 // Blob start. wSize is the byte offset of the RoomBlobStageIndex that follows
@@ -27,14 +27,14 @@ typedef struct RoomBlobHeader {
 
 typedef struct RoomBlobVariantEntry {
     u16 wSubBlockOffset;  // from the blob start
-    u8 abUnknown[6];
+    u8 abUnused[6];       // always 0
 } RoomBlobVariantEntry;
 
 // Selects the sub-block to use per story stage.
 typedef struct RoomBlobStageIndex {
     u8 bVariantCount;
     u8 abStageToVariant[33];  // indexed by g_abQuestEventState[0]
-    u16 wPad;
+    u16 wUnused;              // always 0xFFFF
     RoomBlobVariantEntry aEntries[0];
 } RoomBlobStageIndex;
 
@@ -49,16 +49,16 @@ typedef struct RoomBlobTable {
 // (the records follow, starting on a 4-byte boundary).
 typedef struct RoomBlobColumn {
     u8 bCount;
-    u8 bPad;
+    u8 bUnused;  // always 0
     u8 abRowSizes[0];
 } RoomBlobColumn;
 
 // One sub-block per variant; entry 0 is the default one.
 typedef struct RoomBlobSubBlock {
-    u16 wWarpTableOffset;
-    u16 wSwitchTableOffset;
+    u16 wRouteTableOffset;
+    u16 wScriptChainTableOffset;
     u16 wFlags;  // bit 0 mirrored into g_wRoomResourceFlags_candidate
-    u16 wUnknown6;
+    u16 wEndOffset;  // unused; to the sub-block's end marker
     RoomBlobTable actorTable;  // inline at +8
 } RoomBlobSubBlock;
 

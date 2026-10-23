@@ -10,7 +10,7 @@ u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSu
     u8 count;
     u8 i;
 
-    offset = pVariant->wSwitchTableOffset;
+    offset = pVariant->wScriptChainTableOffset;
     pChains = (const RoomBlobTable *)((const u8 *)pVariant + offset);
     count = pChains->wCount;
 
@@ -25,12 +25,12 @@ u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSu
     if (g_wRoomResourceFlags_candidate & 1)
     {
         g_pRoomScriptChainTable->awChainOffsets[0] = offset;
-        offset = pDefault->wSwitchTableOffset;
+        offset = pDefault->wScriptChainTableOffset;
         pChains = (const RoomBlobTable *)((const u8 *)pDefault + offset);
         pOut = CopyRoomScriptChain(pChains, pOut, 0);
     }
 
-    offset = pVariant->wSwitchTableOffset;
+    offset = pVariant->wScriptChainTableOffset;
     pChains = (const RoomBlobTable *)((const u8 *)pVariant + offset);
     for (i = 0; i < count;)
     {
