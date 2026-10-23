@@ -19,7 +19,7 @@ void CloseBuckbeakMinigameResultsMenu(void)
     ReleaseMenuCursor(g_pBuckbeakMinigame->pCursor);
     FreeAllParticleEmitters();
     FreeAllParticles();
-    g_dwGameModeFlags &= ~GameModeFlagUnk8;
+    g_dwGameModeFlags &= ~GameModeFlagActorTickOnly;
     g_pBuckbeakMinigame->pBuckbeak->dwFlags |= ActorFlagHasAnimation;
 
     for (i = 0; i <= 8; i++)

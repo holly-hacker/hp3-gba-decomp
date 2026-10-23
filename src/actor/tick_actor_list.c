@@ -29,7 +29,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
     g_dwCollisionQueueCount = 0;
     layer = 0;
 
-    if ((g_dwGameModeFlags & (GameModeFlagUnk8 | GameModeFlagUnk40000)) == GameModeFlagUnk8) {
+    if ((g_dwGameModeFlags & (GameModeFlagActorTickOnly | GameModeFlagFreezeView)) == GameModeFlagActorTickOnly) {
         actor = (Actor *)list->pHead;
         while (actor != NULL) {
             next = (Actor *)actor->node.pNext;

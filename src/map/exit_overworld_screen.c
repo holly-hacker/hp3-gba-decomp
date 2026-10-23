@@ -71,8 +71,8 @@ void ExitOverworldScreen(void)
     FreePartyActors();
     RestoreDefaultVBlankCallback();
 
-    if (g_dwGameModeFlags & GameModeFlagUnk80000)
-        g_dwGameModeFlags |= GameModeFlagUnk400000;
+    if (g_dwGameModeFlags & GameModeFlagKeepCamera)
+        g_dwGameModeFlags |= GameModeFlagFreezeViewOnExit;
 
     StopAllSoundEffects();
     FreeAllParticleEmitters();

@@ -23,7 +23,7 @@ void UpdateOverworldCamera(u32 snap)
     g_CameraPosition.nX = pos.x;
     g_CameraPosition.nY = pos.y;
 
-    if (!(g_dwGameModeFlags & (GameModeFlagUnk40000 | GameModeFlagUnk400000)))
+    if (!(g_dwGameModeFlags & (GameModeFlagFreezeView | GameModeFlagFreezeViewOnExit)))
     {
         if (snap == 0)
         {

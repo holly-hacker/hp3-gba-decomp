@@ -146,16 +146,20 @@ extern void DispatchGameModeDestroy(void);
 // TickGameModeStack has a mode change to apply this frame.
 extern s32 IsGameModeTransitionPending(void);
 
-// g_dwGameModeFlags bits. No code sets the Unk bits; they are only tested or cleared.
+// g_dwGameModeFlags bits. Nothing sets ActorTickOnly, FreezeView, KeepCamera,
+// SerialSkipFocusInit, FreezeViewOnExit (except via KeepCamera) or the Unk bits, so the
+// behavior described for them never happens.
 typedef enum {
     // A dialog or choose-character mode was pushed over the current mode;
     // DispatchGameModeDestroy keeps the mode underneath alive while set.
     GameModeFlagOverlayMode = 0x1,
-    GameModeFlagUnk8 = 0x8,
+    // Actors run only their own tick: no collision checks, owner following or orbiting.
+    // Ignored while GameModeFlagFreezeView is set.
+    GameModeFlagActorTickOnly = 0x8,
     // Set by TickGameModeStack from a mode's destroy through the next mode's init.
     GameModeFlagSwitchingMode = 0x10,
     SerialSessionActive = 0x20,
-    GameModeFlagUnk80 = 0x80,
+    GameModeFlagUnk80 = 0x80,  // like Unk4000 and Unk800000: hides BG0 when a camera cutaway starts
     GameModeFlagScreenTransitionOut = 0x400,  // with GameModeFlagScreenTransition
     // A screen transition handler is running (PlayScreenTransition*ByIndex).
     GameModeFlagScreenTransition = 0x800,
@@ -163,10 +167,15 @@ typedef enum {
     GameModeFlagUnk4000 = 0x4000,
     GameModeFlagUnk10000 = 0x10000,
     GameModeFlagUnk20000 = 0x20000,
-    GameModeFlagUnk40000 = 0x40000,
-    GameModeFlagUnk80000 = 0x80000,
-    GameModeFlagUnk100000 = 0x100000,
-    GameModeFlagUnk400000 = 0x400000,
+    // Particles are not drawn, and camera scrolling loads no new BG tiles.
+    GameModeFlagFreezeView = 0x40000,
+    // The camera position survives mode changes; leaving the overworld also sets
+    // GameModeFlagFreezeViewOnExit.
+    GameModeFlagKeepCamera = 0x80000,
+    // In a serial session, entering the overworld does not update the camera focus.
+    GameModeFlagSerialSkipFocusInit = 0x100000,
+    // GameModeFlagFreezeView from leaving the overworld until entering it again.
+    GameModeFlagFreezeViewOnExit = 0x400000,
     GameModeFlagUnk800000 = 0x800000,
     // A chain 1 room script started music, so InitializeOverworld keeps it
     // instead of playing the room's own.

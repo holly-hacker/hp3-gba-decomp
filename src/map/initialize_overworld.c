@@ -70,7 +70,7 @@ void InitializeOverworld(void)
         ClearVram();
         ClearObjPaletteSlots();
         g_wKeysPressed = 0;
-        g_dwGameModeFlags &= ~GameModeFlagUnk8;
+        g_dwGameModeFlags &= ~GameModeFlagActorTickOnly;
         ReserveObjPaletteSlot(1);
         ReserveObjPaletteSlot(2);
         SetVBlankCallback(OverworldVBlankCallback);
@@ -227,10 +227,10 @@ void InitializeOverworld(void)
             PlayMusicModule(CURRENT_ROOM.bDefaultMusicModule);
 
         // Display flags and the room's BG control overrides.
-        g_dwGameModeFlags &= ~GameModeFlagUnk400000;
+        g_dwGameModeFlags &= ~GameModeFlagFreezeViewOnExit;
         UpdateOverworldCamera(1);
         ReloadRoomBgTiles();
-        if ((g_dwGameModeFlags & (SerialSessionActive | GameModeFlagUnk100000)) != (SerialSessionActive | GameModeFlagUnk100000))
+        if ((g_dwGameModeFlags & (SerialSessionActive | GameModeFlagSerialSkipFocusInit)) != (SerialSessionActive | GameModeFlagSerialSkipFocusInit))
             TickCameraFocus_candidate(0);
         RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationA);
         RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationB);

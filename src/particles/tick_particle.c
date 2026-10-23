@@ -39,7 +39,7 @@ s8 TickParticle(Particle *particle)
     else
         collision = 0;
 
-    if (!(g_dwGameModeFlags & (GameModeFlagUnk40000 | GameModeFlagUnk400000))) {
+    if (!(g_dwGameModeFlags & (GameModeFlagFreezeView | GameModeFlagFreezeViewOnExit))) {
         if (collision == 1)
             goto free;
         result = DrawParticle(particle);

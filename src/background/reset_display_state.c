@@ -10,7 +10,7 @@ void ResetDisplayState(u16 mode)
     REG_DISPCNT = mode | 0x40;
     g_BgState.aLayers[2].wZoom = 0x100;
     g_BgState.aLayers[3].wZoom = 0x100;
-    if (!(g_dwGameModeFlags & GameModeFlagUnk80000))
+    if (!(g_dwGameModeFlags & GameModeFlagKeepCamera))
         ResetCameraPosition();
     ResetBgLayers();
 }
