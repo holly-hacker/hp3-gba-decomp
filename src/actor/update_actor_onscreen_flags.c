@@ -34,7 +34,7 @@ s32 UpdateActorOnscreenFlags(Actor *actor)
 
     if (left < g_CameraPosition.nX || right > g_CameraPosition.nX ||
         bottom < g_CameraPosition.nY || top > g_CameraPosition.nY) {
-        if (actor->bForceOnscreen_candidate != 1) {
+        if (actor->bOamStrip != 1) {
             actor->dwFlags &= ~(ActorFlagOnscreen | ActorFlagOnscreenForTileAlloc);
             return 0;
         }

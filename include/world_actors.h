@@ -12,7 +12,7 @@ typedef struct RoomActorRecordWorldActor {
     u8 pad_8[4];
     u8 bKind;      // 0x0C
     u8 bFacing;    // 0x0D
-    u8 b62;        // 0x0E
+    u8 bBlocksPlayer;  // 0x0E
     u8 bPushable;  // 0x0F
     u8 bBreakable; // 0x10
     u8 b65;        // 0x11
@@ -25,7 +25,7 @@ typedef struct RoomActorRecordWorldActor {
 typedef struct WorldActorState {
     u8 b60;         // bit 1: the chain has run once
     u8 bKind;
-    u8 b62;
+    u8 bBlocksPlayer;  // HandlePlayerWorldActorCollision stops the player while intact
     u8 bPushable;   // Flipendo pushes it; slows to a stop
     u8 bBreakable;  // Flipendo breaks it, Reparo restores it; see BreakWorldActor
     u8 b65;
@@ -34,7 +34,7 @@ typedef struct WorldActorState {
                       // Reparo restores it
     u8 bChainRow;   // RespawnGroupAndRunChain(0, bChainRow) when used; 0 = none
     u8 bActivated;  // kinds 44, 62, 68, 80: set once triggered
-    u8 b6A;
+    u8 bNoPlatePress;  // Actor.modeState.actor.bNoPlatePress; always 0
 } WorldActorState;
 
 #define WORLD_ACTOR_STATE(pActor) ((WorldActorState *)&(pActor)->scriptState)

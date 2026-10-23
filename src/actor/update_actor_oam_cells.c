@@ -9,7 +9,7 @@
 // WriteActorOamCells, else 1. TickActorList queues actors that returned 2
 // for CommitQueuedActorTileUpdates.
 //
-// A nonzero bForceOnscreen_candidate draws a horizontal strip: actor->oam itself
+// A nonzero bOamStrip draws a horizontal strip: actor->oam itself
 // is queued param.wOamStripCount times, 32 pixels apart. Otherwise the cells
 // of the current animation frame are drawn, either inline (while
 // ActorFlagSkipSpriteFrameUpdate is set) or with WriteActorOamCells, from
@@ -46,7 +46,7 @@ u8 UpdateActorOamCells(Actor *actor)
     if (actor->wVramTileAllocId == 0xFFFF)
         return 2;
 
-    if (actor->bForceOnscreen_candidate == 0) {
+    if (actor->bOamStrip == 0) {
         if (flags & ActorFlagHasSpriteCells) {
             screenPos[0] = position.x >> 16;
             screenPos[1] = position.y >> 16;
@@ -106,7 +106,7 @@ u8 UpdateActorOamCells(Actor *actor)
                 else
                     QueueOamEntry(g_bOamEntryCount, &cell);
             }
-            actor->anim.bAnimFrameIndex_candidate = actor->anim.bLastAnimFrameValue;
+            actor->anim.bLoadedAnimFrame = actor->anim.bLastAnimFrameValue;
         }
         else {
             if (actor->bDrawFlags & ActorDrawFlagVariantSlots) {

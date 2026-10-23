@@ -5,7 +5,7 @@
 extern void InitDialogBox(void);
 
 // Sets the dialog block to show and pushes the dialog game mode.
-extern void ShowRoomDialogBox_candidate(u32 blockId);
+extern void ShowDialogBlock(u32 blockId);
 
 extern void SetDialogTextAlign(u32 align);    // DialogState.bTextAlign
 extern void SetDialogTextReveal(u32 reveal);  // DialogState.bRevealText

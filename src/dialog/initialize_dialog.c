@@ -16,7 +16,7 @@ void InitializeDialog(void)
     s32 cameraPosition[2];
     s32 row;
 
-    if (g_DialogState_candidate.dwState == 0)
+    if (g_DialogState.dwState == 0)
     {
         FreeFieldHudActors();
         g_adwSavedBgPriority[0] = REG_BG0CNT & 3;
@@ -28,7 +28,7 @@ void InitializeDialog(void)
         g_dwDialogBoxTileRow = row;
 
         bios_CPUSet(BG_PLTT, g_awSavedBgPalette0, 0x10);
-        g_DialogState_candidate.dwState = 1;
+        g_DialogState.dwState = 1;
         WriteBgGraphicTilemap(1, g_pDialogBoxTilemap, DIALOG_BOX_FIRST_TILE, 0, 0, g_dwDialogBoxTileRow);
 #ifdef VERSION_JP
         SelectTextFont(10, 0, -1);
@@ -47,8 +47,8 @@ void InitializeDialog(void)
         while (!IsScanlineEffectQueueIdle())
             ;
         StartScanlineEffects();
-        g_DialogState_candidate.wLineIndex = 0;
-        g_DialogState_candidate.bPhase = DialogPhaseSlideUp;
+        g_DialogState.wLineIndex = 0;
+        g_DialogState.bPhase = DialogPhaseSlideUp;
         ShowDialogLine();
     }
 }

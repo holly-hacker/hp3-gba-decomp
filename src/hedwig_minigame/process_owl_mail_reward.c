@@ -37,7 +37,7 @@ void ProcessOwlMailReward(void)
     {
         SelectTextFont(2, 0, -1);
         GrantReward(item, 1);
-        SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(item)));
+        SetTextMacro1String(GetDialogText(GetRewardNameTextId(item)));
         pText = GetDialogText(0xAC1);  // "The owl mail has arrived! You received @1."
         pText = ExpandTextMacros(g_pDialogMacroExpandBuffer, pText, 0x400);
         DrawTextLines(0x28C, 0x78, 0x40, 0xB0, 0x40, &pText, 1);

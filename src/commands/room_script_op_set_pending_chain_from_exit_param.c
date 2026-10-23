@@ -10,7 +10,7 @@ typedef struct SetPendingChainFromExitParamRecord {
 
 void RoomScriptOpSetPendingChainFromExitParam(SetPendingChainFromExitParamRecord *pRecord)
 {
-    u8 exit = g_abRoomScriptExitParams_candidate[0];
+    u8 exit = g_abRoomEntryIds[0];
 
     if (exit != 0)
     {

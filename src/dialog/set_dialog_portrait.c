@@ -10,14 +10,14 @@
 // ("You Receive: \n @1 Sickles") use the portrait of the character the player controls.
 void SetDialogPortrait(Actor *actor)
 {
-    if ((u16)(g_DialogState_candidate.wBlockId - 0x7C) <= 1)
+    if ((u16)(g_DialogState.wBlockId - 0x7C) <= 1)
     {
         QueueObjPaletteLoadAtOffset(
-            (const u8 *)g_aDialogPortraits[g_abPartySlotDialogPortraits[GetPartyMasterStatsSlot_candidate(
-                g_pPlayerActor->wCharacterId_candidate)]].pPalette,
+            (const u8 *)g_aDialogPortraits[g_abPartySlotDialogPortraits[GetCharacterFighterType(
+                g_pPlayerActor->wSubtype)]].pPalette,
             0x20, actor->oam.paletteNum * 16, 0x20);
-        SetActorAssetRecord(actor, &g_aDialogPortraits[g_abPartySlotDialogPortraits[GetPartyMasterStatsSlot_candidate(
-            g_pPlayerActor->wCharacterId_candidate)]]);
+        SetActorAssetRecord(actor, &g_aDialogPortraits[g_abPartySlotDialogPortraits[GetCharacterFighterType(
+            g_pPlayerActor->wSubtype)]]);
     }
     else
     {

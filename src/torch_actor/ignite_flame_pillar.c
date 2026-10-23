@@ -8,7 +8,7 @@
 void IgniteFlamePillar(Actor *pActor)
 {
     pActor->dwStateTimer = pActor->modeState.flamePillar.wLitTicks;
-    SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wCharacterId_candidate],
+    SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wSubtype],
                      g_abRoomFlamePillarAnimData, 0);
     SetActorActionSubState(pActor, 8);
     g_nFlamePillarSoundHandle = PlaySoundByIdUnlessActive(18, g_nFlamePillarSoundHandle);

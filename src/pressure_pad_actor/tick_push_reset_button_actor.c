@@ -36,8 +36,8 @@ void TickPushResetButtonActor(Actor *pActor)
         break;
     case 4:
         PlaySoundById(4);
-        SetActorAnimData(pActor, g_apPushResetButtonSprites[pActor->wCharacterId_candidate],
-                         g_aabPushResetButtonPressAnims[pActor->wCharacterId_candidate], 0);
+        SetActorAnimData(pActor, g_apPushResetButtonSprites[pActor->wSubtype],
+                         g_aabPushResetButtonPressAnims[pActor->wSubtype], 0);
         pActor->bActionState = 0;
         break;
     case 1:

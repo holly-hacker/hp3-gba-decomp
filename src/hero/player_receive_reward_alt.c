@@ -10,7 +10,7 @@ void PlayerReceiveRewardAlt(u32 rewardId)
 {
     u32 amount;
 
-    CancelActorMove_candidate(g_pPlayerActor);
+    StopActorMotion(g_pPlayerActor);
     g_pPlayerActor->anim.bAnimFrameCounter = 0;
     SetActorActionState(g_pPlayerActor, 0x17);
     SetActorActionSubState(g_pPlayerActor, 0);

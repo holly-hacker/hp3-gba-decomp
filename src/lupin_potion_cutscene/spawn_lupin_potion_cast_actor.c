@@ -9,12 +9,12 @@ Actor *SpawnLupinPotionCastActor(s32 index)
     Actor *pActor = AllocActorOfType(RoomActorType_Npc);
     Actor *pShadow;
 
-    pActor->wCharacterId_candidate = index;
+    pActor->wSubtype = index;
     pActor->bFighterIndex = index;
     pActor->bActionSubState = 0;
     SetActorPosition(pActor, g_aLupinPotionCastPositions[index].x, g_aLupinPotionCastPositions[index].y);
     pActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
-                      | ActorFlagFourWayDirections_candidate;
+                      | ActorFlagFourWayDirections;
     SetActorActionState(pActor, 0);
     pActor->anim.bAnimFrameDelay = 0;
     pActor->bFacing = Direction4Left;
@@ -42,6 +42,6 @@ Actor *SpawnLupinPotionCastActor(s32 index)
     SetActorAssetRecord(pShadow, &g_LupinPotionShadowGfx);
     SnapActorPosition(pShadow, pActor->posPrev.x, pActor->posPrev.y);
     pShadow->pOwnerActor = pActor;
-    pActor->pLinkedActor_candidate = pShadow;
+    pActor->pLinkedActor = pShadow;
     return pActor;
 }

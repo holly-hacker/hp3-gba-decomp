@@ -17,8 +17,8 @@
 DESTROY_PARTY_MEMBER_ACTOR_LINKAGE void DestroyPartyMemberActor(Actor *actor)
 {
     actor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
-    if (actor->pLinkedActor_candidate != NULL)
-        actor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+    if (actor->pLinkedActor != NULL)
+        actor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
     actor->pShadowActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
 }
 
@@ -55,11 +55,12 @@ FREE_FIELD_HUD_ACTORS_LINKAGE void FreeFieldHudActors(void)
     }
 }
 
-#ifndef GET_PARTY_MASTER_STATS_SLOT_LINKAGE
-#define GET_PARTY_MASTER_STATS_SLOT_LINKAGE extern inline
+#ifndef GET_CHARACTER_FIGHTER_TYPE_LINKAGE
+#define GET_CHARACTER_FIGHTER_TYPE_LINKAGE extern inline
 #endif
 
-GET_PARTY_MASTER_STATS_SLOT_LINKAGE u32 GetPartyMasterStatsSlot_candidate(u32 characterId)
+// The FighterType of a party character id; the outfit variants map to their character.
+GET_CHARACTER_FIGHTER_TYPE_LINKAGE u32 GetCharacterFighterType(u32 characterId)
 {
     switch (characterId)
     {

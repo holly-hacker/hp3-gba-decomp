@@ -1,6 +1,7 @@
 #include "actor.h"
 
-void CancelActorMove_candidate(Actor *actor)
+// Zeroes the velocity and acceleration; the move target is kept.
+void StopActorMotion(Actor *actor)
 {
     actor->accel.x = 0;
     actor->accel.y = 0;

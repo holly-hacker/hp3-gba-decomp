@@ -41,9 +41,9 @@ void RoomScriptOpPlaySpecialSceneEffect(SpecialSceneEffectRecord *pRecord)
     installBg:
         RegisterBgTileAnimation(bgResource, &g_dwSpecialSceneBgControl, 0);
         g_abQuestEventState[QUEST_ROOM_BG_VARIANT] = 1;
-        g_aCameraEffects_candidate[0].bState = 0;
-        g_aCameraEffects_candidate[0].dwFramesLeft = 0;
-        g_aCameraEffects_candidate[0].dwRunForever = 0;
+        g_aCameraEffects[0].bState = 0;
+        g_aCameraEffects[0].dwFramesLeft = 0;
+        g_aCameraEffects[0].dwRunForever = 0;
         break;
     case 3:
         savedBlendControl = REG_BLDCNT;

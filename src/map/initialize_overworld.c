@@ -103,7 +103,7 @@ void InitializeOverworld(void)
         pRoom = &CURRENT_ROOM;
         SetupRoomBgControlAndTilesets(bgCtrl3, bgCtrl1, bgCtrl2, bgCtrl0,
                                                pRoom->aBgResources[0], pRoom->aBgResources[1]);
-        LoadRoomSharedTileset_candidate(
+        LoadRoomCollision(
             CURRENT_ROOM.pCollisionBehaviorTable,
             CURRENT_ROOM.pCollisionTilemap);
         NoopOverworldRoomLoad();
@@ -135,7 +135,7 @@ void InitializeOverworld(void)
         pPlayer = SpawnPlayerActor(g_bPartyCharId0);
         SpawnPartyFollowers();
         SetCameraFocusPinned(0, 0);
-        SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
+        SetCameraFollowTarget(pPlayer, g_PlayerCameraFocusOffset, 0);
         SetRoomScrollBounds(
             CURRENT_ROOM.wScrollBoundMinX,
             CURRENT_ROOM.wScrollBoundMinY,
@@ -147,7 +147,7 @@ void InitializeOverworld(void)
         {
             SpawnMissingRoomGroupActors(0);
             RunRoomScriptChain(0, 0);
-            if (g_wRoomResourceFlags_candidate & 1)
+            if (g_wRoomVariantFlags & 1)
             {
                 SpawnMissingRoomGroupActors(1);
                 RunRoomScriptChain(1, 0);
@@ -168,16 +168,16 @@ void InitializeOverworld(void)
                     g_GameModeStackContext.dwCurrentGameModeArg3 = 0;
                     RestoreRoomActorState();
                     SetCameraFocusPinned(0, 0);
-                    SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
+                    SetCameraFollowTarget(pPlayer, g_PlayerCameraFocusOffset, 0);
                 }
                 else
                 {
                     RestoreRoomActorStateMinimal();
                     SetCameraFocusPinned(0, 0);
-                    SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
+                    SetCameraFollowTarget(pPlayer, g_PlayerCameraFocusOffset, 0);
                     SpawnMissingRoomGroupActors(0);
                     RunRoomScriptChain(0, 0);
-                    if (g_wRoomResourceFlags_candidate & 1)
+                    if (g_wRoomVariantFlags & 1)
                     {
                         SpawnMissingRoomGroupActors(1);
                         RunRoomScriptChain(1, 0);
@@ -198,16 +198,16 @@ void InitializeOverworld(void)
             {
                 RestoreRoomActorState();
                 SetCameraFocusPinned(0, 0);
-                SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
+                SetCameraFollowTarget(pPlayer, g_PlayerCameraFocusOffset, 0);
             }
             else
             {
                 RestoreRoomActorStateMinimal();
                 SetCameraFocusPinned(0, 0);
-                SetCameraFollowTarget_candidate(pPlayer, g_PlayerCameraFocusOffset, 0);
+                SetCameraFollowTarget(pPlayer, g_PlayerCameraFocusOffset, 0);
                 SpawnMissingRoomGroupActors(0);
                 RunRoomScriptChain(0, 0);
-                if (g_wRoomResourceFlags_candidate & 1)
+                if (g_wRoomVariantFlags & 1)
                 {
                     SpawnMissingRoomGroupActors(1);
                     RunRoomScriptChain(1, 0);
@@ -231,17 +231,17 @@ void InitializeOverworld(void)
         UpdateOverworldCamera(1);
         ReloadRoomBgTiles();
         if ((g_dwGameModeFlags & (SerialSessionActive | GameModeFlagSerialSkipFocusInit)) != (SerialSessionActive | GameModeFlagSerialSkipFocusInit))
-            TickCameraFocus_candidate(0);
+            TickCameraFocus(0);
         RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationA);
         RegisterRoomBgTileAnimation(CURRENT_ROOM.pBgTileAnimationB);
 
         // Per-room BG layer enables and priorities; RoomHagridsGardenMaze and the default start
         // color cycles.
-        g_dwRoomBgFlag_candidate = 0;
+        g_dwRoomUsesBg0 = 0;
         switch (g_GameModeStackContext.dwCurrentGameModeArg2)
         {
         case RoomPotionsClassroom:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 0);
             SetBgPriority(2, 0);
@@ -249,14 +249,14 @@ void InitializeOverworld(void)
             break;
         case RoomThirdFloor:
         case RoomLeakyCauldronHarrysRoom:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             SetAlphaBlendTargets(4, 0x1f);
             break;
         case RoomHogwartsExpressPassengerCar:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(1, 0);
@@ -271,7 +271,7 @@ void InitializeOverworld(void)
             SetupColorCycles(&g_ColorCyclesRoom12);
             break;
         case RoomSecondFloor:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             break;
@@ -279,24 +279,24 @@ void InitializeOverworld(void)
             SetBgPriority(2, 0);
             break;
         case RoomTransfigurationClassroom:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             break;
         case RoomStaffRoom:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             break;
         case RoomPortraitRoomPassage:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             DisableBg(1);
             break;
         case RoomSeventhFloor:
         case RoomPortraitRoom:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 0);
             break;
@@ -307,24 +307,24 @@ void InitializeOverworld(void)
         case RoomHogwartsExpressBuffetCar:
         case RoomHagridsHut:
         case RoomGryffindorCommonRoom:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             break;
         case RoomHogwartsExpressBaggageCar:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             break;
         case RoomLeakyCauldronMain:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
             break;
         case RoomGrandStaircase:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
@@ -346,20 +346,20 @@ void InitializeOverworld(void)
             break;
         case RoomEntranceHall:
         case RoomSixthFloor:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             SetBgPriority(2, 0);
             EnableBg(0);
             SetBgPriority(0, 1);
             break;
         case RoomGreatHall:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 0);
             SetAlphaBlendTargets(5, 0x1f);
             SetAlphaBlendCoefficients(0xd, 7);
             break;
         case RoomFredAndGeorgesShop:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 2);
             SetBgPriority(2, 2);
@@ -369,7 +369,7 @@ void InitializeOverworld(void)
             SetBgPriority(2, 0);
             break;
         case RoomHospitalWing:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 1);
             SetBgPriority(2, 0);
@@ -379,7 +379,7 @@ void InitializeOverworld(void)
             SetBgPriority(2, 1);
             break;
         case RoomWizardCardCollectorsClub:
-            g_dwRoomBgFlag_candidate = 1;
+            g_dwRoomUsesBg0 = 1;
             EnableBg(0);
             SetBgPriority(0, 3);
             SetBgPriority(2, 0);
@@ -406,10 +406,10 @@ void InitializeOverworld(void)
             SpawnMissingRoomGroupActors(g_bPendingRoomScriptRow);
 
         g_abQuestEventState[QUEST_PREV_STORY_STAGE] = g_abQuestEventState[QUEST_STORY_STAGE];
-        if (g_bPendingQuestStateOverride_candidate != 0xff)
+        if (g_bStoryStageToRestore != 0xff)
         {
-            g_abQuestEventState[QUEST_STORY_STAGE] = g_bPendingQuestStateOverride_candidate;
-            g_bPendingQuestStateOverride_candidate = 0xff;
+            g_abQuestEventState[QUEST_STORY_STAGE] = g_bStoryStageToRestore;
+            g_bStoryStageToRestore = 0xff;
         }
 
         PlayScreenTransitionInByIndex(0x3f, 2);
@@ -417,7 +417,7 @@ void InitializeOverworld(void)
             ShowMapNamePopup();
 
         g_dwGameModeFlags &= ~GameModeFlagSwitchingMode;
-        g_bControlSlotTicks_candidate = 0;
+        g_bControlSlotTicks = 0;
         g_dwFieldSpellActive = 0;
         if (g_GameModeStackContext.dwCurrentGameModeArg1 == OverworldEntryReturn
             && g_GameModeStackContext.dwCurrentGameModeArg3 == 0xff)

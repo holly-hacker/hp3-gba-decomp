@@ -10,7 +10,7 @@ typedef struct GrantPartySpellRecord {
 
 void RoomScriptOpGrantPartySpell(GrantPartySpellRecord *pRecord)
 {
-    u32 slot = GetPartyMasterStatsSlot_candidate(pRecord->bCharacterId);
+    u32 slot = GetCharacterFighterType(pRecord->bCharacterId);
     u32 count = g_aPartyMasterStats[slot].stats.bKnownSpellCount;
     u32 next = count;
 

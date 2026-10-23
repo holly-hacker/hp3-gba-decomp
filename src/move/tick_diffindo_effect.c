@@ -7,7 +7,7 @@
 // 0x11, set by HandleFieldSpellHit) or its 45 ticks run out (5), then plays its last animation.
 void TickDiffindoEffect(Actor *effect)
 {
-    u32 spell = effect->wCharacterId_candidate;
+    u32 spell = effect->wSubtype;
 
     if (effect->bActionSubState == 3 && (u16)--effect->timer84.nFlightTicks == 0xFFFF)
     {
@@ -18,7 +18,7 @@ void TickDiffindoEffect(Actor *effect)
     switch (effect->bActionSubState)
     {
     case 0:
-        effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
+        effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision;
         effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->dwStateTimer = 5;
         SetActorVelocityFromFacing(effect);
@@ -29,7 +29,7 @@ void TickDiffindoEffect(Actor *effect)
             effect->dwStateTimer--;
         break;
     case 0x10:
-        CancelActorMove_candidate(effect);
+        StopActorMotion(effect);
         effect->dwFlags |= ActorFlagVisible;
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_abDiffindoHitAnim, 0);
         SetActorActionSubState(effect, 0x12);
@@ -37,7 +37,7 @@ void TickDiffindoEffect(Actor *effect)
         break;
     case 5:
     case 0x11:
-        CancelActorMove_candidate(effect);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_abDiffindoEndAnim, 0);
         SetActorActionSubState(effect, 0x12);
         if (effect->timer84.nFlightTicks > 0)

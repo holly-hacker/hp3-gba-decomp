@@ -34,7 +34,7 @@ void CheckBattleDefeat(void)
     if (g_bPartyCharId2 == 8)
         g_bPartyCharId2 = 0xFF;
 
-    g_pFightState->bFaintMessageCount_candidate = 0;
+    g_pFightState->bHitResultCount = 0;
     ShowBattleMessage(Defeat, 0, 0);
     PlayMusicModule(0x1C);
 
@@ -49,11 +49,11 @@ void CheckBattleDefeat(void)
     g_pFightState->bDefeatWarpTarget = g_aDefeatWarpRoomId[g_abQuestEventState[QUEST_DEFEAT_WARP_SELECTOR]];
 
     if (g_abQuestEventState[QUEST_DEFEAT_WARP_SELECTOR] == 0x13)
-        g_abRoomScriptExitParams_candidate[0] = 1;
+        g_abRoomEntryIds[0] = 1;
     else
-        g_abRoomScriptExitParams_candidate[0] = 0;
+        g_abRoomEntryIds[0] = 0;
 
-    g_bPendingQuestStateOverride_candidate = g_abQuestEventState[QUEST_STORY_STAGE];
+    g_bStoryStageToRestore = g_abQuestEventState[QUEST_STORY_STAGE];
     g_abQuestEventState[QUEST_STORY_STAGE] = 0x1F;
     PushBattleState(BattleStateDefeat);
 }

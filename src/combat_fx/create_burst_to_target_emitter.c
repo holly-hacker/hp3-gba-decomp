@@ -26,7 +26,7 @@ ParticleEmitter *CreateBurstToTargetEmitter(Actor *actor, u8 poolIndex, u8 entry
     actor->pWindupParticleEmitter->bAnimTicks = 3;
     actor->pWindupParticleEmitter->dwSpeed = 0x300;
     GetActorAnchor(g_pFightState->pFighters[g_effectStaging.bTargetIndex].pActor, 1, &anchor);
-    actor->pWindupParticleEmitter->nVelX = FixedDivide(((g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam] + anchor.x) << 16) - actor->pos.x, 30 << 16);
-    actor->pWindupParticleEmitter->nVelY = FixedDivide(((g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam] + anchor.y) << 16) - actor->pos.y, 30 << 16);
+    actor->pWindupParticleEmitter->nVelX = FixedDivide(((g_awBattleSlotPosX[g_effectStaging.bScriptParam] + anchor.x) << 16) - actor->pos.x, 30 << 16);
+    actor->pWindupParticleEmitter->nVelY = FixedDivide(((g_abBattleSlotPosY[g_effectStaging.bScriptParam] + anchor.y) << 16) - actor->pos.y, 30 << 16);
     return actor->pWindupParticleEmitter;
 }

@@ -8,7 +8,7 @@ const ScanlineEffectEntry g_aDialogScanlineEffects[1] = {
     { 0x9F, 0, 0, 0, BeginDialogBoxPanelScanline },
 };
 
-// g_aDialogPortraits index for each party slot (GetPartyMasterStatsSlot_candidate).
+// g_aDialogPortraits index for each FighterType (GetCharacterFighterType).
 const u8 g_abPartySlotDialogPortraits[4] = { 0, 12, 8, 0 };
 
 const ActorAssetRecord g_aDialogPortraits[135] = {

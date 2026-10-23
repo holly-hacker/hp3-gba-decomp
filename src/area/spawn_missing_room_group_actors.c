@@ -22,8 +22,8 @@ void SpawnMissingRoomGroupActors(u8 row)
         {
             type = pRecord->wActorType;
             pRecord->pActor = g_apRoomActorConstructors[type](row, i);
-            pRecord->pActor->bRoomTileCol_candidate = row;
-            pRecord->pActor->bRoomTileRow_candidate = i;
+            pRecord->pActor->bRoomRecordCol = row;
+            pRecord->pActor->bRoomRecordRow = i;
             pRecord->pActor->dwFlags |= ActorFlagRoomRecordBound;
         }
     }

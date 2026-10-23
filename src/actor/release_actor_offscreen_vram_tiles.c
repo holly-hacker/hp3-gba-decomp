@@ -21,7 +21,7 @@ void ReleaseActorOffscreenVramTiles(Actor *actor)
             if (actor->bDrawFlags & ActorDrawFlagShareTiles)
                 index = 0;
             else
-                index = actor->anim.bAnimFrameIndex_candidate;
+                index = actor->anim.bLoadedAnimFrame;
 
             if (--g_pActorPoolAuxBuffer[auxSlot].abRefCounts[index] == 0) {
                 g_pActorPoolAuxBuffer[auxSlot].awTileAllocIds[index] = 0xFFFF;

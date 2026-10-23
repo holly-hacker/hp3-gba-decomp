@@ -17,9 +17,9 @@ void RoomScriptOpShowItemRemovedMessage(ShowItemRemovedMessageRecord *pRecord)
 {
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
-    SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
-    SetTextMacro3String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
-    ShowRoomDialogBox_candidate(0x28e);
-    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
-    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
+    SetTextMacro1String(GetDialogText(GetRewardNameTextId(pRecord->bRewardId)));
+    SetTextMacro3String(GetDialogText(GetRewardNameTextId(pRecord->bRewardId)));
+    ShowDialogBlock(0x28e);
+    g_DialogState.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState.bArg1D = pRecord->bDialogArg1D;
 }

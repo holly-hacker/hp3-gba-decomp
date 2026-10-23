@@ -5,7 +5,7 @@
 
 void LeaveDementorMinigame(void)
 {
-    if (g_dwDementorMinigameScriptFlag_candidate != 0)
+    if (g_dwDementorMinigameForceOverworldExit != 0)
     {
         PushGameMode_2(Overworld, OverworldEntryEnterRoom, g_bCurrentRoomId);
         g_dwPendingGameMode.dwCurrentGameModeArg1 = OverworldEntryReturn;

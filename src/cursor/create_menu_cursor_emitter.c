@@ -16,7 +16,7 @@ void CreateMenuCursorEmitter(Actor *pCursor)
     emitter->wLifetimeBase = 0x23;
     emitter->wLifetimeRange = 5;
     emitter->wFlags = ParticleEmitterFlagAnimTicksFixed | ParticleEmitterFlagNoCollision
-                     | ParticleEmitterFlagPriorityBelow_candidate | ParticleEmitterFlagSpawnRoll;
+                     | ParticleEmitterFlagPriorityBelow | ParticleEmitterFlagSpawnRoll;
     emitter->wSpread = 1;
     emitter->wSpawnTimer = 0;
     emitter->bMode = ParticleModeRandomVelocity;

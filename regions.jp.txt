@@ -50,7 +50,7 @@ c-file 0x080019E0 _ src/actor/set_actor_local_velocity_y.c SetActorLocalVelocity
 c-file 0x080019F8 _ src/actor/set_actor_accel_in_direction16.c SetActorAccelInDirection16
 c-file 0x08001A34 _ src/actor/set_actor_velocity_from_facing.c SetActorVelocityFromFacing
 c-file 0x08001A58 _ src/actor/offset_actor_position.c OffsetActorPosition
-c-file 0x08001A78 _ src/actor/cancel_actor_move.c CancelActorMove_candidate
+c-file 0x08001A78 _ src/actor/stop_actor_motion.c StopActorMotion
 c-file 0x08001A84 _ src/actor/start_actor_move.c StartActorMove
 c-file 0x08001A94 _ src/actor/set_actor_move_target_with_duration.c SetActorMoveTargetWithDuration
 c-file 0x08001AA8 _ src/actor/get_actor_anchor.c GetActorAnchor
@@ -311,12 +311,12 @@ c-file 0x08009F3C _ src/buckbeak_minigame/get_buckbeak_minigame_ring_frame_row.c
 c-file 0x08009F64 _ src/buckbeak_minigame/release_buckbeak_minigame_actor.c ReleaseBuckbeakMinigameActor
 c-file 0x08009F80 _ src/buckbeak_minigame/handle_buckbeak_minigame_exit_select.c HandleBuckbeakMinigameExitSelect
 c-file 0x08009FD8 _ src/camera/reset_camera_focus_slot.c ResetCameraFocusSlot
-c-file 0x0800A03C _ src/camera/tick_camera_focus.c TickCameraFocus_candidate
+c-file 0x0800A03C _ src/camera/tick_camera_focus.c TickCameraFocus
 c-file 0x0800A1F0 _ src/camera/move_camera_focus_toward.c MoveCameraFocusToward
 c-file 0x0800A320 _ src/camera/snap_camera_focus.c SnapCameraFocus
 c-file 0x0800A348 _ src/camera/set_camera_focus_pinned.c SetCameraFocusPinned
 c-file 0x0800A38C _ src/camera/set_camera_focus_position.c SetCameraFocusPosition
-c-file 0x0800A3AC _ src/camera/set_camera_follow_target.c SetCameraFollowTarget_candidate
+c-file 0x0800A3AC _ src/camera/set_camera_follow_target.c SetCameraFollowTarget
 c-file 0x0800A3EC _ src/camera/get_camera_focus_position.c GetCameraFocusPosition
 c-file 0x0800A408 _ src/camera/get_camera_follow_offset.c GetCameraFollowOffset
 c-file 0x0800A420 _ src/camera/offset_camera_focus.c OffsetCameraFocus
@@ -402,7 +402,7 @@ c-file 0x0800D254 _ src/color/load_obj_palette_colors.c LoadObjPaletteColors
 c-file 0x0800D264 _ src/color/queue_obj_palette_load.c QueueObjPaletteLoad
 c-file 0x0800D29C _ src/color/queue_obj_palette_load_at_offset.c QueueObjPaletteLoadAtOffset
 c-file 0x0800D2DC _ src/color/reset_palette_animations.c ResetPaletteAnimations
-c-file 0x0800D2F4 _ src/color/tick_palette_animations.c TickPaletteAnimations_candidate
+c-file 0x0800D2F4 _ src/color/tick_palette_animations.c TickPaletteAnimations
 c-file 0x0800D304 _ src/color/upload_palette_animations.c UploadPaletteAnimations
 c-file 0x0800D354 _ src/color/flush_obj_palette_queue.c FlushObjPaletteQueue
 c-file 0x0800D39C _ src/color/clear_palette_ram.c ClearPaletteRam
@@ -442,12 +442,12 @@ c-file 0x0800E39C _ src/combat_board/draw_enemy_stats_ui.c DrawEnemyStatsUi
 c-file 0x0800E5B8 _ src/combat_board/jitter_enemy_turn_order.c JitterEnemyTurnOrder
 c-file 0x0800E62C _ src/combat_board/build_turn_order.c BuildTurnOrder
 c-file 0x0800E890 _ src/combat_board/revive_fighter.c ReviveFighter
-c-file 0x0800EA68 _ src/combat_board/clear_paralyzed_fighter.c ClearParalyzedFighter_candidate
-c-file 0x0800EB2C _ src/combat_board/clear_poisoned_fighter.c ClearPoisonedFighter_candidate
+c-file 0x0800EA68 _ src/combat_board/clear_paralyzed_fighter.c ClearParalyzedFighter
+c-file 0x0800EB2C _ src/combat_board/clear_poisoned_fighter.c ClearPoisonedFighter
 c-file 0x0800EBAC _ src/combat_core/init_battle_display.c InitBattleDisplay
 c-file 0x0800EDD8 _ src/combat_core/setup_battle_roster.c SetupBattleRoster
-c-file 0x0800F16C _ src/combat_core/restore_fighter_actors.c RestoreFighterActors_candidate
-c-file 0x0800F5F0 _ src/combat_core/resume_battle_after_submode.c ResumeBattleAfterSubmode_candidate
+c-file 0x0800F16C _ src/combat_core/restore_fighter_actors.c RestoreFighterActors
+c-file 0x0800F5F0 _ src/combat_core/start_or_resume_battle.c StartOrResumeBattle
 c-file 0x0800F794 _ src/combat_core/tick_battle_turn_state_machine.c TickBattleTurnStateMachine
 c-file 0x0800FEE0 _ src/combat_core/set_fighter_turn_order_icon_active.c SetFighterTurnOrderIconActive
 c-file 0x0800FFAC _ src/combat_core/roll_fighter_paralysis_escape.c RollFighterParalysisEscape
@@ -541,10 +541,10 @@ c-file 0x08015320 _ src/combat_fighter/restore_fighter_mp.c RestoreFighterMp
 c-file 0x08015388 _ src/combat_fighter/set_monster_actor_anim.c SetMonsterActorAnim
 c-file 0x08015470 _ src/combat_fighter/set_player_actor_anim.c SetPlayerActorAnim
 c-file 0x08015560 _ src/combat_fighter/update_monster_screen_shake.c UpdateMonsterScreenShake
-c-file 0x080155F4 _ src/combat_fighter/tick_fighter_attack_anim_state.c TickFighterAttackAnimState_candidate
+c-file 0x080155F4 _ src/combat_fighter/tick_monster_action_state.c TickMonsterActionState
 c-file 0x08015F3C _ src/combat_fighter/show_attack_result.c ShowAttackResult
 c-file 0x08016018 _ src/combat_fighter/tick_player_action_state.c TickPlayerActionState
-c-file 0x08017B48 _ src/combat_fighter/show_damage_number.c ShowDamageNumber_candidate
+c-file 0x08017B48 _ src/combat_fighter/stage_fighter_damage.c StageFighterDamage
 c-file 0x08017C10 _ src/combat_fighter/resolve_player_attack.c ResolvePlayerAttack
 c-file 0x08017E30 _ src/combat_fighter/resolve_enemy_attack.c ResolveEnemyAttack
 c-file 0x08017F84 _ src/combat_fighter/apply_damage_to_enemy_fighter.c ApplyDamageToEnemyFighter
@@ -552,7 +552,7 @@ c-file 0x08018080 _ src/combat_fighter/apply_damage_to_ally_fighter.c ApplyDamag
 c-file 0x08018198 _ src/combat_fighter/show_floating_damage_number.c ShowFloatingDamageNumber
 c-file 0x08018280 _ src/combat_fighter/tick_floating_damage_number.c TickFloatingDamageNumber
 c-file 0x080182F0 _ src/combat_fighter/check_battle_defeat.c CheckBattleDefeat
-c-file 0x0801844C _ src/combat_fighter/prune_fainted_and_rebuild_turn_order.c PruneFaintedAndRebuildTurnOrder_candidate
+c-file 0x0801844C _ src/combat_fighter/prune_fainted_and_rebuild_turn_order.c PruneFaintedAndRebuildTurnOrder
 c-file 0x080186CC _ src/combat_fighter/check_battle_victory.c CheckBattleVictory
 c-file 0x08018728 _ src/combat_fighter/reset_all_party_levels_to_1.c ResetAllPartyLevelsTo1
 c-file 0x08018740 _ src/combat_fighter/reset_party_hp_mp_and_stats.c ResetPartyHpMpAndStats
@@ -766,7 +766,7 @@ c-file 0x0801F950 _ src/dialog/show_dialog_line.c ShowDialogLine
 c-file 0x0801FA00 _ src/dialog/advance_dialog.c AdvanceDialog
 c-file 0x0801FA84 _ src/dialog/load_dialog_box_graphics.c LoadDialogBoxGraphics
 c-file 0x0801FADC _ src/dialog/exit_dialog.c ExitDialog
-c-file 0x0801FB3C _ src/dialog_box/show_room_dialog_box.c ShowRoomDialogBox_candidate
+c-file 0x0801FB3C _ src/dialog_box/show_dialog_block.c ShowDialogBlock
 c-file 0x0801FB60 _ src/dialog_box/init_dialog_box.c InitDialogBox
 c-file 0x0801FB8C _ src/dialog_box/set_dialog_text_align.c SetDialogTextAlign
 c-file 0x0801FB98 _ src/dialog_box/set_dialog_text_reveal.c SetDialogTextReveal
@@ -797,7 +797,7 @@ c-file 0x080203B4 _ src/flipbook/clear_room_tile_animations.c ClearRoomTileAnima
 c-file 0x080203D8 _ src/flipbook/resume_room_tile_animation.c ResumeRoomTileAnimation
 c-file 0x08020414 _ src/flipbook/halt_room_tile_animation.c HaltRoomTileAnimation
 c-file 0x08020428 _ src/flipbook/apply_room_tile_animation_at.c ApplyRoomTileAnimationAt
-c-file 0x08020478 _ src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor_candidate
+c-file 0x08020478 _ src/flipbook/spawn_room_tile_animation_actor.c SpawnRoomTileAnimationActor
 c-file 0x080204EC _ src/flipbook/find_room_tile_animation.c FindRoomTileAnimation
 c-file 0x08020534 _ src/flipbook/rewind_room_tile_animation_step.c RewindRoomTileAnimationStep
 c-file 0x08020558 _ src/flipbook/get_room_tile_anim_frame_block_count.c GetRoomTileAnimFrameBlockCount
@@ -920,7 +920,7 @@ c-file 0x08024A24 _ src/hero/get_party_presence_mask.c GetPartyPresenceMask
 c-file 0x08024A58 _ src/hero/get_party_size.c GetPartySize
 c-file 0x08024A8C _ src/hero/player_receive_reward.c PlayerReceiveReward
 c-file 0x08024AE4 _ src/hero/player_receive_reward_alt.c PlayerReceiveRewardAlt
-c-file 0x08024B48 _ src/hero/get_party_master_stats_slot_candidate.c GetPartyMasterStatsSlot_candidate
+c-file 0x08024B48 _ src/hero/get_character_fighter_type.c GetCharacterFighterType
 c-file 0x08024B94 _ src/hero/tick_held_reward_actor.c TickHeldRewardActor
 c-file 0x08024BC0 _ src/hero/set_player_shadow_visible.c SetPlayerShadowVisible
 c-file 0x08024BF0 _ src/hero/start_field_spell_cast.c StartFieldSpellCast
@@ -999,7 +999,7 @@ c-file 0x080268CC _ src/items/apply_equipment_stat_modifiers.c ApplyEquipmentSta
 c-file 0x080269B8 _ src/items/unequip_item_from_slot.c UnequipItemFromSlot
 c-file 0x08026A3C _ src/items/use_restore_potion.c UseRestorePotion
 c-file 0x08026B6C _ src/items/debug_grant_all_items.c DebugGrantAllItems
-c-file 0x08026BE8 _ src/items/get_reward_name_string_id.c GetRewardNameStringId_candidate
+c-file 0x08026BE8 _ src/items/get_reward_name_text_id.c GetRewardNameTextId
 c-file 0x08026C28 _ src/items/get_item_image_data.c GetItemImageData
 c-file 0x08026C94 _ src/items/get_item_buy_price.c GetItemBuyPrice
 c-file 0x08026CA8 _ src/items/get_item_sell_price.c GetItemSellPrice
@@ -1013,7 +1013,7 @@ c-file 0x08026D4C _ src/items/get_potion_magnitude.c GetPotionMagnitude
 c-file 0x08026D60 _ src/items/is_item_usable_in_battle.c IsItemUsableInBattle_candidate
 c-file 0x08026D78 _ src/items/is_item_listed_in_items_menu.c IsItemListedInItemsMenu_candidate
 c-file 0x08026D90 _ src/items/is_item_consumable.c IsItemConsumable
-c-file 0x08026DA8 _ src/items/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame_candidate
+c-file 0x08026DA8 _ src/items/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame
 c-file 0x08026DB4 _ src/items/clear_item_inventory.c ClearItemInventory
 c-file 0x08026DFC _ src/items/serialize_item_quantities.c SerializeItemQuantities
 c-file 0x08026E1C _ src/items/deserialize_item_quantities.c DeserializeItemQuantities
@@ -1117,8 +1117,8 @@ c-file 0x0802B0B4 _ src/map/update_overworld.c UpdateOverworld
 c-file 0x0802B0E8 _ src/map/save_room_actor_state_on_exit.c SaveRoomActorStateOnExit
 c-file 0x0802B0F4 _ src/map/noop_overworld_unused_a.c NoopOverworldUnusedA
 c-file 0x0802B0F8 _ src/map/noop_overworld_unused_b.c NoopOverworldUnusedB
-c-file 0x0802B0FC _ src/map/tick_overworld_control_slots.c TickOverworldControlSlots_candidate
-c-file 0x0802B138 _ src/map/tick_overworld_before_actors.c TickOverworldBeforeActors_candidate
+c-file 0x0802B0FC _ src/map/tick_overworld_control_slots.c TickOverworldControlSlots
+c-file 0x0802B138 _ src/map/tick_overworld_view.c TickOverworldView
 c-file 0x0802B150 _ src/map/clear_room_actor_state_buffer.c ClearRoomActorStateBuffer
 c-file 0x0802B16C _ src/map/room_switch_state.c SetRoomSwitchState
 c-file 0x0802B194 _ src/map/start_endless_camera_shake.c StartEndlessCameraShake
@@ -1240,7 +1240,7 @@ c-file 0x0802D6B8 _ src/mode7/init_floor_effect.c InitFloorEffect
 c-file 0x0802D6FC _ src/mode7/free_floor_effect.c FreeFloorEffect
 c-file 0x0802D71C _ src/mode7/start_floor_affine_hblank_dma.c StartFloorAffineHBlankDma
 c-file 0x0802D748 _ src/move/resolve_actor_terrain.c ResolveActorTerrain
-c-file 0x0802D7E4 _ src/move/terrain_collision.c GetCollisionTypeAtPixel_candidate
+c-file 0x0802D7E4 _ src/move/terrain_collision.c GetCollisionTypeAtPixel
 c-file 0x0802DF80 _ src/move/apply_room_switch_effect.c ApplyRoomSwitchEffect
 c-file 0x0802DFB8 _ src/move/nudge_actor.c NudgeAlongVelocity
 c-file 0x0802E074 _ src/move/get_collision_layer_at_pixel.c GetCollisionLayerAtPixel
@@ -1654,7 +1654,7 @@ c-file 0x0803CEBC _ src/screen_transitions/transition_in_box_shrink.c Transition
 c-file 0x0803CF8C _ src/screen_transitions/transition_out_box_shrink.c TransitionOutBoxShrink
 c-file 0x0803D05C _ src/screen_transitions/transition_in_mosaic.c TransitionInMosaic
 c-file 0x0803D1CC _ src/screen_transitions/transition_out_mosaic.c TransitionOutMosaic
-c-file 0x0803D330 _ src/screen_transitions/init_screen_transition_state.c InitScreenTransitionState_candidate
+c-file 0x0803D330 _ src/screen_transitions/init_screen_transition_state.c InitScreenTransitionState
 c-file 0x0803D350 _ src/screen_transitions/set_fade_to_black.c SetFadeToBlack
 c-file 0x0803D378 _ src/screen_transitions/set_fade_to_white.c SetFadeToWhite
 c-file 0x0803D3A0 _ src/screen_transitions/set_alpha_blend_targets.c SetAlphaBlendTargets
@@ -1730,7 +1730,7 @@ c-file 0x0803EF58 _ src/serial/init_serial_session.c InitSerialSession
 c-file 0x0803EF68 _ src/serial/begin_serial_session.c BeginSerialSession
 c-file 0x0803EFAC _ src/serial/get_serial_mode.c GetSerialMode
 c-file 0x0803EFB8 _ src/serial/set_serial_mode.c SetSerialMode
-c-file 0x0803EFC4 _ src/serial/tick_serial_comm_if_active.c TickSerialCommIfActive_candidate
+c-file 0x0803EFC4 _ src/serial/tick_serial_comm_if_active.c TickSerialCommIfActive
 c-file 0x0803EFEC _ src/serial/get_mt19937_last_roll_byte.c GetMt19937LastRollByte
 c-file 0x0803EFF8 _ src/serial/get_serial_checksum_roll_byte.c GetSerialChecksumRollByte
 c-file 0x0803F004 _ src/serial/latch_serial_checksum_roll_byte.c LatchSerialChecksumRollByte
@@ -1752,7 +1752,7 @@ c-file 0x0803FAC8 _ src/serial/close_serial_session.c CloseSerialSession
 c-file 0x0803FAE4 _ src/serial/set_serial_wait_callback.c SetSerialWaitCallback
 c-file 0x0803FAF0 _ src/serial/get_serial_player_count.c GetSerialPlayerCount
 c-file 0x0803FAFC _ src/serial/get_serial_player_id.c GetSerialPlayerId
-c-file 0x0803FB0C _ src/serial/exchange_serial_frame.c ExchangeSerialFrame_candidate
+c-file 0x0803FB0C _ src/serial/exchange_serial_frame.c ExchangeSerialFrame
 c-file 0x0803FB9C _ src/serial/set_serial_unused_value.c SetSerialUnusedValue
 c-file 0x0803FBA8 _ src/serial/get_serial_unused_value.c GetSerialUnusedValue
 c-file 0x0803FBB4 _ src/serial/set_serial_send_keys.c SetSerialSendKeys
@@ -1855,7 +1855,7 @@ c-file 0x0804280C _ src/text_actor/draw_text_actor_text.c DrawTextActorText
 c-file 0x0804292C _ src/text_actor/spawn_unslotted_text_actor.c SpawnUnslottedTextActor
 c-file 0x08042988 _ src/text_actor/spawn_text_actor.c SpawnTextActor
 c-file 0x08042A00 _ src/text_actor/set_text_actor_string.c SetTextActorString
-c-file 0x08042A14 _ src/text_actor/set_text_actor_center_position.c SetTextActorCenterPosition_candidate
+c-file 0x08042A14 _ src/text_actor/set_text_actor_center_position.c SetTextActorCenterPosition
 c-file 0x08042A30 _ src/text_actor/set_text_actor_aligned_position.c SetTextActorAlignedPosition
 c-file 0x08042AC8 _ src/text_actor/clear_text_actor_slots.c ClearTextActorSlots
 c-file 0x08042AE4 _ src/text_actor/clear_text_actor_slot.c ClearTextActorSlot
@@ -2039,7 +2039,7 @@ c-file 0x0804DFA0 _ src/combat_dialog/battle_bg_controls.c g_dwBattleFloorBgCont
 c-file 0x0804DFB0 _ src/combat_dialog/fighter_spell_menus.c g_aabFighterSpellMenu
 c-file 0x0804DFC8 _ src/combat_dialog/battle_backgrounds.c g_aBattleBackgroundPairs
 c-file 0x0804E180 _ src/combat_dialog/battle_music.c g_abBattleMusicByRoom
-c-file 0x0804E1C8 _ src/combat_dialog/menu_sprite003_asset.c g_MenuSprite003Asset_candidate
+c-file 0x0804E1C8 _ src/combat_dialog/menu_sprite003_asset.c g_MenuSprite003Asset
 c-file 0x0804E1D8 _ src/combat_dialog/battle_scanline_effects.c g_aBattleScanlineEffects
 c-file 0x0804E218 _ src/combat_dialog/battle_menu_input_handlers.c g_apfnBattleMenuConfirmHandlers
 c-file 0x0804E270 _ src/combat_dialog/battle_message_text.c g_adwFighterActionTextIds
@@ -2057,7 +2057,7 @@ c-file 0x0804F330 _ src/combat_fighter/fighter_hurt_sounds.c g_aabFighterHurtSou
 # both.
 c-file 0x0804F33C _ src/combat_fighter/monsters.c MonsterTable
 c-file 0x0804F9B4 _ src/combat_fighter/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
-c-file 0x0804FAC8 _ src/combat_fighter/monster_attack_offsets.c g_aMonsterAttackOffset_candidate
+c-file 0x0804FAC8 _ src/combat_fighter/monster_attack_offsets.c g_aMonsterAttackOffset
 c-file 0x0804FB54 _ src/combat_fighter/monster_drop_table.c g_pMonsterDropTable
 c-file 0x0804FD7C _ src/combat_fighter/harry_levels.c g_pHarryLevelTable
 c-file 0x0805022C _ src/combat_fighter/ron_levels.c g_pRonLevelTable
@@ -2075,14 +2075,14 @@ c-file 0x0805148C _ src/combat_fighter/fighter_anim_data.c g_aFighterAnimDataTab
 c-file 0x08051D9C _ src/combat_fighter/monster_anim_data.c g_pMonsterAnimFrameTable
 c-file 0x080537DC _ src/combat_fighter/spell_effect_scripts.c g_abSpellEffectScriptId
 c-file 0x08053818 _ src/combat_fighter/spell_power.c g_awSpellPowerBase
-c-file 0x080538CC _ src/combat_fighter/battle_slot_anchor_pos.c g_aBattleSlotAnchorPos_candidate
-c-file 0x080538D4 _ src/combat_fx/effect_scanline_tables.c g_adwEffectBgControlOverride_candidate
-c-file 0x08053A44 _ src/combat_fx/rain_stream_lists.c g_RainStreakList_candidate
-c-file 0x08053B94 _ src/combat_fx/effect_slot_positions.c g_aEffectOrbitParams_candidate
+c-file 0x080538CC _ src/combat_fighter/party_slot_pos.c g_aPartySlotPos
+c-file 0x080538D4 _ src/combat_fx/effect_scanline_tables.c g_adwEffectBgControls
+c-file 0x08053A44 _ src/combat_fx/rain_stream_lists.c g_RainStreakList
+c-file 0x08053B94 _ src/combat_fx/effect_slot_positions.c g_aEffectOrbitParams
 c-file 0x08053C6C _ src/combat_fx/effect_assets.c g_aEffectActorAssets
-c-file 0x08054400 _ src/combat_fx/effect_bg_records.c g_aEffectBgRecords_candidate
+c-file 0x08054400 _ src/combat_fx/effect_bg_records.c g_aEffectBgRecords
 c-file 0x08054E60 _ src/combat_fx/script_opcode_lengths.c g_abScriptOpcodeLengths
-c-file 0x08054F08 _ src/combat_fx/effect_anim_data.c g_abFighterIdleAnimData_candidate
+c-file 0x08054F08 _ src/combat_fx/effect_anim_data.c g_abFighterHurtLoopAnimData
 c-file 0x08059878 _ src/combat_fx/effect_scripts.c g_apEffectScripts
 c-file 0x0805B9A8 _ src/combat_gauge/sp_gauge_gfx.c g_aSpGaugeGfx
 c-file 0x0805B9B8 _ src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers

@@ -64,7 +64,7 @@ void DrawBattleMenuText(void)
 
     case BattleMenuItem:
         // The potion's name: "Wiggenweld Potion", ...
-        text = GetDialogText(GetRewardNameStringId_candidate(g_pFightState->bMenuCursor + 0x38));
+        text = GetDialogText(GetRewardNameTextId(g_pFightState->bMenuCursor + 0x38));
         break;
 
     case BattleMenuEnemyTarget:

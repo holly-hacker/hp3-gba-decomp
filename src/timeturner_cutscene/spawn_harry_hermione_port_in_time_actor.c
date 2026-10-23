@@ -11,10 +11,10 @@ void SpawnHarryHermionePortInTimeActor(u32 index)
     Actor *pShadow;
 
     ACTOR = AllocActorOfType(RoomActorType_Npc);
-    ACTOR->wCharacterId_candidate = index;
+    ACTOR->wSubtype = index;
     ACTOR->bFighterIndex = index;
     ACTOR->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
-                     | ActorFlagFourWayDirections_candidate;
+                     | ActorFlagFourWayDirections;
     SetActorActionState(ACTOR, 0);
     ACTOR->anim.bAnimFrameDelay = 0;
     ACTOR->bFacing = Direction4Left;
@@ -40,5 +40,5 @@ void SpawnHarryHermionePortInTimeActor(u32 index)
     SnapActorPosition(pShadow, ACTOR->posPrev.x, ACTOR->posPrev.y);
     pShadow->oam.objMode = 1;
     pShadow->pOwnerActor = ACTOR;
-    ACTOR->pLinkedActor_candidate = pShadow;
+    ACTOR->pLinkedActor = pShadow;
 }

@@ -47,7 +47,7 @@ void LoadHarryHermionePortInTimeRoom(u32 roomIndex)
     pRoom = &CURRENT_ROOM;
     SetupRoomBgControlAndTilesets(bgCtrl3, bgCtrl1, bgCtrl2, bgCtrl0,
                                   pRoom->aBgResources[0], pRoom->aBgResources[1]);
-    LoadRoomSharedTileset_candidate(CURRENT_ROOM.pCollisionBehaviorTable, CURRENT_ROOM.pCollisionTilemap);
+    LoadRoomCollision(CURRENT_ROOM.pCollisionBehaviorTable, CURRENT_ROOM.pCollisionTilemap);
     LoadRoomBgBlockTiles0(CURRENT_ROOM.pBgLayer0Extra, CURRENT_ROOM.dwUnused0_8, CURRENT_ROOM.dwUnused0_c);
     LoadRoomBgBlockTiles1(CURRENT_ROOM.pBgLayer1Extra, CURRENT_ROOM.dwUnused1_8, CURRENT_ROOM.dwUnused1_c);
     LoadRoomBgBlockTiles2(CURRENT_ROOM.pBgLayer2Extra, CURRENT_ROOM.dwUnused2_8, CURRENT_ROOM.dwUnused2_c);
@@ -63,7 +63,7 @@ void LoadHarryHermionePortInTimeRoom(u32 roomIndex)
     EnableBg(3);
     UpdateOverworldCamera(1);
     ReloadRoomBgTiles();
-    TickCameraFocus_candidate(0);
+    TickCameraFocus(0);
 
     if (roomIndex == 0)
     {

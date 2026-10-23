@@ -18,17 +18,17 @@ void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex)
     if (g_pFightState->pFighters[fighterIndex].stats.wHp == 0
         || g_pFightState->pFighters[fighterIndex].stats.wHp > g_pFightState->pFighters[fighterIndex].wHp_max)
     {
-        if (g_pFightState->bFaintMessageCount_candidate == 0)
+        if (g_pFightState->bHitResultCount == 0)
             ShowBattleMessage(AttackResult, (u16)fighterIndex, 2);
 
-        g_pFightState->dwDefeatCheckPending_candidate = 1;
+        g_pFightState->dwFighterFainted = 1;
         g_pFightState->pFighters[fighterIndex].stats.wHp = 0;
         g_pFightState->pFighters[fighterIndex].nFaintedFlag = -1;
 
         {
             u8 idx = fighterIndex;
-            ClearPoisonedFighter_candidate(idx);
-            ClearParalyzedFighter_candidate(idx);
+            ClearPoisonedFighter(idx);
+            ClearParalyzedFighter(idx);
         }
 
         SetActorActionState(g_pFightState->pFighters[fighterIndex].pActor, 1);

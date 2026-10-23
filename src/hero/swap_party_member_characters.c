@@ -12,18 +12,18 @@ Actor *SwapPartyMemberCharacters(Actor *a, Actor *b)
     a->dwFlags &= ~ActorFlagVisible;
     b->dwFlags &= ~ActorFlagVisible;
 
-    tmp = a->wCharacterId_candidate;
-    a->wCharacterId_candidate = b->wCharacterId_candidate;
-    b->wCharacterId_candidate = tmp;
-    if (b->wCharacterId_candidate == g_bPartyCharId0)
+    tmp = a->wSubtype;
+    a->wSubtype = b->wSubtype;
+    b->wSubtype = tmp;
+    if (b->wSubtype == g_bPartyCharId0)
     {
-        g_bPartyCharId0 = a->wCharacterId_candidate;
+        g_bPartyCharId0 = a->wSubtype;
         a->wActorType = RoomActorType_Player;
         b->wActorType = RoomActorType_PartyFollower;
     }
-    else if (a->wCharacterId_candidate == g_bPartyCharId0)
+    else if (a->wSubtype == g_bPartyCharId0)
     {
-        g_bPartyCharId0 = b->wCharacterId_candidate;
+        g_bPartyCharId0 = b->wSubtype;
         b->wActorType = RoomActorType_Player;
         a->wActorType = RoomActorType_PartyFollower;
     }
@@ -47,8 +47,8 @@ Actor *SwapPartyMemberCharacters(Actor *a, Actor *b)
     a->dwFlags |= flagsB;
     b->dwFlags |= tmp;
 
-    SetActorAssetRecord(a, &g_aPartyWalkAssets[a->wCharacterId_candidate]);
-    SetActorAssetRecord(b, &g_aPartyWalkAssets[b->wCharacterId_candidate]);
+    SetActorAssetRecord(a, &g_aPartyWalkAssets[a->wSubtype]);
+    SetActorAssetRecord(b, &g_aPartyWalkAssets[b->wSubtype]);
     SetActorAnimFrame(a, g_abPartyStandFrames[a->bFacing]);
     SetActorAnimFrame(b, g_abPartyStandFrames[b->bFacing]);
     a->oam.hFlip = a->bFacing > DirectionDown;

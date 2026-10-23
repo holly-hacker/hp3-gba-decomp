@@ -10,7 +10,7 @@ Actor *SpawnLupinPotionPanelActor(s32 kind)
 
     if (pActor != NULL)
     {
-        pActor->wCharacterId_candidate = kind;
+        pActor->wSubtype = kind;
         pActor->dwFlags = ActorFlagVisible | ActorFlagHasSpriteCells;
         pActor->oam.objMode = 0;
         if (kind == 0)

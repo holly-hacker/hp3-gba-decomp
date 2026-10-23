@@ -37,7 +37,7 @@ typedef struct {
 
 extern ServePumpkinJuiceState g_ServePumpkinJuice;  // 0x03005238
 
-// Actor.bRoomActorKind_candidate of the minigame's actors, read by the touch handlers.
+// Actor.bKind of the minigame's actors, read by the touch handlers.
 typedef enum {
     ServePumpkinJuiceActorBartender = 1,
     ServePumpkinJuiceActorFullGoblet = 2,

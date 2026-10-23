@@ -4,7 +4,7 @@
 
 // Tests each active box of every queued actor against box 0 of each later
 // actor and, on overlap in the overworld, calls both actors' callbacks for
-// that box slot. Pairs that both set ActorFlagCollisionGroup_candidate are
+// that box slot. Pairs that both set ActorFlagCollisionGroup are
 // skipped.
 void CheckActorCollisions(s32 count, Actor **actors)
 {
@@ -57,7 +57,7 @@ void CheckActorCollisions(s32 count, Actor **actors)
 
             for (j = i + 1; j < count; j++) {
                 other = actors[j];
-                if (actor->dwFlags & other->dwFlags & ActorFlagCollisionGroup_candidate)
+                if (actor->dwFlags & other->dwFlags & ActorFlagCollisionGroup)
                     continue;
                 if (other->aCollisionBoxes[0].state.bState != 1)
                     continue;
@@ -99,7 +99,7 @@ void CheckActorCollisions(s32 count, Actor **actors)
     }
 }
 
-// End marker; see SortActorsByDepthEnd_candidate.
-void CheckActorCollisionsEnd_candidate(void)
+// End marker; see SortActorsByDepthEnd.
+void CheckActorCollisionsEnd(void)
 {
 }

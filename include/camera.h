@@ -7,7 +7,7 @@
 // Per-slot scripted camera effect, started by room script opcodes 0x10
 // (QueueTileActorMove: pan the camera focus to an actor) and 0x12
 // (SetAllQueuedMoveParams: shake). One 0x2C-byte record per control slot,
-// ticked by TickCameraFocus_candidate.
+// ticked by TickCameraFocus.
 typedef struct CameraEffect {
     Actor *pTarget;           // 0x00, pan target
     FixedPoint savedVel;       // 0x04, the controlled actor's velocity, restored when the pan ends
@@ -24,7 +24,7 @@ typedef struct CameraEffect {
     u8 bChainRan;              // 0x27, set once the pan's chain has run
     u32 dwResumeScript;        // 0x28, nonzero: resume the yielded room script when the pan ends
 } CameraEffect;
-extern CameraEffect g_aCameraEffects_candidate[];
+extern CameraEffect g_aCameraEffects[];
 
 // Per-slot camera focus point: what UpdateOverworldCamera centres the
 // screen on (16.16 world coordinates). Follows pTarget unless wPinned is nonzero.
@@ -53,7 +53,7 @@ extern CameraFocusOffset g_aCameraFollowOffsets[];
 extern void ResetCameraFocusSlot(u8 slot);
 // Ticks slot's camera focus: follows the target actor, or runs the active pan/shake
 // effect and its completion chain.
-extern void TickCameraFocus_candidate(u8 slot);
+extern void TickCameraFocus(u8 slot);
 // Steps the focus up to step units toward target, snapping onto it when
 // within step on both axes. Returns CAMERA_FOCUS_ARRIVED on arrival, 0 otherwise.
 extern u8 MoveCameraFocusToward(FixedPoint target, s32 step, u8 slot);
@@ -63,7 +63,7 @@ extern void SnapCameraFocus(FixedPoint position, u8 slot);
 extern void SetCameraFocusPinned(u32 pinned, u8 slot);
 // Stores a position into a slot's focus point.
 extern void SetCameraFocusPosition(FixedPoint position, u8 slot);
-extern void SetCameraFollowTarget_candidate(Actor *pTarget, CameraFocusOffset offset, u8 slot);
+extern void SetCameraFollowTarget(Actor *pTarget, CameraFocusOffset offset, u8 slot);
 // Writes the slot's focus as two 16.16 words.
 extern void GetCameraFocusPosition(FixedPoint *pPosition, u8 slot);
 extern void GetCameraFollowOffset(CameraFocusOffset *pOffset, u8 slot);

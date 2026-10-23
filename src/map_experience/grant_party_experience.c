@@ -48,7 +48,7 @@ void GrantPartyExperience(u32 xp)
             PlayJingle(0x1B);
             pText = GetDialogText(0x52E);  // "Level Up!"
             pTextActor = SpawnUnslottedTextActor(&pText);
-            SetTextActorCenterPosition_candidate(pTextActor, (s16)pos.x, (s16)pos.y);
+            SetTextActorCenterPosition(pTextActor, (s16)pos.x, (s16)pos.y);
             pTextActor->oam.priority = 0;
             pTextActor->oam.paletteNum = 2;
             pTextActor->pfnTick = TickExperiencePopup;
@@ -60,7 +60,7 @@ void GrantPartyExperience(u32 xp)
             SetTextMacro1Number(xp);
             pText = GetDialogText(0x52D);  // "@1 Exp!"
             pTextActor = SpawnUnslottedTextActor(&pText);
-            SetTextActorCenterPosition_candidate(pTextActor, (s16)pos.x, (s16)pos.y);
+            SetTextActorCenterPosition(pTextActor, (s16)pos.x, (s16)pos.y);
             pTextActor->oam.priority = 0;
             pTextActor->oam.paletteNum = 2;
             pTextActor->pfnTick = TickExperiencePopup;

@@ -3,7 +3,7 @@
 
 // Rain streak and splash streams, each behind the 8-byte control block of an effect BG record
 // (docs/formats/graphic_blob.md).
-const EffectStreamList32 g_RainStreakList_candidate = {
+const EffectStreamList32 g_RainStreakList = {
     { 0x02a01f03, 0x400 },
     {
         { (void *)gRainStreak01, 1 },
@@ -41,7 +41,7 @@ const EffectStreamList32 g_RainStreakList_candidate = {
     },
 };
 
-const EffectStreamList8 g_RainSplashList_candidate = {
+const EffectStreamList8 g_RainSplashList = {
     { 0x031c0802, 0x120 },
     {
         { (void *)gRainSplash01, 2 },

@@ -19,11 +19,11 @@ u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint target
             dir = DirectionUpLeft;
             probe.x = ((pos.x - tolerance) >> 16) + actor->bTerrainBoxLeft - 1;
             probe.y = ((pos.y - tolerance) >> 16) + actor->bTerrainBoxTop - 1;
-            if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+            if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
             {
                 probe.y = (pos.y >> 16) + actor->bTerrainBoxTop
                     + (actor->bTerrainBoxBottom - actor->bTerrainBoxTop) / 2 - 1;
-                if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+                if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
                     dir = DirectionUp;
                 else
                     dir = DirectionLeft;
@@ -34,11 +34,11 @@ u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint target
             dir = DirectionUpRight;
             probe.x = ((pos.x + tolerance) >> 16) + actor->bTerrainBoxRight + 1;
             probe.y = ((pos.y - tolerance) >> 16) + actor->bTerrainBoxTop - 1;
-            if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+            if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
             {
                 probe.y = (pos.y >> 16) + actor->bTerrainBoxTop
                     + (actor->bTerrainBoxBottom - actor->bTerrainBoxTop) / 2 - 1;
-                if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+                if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
                     dir = DirectionUp;
                 else
                     dir = DirectionRight;
@@ -54,11 +54,11 @@ u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint target
             dir = DirectionDownLeft;
             probe.x = ((pos.x - tolerance) >> 16) + actor->bTerrainBoxLeft - 1;
             probe.y = ((pos.y + tolerance) >> 16) + actor->bTerrainBoxBottom + 1;
-            if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+            if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
             {
                 probe.y = (pos.y >> 16) + actor->bTerrainBoxTop
                     + (actor->bTerrainBoxBottom - actor->bTerrainBoxTop) / 2 + 1;
-                if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+                if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
                     dir = DirectionDown;
                 else
                     dir = DirectionLeft;
@@ -69,11 +69,11 @@ u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint target
             dir = DirectionDownRight;
             probe.x = ((pos.x + tolerance) >> 16) + actor->bTerrainBoxRight + 1;
             probe.y = ((pos.y + tolerance) >> 16) + actor->bTerrainBoxBottom + 1;
-            if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+            if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
             {
                 probe.y = (pos.y >> 16) + actor->bTerrainBoxTop
                     + (actor->bTerrainBoxBottom - actor->bTerrainBoxTop) / 2 + 1;
-                if (IsBlockingCollisionType(GetCollisionTypeAtPixel_candidate(probe)))
+                if (IsBlockingCollisionType(GetCollisionTypeAtPixel(probe)))
                     dir = DirectionDown;
                 else
                     dir = DirectionRight;

@@ -64,14 +64,14 @@ extern void ReverseActorDirection(Actor *actor);  // 0x0802DE28
 extern u8 StartMoveVelocity(Actor *actor);  // 0x0802DE68
 extern void GetActorTerrainBox(Actor *actor, TerrainBox *box);  // 0x0802DEE0
 extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
-extern u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel);  // 0x0802D7A0
+extern u32 GetCollisionTypeAtPixel(PixelPoint pixel);  // 0x0802D7A0
 extern void NoopInit2(void);
-extern void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
+extern void LoadRoomCollision(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 // Called by ExitOverworldScreen.
-extern void FreeRoomSharedTileset(void);
+extern void FreeRoomCollision(void);
 extern void ApplyRoomSwitchEffect(u32 state);
-// Field spell effects. The effect actor keeps its FieldSpell in wCharacterId_candidate and the
-// caster in pLinkedActor_candidate; its collision callbacks run the spell on what it touches.
+// Field spell effects. The effect actor keeps its FieldSpell in wSubtype and the
+// caster in pLinkedActor; its collision callbacks run the spell on what it touches.
 extern Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell);
 extern void HandleFieldSpellHit(Actor *effect, Actor *target);
 extern void HandleFieldSpellSecondaryHit(Actor *effect, Actor *target);

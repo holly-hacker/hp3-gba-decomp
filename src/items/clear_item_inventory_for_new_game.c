@@ -1,6 +1,6 @@
 #include "items.h"
 
-void ClearItemInventoryForNewGame_candidate(void)
+void ClearItemInventoryForNewGame(void)
 {
     ClearItemInventory();
 }

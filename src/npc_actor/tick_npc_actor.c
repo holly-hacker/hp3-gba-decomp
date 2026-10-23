@@ -36,7 +36,7 @@ void TickNpcActor(Actor *pActor)
     if (g_GameModeStackContext.dwCurrentGameMode != Overworld
         && g_GameModeStackContext.dwCurrentGameMode != Dialog)
     {
-        CancelActorMove_candidate(pActor);
+        StopActorMotion(pActor);
         return;
     }
 
@@ -50,7 +50,7 @@ void TickNpcActor(Actor *pActor)
     case 5:
         if (kind == 0x5F && pActor->pOwnerActor == g_pPlayerActor)
         {
-            CancelActorMove_candidate(pActor);
+            StopActorMotion(pActor);
             SetActorActionState(pActor, 0);
             SetActorActionSubState(pActor, 2);
             pActor->anim.bAnimFrameCounter = 0;
@@ -62,19 +62,19 @@ void TickNpcActor(Actor *pActor)
         }
         break;
     case 3:
-        CancelActorMove_candidate(pActor);
+        StopActorMotion(pActor);
         SetActorActionState(pActor, 0);
         SetActorActionSubState(pActor, 2);
         pActor->anim.bAnimFrameCounter = 0;
         if (kind == 0x21)
         {
-            if (!(pActor->bFlags_0x94_candidate & 4))
+            if (!(pActor->bTypeFlags & 4))
                 SetActorAnimFrame(pActor, g_abNpcFacingFrames[g_adwNpcAnimRows[pActor->bFighterIndex]][0]);
             pActor->oam.hFlip = facing > DirectionDown;
         }
         else if (kind != 0x5F)
         {
-            if (!(pActor->bFlags_0x94_candidate & 4))
+            if (!(pActor->bTypeFlags & 4))
                 SetActorAnimFrame(pActor, g_abNpcFacingFrames[g_adwNpcAnimRows[pActor->bFighterIndex]][facing]);
             SetActorFlippedX(pActor, facing == Direction4Left);
         }
@@ -98,7 +98,7 @@ void TickNpcActor(Actor *pActor)
             {
                 pActor->bFacing = 6;
                 SpawnFieldSpellEffect(pActor, FieldSpellReparo);
-                CancelActorMove_candidate(pActor);
+                StopActorMotion(pActor);
             }
         }
         else if (pActor->dwFlags & ActorFlagActionAnimDone)
@@ -117,13 +117,13 @@ void TickNpcActor(Actor *pActor)
         }
         break;
     case 4:
-        pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
-        if (pActor->bRoomActorKind_candidate == 1)
+        pRecord = GetRoomActorStaticRecord(pActor->bRoomRecordCol, pActor->bRoomRecordRow);
+        if (pActor->bKind == 1)
         {
             pActor->timer84.wInteractCooldown = pRecord->wInteractCooldown * 30;
-            pActor->bFlags_0x94_candidate &= ~1;
+            pActor->bTypeFlags &= ~1;
         }
-        SetActorActionState(pActor, pActor->bPrevActionState_candidate);
+        SetActorActionState(pActor, pActor->bPrevActionState);
         RespawnGroupAndRunChain(pRecord->argC.bytes.bRespawnRow, pRecord->argC.bytes.bChainRow);
         pActor->dwFlags |= ActorFlagHasAnimation;
         break;
@@ -147,7 +147,7 @@ void TickNpcActor(Actor *pActor)
             }
 
             SetActorVelocityFromFacing(pActor);
-            if (!(pActor->bFlags_0x94_candidate & 4))
+            if (!(pActor->bTypeFlags & 4))
             {
                 if (kind == 0x21)
                     SetActorAnimData(pActor, &g_aActorTypeAssets[kind],
@@ -160,8 +160,8 @@ void TickNpcActor(Actor *pActor)
         else if (pActor->bActionSubState == 10 || pActor->bActionSubState == 2
                  || (pActor->vel.x == 0 && pActor->vel.y == 0))
         {
-            CancelActorMove_candidate(pActor);
-            if (!(pActor->bFlags_0x94_candidate & 4))
+            StopActorMotion(pActor);
+            if (!(pActor->bTypeFlags & 4))
             {
                 if (kind == 0x21)
                 {

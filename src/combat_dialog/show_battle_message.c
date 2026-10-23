@@ -31,7 +31,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
     const u8 *text;
 
     fighter = &ACTIVE_FIGHTER;
-    g_pFightState->dwPlayerActionActive_candidate = 1;
+    g_pFightState->dwBattleMessageShown = 1;
     SetTextTargetFromBgControl(g_dwBattleBg0Control);
     SelectTextFont(1, 0, -1);
 
@@ -190,32 +190,32 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
         break;
 
     case FaintResult:
-        while (g_pFightState->bFaintMessageCount_candidate != 0) {
+        while (g_pFightState->bHitResultCount != 0) {
             SelectTextFont(1, 0, -1);
-            g_pFightState->bFaintMessageCount_candidate--;
+            g_pFightState->bHitResultCount--;
             ClearBattleMessageBox();
 
-            // @1 is the attacker: "Harry", "Hermione", "Ron", "Buckbeak", or a creature from
+            // @1 is the target: "Harry", "Hermione", "Ron", "Buckbeak", or a creature from
             // index 4 ("Ruby Fire Crab", ...).
-            if (g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId <= 2)
+            if (g_pFightState->aHitResults[g_pFightState->bHitResultCount].bTargetKind <= 2)
                 SetTextMacro1String(GetDialogText(
-                    g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId + 0x8EC));
-            else if (g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId == 3)
+                    g_pFightState->aHitResults[g_pFightState->bHitResultCount].bTargetKind + 0x8EC));
+            else if (g_pFightState->aHitResults[g_pFightState->bHitResultCount].bTargetKind == 3)
                 SetTextMacro1String(GetDialogText(0xA3D));  // "Buckbeak"
             else
                 SetTextMacro1String(GetDialogText(
-                    g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId + 0x49E));
+                    g_pFightState->aHitResults[g_pFightState->bHitResultCount].bTargetKind + 0x49E));
             DrawBattleMessageLine(0x997, BATTLE_TEXT_ROW0_Y, 0);  // "@1 damage."
 
-            if (g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage > 999) {
+            if (g_pFightState->aHitResults[g_pFightState->bHitResultCount].wDamage > 999) {
                 DrawBattleMessageLine(0x995, BATTLE_TEXT_ROW1_Y, 1);  // "Critical hit!"
-                g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage -= 999;
+                g_pFightState->aHitResults[g_pFightState->bHitResultCount].wDamage -= 999;
             }
 
-            if (g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag == 1) {
+            if (g_pFightState->aHitResults[g_pFightState->bHitResultCount].bMissed == 1) {
                 DrawBattleMessageLine(0xA1B, BATTLE_TEXT_ROW2_Y, 1);  // "The attack misses."
             } else {
-                SetTextMacro1Number(g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage);
+                SetTextMacro1Number(g_pFightState->aHitResults[g_pFightState->bHitResultCount].wDamage);
                 DrawBattleMessageLine(0x997, BATTLE_TEXT_ROW2_Y, 1);  // "@1 damage."
             }
 
@@ -224,7 +224,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
                 TickParticleEmitters();
                 TickBgLayers();
                 TickScreenWindows();
-                TickPaletteAnimations_candidate();
+                TickPaletteAnimations();
                 TickBgTileAnimations();
                 UpdateFloorAffineTable();
                 HideUnusedOamEntries();
@@ -232,7 +232,7 @@ void ShowBattleMessage(u8 code, u16 value, u16 param)
                 WaitForVBlankIntr();
             }
 
-            if (g_pFightState->bFaintMessageCount_candidate == 0)
+            if (g_pFightState->bHitResultCount == 0)
                 CheckBattleVictory(fighter->pActor);
         }
         break;

@@ -8,7 +8,7 @@
 // Ends a fighter's paralysis: on a successful escape roll, CureAilments, a
 // paralysis-curing potion, or fainting. Clears Paralyzed, sets ParalysisImmune,
 // and resets the escape-chance ratchet back to its starting value.
-void ClearParalyzedFighter_candidate(u8 fighterIndex)
+void ClearParalyzedFighter(u8 fighterIndex)
 {
     if (g_pFightState->pFighters[fighterIndex].bStatusFlags & Paralyzed)
     {

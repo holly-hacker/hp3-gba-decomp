@@ -13,10 +13,10 @@ Actor *SpawnPartyFollowerActor(u8 characterId)
     const RoomEntryPoint *pEntry;
 
     pActor = AllocActorOfType(RoomActorType_PartyFollower);
-    pEntry = FindRoomEntryPoint(g_abRoomScriptExitParams_candidate[0], 0);
+    pEntry = FindRoomEntryPoint(g_abRoomEntryIds[0], 0);
     SnapActorPosition(pActor, g_pPlayerActor->pos.x, g_pPlayerActor->pos.y);
     pActor->bFacing = pEntry->bFacing;
-    pActor->wCharacterId_candidate = characterId;
+    pActor->wSubtype = characterId;
     pActor->oam.objMode = 0;
     pActor->oam.bpp8 = 0;
     pActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
@@ -26,10 +26,10 @@ Actor *SpawnPartyFollowerActor(u8 characterId)
     pActor->pfnTick = TickPartyFollowerActor;
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = 0x80;
-    SetActorPendingPalette(pActor, g_aPartyWalkAssets[pActor->wCharacterId_candidate].pPalette);
-    SetActorAssetRecord(pActor, &g_aPartyWalkAssets[pActor->wCharacterId_candidate]);
+    SetActorPendingPalette(pActor, g_aPartyWalkAssets[pActor->wSubtype].pPalette);
+    SetActorAssetRecord(pActor, &g_aPartyWalkAssets[pActor->wSubtype]);
     SetActorAnimFrame(pActor, g_abPartyStandFrames[pActor->bFacing]);
-    if (pActor->wCharacterId_candidate != 4)
+    if (pActor->wSubtype != 4)
         SpawnShadowActor(pActor);
 
     memset(g_pPartyTrail, 0, PARTY_TRAIL_LENGTH * sizeof(PartyTrailStep));

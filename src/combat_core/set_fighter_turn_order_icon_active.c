@@ -11,16 +11,16 @@ void SetFighterTurnOrderIconActive(s32 fighterIndex)
     u8 i;
 
     if (g_pFightState->pFighters[index].bFighterType == Enemy)
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor_candidate, 3);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor, 3);
     else
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor_candidate, 2);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor, 2);
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
         if (i == index) {
-            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->bDepthSortBias = 0xFD;
+            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor->bDepthSortBias = 0xFD;
             g_pFightState->apTurnOrderIconActors[i]->bDepthSortBias = 0x80;
         } else {
-            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->bDepthSortBias = 0xFF;
+            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor->bDepthSortBias = 0xFF;
             g_pFightState->apTurnOrderIconActors[i]->bDepthSortBias = 0xFE;
         }
     }

@@ -11,13 +11,13 @@
 void TickFrameSystems(void)
 {
     if (g_GameModeStackContext.dwCurrentGameMode == Overworld)
-        TickOverworldBeforeActors_candidate();
+        TickOverworldView();
 
     TickActiveActors();
     TickParticleEmitters();
     TickBgLayers();
     TickScreenWindows();
-    TickPaletteAnimations_candidate();
+    TickPaletteAnimations();
     TickBgTileAnimations();
     HideUnusedOamEntries();
 

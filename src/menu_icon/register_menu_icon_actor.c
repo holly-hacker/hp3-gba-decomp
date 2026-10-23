@@ -5,6 +5,6 @@
 void RegisterMenuIconActor(u32 slot, Actor *pActor)
 {
     g_apMenuIconActors[slot] = pActor;
-    pActor->wCharacterId_candidate = slot;
+    pActor->wSubtype = slot;
     pActor->pfnDestructor = UnregisterMenuIconActor;
 }

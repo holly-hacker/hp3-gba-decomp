@@ -2,11 +2,12 @@
 #include "combat_fighter.h"
 #include "combat.h"
 
-// Shows `damage` over fighter `targetIndex` and puts its Actor into action
-// state 2. An out-of-range target is retargeted to the first living fighter
-// on the opposite side from the active fighter (none: nothing is shown), and
-// the active fighter's bSelectedActionIndex is updated to it.
-void ShowDamageNumber_candidate(s32 targetIndex, s32 damage)
+// Stages `damage` on fighter `targetIndex` (wStagedDamage) and puts its Actor into
+// action state 2, the hurt state; a party member takes the damage when its hurt
+// animation ends. An out-of-range target is retargeted to the first living fighter
+// on the opposite side from the active fighter (none: nothing happens), and the
+// active fighter's bSelectedActionIndex is updated to it.
+void StageFighterDamage(s32 targetIndex, s32 damage)
 {
     u8 target = targetIndex;
     u16 amount = damage;

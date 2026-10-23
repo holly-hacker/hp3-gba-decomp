@@ -113,11 +113,11 @@ typedef enum {
 } BattleTurnState;
 
 // Battle-round state, 0x14C8 bytes. Fields below are the ones touched by
-// ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState_candidate.
+// ResolvePlayerAttack/ResolveEnemyAttack and TickPlayerActionState.
 typedef struct FightState {
     /*0x00*/ BattleFighter *pStagingFighters;
     /*0x04*/ BattleFighter *pFighters;
-    // Party members PruneFaintedAndRebuildTurnOrder_candidate took out of pFighters, up to
+    // Party members PruneFaintedAndRebuildTurnOrder took out of pFighters, up to
     // bFaintedAllyCount; ReviveFighter brings one back.
     /*0x08*/ BattleFighter *pFaintedAllies;
     // Effect BG tilemap built by QueueBattleBgLoad and copied to VRAM by
@@ -125,7 +125,7 @@ typedef struct FightState {
     /*0x0C*/ BgTilemapBuffer effectBgTilemap;
     /*0x810*/ u8 pad_810[0x818 - 0x810];
     // One turn-order-icon container Actor* per active fighter slot,
-    // allocated by SpawnTurnOrderIcon; each container's pLinkedActor_candidate
+    // allocated by SpawnTurnOrderIcon; each container's pLinkedActor
     // is its portrait sprite, which SetActorAnimFrame/SetFighterTurnOrderIconDone
     // actually animate.
     /*0x818*/ Actor *apTurnOrderIconActors[7];
@@ -134,18 +134,20 @@ typedef struct FightState {
     // fighter's Actor here, densely packed, before the real Actors are
     // torn down -- exactly 7 slots
     // fill this to FightState's 0x104C boundary.
-    /*0x834*/ Actor aSuspendedFighterActors_candidate[7];
+    /*0x834*/ Actor aSuspendedFighterActors[7];
     /*0x104C*/ FixedPoint savedPos;  // copy of the attacker's Actor.pos
-    /*0x1054*/ void *pAttackAnimActor_candidate;
-    /*0x1058*/ u8 bAttackAnimState_candidate;
+    // BSOP_AdvanceAttackOutcome copies the caster and its outcome state here; never read.
+    /*0x1054*/ void *pAttackOutcomeActor;
+    /*0x1058*/ u8 bAttackOutcomeState;
     /*0x1059*/ u8 aEnemySlotTurnOrderIndex[4];
     /*0x105D*/ u8 aAllySlotTurnOrderIndex[3];
-    /*0x1060*/ u8 bScreenShakeTimer_candidate;
+    /*0x1060*/ u8 bIntroSweepTimer;  // 30 when a battle starts: while it counts down, the floor turns, BG1 scrolls
+                                     // and the turn state machine waits
     /*0x1061*/ u8 bBattleState;              // BattleTurnState
     /*0x1062*/ u8 bSavedBattleState;         // bBattleState stashed across BattleStateMessage, restored after
     /*0x1064*/ u32 dwStateJustEntered;       // one-shot flag consumed by each state's own tick, set whenever bBattleState changes
     /*0x1068*/ u16 wBattleStateTimer;        // generic per-state countdown, meaning is state-specific
-    /*0x106A*/ u16 wNextFighterTurnKey_candidate;  // nFaintedFlag of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder_candidate
+    /*0x106A*/ u16 wNextFighterTurnKey;  // nFaintedFlag of the fighter after the active one (the first fighter on wrap), set by PruneFaintedAndRebuildTurnOrder; never read
     /*0x106C*/ u8 bActiveFighterIndex;
     /*0x106D*/ u8 bMenuFighterIndex;
     /*0x106E*/ u8 bUnused;     // zeroed by InitializeBattle on a fresh battle, never read
@@ -156,31 +158,36 @@ typedef struct FightState {
     /*0x107C*/ u16 awPalette[0x200];  // BG and OBJ palette, DMAed to palette RAM at the HUD scanline
     /*0x147C*/ u8 bMenuCursor;       // highlighted row (or target slot) of the bMenuScreen screen
     /*0x147D*/ u8 bSpellMenuCursor;  // spell-list row that opened the spell tier menu
-    /*0x147E*/ u8 bActionDelayCounter_candidate;
+    /*0x147E*/ u8 bAttackMoveTicks;  // ticks left in the attacker's approach (bActionFlags 0x20) or return (0x40)
     /*0x147F*/ u8 bWallEndLine;  // scanline ending the BG1 wall band (BG1VOFS 264 - line above it); moves with the camera
     /*0x1480*/ u8 bBonusRewardFlags;  // BattleRewardFlags; snapshotted to g_dwBattleRewardFlagsSnapshot by ExitBattle
-    /*0x1481*/ u8 bEnemyScalePercent_candidate;  // set by InitializeBattle from Harry's level: 0x40/0x30/0x20 for level 0/1/2+
+    /*0x1481*/ u8 bTurnKeyStep;  // turn keys are bTurnKeyStep * (turn position + 2); set by InitializeBattle from
+                                 // Harry's level: 0x40/0x30/0x20 for level 0/1/2+
     /*0x1484*/ s32 nTargetFlashEffect;  // palette effect handle flashing the targeted fighter's sprite
     /*0x1488*/ u32 dwRonSpecialUsed;  // set once Ron has used his Special Move this battle; grays the menu entry while nonzero
     /*0x148C*/ u32 dwHermioneSpecialUsed;  // set once Hermione has used her Special Move this battle; grays the menu entry while nonzero
     /*0x1490*/ u8 pad_1490;
     /*0x1491*/ u8 bFaintedAllyCount;
-    /*0x1494*/ u32 dwDefeatCheckPending_candidate;  // set to 1 by any lethal-HP-threshold hit (ApplyDamageToEnemyFighter,
-                                                     // ApplyDamageToAllyFighter, spell insta-kills); cleared by whichever
-                                                     // code path reacts to it after its own CheckBattleDefeat call
+    /*0x1494*/ u32 dwFighterFainted;  // set to 1 by any lethal-HP-threshold hit (ApplyDamageToEnemyFighter,
+                                      // ApplyDamageToAllyFighter, spell insta-kills); cleared by whichever
+                                      // code path reacts to it after its own CheckBattleDefeat call, which
+                                      // then rebuilds the turn order
     /*0x1498*/ u8 pad_1498[0x149C - 0x1498];
     /*0x149C*/ u32 dwBattleResultPending;
-    /*0x14A0*/ u32 dwPlayerActionActive_candidate;
+    /*0x14A0*/ u32 dwBattleMessageShown;  // set by ShowBattleMessage, cleared by PostActionBattleCheck
     /*0x14A4*/ u8 pad_14A4;
     /*0x14A5*/ u8 abBattleResumeArgs[3];  // PushGameMode_3 arguments that re-enter Battle from the Help and
                                           // Folio Universitas screens; [2] is 0xFF when no card-combo restriction applies
-    /*0x14A8*/ u8 bPendingStatusMessageVariant_candidate;
+    /*0x14A8*/ u8 bPendingStatusMessageVariant;  // AttackResult line to add (3 poisoned, 4 paralyzed);
+                                                  // NO_PENDING_STATUS_MESSAGE_VARIANT for none
+    // One entry per target of an attack that hits several, printed by
+    // ShowBattleMessage(FaintResult).
     /*0x14AC*/ struct {
-        u16 wDamage;
-        u8 bEffectId;
-        u8 bFlag;
-    } aFaintMessages_candidate[6];
-    /*0x14C4*/ u8 bFaintMessageCount_candidate;
+        u16 wDamage;      // above 999 adds "Critical hit!"
+        u8 bTargetKind;   // the target's wActorType: FighterType, or 4 + monster id
+        u8 bMissed;
+    } aHitResults[6];
+    /*0x14C4*/ u8 bHitResultCount;
     /*0x14C5*/ u8 bDefeatWarpTarget;  // RoomId set by CheckBattleDefeat; BattleStateDefeat warps there
     /*0x14C6*/ u8 bFolioComboFirstCard;  // first card of the combo picked on the Folio Universitas screen for this attack, 0xFF for none
 } FightState;

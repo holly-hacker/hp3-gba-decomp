@@ -7,7 +7,7 @@ void ClearTextActorSlot(Actor *pActor)
 {
     u32 slot;
 
-    slot = pActor->wCharacterId_candidate;
+    slot = pActor->wSubtype;
     if (slot < ARRAY_COUNT(g_apTextActors) && pActor == g_apTextActors[slot])
         g_apTextActors[slot] = NULL;
 }

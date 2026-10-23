@@ -9,7 +9,7 @@
 // fields below before spawning the effect actor; the low bytes belong to
 // other battle state.
 typedef struct EffectStaging {
-    ParticleEmitter *pEmitter_candidate;  // 0x00, emitter spawned by the last emitter opcode
+    ParticleEmitter *pLastEmitter;  // 0x00, emitter spawned by the last emitter opcode
     u8 pad_04[0x02];
     u16 awSavedOrbit[6];    // 0x06, orbit parameters saved by script opcode 0x43
     u16 awBandScroll[4];    // 0x12, BG1 X scroll per band of the scrolling scanline effect
@@ -20,10 +20,10 @@ typedef struct EffectStaging {
     u8 bSlotParam;
     u8 bTargetIndex;
     u8 bCasterIndex;
-    u8 bBgEffectId_candidate;
+    u8 bBgEffectId;  // last g_aEffectBgRecords index loaded or set; never read
     u8 bBg0Priority;  // last priorities BSOP_SetBgPriority gave BG0 and BG1
     u8 bBg1Priority;
-    u8 bIdStaged_candidate;
+    u8 bEffectId;    // TriggerBattleEffect's effect id; never read
     u32 dwBgPrioritiesPending;  // set by EffectScanlineEnableBlend; HandleBattleVBlank then
                                 // restores the two priorities above instead of BG1 priority 1
 } EffectStaging;
@@ -358,7 +358,7 @@ enum BattleStatusEffect {
 #define BS_GotoIfScriptParamEqual(a, b) BSOP_GotoIfScriptParamEqual, (a), (b)
 // (value, label): jumps when local A != `value`.
 #define BS_GotoIfLocalANotEqual(a, b) BSOP_GotoIfLocalANotEqual, (a), (b)
-// (label): jumps when the target's roster index is in g_abEffectRosterIdPair_candidate.
+// (label): jumps when the target's roster index is in g_abEffectRosterIdPair.
 #define BS_GotoIfFighterRosterMatches(a) BSOP_GotoIfFighterRosterMatches, (a)
 // (value, label): same as GotoIfLocalAEqual.
 #define BS_GotoIfLocalAEqual_2(a, b) BSOP_GotoIfLocalAEqual_2, (a), (b)
@@ -394,7 +394,7 @@ enum BattleStatusEffect {
 #define BS_FreeAllParticles() BSOP_FreeAllParticles
 // Releases this actor's windup emitter.
 #define BS_ReleaseWindupEmitter() BSOP_ReleaseWindupEmitter
-// Releases every emitter whose bParalysisEffectFlag_candidate is 2, as the emitter opcodes set it.
+// Releases every emitter whose bKind is 2, as the emitter opcodes set it.
 #define BS_ReleaseKind2Emitters() BSOP_ReleaseKind2Emitters
 // No-op.
 #define BS_Nop3A() BSOP_Nop3A
@@ -541,7 +541,7 @@ enum BattleStatusEffect {
 #define BS_LoadBgEffect(a, b, c) BSOP_LoadBgEffect, (a), (b), (c)
 // (table): queues effect scanline table `table`.
 #define BS_QueueScanlineEffect(a) BSOP_QueueScanlineEffect, (a)
-// (record): stores `record` in g_effectStaging.bBgEffectId_candidate.
+// (record): stores `record` in g_effectStaging.bBgEffectId.
 #define BS_SetBgEffectId(a) BSOP_SetBgEffectId, (a)
 // (x, y): snaps to (x, y).
 #define BS_TeleportTo(a, b) BSOP_TeleportTo, (a), (b)
@@ -645,27 +645,27 @@ extern BgTilemapBuffer *QueueBattleBgLoad(u32 bg, const u8 *pBlob, u16 tileOffse
 extern void SpawnParalysisEffect(Actor *actor);
 
 // Data tables.
-extern const u32 g_adwEffectBgControlOverride_candidate[4];  // 0x080539A8
+extern const u32 g_adwEffectBgControls[4];  // 0x080539A8
 extern const ScanlineEffectEntry g_aEffectScanlineTable0[6];   // 0x080539B8
 extern const ScanlineEffectEntry g_aEffectScanlineTable1[9];   // 0x08053A18
 extern const ScanlineEffectEntry g_aEffectScanlineTable2[6];   // 0x08053AA8
-extern const ScanlineEffectEntry *const g_apEffectScanlineTables_candidate[3];  // 0x08053B08
-extern const u8 g_abEffectScanlineTableSizes_candidate[3];    // 0x08053B14
-extern const EffectStreamList32 g_RainStreakList_candidate;  // 0x08053B18
-extern const EffectStreamList8 g_RainSplashList_candidate;   // 0x08053C20
-extern const ActorOrbit g_aEffectOrbitParams_candidate[16];  // 0x08053C68
-extern const u8 g_abEffectRosterIdPair_candidate[2];         // 0x08053D28
-extern const u16 g_awBattleSlotPosX_candidate[7];            // 0x08053D2A, per fighter slot
-extern const u8 g_abBattleSlotPosY_candidate[7];             // 0x08053D38
+extern const ScanlineEffectEntry *const g_apEffectScanlineTables[3];  // 0x08053B08
+extern const u8 g_abEffectScanlineTableSizes[3];    // 0x08053B14
+extern const EffectStreamList32 g_RainStreakList;  // 0x08053B18
+extern const EffectStreamList8 g_RainSplashList;   // 0x08053C20
+extern const ActorOrbit g_aEffectOrbitParams[16];  // 0x08053C68
+extern const u8 g_abEffectRosterIdPair[2];         // 0x08053D28
+extern const u16 g_awBattleSlotPosX[7];            // 0x08053D2A, per fighter slot
+extern const u8 g_abBattleSlotPosY[7];             // 0x08053D38
 extern const ActorAssetRecord g_aEffectActorAssets[17];    // 0x08053D40
 extern void *const g_apEffectPalettes[5];                    // 0x08053E50
 extern const ActorAssetRecord g_aEffectAnimAssets[65];      // 0x08053E64, opcodes 0x01/0x02
 extern const ActorAssetRecord g_aEffectAnimAssets2[38];     // 0x08054274, opcodes 0x03/0x04
-extern const EffectBgRecord g_aEffectBgRecords_candidate[166];  // 0x080544D4
+extern const EffectBgRecord g_aEffectBgRecords[166];  // 0x080544D4
 extern const u8 g_abScriptOpcodeLengths[168];                // 0x08054F34, operand bytes per opcode
-extern const u8 g_abFighterIdleAnimData_candidate[6];        // 0x08054FDC
-extern const u8 g_aEffectAnimData_candidate[65][226];        // 0x08054FE2
-extern const u8 g_aEffectAnimData2_candidate[38][108];       // 0x08058944
+extern const u8 g_abFighterHurtLoopAnimData[6];        // 0x08054FDC
+extern const u8 g_aEffectAnimData[65][226];        // 0x08054FE2
+extern const u8 g_aEffectAnimData2[38][108];       // 0x08058944
 extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
 
 extern EffectStaging g_effectStaging;

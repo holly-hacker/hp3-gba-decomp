@@ -14,7 +14,7 @@ void RoomScriptOpSetTileActorFacing(SetTileActorFacingRecord *pRecord)
     Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     SetActorActionState(pActor, 3);
-    if (pActor->dwFlags & ActorFlagFourWayDirections_candidate)
+    if (pActor->dwFlags & ActorFlagFourWayDirections)
         pActor->bFacing = pRecord->bFacing >> 1;
     else
         pActor->bFacing = pRecord->bFacing;

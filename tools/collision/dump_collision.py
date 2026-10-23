@@ -27,7 +27,7 @@ ROOM_COUNT = 55
 UPSCALE = 3
 
 # Only types 1-25 actually block movement (RespondToTerrain); 0x1F/0x29 are
-# force-blocked conditionally by ApplyTileCollisionEffect_candidate;
+# force-blocked conditionally by ApplyTerrainTypeEffect;
 # everything else 26+ is passable terrain with a side effect, not a wall.
 CONDITIONAL_BLOCK_TYPES = {0x1F, 0x29}
 KNOWN_EFFECT_NAMES = {

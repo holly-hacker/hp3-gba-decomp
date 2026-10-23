@@ -58,5 +58,5 @@ void ReviveFighter(u8 faintedIndex)
     if (g_pFightState->bFaintedAllyCount != 0 && faintedIndex == 0)
         FAINTED(0) = FAINTED(1);
 
-    PruneFaintedAndRebuildTurnOrder_candidate(1);
+    PruneFaintedAndRebuildTurnOrder(1);
 }

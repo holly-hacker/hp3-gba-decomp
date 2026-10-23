@@ -22,7 +22,7 @@ void TickFlamePillarActor(Actor *pActor)
             if (--pActor->dwStateTimer == -1)
             {
                 pActor->dwStateTimer = pActor->modeState.flamePillar.wLitTicks;
-                SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wCharacterId_candidate],
+                SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wSubtype],
                                  g_abRoomFlamePillarAnimData, 0);
                 SetActorActionSubState(pActor, 8);
                 g_nFlamePillarSoundHandle = PlaySoundByIdUnlessActive(18, g_nFlamePillarSoundHandle);
@@ -32,21 +32,21 @@ void TickFlamePillarActor(Actor *pActor)
             if (--pActor->dwStateTimer == -1)
             {
                 pActor->dwStateTimer = pActor->scriptState.wFlameOutTicks;
-                SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wCharacterId_candidate],
+                SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wSubtype],
                                  g_abRoomFlamePillarAnimData, 6);
                 SetActorActionSubState(pActor, 6);
             }
             break;
         case 5:
-            if (pActor->pLinkedActor_candidate != NULL)
-                pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+            if (pActor->pLinkedActor != NULL)
+                pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             break;
         }
     }
     else
     {
-        SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wCharacterId_candidate],
+        SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wSubtype],
                          g_abRoomFlamePillarAnimData, 6);
     }
 }

@@ -24,9 +24,9 @@ void TickActorScriptWalk(Actor *actor)
         pos = actor->pos;
         target = actor->moveTarget;
         direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
-        if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
+        if (((actor->dwFlags & ActorFlagFourWayDirections) && direction == Direction4None)
             || direction == DirectionNone) {
-            CancelActorMove_candidate(actor);
+            StopActorMotion(actor);
             SetActorActionSubState(actor, 14);
         }
         else if (actor->bFacing != direction) {

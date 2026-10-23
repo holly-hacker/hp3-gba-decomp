@@ -17,7 +17,7 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
     u8 pageGroup;
     u32 canOpen;
 
-    if (g_DialogState_candidate.dwState != 0)
+    if (g_DialogState.dwState != 0)
         return;
 
     switch (pOther->wActorType)
@@ -30,10 +30,10 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
         {
             pSelf->modeState.chest.bOpened = 1;
             SetActorActionSubState(pSelf, 8);
-            CancelActorMove_candidate(pOther);
+            StopActorMotion(pOther);
             pOther->anim.bAnimFrameCounter = kind;
-            if (pOther->pLinkedActor_candidate != NULL)
-                pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = kind;
+            if (pOther->pLinkedActor != NULL)
+                pOther->pLinkedActor->anim.bAnimFrameCounter = kind;
             SetActorActionState(pOther, 0);
             SetActorPrevActionState(pOther, 0);
         }
@@ -54,10 +54,10 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
                 {
                     pSelf->modeState.chest.bOpened = 1;
                     SetActorActionSubState(pSelf, 8);
-                    CancelActorMove_candidate(pOther);
+                    StopActorMotion(pOther);
                     pOther->anim.bAnimFrameCounter = opened;
-                    if (pOther->pLinkedActor_candidate != NULL)
-                        pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = opened;
+                    if (pOther->pLinkedActor != NULL)
+                        pOther->pLinkedActor->anim.bAnimFrameCounter = opened;
                     SetActorActionState(pOther, 0);
                     SetActorPrevActionState(pOther, 0);
                 }
@@ -74,10 +74,10 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
         {
             pSelf->modeState.chest.bOpened = 1;
             SetActorActionSubState(pSelf, 8);
-            CancelActorMove_candidate(pOther);
+            StopActorMotion(pOther);
             pOther->anim.bAnimFrameCounter = opened;
-            if (pOther->pLinkedActor_candidate != NULL)
-                pOther->pLinkedActor_candidate->anim.bAnimFrameCounter = opened;
+            if (pOther->pLinkedActor != NULL)
+                pOther->pLinkedActor->anim.bAnimFrameCounter = opened;
             SetActorActionState(pOther, 0);
             SetActorPrevActionState(pOther, 0);
         }
@@ -86,17 +86,17 @@ void HandleChestTouch(Actor *pSelf, Actor *pOther)
     case RoomActorType_FieldSpellEffect:
         // Overworld spell effect 3 unchains a kind 1 chest, which then opens
         // like kind 0.
-        if (pOther->wCharacterId_candidate != 3)
+        if (pOther->wSubtype != 3)
             return;
         if (kind == 1 && opened == 0 && pSelf->modeState.chest.bUnchaining == 0)
         {
             pSelf->modeState.chest.bUnchaining = kind;
             SetActorAnimData(pSelf, g_apRoomChestAnimFrames[kind], g_abRoomChestAnimData[kind], 10);
             pSelf->modeState.chest.bKind = 0;
-            CancelActorMove_candidate(g_pPlayerActor);
+            StopActorMotion(g_pPlayerActor);
             g_pPlayerActor->anim.bAnimFrameCounter = 0;
-            if (g_pPlayerActor->pLinkedActor_candidate != NULL)
-                g_pPlayerActor->pLinkedActor_candidate->anim.bAnimFrameCounter = 0;
+            if (g_pPlayerActor->pLinkedActor != NULL)
+                g_pPlayerActor->pLinkedActor->anim.bAnimFrameCounter = 0;
             SetActorActionState(g_pPlayerActor, 0);
             SetActorPrevActionState(g_pPlayerActor, 0);
         }

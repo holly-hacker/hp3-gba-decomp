@@ -20,15 +20,15 @@
 // overworld pause-menu check), then two frames.
 static inline void TickTransitionFrame(void)
 {
-    TickSerialCommIfActive_candidate();
+    TickSerialCommIfActive();
     if (g_GameModeStackContext.dwCurrentGameMode == Overworld)
-        TickOverworldBeforeActors_candidate();
+        TickOverworldView();
 
     TickActiveActors();
     TickParticleEmitters();
     TickBgLayers();
     TickScreenWindows();
-    TickPaletteAnimations_candidate();
+    TickPaletteAnimations();
     TickBgTileAnimations();
     HideUnusedOamEntries();
     WaitForVBlankIntr();

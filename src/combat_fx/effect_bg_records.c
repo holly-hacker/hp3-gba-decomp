@@ -3,9 +3,9 @@
 
 // Effect backgrounds, indexed by the script opcodes 0x7F, 0x8A and 0x8B. The
 // list ends with an empty record.
-const EffectBgRecord g_aEffectBgRecords_candidate[166] = {
-    { (void *)gBgGraphic001, 0, 16, (void *)&g_RainSplashList_candidate, 0x31C },  // 0
-    { (void *)gBgGraphic002, 0, 24, (void *)&g_RainStreakList_candidate, 0x2A0 },  // 1
+const EffectBgRecord g_aEffectBgRecords[166] = {
+    { (void *)gBgGraphic001, 0, 16, (void *)&g_RainSplashList, 0x31C },  // 0
+    { (void *)gBgGraphic002, 0, 24, (void *)&g_RainStreakList, 0x2A0 },  // 1
     { (void *)gBgGraphic003, 0, 16, NULL, 0x2A0 },  // 2
     { (void *)gBgGraphic004, 0, 0, NULL, 0x2A0 },  // 3
     { (void *)gBgGraphic005, 0, 0, NULL, 0x2A0 },  // 4

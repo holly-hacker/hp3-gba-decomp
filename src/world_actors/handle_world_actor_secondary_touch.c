@@ -23,7 +23,7 @@ void HandleWorldActorSecondaryTouch(Actor *pSelf, Actor *pOther)
         }
         break;
     case RoomActorType_FieldSpellEffect:
-        if (pOther->wCharacterId_candidate == FieldSpellFlipendo && kind == 58)
+        if (pOther->wSubtype == FieldSpellFlipendo && kind == 58)
         {
             SetActorAnimData(pSelf, g_apWorldActorAnimFrames[kind], g_abWorldActorAnimData[kind], 2);
             SetActorActionState(pSelf, 0);
@@ -32,7 +32,7 @@ void HandleWorldActorSecondaryTouch(Actor *pSelf, Actor *pOther)
         break;
     }
 
-    if ((pSelf->dwFlags & ActorFlagNoPushTrigger_candidate)
+    if ((pSelf->dwFlags & ActorFlagSettled)
         && (pOther->wActorType == RoomActorType_WorldActor || pOther->wActorType == RoomActorType_Player))
-        pOther->dwFlags |= ActorFlagSkipTerrainOnce_candidate;
+        pOther->dwFlags |= ActorFlagSkipTerrainOnce;
 }

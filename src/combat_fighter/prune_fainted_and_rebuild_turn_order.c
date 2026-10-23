@@ -7,7 +7,7 @@
 // and respawns all turn-order icons, renumbers the fighters' turn keys and
 // records the key of the fighter after the active one.
 // addRevivedAlly makes room for the ally ReviveFighter just merged in (bFighterCount + 1).
-void PruneFaintedAndRebuildTurnOrder_candidate(s32 addRevivedAlly)
+void PruneFaintedAndRebuildTurnOrder(s32 addRevivedAlly)
 {
     u8 i;
     u8 j;
@@ -15,7 +15,7 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addRevivedAlly)
     u8 count;
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
-        g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->dwFlags
+        g_pFightState->apTurnOrderIconActors[i]->pLinkedActor->dwFlags
             |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         g_pFightState->apTurnOrderIconActors[i]->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         g_pFightState->apTurnOrderIconActors[i] = 0;
@@ -55,7 +55,7 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addRevivedAlly)
     }
 
     for (i = 0; i < g_pFightState->bFighterCount; i++) {
-        g_pFightState->pFighters[i].nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (i + 2);
+        g_pFightState->pFighters[i].nFaintedFlag = g_pFightState->bTurnKeyStep * (i + 2);
         g_pFightState->pFighters[i].pActor->bFighterIndex = i;
 
         if (g_pFightState->pFighters[i].bFighterType != Enemy) {
@@ -70,7 +70,7 @@ void PruneFaintedAndRebuildTurnOrder_candidate(s32 addRevivedAlly)
     }
 
     if (g_pFightState->bActiveFighterIndex + 1 == g_pFightState->bFighterCount)
-        g_pFightState->wNextFighterTurnKey_candidate = g_pFightState->pFighters[0].nFaintedFlag;
+        g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[0].nFaintedFlag;
     else
-        g_pFightState->wNextFighterTurnKey_candidate = g_pFightState->pFighters[g_pFightState->bActiveFighterIndex + 1].nFaintedFlag;
+        g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[g_pFightState->bActiveFighterIndex + 1].nFaintedFlag;
 }

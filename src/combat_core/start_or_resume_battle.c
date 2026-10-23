@@ -9,7 +9,7 @@
 // Re-enters the battle after returning from a submode (or starting a fresh
 // battle): applies a Folio Universitas card choice, sets up the first round,
 // or reopens the battle menu after the Help screen.
-void ResumeBattleAfterSubmode_candidate(void)
+void StartOrResumeBattle(void)
 {
     BattleFighter *fighter = &g_pFightState->pFighters[g_pFightState->bMenuFighterIndex];
     u32 i;
@@ -19,7 +19,7 @@ void ResumeBattleAfterSubmode_candidate(void)
         if (g_PrevGameModeStackContext.dwCurrentGameMode != HelpTopicScreen) {
             g_pFightState->wBattleStateTimer = 0;
             g_pFightState->bActiveFighterIndex = 0xFF;
-            g_pFightState->wNextFighterTurnKey_candidate = g_pFightState->pFighters[0].nFaintedFlag;
+            g_pFightState->wNextFighterTurnKey = g_pFightState->pFighters[0].nFaintedFlag;
             i = 0;
             g_pFightState->bMenuFighterIndex = 0xFF;
 
@@ -31,7 +31,7 @@ void ResumeBattleAfterSubmode_candidate(void)
             }
 
             PushBattleState(BattleStateNewRound);
-            g_pFightState->bScreenShakeTimer_candidate = 0x1E;
+            g_pFightState->bIntroSweepTimer = 0x1E;
             return;
         }
     } else {

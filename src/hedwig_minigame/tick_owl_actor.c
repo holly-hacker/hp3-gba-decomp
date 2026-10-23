@@ -118,7 +118,7 @@ void TickOwlActor(Actor *pOwl)
         {
             pOwl->pos.y = 112 << 16;
             SetOwlState(OwlStateLand);
-            CancelActorMove_candidate(pOwl);
+            StopActorMotion(pOwl);
         }
         break;
     case OwlStateTakeOff:

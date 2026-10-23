@@ -27,7 +27,7 @@ void HandleDoorTouch(Actor *pSelf, Actor *pOther)
         return;
 
     for (i = 0; i < 2; i++)
-        g_abRoomScriptExitParams_candidate[i] = pSelf->modeState.door.abExitParams[i];
+        g_abRoomEntryIds[i] = pSelf->modeState.door.abExitParams[i];
 
     if (pSelf->modeState.door.bChain)
     {

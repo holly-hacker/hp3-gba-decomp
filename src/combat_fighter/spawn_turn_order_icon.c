@@ -17,18 +17,18 @@ Actor *SpawnTurnOrderIcon(u32 rosterIndexOrFighterType, u32 isAlly, u32 turnOrde
     container->wActorType = 0x2A;
 
     x = 240 - (g_pFightState->bFighterCount - turnOrderIndex) * 20;
-    container->pLinkedActor_candidate = SpawnActor(0x2A, x, 20, (const ObjPalette *)gBattleHudItem001Palette);
-    container->pLinkedActor_candidate->bDepthSortBias = 0xFF;
-    SetActorSprite(container->pLinkedActor_candidate, &g_TurnOrderIconContainerAsset);
+    container->pLinkedActor = SpawnActor(0x2A, x, 20, (const ObjPalette *)gBattleHudItem001Palette);
+    container->pLinkedActor->bDepthSortBias = 0xFF;
+    SetActorSprite(container->pLinkedActor, &g_TurnOrderIconContainerAsset);
 
     if (isAlly) {
         SnapActorPosition(container, x << 16, 24 << 16);
         SetActorAssetRecord(container, &g_aAllyTurnOrderIconAssets[rosterIndexOrFighterType]);
-        SetActorAnimFrame(container->pLinkedActor_candidate, 0);
+        SetActorAnimFrame(container->pLinkedActor, 0);
     } else {
         SnapActorPosition(container, x << 16, 20 << 16);
         SetActorAssetRecord(container, &g_aEnemyTurnOrderIconAssets[rosterIndexOrFighterType]);
-        SetActorAnimFrame(container->pLinkedActor_candidate, 1);
+        SetActorAnimFrame(container->pLinkedActor, 1);
     }
 
     container->oam.priority = 0;

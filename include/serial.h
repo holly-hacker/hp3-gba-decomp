@@ -103,7 +103,7 @@ extern u8 g_bSerialPlayerMask;
 extern u32 g_dwSerialExchangeCount;
 extern u32 g_dwSerialChecksumExchangeCount;
 extern u32 g_dwSerialLastExchangeTime;
-extern u32 g_dwSerialPollFlags_candidate;
+extern u32 g_dwSerialSendFlags;
 extern u32 g_dwSerialMaxPlayers;
 extern u32 g_dwSerialUnk03005AA4;
 extern u32 g_dwSerialUnk03005AA8;
@@ -118,7 +118,7 @@ extern void ResetSerialSession(void);
 extern void QueueSerialMessage(u32 type, u32 data);
 extern void ProcessSerialMessages(void);
 extern s32 RunSerialExchange(void);
-extern s32 ExchangeSerialFrame_candidate(void);
+extern s32 ExchangeSerialFrame(void);
 extern void SetSerialCallbacks(void (*pfnReceive)(u32 word, u32 playerId), u32 (*pfnGetSendWord)(void));
 extern s32 InitSerialSession(void);
 extern s32 BeginSerialSession(void);
@@ -126,7 +126,7 @@ extern u32 GetSerialMode(void);
 extern void SetSerialMode(u32 mode);
 // Pumps the link-cable comm packet when a link session is active
 // (SerialSessionActive).
-extern void TickSerialCommIfActive_candidate(void);
+extern void TickSerialCommIfActive(void);
 extern s16 GetMt19937LastRollByte(void);
 extern s16 GetSerialChecksumRollByte(void);
 extern void LatchSerialChecksumRollByte(void);

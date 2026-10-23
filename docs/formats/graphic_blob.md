@@ -12,15 +12,15 @@ length.
   (stone, tile, carpet, grass, sand and wood floors; castle, library,
   clock-hall and forest walls). Floors are 32x32 byte-cell maps with GammaLz
   8 bpp tiles, and walls are 32x9 halfword-cell maps with raw 4 bpp tiles.
-- **Battle effect backgrounds** (`g_aEffectBgRecords_candidate`): 165
+- **Battle effect backgrounds** (`g_aEffectBgRecords`): 165
   wall-type blobs after the battle backgrounds in `BgGraphics`. Seven are
   single screens (`BgGraphic001`-`007`), and the rest are the frames of
   five animated backgrounds (`BattleEffectBg1`-`5`: bursts, streaks and
   number grids).
 - **Rain tile streams** (`RainTiles`): 40 streams after the blob run. Each
   is a `u16` width (always 112), a `u16` height and a headerless GammaLz
-  stream of 4 bpp tiles. `g_RainStreakList_candidate` (32 streams of diagonal
-  streaks) and `g_RainSplashList_candidate` (8 streams of rings and dots)
+  stream of 4 bpp tiles. `g_RainStreakList` (32 streams of diagonal
+  streaks) and `g_RainSplashList` (8 streams of rings and dots)
   hand them to `RegisterBgTileAnimation`. Reading them as rain and splashes
   is **UNCONFIRMED**, and so is the tile arrangement.
 - 17 other runs elsewhere, one per feature bank (`MenuCursor`, `OwlCare`,

@@ -16,13 +16,13 @@ void RoomScriptOpSetTileActorAndLinkedVisible(SetTileActorAndLinkedVisibleRecord
     if (pRecord->bVisible != 0)
     {
         pActor->dwFlags |= ActorFlagVisible;
-        if (pActor->pLinkedActor_candidate != NULL)
-            pActor->pLinkedActor_candidate->dwFlags |= ActorFlagVisible;
+        if (pActor->pLinkedActor != NULL)
+            pActor->pLinkedActor->dwFlags |= ActorFlagVisible;
     }
     else
     {
         pActor->dwFlags &= ~ActorFlagVisible;
-        if (pActor->pLinkedActor_candidate != NULL)
-            pActor->pLinkedActor_candidate->dwFlags &= ~ActorFlagVisible;
+        if (pActor->pLinkedActor != NULL)
+            pActor->pLinkedActor->dwFlags &= ~ActorFlagVisible;
     }
 }

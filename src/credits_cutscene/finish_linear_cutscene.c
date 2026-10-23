@@ -26,7 +26,7 @@ void FinishLinearCutscene(void)
     }
     else if (g_bCurrentRoomId == RoomHogwartsExpressBaggageCar)
     {
-        g_abRoomScriptExitParams_candidate[0] = 0;
+        g_abRoomEntryIds[0] = 0;
         PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomEntranceHall);
         g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
     }

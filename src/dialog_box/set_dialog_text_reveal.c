@@ -4,5 +4,5 @@
 
 void SetDialogTextReveal(u32 arg)
 {
-    g_DialogState_candidate.bRevealText = arg;
+    g_DialogState.bRevealText = arg;
 }

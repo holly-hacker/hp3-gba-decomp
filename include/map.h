@@ -36,8 +36,8 @@ extern void NoopOverworldUnusedA(void);
 extern void NoopOverworldUnusedB(void);
 // Multi-slot bookkeeping that only acts when the slot count exceeds 1.
 // Always returns 0.
-s32 TickOverworldControlSlots_candidate(void);
-extern void TickOverworldBeforeActors_candidate(void);
+s32 TickOverworldControlSlots(void);
+extern void TickOverworldView(void);
 extern void ClearRoomActorStateBuffer(void);  // memsets g_pRoomActorStateBuffer (0x20BC bytes)
 extern u32 SetRoomSwitchState(u32 state);  // returns nonzero if the state changed
 // Starts the first slot's camera shake with no time limit and plays its cue.
@@ -66,9 +66,13 @@ extern Actor *g_pTouchedWanderingMonster;
 // Read here as a full word, though other code reads it as a byte; the original
 // source likely declares it int.
 extern u32 g_bCurrentRoomId;
-extern u8 g_bControlSlotTicks_candidate;
-extern u8 g_bPendingQuestStateOverride_candidate;
-extern u32 g_dwRoomBgFlag_candidate;
+extern u8 g_bControlSlotTicks;  // never read
+// Story stage CheckBattleDefeat saves before forcing stage 0x1F; the next room entry
+// restores it. 0xFF when none.
+extern u8 g_bStoryStageToRestore;
+// Set by the rooms that keep BG0 for their own layer: Lumos then skips its BG0 darkness
+// and leaves BG0 enabled when it ends.
+extern u32 g_dwRoomUsesBg0;
 // Nonzero blocks the overworld Start/Select menus (SetPauseMenuLocked).
 extern u32 g_dwPauseMenuLocked;
 extern u8 g_bRoomSwitchState;  // 0 or 1

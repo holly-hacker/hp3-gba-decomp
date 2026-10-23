@@ -17,15 +17,15 @@ void RoomScriptOpSetAllQueuedMoveParams(SetAllQueuedMoveParamsRecord *pRecord)
 
     for (i = 0; i < g_OverworldControlState.bSlotCount; i++)
     {
-        g_aCameraEffects_candidate[i].nStep = pRecord->nAmplitude * 65536;
-        g_aCameraEffects_candidate[i].dwFramesLeft = pRecord->wDuration * 30;
-        g_aCameraEffects_candidate[i].bState = 3;
-        g_aCameraEffects_candidate[i].wCounter = 0;
-        g_aCameraEffects_candidate[i].bRespawnRow = pRecord->bRespawnRow;
-        g_aCameraEffects_candidate[i].bChainRow = pRecord->bChainRow;
-        if (g_aCameraEffects_candidate[i].dwFramesLeft == 0)
-            g_aCameraEffects_candidate[i].dwRunForever = 1;
+        g_aCameraEffects[i].nStep = pRecord->nAmplitude * 65536;
+        g_aCameraEffects[i].dwFramesLeft = pRecord->wDuration * 30;
+        g_aCameraEffects[i].bState = 3;
+        g_aCameraEffects[i].wCounter = 0;
+        g_aCameraEffects[i].bRespawnRow = pRecord->bRespawnRow;
+        g_aCameraEffects[i].bChainRow = pRecord->bChainRow;
+        if (g_aCameraEffects[i].dwFramesLeft == 0)
+            g_aCameraEffects[i].dwRunForever = 1;
         else
-            g_aCameraEffects_candidate[i].dwRunForever = 0;
+            g_aCameraEffects[i].dwRunForever = 0;
     }
 }

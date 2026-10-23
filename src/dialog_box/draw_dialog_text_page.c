@@ -4,9 +4,9 @@
 
 void DrawDialogTextPage(void)
 {
-    DrawTextLines(g_DialogState_candidate.wTileCursor, g_DialogState_candidate.bTextAlign * 56 + 0x40,
-                  g_DialogState_candidate.bTextY, DIALOG_TEXT_MAX_WIDTH,
-                  g_DialogState_candidate.wTextHeightLeft, &g_DialogState_candidate.pText,
-                  g_DialogState_candidate.bTextAlign);
-    g_DialogState_candidate.pLineStart = g_DialogState_candidate.pText;
+    DrawTextLines(g_DialogState.wTileCursor, g_DialogState.bTextAlign * 56 + 0x40,
+                  g_DialogState.bTextY, DIALOG_TEXT_MAX_WIDTH,
+                  g_DialogState.wTextHeightLeft, &g_DialogState.pText,
+                  g_DialogState.bTextAlign);
+    g_DialogState.pLineStart = g_DialogState.pText;
 }

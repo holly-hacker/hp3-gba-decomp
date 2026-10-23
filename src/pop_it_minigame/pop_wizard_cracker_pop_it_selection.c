@@ -19,7 +19,7 @@ void PopWizardCrackerPopItSelection(void)
         pCracker = g_pWizardCrackerPopIt->apCrackers[i];
         if (pCracker != NULL && pCracker->dwStateTimer != 0)
         {
-            pPopping = SpawnWizardCrackerPopItCracker(pCracker->wCharacterId_candidate, pCracker->pos.x >> 16,
+            pPopping = SpawnWizardCrackerPopItCracker(pCracker->wSubtype, pCracker->pos.x >> 16,
                                                       pCracker->pos.y >> 16);
             SetActorActionState(pPopping, 4);
             pPopping->dwStateTimer = pCracker->dwStateTimer;
@@ -28,14 +28,14 @@ void PopWizardCrackerPopItSelection(void)
             g_pWizardCrackerPopIt->apCrackers[i] = NULL;
             pCracker = pPopping;
 
-            if (pCracker->wCharacterId_candidate == WizardCrackerPopItKindWrapped)
+            if (pCracker->wSubtype == WizardCrackerPopItKindWrapped)
             {
-                if (g_pWizardCrackerPopIt->aKinds[pCracker->wCharacterId_candidate].dwVariant == 0)
+                if (g_pWizardCrackerPopIt->aKinds[pCracker->wSubtype].dwVariant == 0)
                     SetActorAnimFrame(pCracker, 0);
                 else
                     SetActorAnimFrame(pCracker, 11);
             }
-            else if (pCracker->wCharacterId_candidate == WizardCrackerPopItKindTriangle)
+            else if (pCracker->wSubtype == WizardCrackerPopItKindTriangle)
             {
                 SetActorAnimFrame(pCracker, 9);
             }

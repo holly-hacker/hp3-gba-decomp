@@ -16,11 +16,11 @@ void TickServePumpkinJuiceCustomer(Actor *customer)
     if (customer->bActionState == 4)
     {
         g_ServePumpkinJuice.adwCustomerCount[customer->bActionSubState]--;
-        customer->pLinkedActor_candidate->pOwnerActor = NULL;
+        customer->pLinkedActor->pOwnerActor = NULL;
         g_ServePumpkinJuice.dwCustomerTypesInUse &=
-            ~g_adwServePumpkinJuiceCustomerTypeBits[customer->wCharacterId_candidate];
-        customer->pLinkedActor_candidate->dwFlags &= ~ActorFlagVisible;
-        customer->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+            ~g_adwServePumpkinJuiceCustomerTypeBits[customer->wSubtype];
+        customer->pLinkedActor->dwFlags &= ~ActorFlagVisible;
+        customer->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         customer->dwFlags = (customer->dwFlags & ~ActorFlagVisible) | ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         return;
     }
@@ -46,7 +46,7 @@ void TickServePumpkinJuiceCustomer(Actor *customer)
         if (Mt19937RandRange(0, 8) < g_GameModeStackContext.dwCurrentGameModeArg3 + 3)
         {
             SpawnServePumpkinJuiceEmptyGoblet(customer->bActionSubState, customer->pos.x >> 16);
-            if (customer->wCharacterId_candidate == 6)
+            if (customer->wSubtype == 6)
                 SpawnServePumpkinJuiceEmptyGoblet(customer->bActionSubState, (customer->pos.x >> 16) + 15);
         }
     }
@@ -55,7 +55,7 @@ void TickServePumpkinJuiceCustomer(Actor *customer)
     {
         customer->bActionState = 0;
         customer->wTimedMoveTicks = 0;
-        if (customer->wCharacterId_candidate == 6 && customer->wActionVariant != 0)
+        if (customer->wSubtype == 6 && customer->wActionVariant != 0)
             SetActorAnimFrame(customer, 3);
         else
             SetActorAnimFrame(customer, 0);
@@ -76,13 +76,13 @@ void TickServePumpkinJuiceCustomer(Actor *customer)
         customer->bActionState = 1;
         SetActorMoveTargetWithDuration(customer, x, customer->pos.y >> 16, 20);
         customer->wTimedMoveTicks = 0;
-        if (customer->wCharacterId_candidate == 6)
-            SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wCharacterId_candidate][0],
+        if (customer->wSubtype == 6)
+            SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wSubtype][0],
                              g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimWalkVariant
                                                                  + customer->wActionVariant],
                              0);
         else
-            SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wCharacterId_candidate][0],
+            SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wSubtype][0],
                              g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimWalk], 0);
     }
 }

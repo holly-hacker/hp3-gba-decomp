@@ -8,17 +8,17 @@
 // and restored on its last frame.
 void UpdateMonsterScreenShake(Actor *actor)
 {
-    if (g_pFightState->bScreenShakeTimer_candidate == 0)
+    if (g_pFightState->bIntroSweepTimer == 0)
         return;
 
-    if (g_pFightState->bScreenShakeTimer_candidate == 1)
+    if (g_pFightState->bIntroSweepTimer == 1)
     {
         actor->oam.objMode = 0;
         ClearActorOrbit(actor);
         if (IS_SALAMANDER(actor->wActorType - 4))
             ClearActorOrbit(actor->pShadowActor);
     }
-    else if (g_pFightState->bScreenShakeTimer_candidate > 0xF)
+    else if (g_pFightState->bIntroSweepTimer > 0xF)
     {
         SetActorFlippedX(actor, 1);
         if (IS_SALAMANDER(actor->wActorType - 4))

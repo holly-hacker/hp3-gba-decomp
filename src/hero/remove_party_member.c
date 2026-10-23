@@ -9,7 +9,7 @@ void RemovePartyMember(u8 characterId)
 {
     if (g_pFollowerActor1 != NULL)
     {
-        if (g_pFollowerActor1->wCharacterId_candidate == characterId)
+        if (g_pFollowerActor1->wSubtype == characterId)
         {
             DestroyPartyMemberActor(g_pFollowerActor1);
             g_pFollowerActor1 = NULL;
@@ -17,7 +17,7 @@ void RemovePartyMember(u8 characterId)
             return;
         }
     }
-    else if (g_pFollowerActor0->wCharacterId_candidate == characterId)
+    else if (g_pFollowerActor0->wSubtype == characterId)
     {
         DestroyPartyMemberActor(g_pFollowerActor0);
         g_pFollowerActor0 = NULL;
@@ -25,7 +25,7 @@ void RemovePartyMember(u8 characterId)
         return;
     }
 
-    if (g_pPlayerActor->wCharacterId_candidate == characterId)
+    if (g_pPlayerActor->wSubtype == characterId)
     {
         if (g_pFollowerActor1 == NULL)
         {
@@ -42,7 +42,7 @@ void RemovePartyMember(u8 characterId)
             g_pFollowerActor1 = NULL;
             g_bPartyCharId2 = 0xFF;
         }
-        g_bSelectedFieldSpell = GetPartyMasterStatsSlot_candidate(g_bPartyCharId0) * 3;
+        g_bSelectedFieldSpell = GetCharacterFighterType(g_bPartyCharId0) * 3;
         RefreshFieldSpellHud(g_pFieldSpellIconActor);
     }
     else

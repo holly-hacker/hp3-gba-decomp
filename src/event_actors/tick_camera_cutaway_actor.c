@@ -54,7 +54,7 @@ void TickCameraCutawayActor(Actor *actor)
         g_apfnScreenTransitionsOut[actor->modeState.cutaway.bFocusViewTransition](0x3F);
         SetCameraFocusPinned(0, g_OverworldControlState.bSlotIndex);
         SnapCameraFocus(player->pos, g_OverworldControlState.bSlotIndex);
-        SetCameraFollowTarget_candidate(player, g_PlayerCameraFocusOffset, g_OverworldControlState.bSlotIndex);
+        SetCameraFollowTarget(player, g_PlayerCameraFocusOffset, g_OverworldControlState.bSlotIndex);
         SetActorActionState(actor, 0);
         actor->wTimedMoveTicks = 1;
         break;

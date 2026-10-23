@@ -18,9 +18,9 @@ void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex)
     FIGHTER(fighterIndex).stats.wHp -= damage;
 
     if (FIGHTER(fighterIndex).stats.wHp == 0 || FIGHTER(fighterIndex).stats.wHp > FIGHTER(fighterIndex).wHp_max) {
-        g_pFightState->dwDefeatCheckPending_candidate = 1;
+        g_pFightState->dwFighterFainted = 1;
 
-        if (g_pFightState->bFaintMessageCount_candidate == 0)
+        if (g_pFightState->bHitResultCount == 0)
             ShowBattleMessage(AttackResult, (u16)fighterIndex, 2);
 
         slot = 0;

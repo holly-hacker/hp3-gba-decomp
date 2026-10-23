@@ -51,7 +51,7 @@ void BuildTurnOrder(void)
         // Use nFaintedFlag to mark the enemy as placed
         // TODO: unsure what this multiply does. nFaintedFlag is only used to indicate placement so this multiplication
         // by a static value doesn't accomplish anything.
-        SLOT(outerIdx).nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
+        SLOT(outerIdx).nFaintedFlag = g_pFightState->bTurnKeyStep * (outerIdx + 2);
 
         prevWinnerAgility = STAGING(winnerIdx).bAgility;
         STAGING(winnerIdx).nFaintedFlag = SLOT(outerIdx).nFaintedFlag;
@@ -66,7 +66,7 @@ void BuildTurnOrder(void)
         if ((u16)STAGING(innerIdx).nFaintedFlag == 0
             && STAGING(innerIdx).stats.wHp != 0) {
             SLOT(outerIdx) = STAGING(innerIdx);
-            SLOT(outerIdx).nFaintedFlag = g_pFightState->bEnemyScalePercent_candidate * (outerIdx + 2);
+            SLOT(outerIdx).nFaintedFlag = g_pFightState->bTurnKeyStep * (outerIdx + 2);
         } else if (STAGING(innerIdx).stats.wHp == 0) {
             STAGING(innerIdx).nFaintedFlag = -1;
         }

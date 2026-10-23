@@ -55,7 +55,7 @@ void AgbMain(void)
     NoopInit();
     InitOamSystem();
     InitParticlePools();
-    InitScreenTransitionState_candidate();
+    InitScreenTransitionState();
     InitRoomBgState();
     NoopInit2();
     InitInputSystem();

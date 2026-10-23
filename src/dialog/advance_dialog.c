@@ -5,10 +5,10 @@
 // Continues with the next page of the line, the block's next line, or closes the box.
 void AdvanceDialog(void)
 {
-    if (*g_DialogState_candidate.pText != 0)
+    if (*g_DialogState.pText != 0)
         StartDialogPage();
-    else if (++g_DialogState_candidate.wLineIndex < g_aDialogBlocks[g_DialogState_candidate.wBlockId].bLineCount)
+    else if (++g_DialogState.wLineIndex < g_aDialogBlocks[g_DialogState.wBlockId].bLineCount)
         ShowDialogLine();
     else
-        g_DialogState_candidate.bPhase = DialogPhaseSlideDown;
+        g_DialogState.bPhase = DialogPhaseSlideDown;
 }

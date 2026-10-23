@@ -5,7 +5,7 @@
 #include "math.h"
 #include "minigame_high_score.h"
 
-extern u32 g_dwDementorMinigameScriptFlag_candidate;  // 0x03002E10; set by StartMinigame
+extern u32 g_dwDementorMinigameForceOverworldExit;  // 0x03002E10; set by StartMinigame
 
 // Harry vs Dementors, game mode 0x33 (DementorMinigame). Four Dementors, one per
 // direction (0 right, 1 down, 2 left, 3 up), fly toward Harry at the center; a

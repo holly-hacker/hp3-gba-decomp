@@ -57,7 +57,8 @@ typedef struct RoomBlobColumn {
 typedef struct RoomBlobSubBlock {
     u16 wRouteTableOffset;
     u16 wScriptChainTableOffset;
-    u16 wFlags;  // bit 0 mirrored into g_wRoomResourceFlags_candidate
+    u16 wFlags;  // copied to g_wRoomVariantFlags; bit 0 puts the default sub-block's
+                 // tables first
     u16 wEndOffset;  // unused; to the sub-block's end marker
     RoomBlobTable actorTable;  // inline at +8
 } RoomBlobSubBlock;

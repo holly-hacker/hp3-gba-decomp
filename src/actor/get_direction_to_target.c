@@ -9,7 +9,7 @@ u8 GetDirectionToTarget(u32 actorFlags, FixedPoint pos, FixedPoint target, s32 t
 {
     u8 dir;
 
-    if (actorFlags & ActorFlagFourWayDirections_candidate)
+    if (actorFlags & ActorFlagFourWayDirections)
     {
         if (pos.y > target.y + tolerance)
         {

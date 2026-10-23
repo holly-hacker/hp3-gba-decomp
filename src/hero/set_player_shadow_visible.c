@@ -5,7 +5,7 @@
 void SetPlayerShadowVisible(u32 visible)
 {
     if (visible == 1)
-        g_pPlayerShadowActor_candidate->dwFlags |= ActorFlagVisible;
+        g_pPlayerShadowActor->dwFlags |= ActorFlagVisible;
     else
-        g_pPlayerShadowActor_candidate->dwFlags &= ~ActorFlagVisible;
+        g_pPlayerShadowActor->dwFlags &= ~ActorFlagVisible;
 }

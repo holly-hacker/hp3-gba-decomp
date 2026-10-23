@@ -24,12 +24,12 @@ void EndFieldSpellEffect(Actor *effect)
         ReleaseParticleGfx(2, 4);
         if (effect != NULL)
         {
-            spell = effect->wCharacterId_candidate;
+            spell = effect->wSubtype;
             if (spell == FieldSpellReparo)
             {
-                if (effect->pLinkedActor_candidate == g_pPlayerActor)
-                    SetActorActionState(effect->pLinkedActor_candidate,
-                                        effect->pLinkedActor_candidate->bPrevActionState_candidate);
+                if (effect->pLinkedActor == g_pPlayerActor)
+                    SetActorActionState(effect->pLinkedActor,
+                                        effect->pLinkedActor->bPrevActionState);
             }
             else if (spell == FieldSpellLumos)
             {
@@ -37,7 +37,7 @@ void EndFieldSpellEffect(Actor *effect)
                 SetActorAssetRecord(g_pPlayerActor, &g_LumosEndPlayerGfx);
                 SetActorAnimFrame(g_pPlayerActor, g_abLumosPlayerStandFrames[g_pPlayerActor->bFacing]);
                 g_pPlayerActor->dwFlags |= ActorFlagVisible;
-                if (g_dwRoomBgFlag_candidate == 0)
+                if (g_dwRoomUsesBg0 == 0)
                     DisableBg(0);
             }
             g_pFieldSpellEffectActor = NULL;

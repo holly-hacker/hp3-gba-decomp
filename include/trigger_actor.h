@@ -43,6 +43,6 @@ extern const u8 g_aabUnusedRoomSwitchAnims[12][20];                // ROM 0x0806
 // 1 while RestoreRoomActorState respawns the room's saved actors, and set
 // when the overworld pushes a pause menu. Switches flipping while it is set,
 // and the first flip of one spawned while it is set, play no sound.
-extern u8 g_bRestoringRoomActors_candidate;
+extern u8 g_bRestoringRoomActors;
 
 extern s32 g_nSwitchSoundHandle;  // handle of the switch flip sound

@@ -13,6 +13,6 @@ u32 StartColorCycle(u32 startColor, u32 colorCount, u32 delay, u32 flags)
     pCycle->bCurrentColor = startColor;
     pCycle->bEndColor = startColor + colorCount - 1;
     pCycle->bColorCount = colorCount;
-    pCycle->bColorCount2_candidate = colorCount;
+    pCycle->bColorCountCopy = colorCount;
     return slot;
 }

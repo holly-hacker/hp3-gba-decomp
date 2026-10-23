@@ -15,7 +15,7 @@
 // the spell down to EndFieldSpellEffect.
 void TickFieldSpellEffect(Actor *effect)
 {
-    u8 spell = effect->wCharacterId_candidate;
+    u8 spell = effect->wSubtype;
     ParticleEmitter *emitter;
     IntPoint anchor;
 
@@ -42,37 +42,37 @@ void TickFieldSpellEffect(Actor *effect)
         switch (spell)
         {
         case FieldSpellWingardiumLeviosa:
-            effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
+            effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision;
             effect->bTerrainBlockResponse = TerrainBlockEndFlight;
             SetActorActionState(effect, 0xF);
-            effect->bFacing = effect->pLinkedActor_candidate->bFacing;
-            effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].x << 16;
-            effect->vel.y = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].y << 16;
+            effect->bFacing = effect->pLinkedActor->bFacing;
+            effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor->bFacing].x << 16;
+            effect->vel.y = g_aFieldSpellVelocities[effect->pLinkedActor->bFacing].y << 16;
             effect->dwStateTimer = 30;
             break;
         case FieldSpellFlipendo:
         case FieldSpellAlohomora:
             SetActorAnimData(effect, &g_aFieldSpellAssets[spell],
-                             g_aaFieldSpellFlightAnims[effect->pLinkedActor_candidate->bFacing], 0);
-            effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > DirectionDown;
-            effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
+                             g_aaFieldSpellFlightAnims[effect->pLinkedActor->bFacing], 0);
+            effect->oam.hFlip = effect->pLinkedActor->bFacing > DirectionDown;
+            effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision;
             effect->bTerrainBlockResponse = TerrainBlockEndFlight;
             SetActorActionState(effect, 0xF);
-            effect->bFacing = effect->pLinkedActor_candidate->bFacing;
-            effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].x << 16;
-            effect->vel.y = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].y << 16;
+            effect->bFacing = effect->pLinkedActor->bFacing;
+            effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor->bFacing].x << 16;
+            effect->vel.y = g_aFieldSpellVelocities[effect->pLinkedActor->bFacing].y << 16;
             effect->dwStateTimer = 30;
             break;
         case FieldSpellReparo:
             SetActorAnimData(effect, &g_aFieldSpellAssets[spell],
-                             g_aaFieldSpellFlightAnims[effect->pLinkedActor_candidate->bFacing], 0);
-            effect->oam.hFlip = effect->pLinkedActor_candidate->bFacing > DirectionDown;
-            effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
+                             g_aaFieldSpellFlightAnims[effect->pLinkedActor->bFacing], 0);
+            effect->oam.hFlip = effect->pLinkedActor->bFacing > DirectionDown;
+            effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision;
             effect->bTerrainBlockResponse = TerrainBlockEndFlight;
             SetActorActionState(effect, 0xF);
-            effect->bFacing = effect->pLinkedActor_candidate->bFacing;
-            effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].x << 16;
-            effect->vel.y = g_aFieldSpellVelocities[effect->pLinkedActor_candidate->bFacing].y << 16;
+            effect->bFacing = effect->pLinkedActor->bFacing;
+            effect->vel.x = g_aFieldSpellVelocities[effect->pLinkedActor->bFacing].x << 16;
+            effect->vel.y = g_aFieldSpellVelocities[effect->pLinkedActor->bFacing].y << 16;
             effect->dwStateTimer = 30;
             emitter = AllocParticleEmitter((const ObjPalette *)gReparoEffectPalette, 2, 0);
             emitter->pTarget = effect;
@@ -85,7 +85,7 @@ void TickFieldSpellEffect(Actor *effect)
             InitReparoParticleEmitter(emitter);
             break;
         case FieldSpellLumos:
-            if (g_dwRoomBgFlag_candidate != 0)
+            if (g_dwRoomUsesBg0 != 0)
                 effect->dwFlags &= ~ActorFlagVisible;
             else
             {
@@ -105,14 +105,14 @@ void TickFieldSpellEffect(Actor *effect)
             g_pPlayerActor->dwFlags |= ActorFlagVisible;
 
             g_pFieldSpellCompanionActor = AllocActorOfType(RoomActorType_FieldSpellEffect);
-            g_pFieldSpellCompanionActor->pLinkedActor_candidate = effect->pLinkedActor_candidate;
-            GetActorFlippedAnchor(g_pFieldSpellCompanionActor->pLinkedActor_candidate, 0, &anchor);
+            g_pFieldSpellCompanionActor->pLinkedActor = effect->pLinkedActor;
+            GetActorFlippedAnchor(g_pFieldSpellCompanionActor->pLinkedActor, 0, &anchor);
             SnapActorPosition(g_pFieldSpellCompanionActor,
-                              g_pFieldSpellCompanionActor->pLinkedActor_candidate->pos.x + (anchor.x << 16),
-                              g_pFieldSpellCompanionActor->pLinkedActor_candidate->pos.y + (anchor.y << 16));
+                              g_pFieldSpellCompanionActor->pLinkedActor->pos.x + (anchor.x << 16),
+                              g_pFieldSpellCompanionActor->pLinkedActor->pos.y + (anchor.y << 16));
             g_pFieldSpellCompanionActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
                                                    | ActorFlagUnk2000;
-            g_pFieldSpellCompanionActor->wCharacterId_candidate = spell;
+            g_pFieldSpellCompanionActor->wSubtype = spell;
             g_pFieldSpellCompanionActor->anim.bAnimFrameDelay = 1;
             g_pFieldSpellCompanionActor->pfnTick = TickFieldSpellCompanionActor;
             AttachActorPalette(g_pFieldSpellCompanionActor, g_aFieldSpellCompanionAssets[spell].pPalette);
@@ -125,7 +125,7 @@ void TickFieldSpellEffect(Actor *effect)
             emitter->wSpawnPeriod = 5;
             emitter->wLifetimeBase = 20;
             emitter->wLifetimeRange = 5;
-            emitter->wFlags = ParticleEmitterFlagPriorityBelow_candidate | ParticleEmitterFlagSpawnRoll
+            emitter->wFlags = ParticleEmitterFlagPriorityBelow | ParticleEmitterFlagSpawnRoll
                               | ParticleEmitterFlagNoCollision | ParticleEmitterFlagAnimTicksFixed;
             emitter->wSpread = 1;
             emitter->wSpawnTimer = 0;
@@ -150,9 +150,9 @@ void TickFieldSpellEffect(Actor *effect)
     {
         if (spell == FieldSpellAlohomora)
         {
-            SetActorActionSubState(effect->pLinkedActor_candidate, 0xB);
-            effect->pLinkedActor_candidate->dwFlags |= ActorFlagHasTickLogic;
-            effect->pLinkedActor_candidate->dwStateTimer = 30;
+            SetActorActionSubState(effect->pLinkedActor, 0xB);
+            effect->pLinkedActor->dwFlags |= ActorFlagHasTickLogic;
+            effect->pLinkedActor->dwStateTimer = 30;
         }
         EndFieldSpellEffect(effect);
     }
@@ -188,27 +188,27 @@ void TickFieldSpellEffect(Actor *effect)
 
     if (spell == FieldSpellAlohomora && effect->dwStateTimer == 60)
     {
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-        CancelActorMove_candidate(effect);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell],
-                         g_aaAlohomoraUnlockAnims[g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing]], 0);
-        if (g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing] == 3)
+                         g_aaAlohomoraUnlockAnims[g_abFacingDirection4[effect->pLinkedActor->bFacing]], 0);
+        if (g_abFacingDirection4[effect->pLinkedActor->bFacing] == 3)
             effect->oam.hFlip = 1;
     }
 
     if (effect->dwStateTimer == 20 && effect->bFighterIndex == 1 && spell != FieldSpellLumos)
     {
         SetActorActionSubState(effect, 1);
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-        CancelActorMove_candidate(effect);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_aaFieldSpellAnims[spell], 0);
     }
 
     if (effect->bActionSubState == 5 && spell != FieldSpellLumos)
     {
         SetActorActionSubState(effect, 1);
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-        CancelActorMove_candidate(effect);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_aaFieldSpellAnims[spell], 0);
         effect->dwStateTimer = 20;
         PlayFieldSpellHitSound(effect);
@@ -216,11 +216,11 @@ void TickFieldSpellEffect(Actor *effect)
 
     if (effect != NULL)
     {
-        switch (effect->wCharacterId_candidate)
+        switch (effect->wSubtype)
         {
         case FieldSpellLumos:
-            SnapActorPosition(effect, effect->pLinkedActor_candidate->pos.x,
-                              effect->pLinkedActor_candidate->pos.y - 0x100000);
+            SnapActorPosition(effect, effect->pLinkedActor->pos.x,
+                              effect->pLinkedActor->pos.y - 0x100000);
             break;
         case FieldSpellFlipendo:
         case FieldSpellReparo:

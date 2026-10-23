@@ -1,6 +1,6 @@
 #include "color.h"
 
-void TickPaletteAnimations_candidate(void)
+void TickPaletteAnimations(void)
 {
     TickColorCycles();
     TickPaletteEffects();

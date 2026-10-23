@@ -41,7 +41,7 @@ void DrawBuckbeakMinigameTime(void)
     SetTextMacro2String(digits);
     pText = GetDialogText(0xA5E);  // "Time: @1:@2"
     SpawnTextActor(&pText, BuckbeakMinigameTextTime);
-    SetTextActorCenterPosition_candidate(g_apTextActors[BuckbeakMinigameTextTime], 0xB4, 0x90);
+    SetTextActorCenterPosition(g_apTextActors[BuckbeakMinigameTextTime], 0xB4, 0x90);
     g_apTextActors[BuckbeakMinigameTextTime]->oam.priority = 0;
     SelectTextFont(6, 0, 0);
 }

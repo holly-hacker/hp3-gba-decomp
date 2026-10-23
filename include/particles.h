@@ -43,9 +43,8 @@ typedef enum {
     ParticleEmitterFlagScreenPosition   = 0x0200,  // spawn at the target's OAM position, with
                                                     // particle priority 1, even when the target
                                                     // isn't onscreen
-    ParticleEmitterFlagPriorityBelow_candidate = 0x0400,  // priority = the target's - 1, but only when the
-                                                    // particle's own (zeroed) priority is nonzero,
-                                                    // so it always ends up 0
+    ParticleEmitterFlagPriorityBelow    = 0x0400,  // meant as the target's priority - 1; always 0
+                                                    // (see SpawnParticle)
     ParticleEmitterFlagSpawnRoll        = 0x0800,  // spawn only when Mt19937RandMax2(wSpawnRollMax)
                                                     // < wSpawnRollThreshold
     ParticleEmitterFlagAnchorPosition   = 0x1000,  // spawn at anchor point bParam43 of the target's
@@ -91,7 +90,8 @@ typedef struct ParticleEmitter {
     u8 bParam43;             // 0x43
     s8 abVelRange[4];        // 0x44
     u8 bAnimTicks;           // 0x48
-    u8 bParalysisEffectFlag_candidate;  // 0x49, set on the emitter spawned by SpawnParalysisEffect
+    u8 bKind;                // 0x49, 1: SpawnParalysisEffect's emitter; 2: spawned by an effect
+                             // script, released by BSOP_ReleaseKind2Emitters
 } ParticleEmitter;
 
 // ParticleEmitter.bMode / Particle.bMode: how a particle's velocity is chosen.

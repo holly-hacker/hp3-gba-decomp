@@ -31,7 +31,7 @@ void TickTriggerZoneActor(Actor *pActor)
         break;
 
     case 4:
-        pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
+        pRecord = GetRoomActorStaticRecord(pActor->bRoomRecordCol, pActor->bRoomRecordRow);
         if (pActor->wActorType == RoomActorType_TriggerRect)
             RespawnGroupAndRunChain(((RoomActorRecordTriggerRect *)pRecord)->bRespawnGroup,
                                     ((RoomActorRecordTriggerRect *)pRecord)->bChain);
@@ -42,7 +42,7 @@ void TickTriggerZoneActor(Actor *pActor)
         break;
 
     case 5:
-        pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate, pActor->bRoomTileRow_candidate);
+        pRecord = GetRoomActorStaticRecord(pActor->bRoomRecordCol, pActor->bRoomRecordRow);
         if (pActor->wActorType == RoomActorType_TriggerRect)
             RespawnGroupAndRunChain(((RoomActorRecordTriggerRect *)pRecord)->bRespawnGroup,
                                     ((RoomActorRecordTriggerRect *)pRecord)->bChain);

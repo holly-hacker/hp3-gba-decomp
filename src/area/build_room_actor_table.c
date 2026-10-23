@@ -10,12 +10,12 @@ u8 *BuildRoomActorTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock
     u8 i;
     u16 offset;
 
-    g_wRoomResourceFlags_candidate = pVariant->wFlags;
+    g_wRoomVariantFlags = pVariant->wFlags;
     pTable = &pVariant->actorTable;
     pVariant = (const RoomBlobSubBlock *)pTable;
     count = pTable->wCount;
 
-    if (g_wRoomResourceFlags_candidate & 1)
+    if (g_wRoomVariantFlags & 1)
         g_pRoomActorTable->wCount = count + 1;
     else
         g_pRoomActorTable->wCount = count;
@@ -23,7 +23,7 @@ u8 *BuildRoomActorTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock
     offset = GetRoomOffsetTableSize(g_pRoomActorTable->wCount + 1);
     pOut += offset;
 
-    if (g_wRoomResourceFlags_candidate & 1)
+    if (g_wRoomVariantFlags & 1)
     {
         g_pRoomActorTable->awOffsets[0] = offset;
         pTable = &pDefault->actorTable;
@@ -34,7 +34,7 @@ u8 *BuildRoomActorTable(const RoomBlobSubBlock *pDefault, const RoomBlobSubBlock
     for (i = 0; i < count; i++)
     {
         offset = pOut - (u8 *)g_pRoomActorTable;
-        if (g_wRoomResourceFlags_candidate & 1)
+        if (g_wRoomVariantFlags & 1)
             g_pRoomActorTable->awOffsets[i + 1] = offset;
         else
             g_pRoomActorTable->awOffsets[i] = offset;

@@ -10,13 +10,13 @@ void SetPartyLeaderCharacter(u8 characterId)
 {
     g_bPartyCharId0 = characterId;
     g_pPlayerActor->dwFlags &= ~ActorFlagVisible;
-    g_pPlayerActor->wCharacterId_candidate = characterId;
+    g_pPlayerActor->wSubtype = characterId;
     if (g_pPlayerActor->pPendingPalette == NULL)
         ReleaseActorPalette(g_pPlayerActor);
     AttachActorPalette(g_pPlayerActor, g_aPartyWalkAssets[characterId].pPalette);
     SetActorAssetRecord(g_pPlayerActor, &g_aPartyWalkAssets[characterId]);
     SetActorAnimFrame(g_pPlayerActor, g_abPartyStandFrames[g_pPlayerActor->bFacing]);
-    g_bSelectedFieldSpell = GetPartyMasterStatsSlot_candidate(characterId) * 3;
+    g_bSelectedFieldSpell = GetCharacterFighterType(characterId) * 3;
     RefreshFieldSpellHud(g_pFieldSpellIconActor);
     g_pPlayerActor->dwFlags |= ActorFlagVisible;
 }

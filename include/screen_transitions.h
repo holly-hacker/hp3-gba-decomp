@@ -82,7 +82,7 @@ extern void CommitAlphaBlendCoefficients(void);
 
 // The BGR555 color TransitionOutPaletteFade fades to, and the step ticks of the palette
 // effects that the palette fades and DarkenScreenPalette/RestoreScreenPalette start
-// (PaletteEffect.bStepTicks_candidate). Set by SetPaletteFadeParams; every caller passes 0, 8.
+// (PaletteEffect.bStepTicks). Set by SetPaletteFadeParams; every caller passes 0, 8.
 extern u32 g_dwPaletteFadeColor;
 extern u32 g_dwPaletteFadeStepTicks;
 extern void SetPaletteFadeParams(u32 color, u32 stepTicks);
@@ -92,6 +92,6 @@ extern u16 *g_pScreenPaletteBackup;
 // Nonzero while g_pScreenPaletteBackup holds the palette from before DarkenScreenPalette or
 // TransitionOutPaletteFade.
 extern u32 g_dwScreenPaletteDarkened;
-extern void InitScreenTransitionState_candidate(void);
+extern void InitScreenTransitionState(void);
 extern void DarkenScreenPalette(void);
 extern void RestoreScreenPalette(void);

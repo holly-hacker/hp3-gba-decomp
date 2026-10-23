@@ -16,7 +16,7 @@ void UpdateClockSkipCutscene(void)
     {
         if (g_bCurrentRoomId == RoomLeakyCauldronHallway)
         {
-            g_abRoomScriptExitParams_candidate[0] = 0;
+            g_abRoomEntryIds[0] = 0;
             PushGameMode_2(Overworld, OverworldEntryEnterRoom, RoomHogwartsExpressPassengerCar);
             g_dwGameModeFlags |= GameModeFlagModeChangeRequested;
         }

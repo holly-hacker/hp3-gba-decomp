@@ -11,11 +11,11 @@
 // the player touches the zone, with A if the record requires it.
 void HandleTriggerZoneTouch(Actor *pSelf, Actor *pOther)
 {
-    u32 kind = pSelf->bRoomActorKind_candidate;
+    u32 kind = pSelf->bKind;
 
     if (kind == 3)
     {
-        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wCharacterId_candidate == FieldSpellReparo)
+        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wSubtype == FieldSpellReparo)
         {
             SetActorActionState(pSelf, 5);
             HandleFieldSpellHit(pOther, pSelf);
@@ -23,12 +23,12 @@ void HandleTriggerZoneTouch(Actor *pSelf, Actor *pOther)
     }
     else if (kind == 4)
     {
-        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wCharacterId_candidate == FieldSpellAlohomora)
+        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wSubtype == FieldSpellAlohomora)
             SetActorActionState(pSelf, 5);
     }
     else if (kind == 5)
     {
-        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wCharacterId_candidate == FieldSpellGlacius)
+        if (pOther->wActorType == RoomActorType_FieldSpellEffect && pOther->wSubtype == FieldSpellGlacius)
         {
             SetActorActionState(pSelf, 5);
             SetActorActionSubState(pOther, 0x10);

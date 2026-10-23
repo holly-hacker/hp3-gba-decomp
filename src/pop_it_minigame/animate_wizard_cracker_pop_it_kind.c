@@ -10,6 +10,6 @@ void AnimateWizardCrackerPopItKind(u32 kind, u32 animCounter)
 
     g_pWizardCrackerPopIt->aKinds[kind].nTimer = Mt19937RandRange(40, 70);
     for (i = 0; i < ARRAY_COUNT(g_pWizardCrackerPopIt->apCrackers); i++)
-        if (g_pWizardCrackerPopIt->apCrackers[i] != NULL && g_pWizardCrackerPopIt->apCrackers[i]->wCharacterId_candidate == kind)
+        if (g_pWizardCrackerPopIt->apCrackers[i] != NULL && g_pWizardCrackerPopIt->apCrackers[i]->wSubtype == kind)
             g_pWizardCrackerPopIt->apCrackers[i]->anim.bAnimFrameCounter = animCounter;
 }

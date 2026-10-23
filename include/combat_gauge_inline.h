@@ -8,11 +8,11 @@
 static inline void DestroyActorAndUnlink(Actor *actor)
 {
     actor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
-    if (actor->pLinkedActor_candidate != NULL)
+    if (actor->pLinkedActor != NULL)
     {
-        if (actor->pLinkedActor_candidate->pLinkedActor_candidate != NULL)
-            actor->pLinkedActor_candidate->pLinkedActor_candidate = NULL;
-        actor->pLinkedActor_candidate = NULL;
+        if (actor->pLinkedActor->pLinkedActor != NULL)
+            actor->pLinkedActor->pLinkedActor = NULL;
+        actor->pLinkedActor = NULL;
     }
 }
 

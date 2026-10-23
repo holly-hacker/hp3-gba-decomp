@@ -45,7 +45,7 @@ void TickPlayerActor(Actor *actor)
         else if (actor->bActionSubState == 2)
         {
             actor->bActionFlags &= ~2;
-            CancelActorMove_candidate(actor);
+            StopActorMotion(actor);
             SetPartyMemberAnim(actor, PartyAnimStand);
         }
         else if (actor->bActionSubState == 0xF)

@@ -12,7 +12,7 @@ void TickServePumpkinJuiceCustomerPart(Actor *part)
         if (part->bActionState != 0)
         {
             part->dwFlags &= ~ActorFlagVisible;
-            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wCharacterId_candidate][1],
+            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wSubtype][1],
                              g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimWalk], 0);
             part->wActionVariant = 0;
             part->bActionState = 0;
@@ -21,7 +21,7 @@ void TickServePumpkinJuiceCustomerPart(Actor *part)
         if (part->pOwnerActor->wActionVariant == 1 && part->wActionVariant == 0)
         {
             part->dwFlags |= ActorFlagVisible;
-            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wCharacterId_candidate][1],
+            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wSubtype][1],
                              g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimWalkVariant + 1], 0);
             part->wActionVariant = 1;
         }
@@ -30,7 +30,7 @@ void TickServePumpkinJuiceCustomerPart(Actor *part)
         if (part->bActionState != 1)
         {
             part->dwFlags &= ~ActorFlagVisible;
-            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wCharacterId_candidate][1],
+            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wSubtype][1],
                              g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimWalk], 0);
             part->bActionState = 1;
             part->wActionVariant = 0;
@@ -39,7 +39,7 @@ void TickServePumpkinJuiceCustomerPart(Actor *part)
         if (part->pOwnerActor->wActionVariant == 1 && part->wActionVariant == 0)
         {
             part->dwFlags |= ActorFlagVisible;
-            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wCharacterId_candidate][1],
+            SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wSubtype][1],
                              g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimWalkVariant + 1], 0);
             part->wActionVariant = 1;
         }
@@ -48,11 +48,11 @@ void TickServePumpkinJuiceCustomerPart(Actor *part)
         if (part->bActionState != 2)
         {
             part->dwFlags |= ActorFlagVisible;
-            if (part->wCharacterId_candidate == 6)
-                SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wCharacterId_candidate][1],
+            if (part->wSubtype == 6)
+                SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wSubtype][1],
                                  g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimDrinkVariant], 0);
             else
-                SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wCharacterId_candidate][1],
+                SetActorAnimData(part, g_aapServePumpkinJuiceCustomerSpriteRows[part->wSubtype][1],
                                  g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimDrink], 0);
 
             part->bActionState = 2;

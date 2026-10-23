@@ -6,13 +6,13 @@
 
 typedef struct StartTileActorScriptRecord {
     u32 dwOpcode;
-    u16 wScriptPc;
-    u16 wScriptData;
+    u16 wTargetX;
+    u16 wTargetY;
     u8 bX;
     u8 bY;
-    u8 bArg65;
-    u8 bArg66;
-    u8 bArg64;
+    u8 bRespawnRow;
+    u8 bChainRow;
+    u8 bFacing;
 } StartTileActorScriptRecord;
 
 void RoomScriptOpStartTileActorScript(StartTileActorScriptRecord *pRecord)
@@ -31,16 +31,16 @@ void RoomScriptOpStartTileActorScript(StartTileActorScriptRecord *pRecord)
     if (g_dwRoomScriptRunState == 2)
         pActor->dwFlags |= ActorFlagRoomScriptYield;
 
-    pActor->scriptState.wScriptPc = pRecord->wScriptPc;
-    pActor->modeState.actor.wStagedDamage = pRecord->wScriptData;
-    pActor->modeState.actor.bFollowResumeDistance = pRecord->bArg65;
-    pActor->modeState.actor.bRoomScriptArg66_candidate = pRecord->bArg66;
+    pActor->scriptState.wScriptPc = pRecord->wTargetX;
+    pActor->modeState.scriptWalk.wTargetY = pRecord->wTargetY;
+    pActor->modeState.scriptWalk.args.bytes.bRespawnRow = pRecord->bRespawnRow;
+    pActor->modeState.scriptWalk.args.bytes.bChainRow = pRecord->bChainRow;
     SetActorActionState(pActor, 15);
 
-    if (pActor->dwFlags & ActorFlagFourWayDirections_candidate)
-        pActor->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64 >> 1;
+    if (pActor->dwFlags & ActorFlagFourWayDirections)
+        pActor->modeState.scriptWalk.args.bytes.bFacing = pRecord->bFacing >> 1;
     else
-        pActor->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64;
+        pActor->modeState.scriptWalk.args.bytes.bFacing = pRecord->bFacing;
 
     SetActorFlags(pActor, ActorFlagHasTickLogic);
     SetActorActionSubState(pActor, 0);

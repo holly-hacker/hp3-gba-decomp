@@ -9,7 +9,7 @@
 #define WIZARD_CRACKER_POP_IT_ROWS     6
 #define WIZARD_CRACKER_POP_IT_KINDS    5
 
-// Actor.wCharacterId_candidate of a cracker. Named after the sprites' shapes.
+// Actor.wSubtype of a cracker. Named after the sprites' shapes.
 typedef enum {
     WizardCrackerPopItKindWrapped = 0,
     WizardCrackerPopItKindTriangle = 1,

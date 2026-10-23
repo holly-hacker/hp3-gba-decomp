@@ -46,7 +46,7 @@ void HandleRaisingPlatformTouch(Actor *pSelf, Actor *pOther)
         }
         break;
     case RoomActorType_FieldSpellEffect:
-        if (pOther->wCharacterId_candidate == FieldSpellReparo && RAISING_PLATFORM_STATE(pSelf)->dwInactive == 1)
+        if (pOther->wSubtype == FieldSpellReparo && RAISING_PLATFORM_STATE(pSelf)->dwInactive == 1)
         {
             RAISING_PLATFORM_STATE(pSelf)->dwInactive = 0;
             HandleFieldSpellHit(pOther, pSelf);

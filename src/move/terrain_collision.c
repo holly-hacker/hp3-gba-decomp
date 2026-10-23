@@ -17,7 +17,7 @@ inline void ReverseActorDirection(Actor *actor)
 {
     u32 facing = actor->bFacing;
 
-    if (actor->dwFlags & ActorFlagFourWayDirections_candidate)
+    if (actor->dwFlags & ActorFlagFourWayDirections)
         facing = g_abOppositeFacing[facing * 2] / 2;
     else
         facing = g_abOppositeFacing[facing];
@@ -40,7 +40,7 @@ inline u8 StartMoveVelocity(Actor *actor)
     steps = ABS(iwramDivideSignedQuotient(distance, actor->nMoveSpeed));
     dx = actor->moveTarget.x - actor->posPrev.x;
     dy = actor->moveTarget.y - actor->posPrev.y;
-    direction = GetDirectionFromVector(actor->vel, actor->dwFlags & ActorFlagFourWayDirections_candidate);
+    direction = GetDirectionFromVector(actor->vel, actor->dwFlags & ActorFlagFourWayDirections);
     actor->vel.x = iwramDivideSignedQuotient(dx, steps);
     actor->vel.y = iwramDivideSignedQuotient(dy, steps);
     return direction;
@@ -67,7 +67,7 @@ inline u32 IsBlockingCollisionType(u32 type)
 // Returns the collision type at a room pixel: the low 6 bits of its behavior byte, 1 outside the
 // room, and for the slope types 2-25 either 0 or the type depending on which side of the
 // slope's line the pixel is on.
-u32 GetCollisionTypeAtPixel_candidate(PixelPoint pixel)
+u32 GetCollisionTypeAtPixel(PixelPoint pixel)
 {
     SlopeLineSegment segment;
     PixelVector line;
@@ -135,15 +135,15 @@ u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type)
             type = 1;
         else if (actor->wActorType == RoomActorType_WorldActor)
         {
-            if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->left, box->top }) != 0x22)
+            if (GetCollisionTypeAtPixel((PixelPoint){ box->left, box->top }) != 0x22)
                 break;
-            if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->right, box->top }) != 0x22)
+            if (GetCollisionTypeAtPixel((PixelPoint){ box->right, box->top }) != 0x22)
                 break;
-            if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->left, box->bottom }) != 0x22)
+            if (GetCollisionTypeAtPixel((PixelPoint){ box->left, box->bottom }) != 0x22)
                 break;
-            if (GetCollisionTypeAtPixel_candidate((PixelPoint){ box->right, box->bottom }) != 0x22)
+            if (GetCollisionTypeAtPixel((PixelPoint){ box->right, box->bottom }) != 0x22)
                 break;
-            if (actor->bActionSubState == 1 && !(actor->dwFlags & ActorFlagNoPushTrigger_candidate))
+            if (actor->bActionSubState == 1 && !(actor->dwFlags & ActorFlagSettled))
                 SnapActorXToTileGrid(actor);
         }
         break;
@@ -189,7 +189,7 @@ void RespondToTerrain(Actor *actor, u32 type)
                 if ((u8)(actor->bActionState - 7) > 6)
                 {
                     SetActorActionSubState(actor, 2);
-                    CancelActorMove_candidate(actor);
+                    StopActorMotion(actor);
                     if (actor == g_pPlayerActor)
                         SetPartyMemberAnim(actor, PartyAnimStand);
                 }
@@ -213,7 +213,7 @@ void RespondToTerrain(Actor *actor, u32 type)
         }
     }
 
-    actor->bTerrainType = GetCollisionTypeAtPixel_candidate(
+    actor->bTerrainType = GetCollisionTypeAtPixel(
         (PixelPoint){ (s16)(actor->posPrev.x >> 16), (s16)(actor->posPrev.y >> 16) });
 }
 
@@ -330,13 +330,13 @@ u32 ScanTerrainEdge(u32 direction, TerrainBox *box)
 
     if (g_adwEdgeEndpointTypes[0] == 0xFF)
     {
-        g_adwEdgeEndpointTypes[0] = GetCollisionTypeAtPixel_candidate(end);
-        g_adwEdgeEndpointTypes[1] = GetCollisionTypeAtPixel_candidate(pos);
+        g_adwEdgeEndpointTypes[0] = GetCollisionTypeAtPixel(end);
+        g_adwEdgeEndpointTypes[1] = GetCollisionTypeAtPixel(pos);
     }
 
     for (i = 0; i < length; i += 4)
     {
-        type = GetCollisionTypeAtPixel_candidate(pos);
+        type = GetCollisionTypeAtPixel(pos);
         if (type != 0)
         {
             result = type;
@@ -349,7 +349,7 @@ u32 ScanTerrainEdge(u32 direction, TerrainBox *box)
 
     if (!IsBlockingCollisionType(result))
     {
-        type = GetCollisionTypeAtPixel_candidate(end);
+        type = GetCollisionTypeAtPixel(end);
         if (type != 0)
             result = type;
     }
@@ -363,7 +363,7 @@ void NoopInit2(void)
 }
 
 // Loads the room's collision behavior table and collision tilemap.
-void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const void *pCollisionTilemap)
+void LoadRoomCollision(const void *pCollisionBehaviorTable, const void *pCollisionTilemap)
 {
     u32 size;
 
@@ -379,7 +379,7 @@ void LoadRoomSharedTileset_candidate(const void *pCollisionBehaviorTable, const 
 }
 
 // Frees the room's collision data.
-void FreeRoomSharedTileset(void)
+void FreeRoomCollision(void)
 {
     FreeBlock(g_pRoomCollisionBehaviorTable);
     FreeBlock(g_pRoomCollisionTilemapBuffer);

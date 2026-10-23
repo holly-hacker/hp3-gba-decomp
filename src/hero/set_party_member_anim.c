@@ -22,8 +22,8 @@ void SetPartyMemberAnim(Actor *actor, u8 anim)
         }
         else
         {
-            SetActorAssetRecord(actor, &g_aPartyWalkAssets[actor->wCharacterId_candidate]);
-            if (actor->wCharacterId_candidate == 8)
+            SetActorAssetRecord(actor, &g_aPartyWalkAssets[actor->wSubtype]);
+            if (actor->wSubtype == 8)
                 SetActorAnimFrame(actor, g_abPartyStandFramesChar8[actor->bFacing]);
             else
                 SetActorAnimFrame(actor, g_abPartyStandFrames[actor->bFacing]);
@@ -35,33 +35,33 @@ void SetPartyMemberAnim(Actor *actor, u8 anim)
         {
             SetActorAnimData(actor, &g_PartyLumosGfx, g_aPartyWalkAnims[actor->bFacing], 0);
         }
-        else if (actor->wCharacterId_candidate == 4)
+        else if (actor->wSubtype == 4)
         {
-            SetActorAnimData(actor, &g_aPartyWalkAssets[actor->wCharacterId_candidate],
+            SetActorAnimData(actor, &g_aPartyWalkAssets[actor->wSubtype],
                               g_aPartyWalkAnimsChar4[actor->bFacing], 0);
             actor->oam.hFlip = actor->bFacing > DirectionDown;
         }
-        else if (actor->wCharacterId_candidate == 8)
+        else if (actor->wSubtype == 8)
         {
-            SetActorAnimData(actor, &g_aPartyWalkAssets[actor->wCharacterId_candidate],
+            SetActorAnimData(actor, &g_aPartyWalkAssets[actor->wSubtype],
                               g_aPartyWalkAnimsChar8[actor->bFacing], 0);
         }
         else
         {
-            SetActorAnimData(actor, &g_aPartyWalkAssets[actor->wCharacterId_candidate],
+            SetActorAnimData(actor, &g_aPartyWalkAssets[actor->wSubtype],
                               g_aPartyWalkAnims[actor->bFacing], 0);
         }
         break;
     case PartyAnim4:
-        SetActorAnimData(actor, &g_aPartyAnim4Assets[actor->wCharacterId_candidate],
+        SetActorAnimData(actor, &g_aPartyAnim4Assets[actor->wSubtype],
                           g_aPartyAnim4Anims[actor->bFacing], 0);
         break;
     case PartyAnimCast:
-        SetActorAnimData(actor, &g_aPartyCastAssets[actor->wCharacterId_candidate],
+        SetActorAnimData(actor, &g_aPartyCastAssets[actor->wSubtype],
                           g_aPartyCastAnims[actor->bFacing], 0);
         break;
     case PartyAnim3:
-        SetActorAnimData(actor, &g_aPartyAnim3Assets[actor->wCharacterId_candidate], g_abPartyAnim3Anim, 0);
+        SetActorAnimData(actor, &g_aPartyAnim3Assets[actor->wSubtype], g_abPartyAnim3Anim, 0);
         break;
     }
 

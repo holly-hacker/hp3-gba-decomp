@@ -28,7 +28,7 @@ void DrawItemListRowText(s32 row, u32 highlighted)
         color = 2;
 
     SelectTextFont(1, color, 0);
-    SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(g_ItemList.adwItems[item])));
+    SetTextMacro1String(GetDialogText(GetRewardNameTextId(g_ItemList.adwItems[item])));
     if (g_ItemList.adwItems[item] == ITEM_REMOVE)
         textId = 0x3FD;  // "Remove"
     else

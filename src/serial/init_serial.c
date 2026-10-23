@@ -70,5 +70,5 @@ void InitSerial(void)
     ClearSerialChecksumRollBytes();
     g_SerialPlayerState.dwUnk_0x00 = -1;
     g_dwSerialPlayerCount = -1;
-    g_dwSerialPollFlags_candidate &= ~1;
+    g_dwSerialSendFlags &= ~1;
 }

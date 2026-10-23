@@ -19,10 +19,10 @@ void StepPaletteEffect(PaletteEffect *pEffect)
 
     if (pEffect->wFlags & 0x20)
     {
-        if (--pEffect->bDelayTimer_candidate == 0xFF)
+        if (--pEffect->bDelayTimer == 0xFF)
         {
             active = 1;
-            pEffect->bDelayTimer_candidate = pEffect->bDelay_candidate;
+            pEffect->bDelayTimer = pEffect->bDelay;
         }
         else
             active = 0;
@@ -30,14 +30,14 @@ void StepPaletteEffect(PaletteEffect *pEffect)
     else
         active = 1;
 
-    if (pEffect->bStepTimer_candidate == 0)
+    if (pEffect->bStepTimer == 0)
     {
         if (pEffect->wFlags & 0x10)
         {
             pEffect->bFrameIndex++;
             if (pEffect->bFrameIndex >= pEffect->bFrameCount)
                 pEffect->bFrameIndex = 0;
-            pEffect->bStepTimer_candidate = pEffect->bStepTicks_candidate;
+            pEffect->bStepTimer = pEffect->bStepTicks;
             pEffect->pCurrentFrame = pEffect->pFrames + pEffect->bFrameIndex * 16;
         }
         else
@@ -51,13 +51,13 @@ void StepPaletteEffect(PaletteEffect *pEffect)
     else if (active)
     {
         level = 0;
-        value = pEffect->bStepTimer_candidate;
+        value = pEffect->bStepTimer;
         i = 0;
         for (; i < 32; i++)
         {
             if (value-- == 0)
             {
-                value += pEffect->bStepTimer_candidate;
+                value += pEffect->bStepTimer;
                 level++;
             }
             aStep[i] = level;
@@ -106,6 +106,6 @@ void StepPaletteEffect(PaletteEffect *pEffect)
         }
 
         pEffect->wFlags |= PALETTE_ANIM_DIRTY;
-        pEffect->bStepTimer_candidate--;
+        pEffect->bStepTimer--;
     }
 }

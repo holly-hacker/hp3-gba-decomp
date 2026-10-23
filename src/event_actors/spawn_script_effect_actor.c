@@ -8,7 +8,7 @@ Actor *SpawnScriptEffectActor(u32 kind)
     Actor *actor = AllocActorOfType(RoomActorType_ScriptEffect);
 
     actor->dwFlags = ActorFlagHasTickLogic | ActorFlagTickHandlerSuspendsMovement;
-    actor->bRoomActorKind_candidate = kind;
+    actor->bKind = kind;
     SetActorActionState(actor, 0);
     actor->pfnTick = g_apfnScriptEffectActorTicks[kind];
     return actor;

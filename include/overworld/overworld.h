@@ -20,12 +20,11 @@ typedef struct OverworldControlState {
 
 // Starts the cast of the selected field spell (action state 0x13).
 extern void StartFieldSpellCast(Actor *actor);
-// Sets (1) or clears (0) ActorFlagVisible on g_pPlayerShadowActor_candidate.
+// Sets (1) or clears (0) ActorFlagVisible on g_pPlayerShadowActor.
 extern void SetPlayerShadowVisible(u32 visible);
 extern void TickHeldRewardActor(Actor *actor);  // pfnTick of the item TickActorReceiveReward spawns
-// The player's collision callback: touching a world actor with
-// bWorldActorBlocksPlayer_candidate set and bRoomActorArg67_candidate 0xFF stops the player
-// in place, unless casting (action state 0x13).
+// The player's collision callback: touching an intact world actor with bBlocksPlayer set
+// stops the player in place, unless casting (action state 0x13).
 extern void HandlePlayerWorldActorCollision(Actor *self, Actor *other);
 extern void RefreshFieldSpellHud(Actor *iconActor);
 // Marks the actor, its linked actor and its shadow for destruction.

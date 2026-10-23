@@ -2,7 +2,7 @@
 #include "combat_fx.h"
 
 // StartOrbitMotion rows.
-const ActorOrbit g_aEffectOrbitParams_candidate[16] = {
+const ActorOrbit g_aEffectOrbitParams[16] = {
     { -0x4000, -0x8000, 0x200, -0x400, 0, 5 },
     { -0x4000, 0x0, 0x0, 0x0, 20, 0 },
     { 0x0, 0x0, 0x800, -0x800, 2, 2 },
@@ -21,9 +21,10 @@ const ActorOrbit g_aEffectOrbitParams_candidate[16] = {
     { -0x4000, 0x4000, 0x1400, -0x1400, 10, 10 },
 };
 
-// Roster indices the effect script checks a target fighter against.
-const u8 g_abEffectRosterIdPair_candidate[2] = { 0x3B, 0x3A };
+// Roster indices BSOP_GotoIfFighterRosterMatches checks the target against: The Monster
+// Book of Monsters and the Giant Rat. Only Verdimillious Uno uses it.
+const u8 g_abEffectRosterIdPair[2] = { 0x3B, 0x3A };
 
 // Screen position of each fighter slot (bScriptParam).
-const u16 g_awBattleSlotPosX_candidate[7] = { 212, 176, 140, 31, 67, 103, 139 };
-const u8 g_abBattleSlotPosY_candidate[7] = { 110, 114, 118, 95, 91, 87, 83 };
+const u16 g_awBattleSlotPosX[7] = { 212, 176, 140, 31, 67, 103, 139 };
+const u8 g_abBattleSlotPosY[7] = { 110, 114, 118, 95, 91, 87, 83 };

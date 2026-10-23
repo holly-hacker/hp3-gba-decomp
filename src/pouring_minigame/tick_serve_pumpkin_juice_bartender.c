@@ -33,24 +33,24 @@ void TickServePumpkinJuiceBartender(Actor *bartender)
             if (bartender->dwFlags & ActorFlagActionAnimDone)
             {
                 bartender->dwFlags &= ~ActorFlagActionAnimDone;
-                bartender->pLinkedActor_candidate = NULL;
+                bartender->pLinkedActor = NULL;
                 g_GameModeStackContext.dwModeState = ServePumpkinJuiceStateNextRound;
                 bartender->bActionState = 0;
             }
-            else if (bartender->pLinkedActor_candidate == NULL && bartender->wTimedMoveTicks == 21)
+            else if (bartender->pLinkedActor == NULL && bartender->wTimedMoveTicks == 21)
             {
                 GetActorAnchor(bartender, 0, &anchor);
-                bartender->pLinkedActor_candidate =
+                bartender->pLinkedActor =
                     SpawnActor(0, (bartender->pos.x >> 16) + anchor.x, (bartender->pos.y >> 16) + anchor.y,
                                (const ObjPalette *)gPumpkin044Palette);
-                bartender->pLinkedActor_candidate->moveTarget.x = (bartender->pos.x >> 16) + anchor.x;
-                bartender->pLinkedActor_candidate->moveTarget.y = (bartender->pos.y >> 16) + anchor.y;
-                bartender->pLinkedActor_candidate->oam.priority = 1;
-                bartender->pLinkedActor_candidate->pfnTick = TickServePumpkinJuiceDroppedGoblet;
-                SetActorAnimData(bartender->pLinkedActor_candidate, &g_ServePumpkinJuiceGobletSprite,
+                bartender->pLinkedActor->moveTarget.x = (bartender->pos.x >> 16) + anchor.x;
+                bartender->pLinkedActor->moveTarget.y = (bartender->pos.y >> 16) + anchor.y;
+                bartender->pLinkedActor->oam.priority = 1;
+                bartender->pLinkedActor->pfnTick = TickServePumpkinJuiceDroppedGoblet;
+                SetActorAnimData(bartender->pLinkedActor, &g_ServePumpkinJuiceGobletSprite,
                                  g_aabServePumpkinJuiceGobletAnims[ServePumpkinJuiceGobletAnimEmptyFalling], 0);
-                bartender->pLinkedActor_candidate->bActionState = 0;
-                bartender->pLinkedActor_candidate->wTimedMoveTicks = 0;
+                bartender->pLinkedActor->bActionState = 0;
+                bartender->pLinkedActor->wTimedMoveTicks = 0;
             }
             break;
         default:

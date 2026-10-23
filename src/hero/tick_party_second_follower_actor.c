@@ -40,7 +40,7 @@ void TickPartySecondFollowerActor(Actor *actor)
         if (actor->bActionFlags & 2)
         {
             actor->bActionFlags = 0;
-            CancelActorMove_candidate(actor);
+            StopActorMotion(actor);
             SetPartyMemberAnim(actor, PartyAnimStand);
         }
         break;
@@ -94,9 +94,9 @@ void TickPartySecondFollowerActor(Actor *actor)
         }
         else
         {
-            CancelActorMove_candidate(actor);
+            StopActorMotion(actor);
             SetPartyMemberAnim(actor, PartyAnimStand);
-            CancelActorMove_candidate(g_pFollowerActor0);
+            StopActorMotion(g_pFollowerActor0);
             SetPartyMemberAnim(g_pFollowerActor0, PartyAnimStand);
         }
         break;

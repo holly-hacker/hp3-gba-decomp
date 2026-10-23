@@ -32,7 +32,7 @@ void InitializeBuckbeakMinigameResultsMenu(void)
     {
         pText = GetDialogText(0xA58);  // "Resume Game"
         SpawnTextActor(&pText, BuckbeakMinigameTextResume);
-        SetTextActorCenterPosition_candidate(g_apTextActors[BuckbeakMinigameTextResume], 0x78, 0x40);
+        SetTextActorCenterPosition(g_apTextActors[BuckbeakMinigameTextResume], 0x78, 0x40);
         g_apTextActors[BuckbeakMinigameTextResume]->oam.priority = 0;
     }
 
@@ -40,7 +40,7 @@ void InitializeBuckbeakMinigameResultsMenu(void)
     {
         pText = GetDialogText(0xA59);  // "Replay"
         SpawnTextActor(&pText, BuckbeakMinigameTextReplay);
-        SetTextActorCenterPosition_candidate(g_apTextActors[BuckbeakMinigameTextReplay], 0x78, 0x50);
+        SetTextActorCenterPosition(g_apTextActors[BuckbeakMinigameTextReplay], 0x78, 0x50);
         g_apTextActors[BuckbeakMinigameTextReplay]->oam.priority = 0;
     }
 
@@ -48,7 +48,7 @@ void InitializeBuckbeakMinigameResultsMenu(void)
     {
         pText = GetDialogText(0xA5A);  // "Exit Game"
         SpawnTextActor(&pText, BuckbeakMinigameTextExit);
-        SetTextActorCenterPosition_candidate(g_apTextActors[BuckbeakMinigameTextExit], 0x78, 0x60);
+        SetTextActorCenterPosition(g_apTextActors[BuckbeakMinigameTextExit], 0x78, 0x60);
         g_apTextActors[BuckbeakMinigameTextExit]->oam.priority = 0;
     }
 

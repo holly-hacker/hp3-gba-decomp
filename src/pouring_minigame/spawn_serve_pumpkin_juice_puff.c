@@ -10,6 +10,6 @@ void SpawnServePumpkinJuicePuff(s32 x, s32 y)
     puff->oam.priority = 1;
     puff->pfnTick = TickServePumpkinJuicePuff;
     SetActorAnimData(puff, &g_ServePumpkinJuicePuffSprite, g_abServePumpkinJuicePuffAnim, 0);
-    puff->bRoomActorKind_candidate = ServePumpkinJuiceActorPuff;
+    puff->bKind = ServePumpkinJuiceActorPuff;
     puff->bActionState = 0;
 }

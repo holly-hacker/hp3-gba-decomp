@@ -7,6 +7,6 @@ void TickHeldRewardActor(Actor *actor)
 {
     if (actor->dwStateTimer != 0)
         actor->dwStateTimer--;
-    else if (g_DialogState_candidate.dwState != 1)
+    else if (g_DialogState.dwState != 1)
         actor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
 }

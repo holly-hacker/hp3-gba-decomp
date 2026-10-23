@@ -11,7 +11,7 @@ typedef struct DialogState {
                                 //       ExitDialog; the next vblank's RestoreBgAboveDialogBox resets 2 to 0
     const u8 *pText;            // 0x04, text still to be drawn; ShowDialogLine sets it, 0 byte = end
     const u8 *pLineStart;       // 0x08, start of the line being revealed
-    u16 wBlockId;               // 0x0C, g_aDialogBlocks index, set by ShowRoomDialogBox_candidate
+    u16 wBlockId;               // 0x0C, g_aDialogBlocks index, set by ShowDialogBlock
     u16 wLineIndex;             // 0x0E, line of the block being shown, cleared by InitializeDialog
     u16 wRevealCount;           // 0x10, characters of the current line revealed so far
     u16 wTextHeightLeft;        // 0x12, pixels left below the last drawn line
@@ -24,7 +24,7 @@ typedef struct DialogState {
     u8 bArg1C;     // 0x1C, forwarded from room-script dialog opcodes
     u8 bArg1D;     // 0x1D
 } DialogState;
-extern DialogState g_DialogState_candidate;
+extern DialogState g_DialogState;
 
 // Destination for expanding text macros (@1, @2, ...) into a dialog string
 // before it is drawn (ExpandTextMacros); allocated once by InitDialogBox.

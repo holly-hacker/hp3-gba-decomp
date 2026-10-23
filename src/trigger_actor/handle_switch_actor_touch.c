@@ -10,13 +10,13 @@ void HandleSwitchActorTouch(Actor *pSelf, Actor *pOther)
 {
     u32 range = pSelf->bPauseRange << 16;
     u32 distance = ApproximateDistance(pSelf->posPrev, pOther->posPrev);
-    u16 variant = pSelf->wCharacterId_candidate;
+    u16 variant = pSelf->wSubtype;
 
     if (variant == 1)
     {
         if (pOther->wActorType != RoomActorType_Player && pOther->wActorType != RoomActorType_FieldSpellEffect
             && pOther->wActorType != RoomActorType_WanderingMonster
-            && pOther->modeState.actor.bRoomScriptArg6A_candidate == 0)
+            && pOther->modeState.actor.bNoPlatePress == 0)
             SWITCH_STATE(pSelf)->nPlatePressed = 1;
     }
     else if (variant >= 6 && variant <= 8)
@@ -26,7 +26,7 @@ void HandleSwitchActorTouch(Actor *pSelf, Actor *pOther)
             pSelf->bActionState = 4;
             pSelf->dwFlags &= ~ActorFlagWantsCollisionCheck;
             SetActorAnimFrame(pSelf, 1);
-            if ((pSelf->dwFlags & ActorFlagVisible) && g_bRestoringRoomActors_candidate == 0)
+            if ((pSelf->dwFlags & ActorFlagVisible) && g_bRestoringRoomActors == 0)
                 g_nSwitchSoundHandle = PlaySoundByIdUnlessActive(38, g_nSwitchSoundHandle);
         }
     }

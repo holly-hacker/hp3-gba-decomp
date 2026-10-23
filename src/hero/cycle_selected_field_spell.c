@@ -20,11 +20,11 @@ void CycleSelectedFieldSpell(Actor *pLeader, u8 direction)
     for (i = 0; i < 3; i++)
         aPartyPosBySlot[i] = -1;
 
-    aPartyPosBySlot[GetPartyMasterStatsSlot_candidate(g_pPlayerActor->wCharacterId_candidate)] = 0;
+    aPartyPosBySlot[GetCharacterFighterType(g_pPlayerActor->wSubtype)] = 0;
     if (g_pFollowerActor0 != NULL)
-        aPartyPosBySlot[GetPartyMasterStatsSlot_candidate(g_pFollowerActor0->wCharacterId_candidate)] = 1;
+        aPartyPosBySlot[GetCharacterFighterType(g_pFollowerActor0->wSubtype)] = 1;
     if (g_pFollowerActor1 != NULL)
-        aPartyPosBySlot[GetPartyMasterStatsSlot_candidate(g_pFollowerActor1->wCharacterId_candidate)] = 2;
+        aPartyPosBySlot[GetCharacterFighterType(g_pFollowerActor1->wSubtype)] = 2;
 
     do
     {
@@ -59,16 +59,16 @@ void CycleSelectedFieldSpell(Actor *pLeader, u8 direction)
     case 1:
         PlaySoundById(7);
         SwapPartyMemberCharacters(pLeader, g_pFollowerActor0);
-        g_bPartyCharId1 = g_pFollowerActor0->wCharacterId_candidate;
+        g_bPartyCharId1 = g_pFollowerActor0->wSubtype;
         if (g_pFollowerActor1 != NULL)
-            g_bPartyCharId2 = g_pFollowerActor1->wCharacterId_candidate;
+            g_bPartyCharId2 = g_pFollowerActor1->wSubtype;
         break;
     case 2:
         PlaySoundById(7);
         SwapPartyMemberCharacters(pLeader, g_pFollowerActor1);
         if (g_pFollowerActor0 != NULL)
-            g_bPartyCharId1 = g_pFollowerActor0->wCharacterId_candidate;
-        g_bPartyCharId2 = g_pFollowerActor1->wCharacterId_candidate;
+            g_bPartyCharId1 = g_pFollowerActor0->wSubtype;
+        g_bPartyCharId2 = g_pFollowerActor1->wSubtype;
         break;
     }
 

@@ -59,7 +59,7 @@ void WriteActorOamCells(ActorFrameData *frameData, u16 frame, u8 cellFlags, s32 
             else if (cellFlags & 2) {
                 y = -(frameCell->y + dims[1]);
                 cell.vFlip = 1;
-                cell.priority = g_ActorPoolState.bExtraOamPassEnabled_candidate;
+                cell.priority = g_ActorPoolState.bExtraOamPassPriority;
             }
             else
                 y = frameCell->y;

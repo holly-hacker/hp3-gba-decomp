@@ -22,7 +22,7 @@ u32 UnequipItemFromSlot(u8 character, u32 slot);
 u32 UseRestorePotion(u8 character, s32 item, s32 quantity);
 void DebugGrantAllItems(u32 count);
 
-u32 GetRewardNameStringId_candidate(u32 rewardId);
+u32 GetRewardNameTextId(u32 rewardId);
 void GetItemImageData(u32 item, const void **ppPalette, const void **ppTileData, const void **ppFrameData);
 u32 GetItemBuyPrice(u32 item);
 u32 GetItemSellPrice(u32 item);
@@ -35,11 +35,13 @@ s32 GetItemMagicDefense(u32 item);
 s32 GetPotionEffect(s32 item);
 s32 GetPotionMagnitude(s32 item);
 
+// No callers, and nothing else reads ItemEntry.dwFlags bits 0 and 1: bit 0 is set on
+// potions only, bit 1 on potions and misc items.
 u32 IsItemUsableInBattle_candidate(u32 item);
 u32 IsItemListedInItemsMenu_candidate(u32 item);
 u32 IsItemConsumable(s32 item);
 
-void ClearItemInventoryForNewGame_candidate(void);
+void ClearItemInventoryForNewGame(void);
 void ClearItemInventory(void);
 void SerializeItemQuantities(void);
 void DeserializeItemQuantities(void);
@@ -52,7 +54,7 @@ u32 GrantReward(s32 rewardId, u32 amount);
 u32 RemoveItems(u32 item, u32 count);
 u32 GetItemQuantity(u32 item);
 u32 BuildFilteredItemList(u32 filter, u32 *pItems, u32 withRemove);
-u32 BuildBattleItemList_candidate(u32 *pItems);
+u32 BuildBattleItemList_candidate(u32 *pItems);  // no callers
 u32 CountOwnedPotionKinds(void);
 u32 IsBattleItemSlotUsable(u32 slot);
 u32 OwnsItemInCategory(u32 category);

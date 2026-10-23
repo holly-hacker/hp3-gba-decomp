@@ -19,12 +19,12 @@ void RoomScriptOpShowRewardPickupMessage(ShowRewardPickupMessageRecord *pRecord)
     if (g_dwRoomScriptRunState == 1)
         g_dwRoomScriptRunState = 2;
     PlayJingle(0x1a);
-    SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
-    SetTextMacro3String(GetDialogText(GetRewardNameStringId_candidate(pRecord->bRewardId)));
+    SetTextMacro1String(GetDialogText(GetRewardNameTextId(pRecord->bRewardId)));
+    SetTextMacro3String(GetDialogText(GetRewardNameTextId(pRecord->bRewardId)));
     if (pRecord->bRewardId <= 0x4e)
-        ShowRoomDialogBox_candidate(0x28d);
+        ShowDialogBlock(0x28d);
     else
-        ShowRoomDialogBox_candidate(0x295);
-    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
-    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
+        ShowDialogBlock(0x295);
+    g_DialogState.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState.bArg1D = pRecord->bDialogArg1D;
 }

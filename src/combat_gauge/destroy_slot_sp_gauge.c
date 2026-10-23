@@ -12,5 +12,5 @@ void DestroySlotSpGauge(u32 slot, u32 isAlly)
     else
         slotOrder = g_pFightState->aAllySlotTurnOrderIndex;
     fighterIndex = slotOrder[slot];
-    DestroyLinkedActor(g_pFightState->pFighters[fighterIndex].pActor->pLinkedActor_candidate);
+    DestroyLinkedActor(g_pFightState->pFighters[fighterIndex].pActor->pLinkedActor);
 }

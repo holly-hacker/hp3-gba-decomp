@@ -16,10 +16,10 @@ void RoomScriptOpCancelActorAnimSequence(CancelActorAnimSequenceRecord *pRecord)
 
     if (pActor != NULL)
     {
-        CancelActorMove_candidate(pActor);
+        StopActorMotion(pActor);
         pActor->anim.bAnimFrameCounter = 0;
-        if (pActor->pLinkedActor_candidate != NULL)
-            pActor->pLinkedActor_candidate->anim.bAnimFrameCounter = 0;
+        if (pActor->pLinkedActor != NULL)
+            pActor->pLinkedActor->anim.bAnimFrameCounter = 0;
         if (g_dwFieldSpellActive != 0)
             EndFieldSpellEffect(g_pFieldSpellEffectActor);
         SetActorActionState(pActor, 0);

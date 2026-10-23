@@ -21,5 +21,5 @@ void SpawnHelpScreenTitle(void)
     text = GetDialogText(0xA46);  // "Help"
     g_HelpState.pTitleActor = SpawnUnslottedTextActor(&text);
     g_HelpState.pTitleActor->oam.priority = 0;
-    SetTextActorCenterPosition_candidate(g_HelpState.pTitleActor, 0x78, HELP_TITLE_Y);
+    SetTextActorCenterPosition(g_HelpState.pTitleActor, 0x78, HELP_TITLE_Y);
 }

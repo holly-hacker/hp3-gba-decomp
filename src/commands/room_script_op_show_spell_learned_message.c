@@ -25,8 +25,8 @@ void RoomScriptOpShowSpellLearnedMessage(ShowSpellLearnedMessageRecord *pRecord)
         PlayJingle(0x1a);
         SetTextMacro1String(GetDialogText(pRecord->bSpellId + 0xac2));
         SetTextMacro3String(GetDialogText(pRecord->bSpellId + 0xac2));
-        ShowRoomDialogBox_candidate(0x28f);
-        g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
-        g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
+        ShowDialogBlock(0x28f);
+        g_DialogState.bArg1C = pRecord->bDialogArg1C;
+        g_DialogState.bArg1D = pRecord->bDialogArg1D;
     }
 }

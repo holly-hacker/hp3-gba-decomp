@@ -70,7 +70,7 @@ void InitializeCombatResultDrops(void)
         g_CombatResultItem0Gfx.pFrameData = (void *)pFrames;
         SetActorAssetRecord(g_pCombatResultItem0Actor, &g_CombatResultItem0Gfx);
         SetActorAnimFrame(g_pCombatResultItem0Actor, 0);
-        pText = GetDialogText(GetRewardNameStringId_candidate(item0));
+        pText = GetDialogText(GetRewardNameTextId(item0));
         g_wCombatResultTextTileCursor = PrintTextBox(g_wCombatResultTextTileCursor, 0x3F, 0x48, 0x9C, pText, 0);
 
         if ((u32)item1 <= REWARD_ID_GOLD)
@@ -82,7 +82,7 @@ void InitializeCombatResultDrops(void)
             g_CombatResultItem1Gfx.pFrameData = (void *)pFrames;
             SetActorAssetRecord(g_pCombatResultItem1Actor, &g_CombatResultItem1Gfx);
             SetActorAnimFrame(g_pCombatResultItem1Actor, 0);
-            pText = GetDialogText(GetRewardNameStringId_candidate(item1));
+            pText = GetDialogText(GetRewardNameTextId(item1));
             g_wCombatResultTextTileCursor = PrintTextBox(g_wCombatResultTextTileCursor, 0x3F, 0x68, 0x9C, pText, 0);
         }
     }

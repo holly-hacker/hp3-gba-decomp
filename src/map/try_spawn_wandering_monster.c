@@ -27,7 +27,7 @@ void TrySpawnWanderingMonster(u32 encounterId, u32 kind)
         // y >= bottom), but only accepts positions below and right of the screen, so no
         // replacement spawns while the camera is at the room's right or bottom edge.
         if (pos.x >= camera[0] && pos.y >= camera[1] && pos.x >= camera[0] + 240 && pos.y >= camera[1] + 160
-            && GetCollisionTypeAtPixel_candidate(pos) == terrainType)
+            && GetCollisionTypeAtPixel(pos) == terrainType)
         {
             SpawnWanderingMonsterActor(monsterId, pos.x, pos.y, encounterId, variant, kind);
             return;

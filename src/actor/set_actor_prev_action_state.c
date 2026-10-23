@@ -2,5 +2,5 @@
 
 void SetActorPrevActionState(Actor *actor, u8 state)
 {
-    actor->bPrevActionState_candidate = state;
+    actor->bPrevActionState = state;
 }

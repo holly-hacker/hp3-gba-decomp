@@ -4,5 +4,5 @@
 
 void SetDialogRevealStep(u32 step)
 {
-    g_DialogState_candidate.wRevealStep = step;
+    g_DialogState.wRevealStep = step;
 }

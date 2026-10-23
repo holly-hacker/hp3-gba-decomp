@@ -10,6 +10,6 @@ void ResetCameraFocusSlot(u8 slot)
     g_aCameraFocusSlots[slot].latched = zero;
     g_aCameraFocusSlots[slot].wPinned = 1;
     g_aCameraFocusSlots[slot].pTarget = 0;
-    g_aCameraEffects_candidate[slot].wCounter = 0;
-    g_aCameraEffects_candidate[slot].bState = 0;
+    g_aCameraEffects[slot].wCounter = 0;
+    g_aCameraEffects[slot].bState = 0;
 }

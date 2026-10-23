@@ -10,12 +10,12 @@ void CheckActorTerrainCollision(Actor *actor)
 
     if (actor->vel.x != 0 || actor->vel.y != 0 || (actor->wFlags_0xAC & 1))
     {
-        if ((flags & (ActorFlagTerrainDrawLayer | ActorFlagTerrainCollisionB_candidate
-                      | ActorFlagTerrainCollisionA_candidate))
-            && !(flags & ActorFlagSkipTerrainOnce_candidate))
+        if ((flags & (ActorFlagTerrainDrawLayer | ActorFlagSpellTerrainCollision
+                      | ActorFlagTerrainCollision))
+            && !(flags & ActorFlagSkipTerrainOnce))
             ResolveActorTerrain(actor);
     }
 
     actor->wFlags_0xAC = 0;
-    actor->dwFlags &= ~ActorFlagSkipTerrainOnce_candidate;
+    actor->dwFlags &= ~ActorFlagSkipTerrainOnce;
 }

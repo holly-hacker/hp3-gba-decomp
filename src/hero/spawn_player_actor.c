@@ -14,16 +14,16 @@ Actor *SpawnPlayerActor(u8 characterId)
     const RoomEntryPoint *pEntry;
 
     g_pPlayerActor = AllocActorOfType(RoomActorType_Player);
-    pEntry = FindRoomEntryPoint(g_abRoomScriptExitParams_candidate[0], 0);
-    g_abQuestEventState[QUEST_SPAWN_ID_COPY] = g_abRoomScriptExitParams_candidate[0];
+    pEntry = FindRoomEntryPoint(g_abRoomEntryIds[0], 0);
+    g_abQuestEventState[QUEST_SPAWN_ID_COPY] = g_abRoomEntryIds[0];
     SnapActorPosition(g_pPlayerActor, pEntry->nX << 16, pEntry->nY << 16);
     g_pPlayerActor->bFacing = pEntry->bFacing;
-    g_pPlayerActor->wCharacterId_candidate = characterId;
+    g_pPlayerActor->wSubtype = characterId;
     g_pPlayerActor->anim.bAnimFrameDelay = 3;
     g_pPlayerActor->oam.objMode = 0;
     g_pPlayerActor->oam.bpp8 = 0;
     g_pPlayerActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasTickLogic
-        | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate | ActorFlagTerrainDrawLayer;
+        | ActorFlagHasAnimation | ActorFlagTerrainCollision | ActorFlagTerrainDrawLayer;
     g_pPlayerActor->bTerrainBlockResponse = TerrainBlockSlide;
     SetActorActionState(g_pPlayerActor, 0x21);
     SetActorPrevActionState(g_pPlayerActor, 0x21);
@@ -32,12 +32,12 @@ Actor *SpawnPlayerActor(u8 characterId)
     g_pPlayerActor->apfnCollisionCallback[0] = HandlePlayerWorldActorCollision;
     g_pPlayerActor->oam.priority = 1;
     g_pPlayerActor->bDepthSortBias = 0x80;
-    SetActorPendingPalette(g_pPlayerActor, g_aPartyWalkAssets[g_pPlayerActor->wCharacterId_candidate].pPalette);
-    SetActorAssetRecord(g_pPlayerActor, &g_aPartyWalkAssets[g_pPlayerActor->wCharacterId_candidate]);
+    SetActorPendingPalette(g_pPlayerActor, g_aPartyWalkAssets[g_pPlayerActor->wSubtype].pPalette);
+    SetActorAssetRecord(g_pPlayerActor, &g_aPartyWalkAssets[g_pPlayerActor->wSubtype]);
     SetActorAnimFrame(g_pPlayerActor, g_abPartyStandFrames[g_pPlayerActor->bFacing]);
     g_OverworldControlState.aSlots[0].pActor = g_pPlayerActor;
-    if (g_pPlayerActor->wCharacterId_candidate != 4)
-        g_pPlayerShadowActor_candidate = SpawnShadowActor(g_pPlayerActor);
+    if (g_pPlayerActor->wSubtype != 4)
+        g_pPlayerShadowActor = SpawnShadowActor(g_pPlayerActor);
 
     g_pPartyTrail = AllocZeroed(PARTY_TRAIL_LENGTH * sizeof(PartyTrailStep));
     g_bPartyTrailWriteIndex = 0;

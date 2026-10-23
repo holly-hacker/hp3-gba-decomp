@@ -4,5 +4,5 @@
 
 void SetDialogTextAlign(u32 arg)
 {
-    g_DialogState_candidate.bTextAlign = arg;
+    g_DialogState.bTextAlign = arg;
 }

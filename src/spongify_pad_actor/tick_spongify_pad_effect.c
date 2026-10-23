@@ -37,7 +37,7 @@ void TickSpongifyPadEffect(Actor *pEffect)
         FreeAllParticles();
         ReleaseParticleGfx(2, 2);
         ReleaseParticleGfx(2, 3);
-        SetActorFlags(g_pPlayerActor, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate
+        SetActorFlags(g_pPlayerActor, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision
                                           | ActorFlagTerrainDrawLayer);
         SetActorDrawLayer(g_pPlayerActor, 1);
         SetActorDepthSortBias(g_pPlayerActor, 0x80);

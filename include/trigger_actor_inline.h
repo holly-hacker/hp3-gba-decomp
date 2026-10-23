@@ -9,7 +9,7 @@
 // one respawned by RestoreRoomActorState (action flag 0x20).
 static inline void PlaySwitchSound(Actor *pActor)
 {
-    if ((pActor->dwFlags & ActorFlagVisible) && g_bRestoringRoomActors_candidate == 0)
+    if ((pActor->dwFlags & ActorFlagVisible) && g_bRestoringRoomActors == 0)
     {
         if (pActor->bActionFlags == 0)
             g_nSwitchSoundHandle = PlaySoundByIdUnlessActive(38, g_nSwitchSoundHandle);

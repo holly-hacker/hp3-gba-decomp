@@ -21,7 +21,7 @@ s32 FindWanderingMonsterSpawnPosition(SpawnPosition *pOutPos, u32 terrainType, c
     {
         pOutPos->x = Mt19937RandMax(g_RoomSizePixels.dwWidth);
         pOutPos->y = Mt19937RandMax(g_RoomSizePixels.dwHeight);
-        if (GetCollisionTypeAtPixel_candidate((PixelPoint){ pOutPos->x, pOutPos->y }) == terrainType
+        if (GetCollisionTypeAtPixel((PixelPoint){ pOutPos->x, pOutPos->y }) == terrainType
             && (u32)ApproximateDistance(player, *pOutPos) >= 60)
         {
             for (i = 0; i < placedCount; i++)

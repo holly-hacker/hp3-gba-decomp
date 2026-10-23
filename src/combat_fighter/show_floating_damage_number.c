@@ -35,7 +35,7 @@ void ShowFloatingDamageNumber(s32 damage, s32 color, s32 fighterIndex, s32 showZ
 
     text = GetDialogText(0x8F7);  // "@1"
     textActor = SpawnUnslottedTextActor(&text);
-    SetTextActorCenterPosition_candidate(textActor, (s16)pos.x, (s16)pos.y);
+    SetTextActorCenterPosition(textActor, (s16)pos.x, (s16)pos.y);
     textActor->oam.priority = 0;
     textActor->pfnTick = TickFloatingDamageNumber;
     textActor->dwStateTimer = 16;

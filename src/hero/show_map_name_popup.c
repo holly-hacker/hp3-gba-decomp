@@ -44,6 +44,6 @@ void ShowMapNamePopup(void)
         g_pMapNameTextActor->oam.paletteNum = 2;
         g_pMapNameTextActor->pfnTick = TickMapNameActor;
         g_pMapNameTextActor->dwStateTimer = shownTicks;
-        SetTextActorCenterPosition_candidate(g_pMapNameTextActor, 120, 152);
+        SetTextActorCenterPosition(g_pMapNameTextActor, 120, 152);
     }
 }

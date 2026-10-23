@@ -10,7 +10,7 @@ void InitReparoParticleEmitter(ParticleEmitter *emitter)
     emitter->wDuration = 1;
     emitter->wLifetimeBase = 20;
     emitter->wLifetimeRange = 5;
-    emitter->wFlags = ParticleEmitterFlagRelease | ParticleEmitterFlagPriorityBelow_candidate;
+    emitter->wFlags = ParticleEmitterFlagRelease | ParticleEmitterFlagPriorityBelow;
     emitter->wSpread = 2;
     emitter->wSpawnTimer = 1;
     emitter->bMode = ParticleModeRandomSpeed;

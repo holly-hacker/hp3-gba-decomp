@@ -9,7 +9,7 @@ void SetActorAnimData(Actor *actor, const void *pAnimTable, const void *pAnimDat
 
     if (actor->anim.pAnimTable != pAnimTable) {
         actor->anim.pAnimTable = (ActorAssetRecord *)pAnimTable;
-        actor->anim.bAnimFrameIndex_candidate = 0xFF;
+        actor->anim.bLoadedAnimFrame = 0xFF;
         actor->anim.bLastAnimFrameValue = 0xFF;
     }
 

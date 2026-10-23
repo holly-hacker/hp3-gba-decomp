@@ -27,7 +27,7 @@ void TickActorReceiveReward(Actor *actor)
         if (--actor->dwStateTimer == -1) {
             if (g_dwFieldSpellActive != 0 && actor->bFighterIndex == 1)
                 EndFieldSpellEffect(g_pFieldSpellEffectActor);
-            CancelActorMove_candidate(actor);
+            StopActorMotion(actor);
             actor->bFacing = DirectionDown;
             actor->dwFlags &= ~ActorFlagVisible;
             SetPartyMemberAnim(actor, PartyAnim3);
@@ -42,18 +42,18 @@ void TickActorReceiveReward(Actor *actor)
             PlaySoundById(0x19);
             if (g_nBattleGoldReward != 0) {
                 SetTextMacro1Number(g_nBattleGoldReward);
-                ShowRoomDialogBox_candidate(0x7D);  // "You Receive: \n @1 Sickles"
+                ShowDialogBlock(0x7D);  // "You Receive: \n @1 Sickles"
             }
             else {
-                SetTextMacro1String(GetDialogText(GetRewardNameStringId_candidate(g_pPlayerActor->bReceivedRewardId)));
+                SetTextMacro1String(GetDialogText(GetRewardNameTextId(g_pPlayerActor->bReceivedRewardId)));
                 if ((u8)(g_pPlayerActor->bReceivedRewardId - 0x50) <= 0x31)
                     SetTextMacro2String(GetDialogText(0x646));
                 else
                     SetTextMacro2String(g_sSpace);
-                ShowRoomDialogBox_candidate(0x7C);  // "You Receive: \n @1 @2"
+                ShowDialogBlock(0x7C);  // "You Receive: \n @1 @2"
             }
-            g_DialogState_candidate.bArg1C = 0;
-            g_DialogState_candidate.bArg1D = 0;
+            g_DialogState.bArg1C = 0;
+            g_DialogState.bArg1D = 0;
 
             if (g_nBattleGoldReward != 0) {
                 palette = g_CoinIconAsset.pPalette;

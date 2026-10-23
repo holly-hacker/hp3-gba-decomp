@@ -5,7 +5,7 @@
 // Swaps the icon's sprite when its side's ready flag changes.
 void TickCardTradeReadyIcon(Actor *pIcon)
 {
-    CardTradeSide *pSide = &g_CardTradeState.aSides[pIcon->bRoomActorKind_candidate];
+    CardTradeSide *pSide = &g_CardTradeState.aSides[pIcon->bKind];
 
     if (pIcon->bActionState != pSide->bReady)
     {

@@ -202,7 +202,7 @@ typedef struct RoomTableEntry {
 // Snapshot of the current room's non-default actors.
 #define ROOM_ACTOR_STATE_BUFFER_SIZE 0x20BC
 extern u32 GetRoomSwitchState(void);
-// Spawns the player at the entry point g_abRoomScriptExitParams_candidate[0] and resets the
+// Spawns the player at the entry point g_abRoomEntryIds[0] and resets the
 // party trail.
 extern Actor *SpawnPlayerActor(u8 characterId);
 extern void ShowMapNamePopup(void);

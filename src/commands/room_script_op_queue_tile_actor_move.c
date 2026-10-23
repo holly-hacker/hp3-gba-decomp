@@ -24,16 +24,16 @@ void RoomScriptOpQueueTileActorMove(QueueTileActorMoveRecord *pRecord)
         g_dwRoomScriptRunState = 2;
     pTarget = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
     if (g_dwRoomScriptRunState == 2)
-        g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].dwResumeScript = 1;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].nStep = SignMagnitude8_8ToFixed(pRecord->nSpeed);
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].wCounter = pRecord->wDelayFrames;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].pTarget = pTarget;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bRespawnRow = pRecord->bRespawnRow;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bChainRow = pRecord->bChainRow;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bState = 1;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bSavedActionSubState = pControlled->bActionSubState;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].savedVel = pControlled->vel;
-    g_aCameraEffects_candidate[g_OverworldControlState.bSlotIndex].bChainRan = 0;
+        g_aCameraEffects[g_OverworldControlState.bSlotIndex].dwResumeScript = 1;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].nStep = SignMagnitude8_8ToFixed(pRecord->nSpeed);
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].wCounter = pRecord->wDelayFrames;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].pTarget = pTarget;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].bRespawnRow = pRecord->bRespawnRow;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].bChainRow = pRecord->bChainRow;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].bState = 1;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].bSavedActionSubState = pControlled->bActionSubState;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].savedVel = pControlled->vel;
+    g_aCameraEffects[g_OverworldControlState.bSlotIndex].bChainRan = 0;
     pControlled->vel.x = 0;
     pControlled->vel.y = 0;
 }

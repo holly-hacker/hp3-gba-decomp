@@ -82,7 +82,7 @@ Actor *SpawnMenuCursorActor(u32 kind)
         case 4:
             pPaletteFrames = GRAPHIC_BLOB_PALETTE_COLORS(gMenuCursor001);
             actor->dwFlags |= ActorFlagHasSpriteCells | ActorFlagVisible;
-            actor->wCharacterId_candidate = 0xB;
+            actor->wSubtype = 0xB;
             if (!g_dwMenuCursorParticleGfxLoaded)
             {
                 g_dwMenuCursorParticleGfxLoaded = 1;

@@ -6,7 +6,7 @@
 #include "palette.h"
 #include "minigame_high_score.h"
 
-extern u32 g_dwBoggartMinigameScriptFlag_candidate;  // 0x03002040; set by StartMinigame
+extern u32 g_dwBoggartMinigameForceOverworldExit;  // 0x03002040; set by StartMinigame
 
 // Riddikulus Boggart Challenge, game mode 0x2F (BoggartMinigame).
 

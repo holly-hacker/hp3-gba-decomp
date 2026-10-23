@@ -8,7 +8,7 @@ Actor *SpawnTextActor(const u8 **ppText, u32 slot)
 
     pActor = AllocTextActor(ppText);
     g_apTextActors[slot] = pActor;
-    pActor->wCharacterId_candidate = slot;
+    pActor->wSubtype = slot;
     pActor->pfnDestructor = ClearTextActorSlot;
     return pActor;
 }

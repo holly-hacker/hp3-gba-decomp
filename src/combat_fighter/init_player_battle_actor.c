@@ -31,7 +31,7 @@ Actor *InitPlayerBattleActor(BattleFighter *fighter, s32 fighterType, s32 battle
     pActor->bDepthSortBias = 0x40;
     pActor->nMoveSpeed = 1;
     pActor->dwFlags = ActorFlagVisible | ActorFlagHasAnimation | ActorFlagUnk2000
-                      | ActorFlagCollisionGroup_candidate | ActorFlagKeepPaletteSlot;
+                      | ActorFlagCollisionGroup | ActorFlagKeepPaletteSlot;
 
     SetActorActionState(pActor, 0xF);
 

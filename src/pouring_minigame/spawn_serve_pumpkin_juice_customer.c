@@ -16,7 +16,7 @@ void SpawnServePumpkinJuiceCustomer(s32 lane, u32 type, u32 queuePos)
                               1, g_abServePumpkinJuiceCustomerPaletteCounts[type])]);
     part = SpawnActor(0, x, g_ServePumpkinJuice.aLanePos[lane].y - 38, g_aapServePumpkinJuiceCustomerPalettes[type][0]);
     part->pOwnerActor = customer;
-    customer->pLinkedActor_candidate = part;
+    customer->pLinkedActor = part;
     SetActorAssetRecord(customer, g_aapServePumpkinJuiceCustomerSpriteRows[type][0]);
     SetActorAssetRecord(part, g_aapServePumpkinJuiceCustomerSpriteRows[type][1]);
     SetActorAnimFrame(customer, 0);
@@ -26,8 +26,8 @@ void SpawnServePumpkinJuiceCustomer(s32 lane, u32 type, u32 queuePos)
     customer->pfnTick = TickServePumpkinJuiceCustomer;
     customer->apfnCollisionCallback[0] = HandleServePumpkinJuiceCustomerTouch;
     customer->dwFlags |= ActorFlagWantsCollisionCheck;
-    customer->bRoomActorKind_candidate = ServePumpkinJuiceActorCustomer;
-    customer->wCharacterId_candidate = type;
+    customer->bKind = ServePumpkinJuiceActorCustomer;
+    customer->wSubtype = type;
     customer->bActionState = 0;
     customer->bActionSubState = lane;
     customer->wTimedMoveTicks = 0;
@@ -35,7 +35,7 @@ void SpawnServePumpkinJuiceCustomer(s32 lane, u32 type, u32 queuePos)
 
     part->oam.priority = 1;
     part->pfnTick = TickServePumpkinJuiceCustomerPart;
-    part->wCharacterId_candidate = type;
+    part->wSubtype = type;
     part->wActionVariant = 0;
     part->bActionState = 0;
 

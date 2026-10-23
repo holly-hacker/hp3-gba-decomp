@@ -35,7 +35,7 @@ void ExitOverworldScreen(void)
     }
 
     StopRoomScriptChains();
-    FreeRoomSharedTileset();
+    FreeRoomCollision();
     FreeOverworldBgTileBitOffsets();
 
     if ((g_dwPendingGameMode.dwCurrentGameMode & ~GameModeSwitchPending) == Battle

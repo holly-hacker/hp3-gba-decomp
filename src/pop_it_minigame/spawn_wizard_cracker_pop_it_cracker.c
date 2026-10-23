@@ -9,7 +9,7 @@ Actor *SpawnWizardCrackerPopItCracker(u32 kind, s32 x, s32 y)
     pCracker = SpawnActor(WizardCrackerPopItActorType_Cracker, x, y, NULL);
     pCracker->oam.paletteNum = g_aWizardCrackerPopItPalettes[kind].bIdleSlot;
     SetWizardCrackerPopItCrackerAnim(pCracker, kind);
-    pCracker->wCharacterId_candidate = kind;
+    pCracker->wSubtype = kind;
     pCracker->pfnTick = TickWizardCrackerPopItCracker;
     SetActorActionState(pCracker, 0);
     pCracker->oam.priority = 1;

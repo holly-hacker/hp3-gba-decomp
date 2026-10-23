@@ -26,7 +26,7 @@ void TickPlayerControl(Actor *actor)
         stopped = 0;
     if (stopped)
         actor->dwFlags &= ~ActorFlagAnimPaused;
-    SetActorFlags(actor, ActorFlagTerrainCollisionA_candidate);
+    SetActorFlags(actor, ActorFlagTerrainCollision);
 
     direction = GetDpadDirection();
     if (direction != DirectionNone) {
@@ -41,11 +41,11 @@ void TickPlayerControl(Actor *actor)
     }
     else if ((actor->bTerrainType != 0x2D || stopped) && actor->bActionSubState != 2) {
         SetActorActionSubState(actor, 2);
-        CancelActorMove_candidate(actor);
+        StopActorMotion(actor);
         SetPartyMemberAnim(actor, PartyAnimStand);
     }
 
-    if ((g_wKeysPressed & KeyB) && g_dwFieldSpellActive == 0 && actor->wCharacterId_candidate != 4) {
+    if ((g_wKeysPressed & KeyB) && g_dwFieldSpellActive == 0 && actor->wSubtype != 4) {
         if (actor->bTerrainType != 0x2D || stopped)
             StartFieldSpellCast(actor);
     }

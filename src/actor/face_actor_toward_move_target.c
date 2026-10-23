@@ -15,9 +15,9 @@ s32 FaceActorTowardMoveTarget(Actor *actor)
     direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
     if (direction == DirectionNone) {
         SetActorActionSubState(actor, 2);
-        CancelActorMove_candidate(actor);
+        StopActorMotion(actor);
         if (actor == g_pPlayerActor)
-            actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate);
+            actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollision);
         actor->bFacing = DirectionDown;
         return 1;
     }

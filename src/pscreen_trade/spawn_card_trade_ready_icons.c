@@ -16,7 +16,7 @@ void SpawnCardTradeReadyIcons(void)
                            g_aCardTradeSlotPositions[side].bY + 8,
                            g_aCardTradeReadyIconAssets[pSide->bReady].pPalette);
         RegisterMenuIconActor(side + 2, pIcon);
-        pIcon->bRoomActorKind_candidate = side;  // TickCardTradeReadyIcon: which side
+        pIcon->bKind = side;  // TickCardTradeReadyIcon: which side
         pIcon->bActionState = pSide->bReady;     // TickCardTradeReadyIcon: state shown
         pIcon->pfnTick = TickCardTradeReadyIcon;
         pIcon->bDepthSortBias = 0xFF;

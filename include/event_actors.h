@@ -6,7 +6,7 @@
 // Total record length in bytes, opcode word included, per opcode.
 extern const u8 g_abRoomScriptOpcodeLengths[93];  // ROM 0x0805EB34
 
-// SpawnScriptEffectActor kinds (Actor.bRoomActorKind_candidate), indexing
+// SpawnScriptEffectActor kinds (Actor.bKind), indexing
 // g_apfnScriptEffectActorTicks.
 enum {
     ScriptEffectKind_CameraCutaway = 0,

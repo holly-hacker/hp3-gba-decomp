@@ -13,7 +13,7 @@ void SpawnServePumpkinJuiceEmptyGoblet(u32 lane, s32 x)
     SetActorAnimData(goblet, &g_ServePumpkinJuiceGobletSprite,
                      g_aabServePumpkinJuiceGobletAnims[ServePumpkinJuiceGobletAnimEmpty], 0);
     goblet->dwFlags |= ActorFlagWantsCollisionCheck;
-    goblet->bRoomActorKind_candidate = ServePumpkinJuiceActorEmptyGoblet;
+    goblet->bKind = ServePumpkinJuiceActorEmptyGoblet;
     goblet->bActionState = 0;
     goblet->bActionSubState = lane;
     goblet->wTimedMoveTicks = 0;

@@ -7,8 +7,8 @@ void TickActorActionState(Actor *actor)
     case 0:
         break;
     case 1:
-        if (actor->pLinkedActor_candidate != 0)
-            actor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        if (actor->pLinkedActor != 0)
+            actor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         actor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         break;
     case 6:

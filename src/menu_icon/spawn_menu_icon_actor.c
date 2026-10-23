@@ -8,7 +8,7 @@ Actor *SpawnMenuIconActor(u32 slot, void (*pfnTick)(Actor *actor))
 
     pActor = AllocActorOfType(0x13);
     g_apMenuIconActors[slot] = pActor;
-    pActor->wCharacterId_candidate = slot;
+    pActor->wSubtype = slot;
     pActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic;
     pActor->pfnTick = pfnTick;
     pActor->pfnDestructor = UnregisterMenuIconActor;

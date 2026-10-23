@@ -18,13 +18,13 @@
 
 SET_WIZARD_CRACKER_POP_IT_CRACKER_POP_ANIM_LINKAGE void SetWizardCrackerPopItCrackerPopAnim(Actor *pCracker)
 {
-    if (pCracker->wCharacterId_candidate == WizardCrackerPopItKindWrapped)
-        SetActorAnimData(pCracker, &g_aWizardCrackerPopItCrackerAssets[pCracker->wCharacterId_candidate],
-                         g_aWizardCrackerPopItWrappedPopAnims[g_pWizardCrackerPopIt->aKinds[pCracker->wCharacterId_candidate].dwVariant / 2],
+    if (pCracker->wSubtype == WizardCrackerPopItKindWrapped)
+        SetActorAnimData(pCracker, &g_aWizardCrackerPopItCrackerAssets[pCracker->wSubtype],
+                         g_aWizardCrackerPopItWrappedPopAnims[g_pWizardCrackerPopIt->aKinds[pCracker->wSubtype].dwVariant / 2],
                          0);
     else
-        SetActorAnimData(pCracker, &g_aWizardCrackerPopItPopAssets[pCracker->wCharacterId_candidate],
-                         g_aWizardCrackerPopItPopAnims[pCracker->wCharacterId_candidate - WizardCrackerPopItKindTriangle], 0);
+        SetActorAnimData(pCracker, &g_aWizardCrackerPopItPopAssets[pCracker->wSubtype],
+                         g_aWizardCrackerPopItPopAnims[pCracker->wSubtype - WizardCrackerPopItKindTriangle], 0);
 }
 
 DRAW_WIZARD_CRACKER_POP_IT_SCORE_LINKAGE void DrawWizardCrackerPopItScore(void)

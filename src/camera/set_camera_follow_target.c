@@ -1,6 +1,6 @@
 #include "camera.h"
 
-void SetCameraFollowTarget_candidate(Actor *pTarget, CameraFocusOffset offset, u8 slot)
+void SetCameraFollowTarget(Actor *pTarget, CameraFocusOffset offset, u8 slot)
 {
     g_aCameraFocusSlots[slot].pTarget = pTarget;
     g_aCameraFollowOffsets[slot] = offset;

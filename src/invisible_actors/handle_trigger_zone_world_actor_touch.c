@@ -22,7 +22,7 @@ void HandleTriggerZoneWorldActorTouch(Actor *pSelf, Actor *pOther)
         y -= pOther->aCollisionBoxes[1].offsets.edges.bTop;
         SetActorPosition(pOther, x - 2, y - 2);
         SetActorVelocity(pOther, 0, 0);
-        pOther->dwFlags |= ActorFlagNoPushTrigger_candidate;
+        pOther->dwFlags |= ActorFlagSettled;
         pOther->bDepthSortBias = 0xFF;
     }
 }

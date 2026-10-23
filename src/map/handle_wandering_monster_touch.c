@@ -19,7 +19,7 @@ void HandleWanderingMonsterTouch(void)
     if (pMonster != NULL)
     {
         g_pTouchedWanderingMonster = NULL;
-        if (g_pPlayerActor->bActionState == 0x21 && g_dwRoomChainRanThisFrame_candidate == 0)
+        if (g_pPlayerActor->bActionState == 0x21 && g_dwRoomChainRanThisFrame == 0)
         {
             SetActorActionState(g_pPlayerActor, 0);
             pRecords = g_aTouchedMonsterRecords;

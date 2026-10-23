@@ -13,7 +13,7 @@ void SpawnChooseCharacterOptionActors(void)
     {
         pActor = AllocActorOfType(0x17);
         g_ChooseCharacterState.apOptionActors[i] = pActor;
-        pActor->wCharacterId_candidate = i;
+        pActor->wSubtype = i;
         pActor->anim.bAnimFrameDelay = 0;
         pActor->oam.objMode = 0;
         pActor->oam.bpp8 = 0;

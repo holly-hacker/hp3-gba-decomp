@@ -46,12 +46,12 @@ void InitializeCombatResult(void)
     }
     else if (GetPartySize() == 2)
     {
-        g_abCombatResultPartySlots[0] = GetPartyMasterStatsSlot_candidate(g_bPartyCharId0);
-        g_abCombatResultPartySlots[1] = GetPartyMasterStatsSlot_candidate(g_bPartyCharId1);
+        g_abCombatResultPartySlots[0] = GetCharacterFighterType(g_bPartyCharId0);
+        g_abCombatResultPartySlots[1] = GetCharacterFighterType(g_bPartyCharId1);
     }
     else if (GetPartySize() == 1)
     {
-        g_abCombatResultPartySlots[2] = GetPartyMasterStatsSlot_candidate(g_bPartyCharId0);
+        g_abCombatResultPartySlots[2] = GetCharacterFighterType(g_bPartyCharId0);
     }
 
     zero = 0;

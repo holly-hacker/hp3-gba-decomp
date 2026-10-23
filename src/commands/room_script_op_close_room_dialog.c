@@ -14,8 +14,8 @@ void RoomScriptOpCloseRoomDialog(CloseRoomDialogRecord *pRecord)
 {
     u8 i;
 
-    for (i = 0; i < ARRAY_COUNT(g_abRoomScriptExitParams_candidate); i++)
-        g_abRoomScriptExitParams_candidate[i] = pRecord->bExitParam;
+    for (i = 0; i < ARRAY_COUNT(g_abRoomEntryIds); i++)
+        g_abRoomEntryIds[i] = pRecord->bExitParam;
     if (g_dwGameModeFlags & GameModeFlagOverlayMode)
         g_dwGameModeFlags &= ~GameModeFlagOverlayMode;
 }

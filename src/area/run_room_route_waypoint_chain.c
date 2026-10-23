@@ -14,12 +14,12 @@ void RunRoomRouteWaypointChain(u8 route, u8 waypoint)
     chain = pWaypoint->bChain;
     if (ShouldRunRoomIndex(0))
     {
-        g_dwRoomChainRanThisFrame_candidate = 1;
+        g_dwRoomChainRanThisFrame = 1;
         SpawnMissingRoomGroupActors(0);
     }
     if (ShouldRunRoomIndex(chain))
     {
-        g_dwRoomChainRanThisFrame_candidate = 1;
+        g_dwRoomChainRanThisFrame = 1;
         RunRoomScriptChain(chain, 0);
     }
 }

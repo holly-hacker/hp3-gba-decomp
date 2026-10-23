@@ -14,7 +14,7 @@ Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow)
     pActor->oam.bpp8 = 0;
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = 0xFF;
-    pActor->wCharacterId_candidate = pRecord->bVariant;
+    pActor->wSubtype = pRecord->bVariant;
     pActor->anim.bAnimFrameDelay = 0;
     pActor->pfnTick = TickPushResetButtonActor;
     pActor->apfnCollisionCallback[0] = HandlePushResetButtonTouch;
@@ -35,10 +35,10 @@ Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow)
     PUSH_RESET_BUTTON_TARGETS(pActor)->abGroups[7] = pRecord->abTargets[14];
     PUSH_RESET_BUTTON_TARGETS(pActor)->abMembers[7] = pRecord->abTargets[15];
     pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasTickLogic
-                      | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate | ActorFlagUnk2000
+                      | ActorFlagHasAnimation | ActorFlagTerrainCollision | ActorFlagUnk2000
                       | ActorFlagTerrainDrawLayer;
-    SetActorPendingPalette(pActor, g_apPushResetButtonPalettes[pActor->wCharacterId_candidate]);
-    SetActorAssetRecord(pActor, g_apPushResetButtonSprites[pActor->wCharacterId_candidate]);
+    SetActorPendingPalette(pActor, g_apPushResetButtonPalettes[pActor->wSubtype]);
+    SetActorAssetRecord(pActor, g_apPushResetButtonSprites[pActor->wSubtype]);
     SetActorAnimFrame(pActor, 0);
     SetActorActionState(pActor, 0);
     return pActor;

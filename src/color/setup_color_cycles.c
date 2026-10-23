@@ -25,7 +25,7 @@ void SetupColorCycles(const ColorCycleTable *pTable)
         pCycle->bCurrentColor = startColor;
         pCycle->bEndColor = startColor + colorCount - 1;
         pCycle->bColorCount = colorCount;
-        pCycle->bColorCount2_candidate = colorCount;
+        pCycle->bColorCountCopy = colorCount;
 
         g_dwColorCycleActiveMask |= 1 << i;
     }

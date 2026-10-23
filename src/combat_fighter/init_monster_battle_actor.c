@@ -2,7 +2,7 @@
 #include "combat_fighter.h"
 
 // Monster-side counterpart to InitPlayerBattleActor: allocates the fighter's
-// Actor, hardwires pActor->pfnTick = TickFighterAttackAnimState_candidate,
+// Actor, hardwires pActor->pfnTick = TickMonsterActionState,
 // then populates the BattleFighter from MonsterTable.
 
 #define BATTLE_SLOT_ORIGIN_X 204
@@ -36,13 +36,13 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
     pActor->bDepthSortBias = -0x40;
     pActor->nMoveSpeed = 1;
     pActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
-                      | ActorFlagUnk2000 | ActorFlagCollisionGroup_candidate
+                      | ActorFlagUnk2000 | ActorFlagCollisionGroup
                       | ActorFlagKeepPaletteSlot;
 
     SetActorActionState(pActor, 0xF);
 
     pActor->anim.bAnimFrameDelay = 1;
-    pActor->pfnTick = TickFighterAttackAnimState_candidate; // contains `Mt19937RandMax` call every enemy turn to determine target
+    pActor->pfnTick = TickMonsterActionState; // contains `Mt19937RandMax` call every enemy turn to determine target
 
     AttachActorPaletteUnshared(pActor, g_pMonsterGraphicsTable[type].battle.pPalette);
     SetActorAnimData(pActor, &g_pMonsterGraphicsTable[type].battle, g_pMonsterAnimFrameTable[type], 0);
@@ -80,7 +80,7 @@ Actor *InitMonsterBattleActor(BattleFighter *fighter, s32 monsterIndex, s32 batt
         pShadowActor->bDepthSortBias = -0x40;
         pShadowActor->nMoveSpeed = 1;
         pShadowActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
-                                | ActorFlagUnk2000 | ActorFlagCollisionGroup_candidate;
+                                | ActorFlagUnk2000 | ActorFlagCollisionGroup;
         pShadowActor->anim.bAnimFrameDelay = 1;
 
         AttachActorPalette(pShadowActor, g_MonsterShadowGfxRow.pPalette);

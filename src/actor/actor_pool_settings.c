@@ -11,5 +11,5 @@ void ClearActorPoolAuxBuffer(void)
 // Sets the byte gating TickActorList's extra OAM pass. Unused.
 void SetExtraOamPassPriority(u8 priority)
 {
-    g_ActorPoolState.bExtraOamPassEnabled_candidate = priority;
+    g_ActorPoolState.bExtraOamPassPriority = priority;
 }

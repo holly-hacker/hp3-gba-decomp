@@ -17,28 +17,34 @@ typedef enum {
     ActorFlagHasAnimation             = 0x10,       // TickActorAnimation runs
     ActorFlagAnimFrameLoaded          = 0x80,       // new tiles pending CommitQueuedActorTileUpdates
     ActorFlagSkipSpriteFrameUpdate    = 0x100,      // TickActorList skips UpdateActorSpriteFrame
-    ActorFlagTerrainCollisionA_candidate = 0x200,   // with ActorFlagTerrainCollisionB_candidate: either
+    ActorFlagTerrainCollision         = 0x200,      // with ActorFlagSpellTerrainCollision: either
                                                        // bit makes CheckActorTerrainCollision resolve
                                                        // the actor against the room terrain
     ActorFlagOnscreen                 = 0x400,      // set by UpdateActorOnscreenFlags
     ActorFlagTickHandlerSuspendsMovement = 0x800,   // pfnTick asked to skip the rest of this tick
     ActorFlagUnk2000                  = 0x2000,     // set by most room actor constructors; no reader
                                                        // found yet
-    ActorFlagCollisionGroup_candidate = 0x4000,     // CheckActorCollisions skips a pair that both set it
+    ActorFlagCollisionGroup           = 0x4000,     // CheckActorCollisions skips a pair that both set
+                                                       // it; every battle fighter does
     ActorFlagSpecialMoveTrigger       = 0x8000,
-    ActorFlagTerrainCollisionB_candidate = 0x10000, // see ActorFlagTerrainCollisionA_candidate
+    ActorFlagSpellTerrainCollision    = 0x10000,    // same effect as ActorFlagTerrainCollision; set
+                                                       // by field spell effects
     ActorFlagHasSpriteCells           = 0x20000,    // distinguishes the sprite-frame-update queue
                                                        // from the OAM/priority-sort queue
     ActorFlagActionAnimDone           = 0x40000,    // set by TickActorAnimation on a non-looping
                                                        // animation's last frame
-    ActorFlagFourWayDirections_candidate = 0x100000, // GetDirectionToTarget returns a Direction4
+    ActorFlagFourWayDirections        = 0x100000,   // bFacing and the direction functions use
+                                                       // Direction4 values
     ActorFlagHasPaletteSlot           = 0x200000,   // AttachActorPalette bound a palette cache slot;
                                                        // ReleaseActorPalette clears it
     ActorFlagOnscreenForTileAlloc     = 0x400000,   // mirrors ActorFlagOnscreen (set/cleared
                                                        // together by UpdateActorOnscreenFlags)
     ActorFlagRoomRecordBound          = 0x800000,   // FreeActor clears the actor's room record
-    ActorFlagNoPushTrigger_candidate  = 0x1000000,  // ApplyTerrainTypeEffect does not start a push while set
-    ActorFlagSkipTerrainOnce_candidate = 0x2000000, // CheckActorTerrainCollision skips the terrain
+    ActorFlagSettled                  = 0x1000000,  // a pushed world actor came to rest in a trigger
+                                                       // zone or sank into terrain 0x22: spells and
+                                                       // touches ignore it, and actors touching it skip
+                                                       // their terrain pass
+    ActorFlagSkipTerrainOnce          = 0x2000000,  // CheckActorTerrainCollision skips the terrain
                                                        // pass and clears it
     ActorFlagTerrainDrawLayer         = 0x4000000,  // the terrain pass sets oam.priority from the
                                                        // room's collision layer under the actor
@@ -47,7 +53,7 @@ typedef enum {
     ActorFlagKeepPaletteSlot          = 0x20000000, // TickActor skips BindActorPendingPalette/ReleaseActorPalette
     ActorFlagSixteenWayDirections     = 0x40000000, // GetDirectionVector reads bFacing as one of 16
                                                        // directions; takes precedence over
-                                                       // ActorFlagFourWayDirections_candidate
+                                                       // ActorFlagFourWayDirections
     ActorFlagExtraOamPass             = 0x80000000, // TickActorList's extra UpdateActorOamCells pass
 } ActorFlags;
 
@@ -68,7 +74,7 @@ typedef enum {
 typedef enum {
     ActorDrawFlagShareTiles      = 0x1,   // one shared allocation, refcount index 0
     ActorDrawFlagShareFrameTiles = 0x2,   // shared per animation frame, refcount index
-                                            // bAnimFrameIndex_candidate
+                                            // bLoadedAnimFrame
     ActorDrawFlagFollowBelow     = 0x4,   // FollowOwnerActor: 1 pixel below the owner
     ActorDrawFlagFollowAbove     = 0x8,   // FollowOwnerActor: 1 pixel above the owner
     ActorDrawFlagPostActionFlash = 0x10,  // queues the actor's OAM entries
@@ -235,18 +241,18 @@ typedef struct ActorAnimState {
     u8 bAnimFrameCounter;   // 0x00, frames-remaining countdown reloaded from
                              // bAnimFrameDelay each time it hits 0; see TickActorAnimation
     u8 bAnimFrameDelay;     // 0x01
-    u8 bAnimFrameIndex_candidate;  // 0x02, the frame LoadActorAnimFrameBounds compares with
-                             // bLastAnimFrameValue; 0xFF forces a reload. Selects the per-frame
+    u8 bLoadedAnimFrame;    // 0x02, frame whose bounds and tiles are loaded; a reload runs when
+                             // it differs from bLastAnimFrameValue (0xFF forces one). Selects the per-frame
                              // tile refcount in the actor pool's
                              // aux record when ActorDrawFlagShareTiles is clear; see
                              // ReleaseActorOffscreenVramTiles
     u8 bLastAnimFrameValue; // 0x03, current cycling frame index for non-scripted (cursor-less)
                              // animations; see TickActorAnimation
     union {
-        u8 bEventMarker;     // last ANIM_EVENT marker; TickFighterAttackAnimState_candidate
+        u8 bEventMarker;     // last ANIM_EVENT marker; TickMonsterActionState
                              // also uses 0xff as its idle value and 0 to restart
         u16 wOamStripCount;  // copies of oam UpdateActorOamCells queues, each 32 pixels
-                             // right of the last, while bForceOnscreen_candidate is set
+                             // right of the last, while bOamStrip is set
     } param;                // 0x04, agbcc rounds the union to 4 bytes (-> 0x08)
     ActorAssetRecord *pAnimTable;  // 0x08, set by SetActorAssetRecord; its pFrameData
                              // holds the animation frames
@@ -260,7 +266,7 @@ typedef union __attribute__((packed)) ActorScriptState {
     u16 wFlameOutTicks;        // flame pillars: ticks the flame stays out
     struct __attribute__((packed)) {
         u8 bAttackOutcomeState;
-        u8 bScriptPageHigh_candidate;
+        u8 bTurnInterval;
     } bytes;
 } ActorScriptState;
 
@@ -320,7 +326,7 @@ typedef struct ActorOrbit {
 
 // General-purpose sprite/animation actor, 0x128 bytes (confirmed by
 // ExitBattle's Folio Universitas/Help resume path, which memcpys a whole one
-// into FightState.aSuspendedFighterActors_candidate -- see battle.h). Only
+// into FightState.aSuspendedFighterActors -- see battle.h). Only
 // the fields touched by UpdateBattle/TickPlayerActionState/ExitBattle are
 // named; see those files' plate comments for the rest.
 typedef struct Actor {
@@ -330,10 +336,12 @@ typedef struct Actor {
                              // caller-defined. In the battle subsystem, values are
                              // a small per-kind index (player fighter 0-3, monster
                              // type id) -- see InitPlayerBattleActor/InitMonsterBattleActor
-    u16 wCharacterId_candidate;  // 0x0A, party members' character id (compared against a script's character operand)
+    u16 wSubtype;           // 0x0A, caller-defined: party members' character id, a field spell
+                             // effect's FieldSpell, a room actor's record variant, a text or
+                             // menu icon slot; see FindActorsByType
     ActorFlags dwFlags;    // 0x0C
-    u8 bRoomTileCol_candidate;  // 0x10, SetRoomActorPtr's column arg
-    u8 bRoomTileRow_candidate;  // 0x11, SetRoomActorPtr's row arg
+    u8 bRoomRecordCol;      // 0x10, room actor table record the actor is bound to (see
+    u8 bRoomRecordRow;      // 0x11   SetRoomActorPtr); 0xFF when unbound
     u8 bFacing;             // 0x12, direction/facing index; see SetActorFacing
     u16 wMoveDuration;      // 0x14
     u8 bDepthSortBias;      // 0x16, draw-order bias; see SortActorsByDepth
@@ -349,7 +357,7 @@ typedef struct Actor {
     u8 pad_20[0x04];        // -> 0x24
     ParticleEmitter *pWindupParticleEmitter;  // 0x24, freed via
                              // ReleaseParticleEmitter and zeroed
-                             // when nonzero (see ClearParalyzedFighter_candidate)
+                             // when nonzero (see ClearParalyzedFighter)
     s32 nMoveSpeed;         // 0x28, 16.16 pixels per tick; see SetActorVelocityFromFacing
     FixedPoint pos;         // 0x2C
     FixedPoint posPrev;     // 0x34, pending position: IntegrateActorVelocity sets it
@@ -374,14 +382,14 @@ typedef struct Actor {
     union __attribute__((packed)) {
         struct __attribute__((packed)) {
             u16 wStagedDamage;      // 0x62
-            u8 bRoomScriptArg64_candidate;  // 0x64, set by room script animation handlers
+            u8 pad_64;
             u8 bFollowResumeDistance;  // 0x65, action state 0x12: resume following beyond this (pixels)
-            u8 bRoomScriptArg66_candidate;  // 0x66, set by StartTileActorScript
-            u8 bRoomActorArg67_candidate;  // 0x67
+            u8 pad_66[0x02];
             u8 bFollowStopDistance; // 0x68, action state 0x12: stop following within this (pixels)
-            u8 bRoomActorArg69_candidate;  // 0x69
-            u8 bRoomScriptArg6A_candidate;  // 0x6A, set by StartActorAnimSequence
-            u8 bRoomScriptArg6B_candidate;  // 0x6B, set by StartActorAnimSequence
+            u8 pad_69;
+            u8 bNoPlatePress;       // 0x6A, nonzero: pressure plates ignore the actor; set by
+                                    // RoomScriptOpStartActorAnimSequence
+            u8 pad_6B;
             u8 bDelayedRespawnRow;  // 0x6C, delayed-chain script effect: RespawnGroupAndRunChain
             u8 bDelayedChainRow;    // 0x6D   arguments once dwStateTimer runs out
         } actor;
@@ -407,6 +415,8 @@ typedef struct Actor {
             u8 bWaypoint;           // 0x65, next waypoint
             u8 pad_66[0x03];
             u8 bForward;            // 0x69, ping-pong walk direction: nonzero toward the last waypoint
+            u8 pad_6A;
+            u8 bUnused6B;           // 0x6B, from the route-walk opcode; never read
         } route;
         struct __attribute__((packed)) {
             u16 wTargetY;           // 0x62, pixels; the X is scriptState.wScriptPc
@@ -425,7 +435,7 @@ typedef struct Actor {
             u16 wApexX;             // 0x6C, pixels
         } arc;                      // action state 0x10; see also wArcEndX
         struct __attribute__((packed)) {
-            u8 abExitParams[2];     // 0x62, copied to g_abRoomScriptExitParams_candidate
+            u8 abExitParams[2];     // 0x62, copied to g_abRoomEntryIds
             u8 pad_64;
             u8 bRequireAPress;      // 0x65
             u8 bChain;              // 0x66, runs instead of leaving when nonzero
@@ -442,8 +452,6 @@ typedef struct Actor {
             } touch;                // 0x64, RespawnGroupAndRunChain arguments run when
                                     // the player touches the flame
         } flamePillar;              // RoomActorType_FlamePillar; see TickFlamePillarActor
-        u8 bWorldActorBlocksPlayer_candidate;  // 0x62, RoomActorType_WorldActor: see
-                                               // HandlePlayerWorldActorCollision
         ActorEffectState effect;
         ActorChestState chest;
     } modeState;
@@ -472,24 +480,28 @@ typedef struct Actor {
     u16 wTimedMoveTicks;    // 0x86, ticks left in a StartActorTimedMove move
     u8 pad_88[0x02];        // -> 0x8a
     u16 wActionVariant;     // 0x8A
-    u8 bRoomActorKind_candidate;  // 0x8C, set from the tile record by room actor constructors; 2 selects the second collision box
+    u8 bKind;               // 0x8C, caller-defined: trigger kind (2 adds the second collision
+                             // box), NPC interact mode, wandering monster id, minigame actor role
     u8 bActionState;        // 0x8D, the dispatch key
-    u8 bPrevActionState_candidate;  // 0x8E, ExitDialog restores the player to this action state
+    u8 bPrevActionState;    // 0x8E, set by SetActorPrevActionState; dialogs, field spell casts
+                             // and NPC talks return to it
     u8 bActionSubState;     // 0x8F, secondary per-actor state; see SetActorActionSubState
     u8 bActionFlags;        // 0x90
     u8 bFighterIndex;       // 0x91, wandering monsters: random-encounter id
     u8 bReceivedRewardId;   // 0x92, player: reward id shown by the receive-item action (0x17);
                              // wandering monsters: encounter kind
     u8 bEncounterVariant;   // 0x93, wandering monsters: random-encounter variant
-    u8 bFlags_0x94_candidate;  // 0x94, bit 0x4 set by a room script; meaning unconfirmed.
-                                // NPCs: 0x1 talked to (until the cooldown ends), 0x2 not
-                                // interactable, 0x4 keeps the sprite frame TickNpcActor would set
+    u8 bTypeFlags;          // 0x94, NPCs: 0x1 talked to (until the cooldown ends), 0x2 not
+                             // interactable, 0x4 keeps the sprite frame TickNpcActor would set
+                             // (also set by RoomScriptOpSetTileActorSpecialFlag). Wandering
+                             // monsters: 0x1 chasing the player at full speed
     void (*pfnTick)(struct Actor *actor);  // 0x98, per-frame tick (player fighters: TickPlayerActionState)
     void (*pfnDestructor)(struct Actor *actor);  // 0x9C, called by FreeActor if non-null
     struct Actor *pShadowActor;  // 0xA0, companion actor (main -> shadow); the
                                    // actor followed in action state 0x12
-    struct Actor *pLinkedActor_candidate;  // 0xA4, one of three linked-actor slots;
-                                     // caller-defined
+    struct Actor *pLinkedActor;  // 0xA4, caller-defined: a field spell effect's caster, a
+                                   // fighter's SP gauge (and back), a turn-order icon's
+                                   // portrait, an actor freed with this one
     struct Actor *pOwnerActor;   // 0xA8, back-link (shadow -> main)
     u16 wFlags_0xAC;        // 0xAC, bit 0x1 set by AllocDefaultActor; also read by
                              // CheckActorTerrainCollision as one of several "movement stopped"
@@ -543,12 +555,13 @@ typedef struct Actor {
                              // FreeObjVramTileAllocation (0xFFFF = none); set to 0xFFFF by
                              // ExitBattle when suspending a fighter for the Folio Universitas/
                              // Help resume path
-    u8 bForceOnscreen_candidate;  // 0x114, value 1 prevents visibility flags being cleared
+    u8 bOamStrip;           // 0x114, nonzero draws the actor as param.wOamStripCount copies of
+                             // oam (text actors); 1 also keeps it from being culled
     u8 bDrawFlags;          // 0x115, ActorDrawFlags
     u8 bActorPoolAuxSlot;  // 0x116, index into g_pActorPoolAuxBuffer's 0x34-byte-stride
                              // records; see ReleaseActorOffscreenVramTiles
     s8 bAnimSet_candidate;  // 0x117, set by SetActorAnimSet_candidate; GetActorVariantAnchorPosition
-                             // selects the slot's variant table with it. Nothing else uses it
+                             // selects the slot's variant table with it. Neither has a caller
     ActorVariantSlot aVariantSlots[1];  // 0x118
     s8 bSpriteVariantTableIndex;  // 0x124, shared by every variant slot
     s8 bSpriteVariantIndex;       // 0x125
@@ -559,7 +572,7 @@ typedef struct Actor {
 // and 13 copy the type from the tile record.
 typedef enum {
     RoomActorType_Player           = 0,     // SpawnPlayerActor
-    RoomActorType_TileAnimation    = 1,     // SpawnRoomTileAnimationActor_candidate
+    RoomActorType_TileAnimation    = 1,     // SpawnRoomTileAnimationActor
     RoomActorType_Door             = 2,     // SpawnDoorActor
     RoomActorType_Switch           = 3,     // SpawnSwitchActor
     RoomActorType_TriggerZone      = 4,     // SpawnTriggerZoneActor
@@ -575,7 +588,7 @@ typedef enum {
     RoomActorType_ScriptEffect     = 0xE,   // SpawnScriptEffectActor, e.g. delayed chain runs;
                                               // reuses the same value as BattleActorType_FighterSlot0
                                               // since room/overworld and battle never run concurrently
-    RoomActorType_FieldSpellEffect = 0xF,   // SpawnFieldSpellEffect; wCharacterId_candidate is the FieldSpell
+    RoomActorType_FieldSpellEffect = 0xF,   // SpawnFieldSpellEffect; wSubtype is the FieldSpell
     RoomActorType_WanderingMonster = 0x10,  // SpawnWanderingMonsterActor; reuses
                                               // BattleActorType_FighterSlot0 + 2 for the same reason
     RoomActorType_Shadow           = 0x11,  // the shadow under an NPC or cutscene cast actor
@@ -614,7 +627,7 @@ typedef struct ActorPoolState {
     void *pFreeListHead;
     u8 bTileUpdateQueueCount;  // 0x08, consumed and reset by CommitQueuedActorTileUpdates
     struct Actor *apTileUpdateQueue[0x69];  // 0x0C, actors whose OAM update returned 2
-    u8 bExtraOamPassEnabled_candidate;   // 0x1B0, nonzero enables TickActorList's extra pass;
+    u8 bExtraOamPassPriority;   // 0x1B0, nonzero enables TickActorList's extra pass;
                                          // bits 0-1 are the OAM priority of the vertically
                                          // mirrored, alternate-vblank copies it draws
 } ActorPoolState;
@@ -643,7 +656,7 @@ extern u32 g_dwOamScaleRoundBias;
 // only until the active list's first tick. FreeActor releases the actor's
 // shared VRAM tile allocation (ReleaseActorOffscreenVramTiles) only when it
 // is 1; those allocations are made by UpdateActorSpriteFrame during a tick.
-extern u32 g_dwActorListTicked_candidate;
+extern u32 g_dwActorListTicked;
 
 // pHead/pTail are adjacent words (0x030015B0/0x030015B4) -- FreeActor loads
 // the base address once and reaches pTail through it at +4, so this stays
@@ -735,7 +748,7 @@ extern void SetActorFacing(Actor *actor, u8 facing);  // raises bActionFlags bit
 extern void SetActorDrawLayer(Actor *actor, u8 layer);
 extern void SetActorPrevActionState(Actor *actor, u8 state);
 // Clears the actor's queued move (Actor+0x3C..0x48).
-extern void CancelActorMove_candidate(Actor *actor);
+extern void StopActorMotion(Actor *actor);
 extern void SetActorAssetRecord(Actor *actor, const void *rec);
 
 extern void AllocActorVramTiles(Actor *actor, ActorAssetRecord *record);
@@ -768,7 +781,7 @@ extern const s32 g_aDirection4Vectors[4][2];        // 0x0804BDBC
 extern const s32 g_aDirection8Vectors[8][2];        // 0x0804BDDC
 extern const s32 g_aDirection16Vectors[16][2];      // 0x0804BE1C
 extern const s32 g_aDirection32Vectors[32][2];      // 0x0804BE9C
-extern u8 FindActorsByType(u8 type, u8 characterId, Actor **out, u8 maxCount);
+extern u8 FindActorsByType(u8 type, u8 subtype, Actor **out, u8 maxCount);
 extern s32 ActorIsNullActorType(Actor *actor);
 extern void SetActorAnimSet_candidate(Actor *actor, u8 animSet);
 extern void UnsetActorHasAnimation(Actor *actor);

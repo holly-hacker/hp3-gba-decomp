@@ -9,13 +9,13 @@ void FreePartyActors(void)
 {
     if (g_pFollowerActor0 != NULL)
     {
-        g_bPartyCharId1 = g_pFollowerActor0->wCharacterId_candidate;
+        g_bPartyCharId1 = g_pFollowerActor0->wSubtype;
         FreeActor(g_pFollowerActor0);
         g_pFollowerActor0 = NULL;
     }
     if (g_pFollowerActor1 != NULL)
     {
-        g_bPartyCharId2 = g_pFollowerActor1->wCharacterId_candidate;
+        g_bPartyCharId2 = g_pFollowerActor1->wSubtype;
         FreeActor(g_pFollowerActor1);
         g_pFollowerActor1 = NULL;
     }

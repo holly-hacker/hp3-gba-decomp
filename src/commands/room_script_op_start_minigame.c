@@ -31,7 +31,7 @@ void RoomScriptOpStartMinigame(StartMinigameRecord *pRecord)
             PushGameMode_3(WizardCrackerPopItMinigame, 6, 0, pRecord->bParam);
         break;
     case 2:
-        g_dwBoggartMinigameScriptFlag_candidate = 1;
+        g_dwBoggartMinigameForceOverworldExit = 1;
         if (pRecord->bShowHelp)
             PushGameMode_3(HelpTopicScreen, 6, 2, pRecord->bParam);
         else
@@ -45,7 +45,7 @@ void RoomScriptOpStartMinigame(StartMinigameRecord *pRecord)
             PushGameMode_3(BuckbeakMinigame, 6, 0, pRecord->bParam);
         break;
     case 4:
-        g_dwDementorMinigameScriptFlag_candidate = 1;
+        g_dwDementorMinigameForceOverworldExit = 1;
         if (pRecord->bShowHelp)
             PushGameMode_3(HelpTopicScreen, 6, 4, pRecord->bParam);
         else

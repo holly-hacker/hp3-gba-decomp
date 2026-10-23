@@ -7,12 +7,12 @@ void RespawnGroupAndRunChain(u8 respawnRow, u8 chainRow)
 {
     if (ShouldRunRoomIndex(respawnRow))
     {
-        g_dwRoomChainRanThisFrame_candidate = 1;
+        g_dwRoomChainRanThisFrame = 1;
         SpawnMissingRoomGroupActors(respawnRow);
     }
     if (ShouldRunRoomIndex(chainRow))
     {
-        g_dwRoomChainRanThisFrame_candidate = 1;
+        g_dwRoomChainRanThisFrame = 1;
         RunRoomScriptChain(chainRow, 0);
     }
 }

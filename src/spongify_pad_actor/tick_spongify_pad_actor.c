@@ -15,8 +15,8 @@ void TickSpongifyPadActor(Actor *pActor)
     switch (pActor->bActionSubState)
     {
     case 5:
-        if (pActor->pLinkedActor_candidate != NULL)
-            pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        if (pActor->pLinkedActor != NULL)
+            pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         break;
     case 8:
@@ -71,7 +71,7 @@ void TickSpongifyPadActor(Actor *pActor)
             }
             // Both arms are the same, so only a dead load of the variant survives; the
             // compared value is unknown.
-            if (pActor->wCharacterId_candidate == 2)
+            if (pActor->wSubtype == 2)
             {
                 SetActorActionState(g_pPlayerActor, 0x10);
                 SetActorActionSubState(g_pPlayerActor, 0);

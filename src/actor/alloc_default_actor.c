@@ -15,7 +15,7 @@ Actor *AllocDefaultActor(void)
     actor->wFlags_0xAC |= 1;
     actor->wActorType = 0xFFFF;
     actor->wVramTileAllocId = 0xFFFF;
-    actor->bRoomTileCol_candidate = 0xFF;
-    actor->bRoomTileRow_candidate = 0xFF;
+    actor->bRoomRecordCol = 0xFF;
+    actor->bRoomRecordRow = 0xFF;
     return actor;
 }

@@ -21,7 +21,7 @@ void RoomScriptOpShowRoomDialog(ShowRoomDialogRecord *pRecord)
     else
         PlaySoundById(5);
 
-    ShowRoomDialogBox_candidate(pRecord->wBlockId);
-    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
-    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
+    ShowDialogBlock(pRecord->wBlockId);
+    g_DialogState.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState.bArg1D = pRecord->bDialogArg1D;
 }

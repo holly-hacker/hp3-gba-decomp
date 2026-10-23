@@ -3,15 +3,15 @@
 #include "combat_fighter.h"
 #include "combat_fx.h"
 
-// A fighter's idle loop, played on g_aFighterAnimTable's record 4 when an
-// effect script restores it.
-const u8 g_abFighterIdleAnimData_candidate[6] = {
+// Loops frames 0-1 of g_aFighterAnimTable's record 4, the hurt sprite; played by
+// BSSTATUS_ToggleUltimateVisual 0.
+const u8 g_abFighterHurtLoopAnimData[6] = {
     ANIM_FRAME(0, 1), ANIM_FRAME(1, 1), ANIM_JUMP(0),
 };
 
 // Animations of the SetActorAnim script opcodes (0x01/0x02), one per g_aEffectAnimAssets
 // record.
-const u8 g_aEffectAnimData_candidate[65][226] = {
+const u8 g_aEffectAnimData[65][226] = {
     {  // 0
         // 0
         ANIM_FRAME(0, 2), ANIM_FRAME(1, 2), ANIM_FRAME(2, 3), ANIM_FRAME(3, 2),
@@ -497,7 +497,7 @@ const u8 g_aEffectAnimData_candidate[65][226] = {
 
 // Animations of the SetActorAnimFromTable2 script opcodes (0x03/0x04), one per
 // g_aEffectAnimAssets2 record.
-const u8 g_aEffectAnimData2_candidate[38][108] = {
+const u8 g_aEffectAnimData2[38][108] = {
     {  // 0
         // 0
         ANIM_FRAME(0, 1), ANIM_FRAME(1, 1), ANIM_FRAME(2, 1), ANIM_JUMP(0),

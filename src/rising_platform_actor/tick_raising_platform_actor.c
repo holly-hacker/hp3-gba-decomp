@@ -32,10 +32,10 @@ void TickRaisingPlatformActor(Actor *pActor)
                 g_pFollowerActor0->pOwnerActor = g_pPlayerActor;
             if (g_pFollowerActor1 != NULL)
                 g_pFollowerActor1->pOwnerActor = g_pPlayerActor;
-            CancelActorMove_candidate(g_pPlayerActor);
+            StopActorMotion(g_pPlayerActor);
             SetActorActionSubState(g_pPlayerActor, 2);
             g_pPlayerActor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation
-                                         | ActorFlagTerrainCollisionA_candidate);
+                                         | ActorFlagTerrainCollision);
             SetActorActionSubState(pActor, 3);
             SetActorAnimData(pActor, &g_RoomRaisingPlatformSprite, g_abRoomRaisingPlatformAnimData, 4);
         }
@@ -52,7 +52,7 @@ void TickRaisingPlatformActor(Actor *pActor)
         }
         else
         {
-            CancelActorMove_candidate(g_pPlayerActor);
+            StopActorMotion(g_pPlayerActor);
             g_pPlayerActor->dwFlags &= ~ActorFlagHasAnimation;
             GetActorAnchor(pActor, 0, &anchor);
             SnapActorPosition(g_pPlayerActor, pActor->pos.x + (anchor.x << 16),
@@ -65,7 +65,7 @@ void TickRaisingPlatformActor(Actor *pActor)
         direction = GetDirectionToTarget(g_pPlayerActor->dwFlags, pos, target, g_pPlayerActor->nMoveSpeed);
         if (direction == DirectionNone)
         {
-            CancelActorMove_candidate(g_pPlayerActor);
+            StopActorMotion(g_pPlayerActor);
             SetActorActionSubState(g_pPlayerActor, 2);
             SetActorActionSubState(pActor, 20);
             SetActorAnimData(pActor, &g_RoomRaisingPlatformSprite, g_abRoomRaisingPlatformAnimData, 14);
@@ -91,8 +91,8 @@ void TickRaisingPlatformActor(Actor *pActor)
                 SetActorActionSubState(g_pFollowerActor1, 0);
                 g_pFollowerActor1->pOwnerActor = NULL;
             }
-            g_pPlayerActor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate;
-            CancelActorMove_candidate(g_pPlayerActor);
+            g_pPlayerActor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision;
+            StopActorMotion(g_pPlayerActor);
             SetActorActionSubState(g_pPlayerActor, 6);
             SetActorActionState(g_pPlayerActor, 0x21);
             pActor->dwFlags |= ActorFlagWantsCollisionCheck;
@@ -107,8 +107,8 @@ void TickRaisingPlatformActor(Actor *pActor)
         }
         break;
     case 5:
-        if (pActor->pLinkedActor_candidate != NULL)
-            pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        if (pActor->pLinkedActor != NULL)
+            pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         break;
     case 1:

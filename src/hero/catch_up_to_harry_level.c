@@ -13,7 +13,7 @@ void CatchUpToHarryLevel(u8 characterId)
     u8 targetLevel;
     u8 level;
 
-    slot = GetPartyMasterStatsSlot_candidate(characterId);
+    slot = GetCharacterFighterType(characterId);
     if (slot == Harry || slot == Buckbeak)
         return;
     if (g_aPartyMasterStats[slot].stats.bLevel >= g_aPartyMasterStats[Harry].stats.bLevel)

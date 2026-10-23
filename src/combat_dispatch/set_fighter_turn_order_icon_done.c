@@ -9,7 +9,7 @@ void SetFighterTurnOrderIconDone(s32 fighterIndex)
     u8 index = fighterIndex;
 
     if (g_pFightState->pFighters[index].bFighterType == Enemy)
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor_candidate, 1);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor, 1);
     else
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor_candidate, 0);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[index]->pLinkedActor, 0);
 }

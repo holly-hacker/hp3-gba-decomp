@@ -10,7 +10,7 @@ void InitWorldActorBreakEmitter(ParticleEmitter *pEmitter, Actor *pWorldActor)
     pEmitter->wSpawnPeriod = 1;
     pEmitter->wLifetimeBase = 10;
     pEmitter->wFlags = ParticleEmitterFlagRelease | ParticleEmitterFlagAnimTicksFixed
-                     | ParticleEmitterFlagNoCollision | ParticleEmitterFlagPriorityBelow_candidate;
+                     | ParticleEmitterFlagNoCollision | ParticleEmitterFlagPriorityBelow;
     pEmitter->wSpread = 8;
     pEmitter->wSpawnTimer = 0;
     pEmitter->bMode = ParticleModeRandomVelocity;

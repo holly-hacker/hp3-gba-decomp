@@ -14,7 +14,7 @@ void TickShadowActor(Actor *pShadow)
         }
         else
         {
-            u32 frame = (pShadow->anim.bAnimFrameIndex_candidate + 1) & 7;
+            u32 frame = (pShadow->anim.bLoadedAnimFrame + 1) & 7;
 
             pShadow->dwStateTimer = 2;
             SetActorAnimFrame(pShadow, frame);

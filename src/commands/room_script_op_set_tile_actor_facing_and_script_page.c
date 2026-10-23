@@ -7,7 +7,7 @@ typedef struct SetTileActorFacingAndScriptPageRecord {
     u8 bTileX;
     u8 bTileY;
     u8 bFacing;
-    u8 bScriptPageHigh;
+    u8 bTurnInterval;
 } SetTileActorFacingAndScriptPageRecord;
 
 void RoomScriptOpSetTileActorFacingAndScriptPage(SetTileActorFacingAndScriptPageRecord *pRecord)
@@ -16,9 +16,9 @@ void RoomScriptOpSetTileActorFacingAndScriptPage(SetTileActorFacingAndScriptPage
 
     SetActorActionState(pActor, 0x1b);
     SetActorActionSubState(pActor, 0);
-    if (pActor->dwFlags & ActorFlagFourWayDirections_candidate)
+    if (pActor->dwFlags & ActorFlagFourWayDirections)
         pActor->bFacing = pRecord->bFacing >> 1;
     else
         pActor->bFacing = pRecord->bFacing;
-    pActor->scriptState.bytes.bScriptPageHigh_candidate = pRecord->bScriptPageHigh;
+    pActor->scriptState.bytes.bTurnInterval = pRecord->bTurnInterval;
 }

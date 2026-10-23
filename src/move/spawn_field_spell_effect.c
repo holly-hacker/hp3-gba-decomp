@@ -21,7 +21,7 @@ Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell)
     effect->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation | ActorFlagUnk2000
                       | ActorFlagTerrainDrawLayer;
     effect->nMoveSpeed = 1;
-    effect->wCharacterId_candidate = spell;
+    effect->wSubtype = spell;
     effect->anim.bAnimFrameDelay = 1;
     effect->pfnTick = TickFieldSpellEffect;
     effect->pfnDestructor = EndFieldSpellEffect;
@@ -31,7 +31,7 @@ Actor *SpawnFieldSpellEffect(Actor *caster, u8 spell)
     SetActorAnimData(effect, &g_aFieldSpellCastAssets[spell], g_aaFieldSpellCastAnims[spell], 0);
     SetActorActionSubState(effect, 0);
     g_dwFieldSpellActive = 1;
-    effect->pLinkedActor_candidate = caster;
+    effect->pLinkedActor = caster;
     effect->bFighterIndex = 0;
     effect->timer84.nFlightTicks = 45;
 

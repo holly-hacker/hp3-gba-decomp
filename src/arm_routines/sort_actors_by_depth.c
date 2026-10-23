@@ -34,8 +34,8 @@ void SortActorsByDepth(Actor **actors, u32 count)
     } while (gaps != 0);
 }
 
-// Empty and never referenced; the IWRAM copy stops just short of it, so it
-// likely marked the routine's end.
-void SortActorsByDepthEnd_candidate(void)
+// End marker: never referenced, but InitActorPool's IWRAM copy of
+// SortActorsByDepth is exactly as long as the code up to it.
+void SortActorsByDepthEnd(void)
 {
 }

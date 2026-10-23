@@ -1,11 +1,11 @@
 #include "types.h"
 #include "serial.h"
 
-// Selects whether ExchangeSerialFrame_candidate sends the held keys or idle messages.
+// Selects whether ExchangeSerialFrame sends the held keys or idle messages.
 void SetSerialSendKeys(u32 enable)
 {
     if (enable)
-        g_dwSerialPollFlags_candidate &= ~1;
+        g_dwSerialSendFlags &= ~1;
     else
-        g_dwSerialPollFlags_candidate |= 1;
+        g_dwSerialSendFlags |= 1;
 }

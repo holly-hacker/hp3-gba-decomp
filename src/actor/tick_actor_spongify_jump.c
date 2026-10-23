@@ -32,8 +32,8 @@ void TickActorSpongifyJump(Actor *actor)
     case 0:
         g_dwPauseMenuLocked = 1;
         SetActorActionSubState(actor, 15);
-        CancelActorMove_candidate(actor);
-        actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate);
+        StopActorMotion(actor);
+        actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollision);
         apexX = actor->modeState.arc.wApexX = (target.x + pos.x) / 2;
         if (pos.x < target.x) {
             actor->bFacing = DirectionRight;
@@ -105,7 +105,7 @@ void TickActorSpongifyJump(Actor *actor)
         SetActorActionSubState(actor, 14);
         break;
     case 14:
-        actor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate;
+        actor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollision;
         actor->pShadowActor->dwFlags |= ActorFlagVisible;
         SetPartyMemberAnim(actor, PartyAnimStand);
         if (g_pFollowerActor0 != 0) {

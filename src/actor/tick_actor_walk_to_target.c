@@ -19,7 +19,7 @@ void TickActorWalkToTarget(Actor *actor)
             && (s16)(actor->pos.x >> 16) < (actor->moveTarget.x >> 16) + 2
             && (s16)(actor->pos.y >> 16) > (actor->moveTarget.y >> 16) - 2
             && (s16)(actor->pos.y >> 16) < (actor->moveTarget.y >> 16) + 2) {
-            CancelActorMove_candidate(actor);
+            StopActorMotion(actor);
             SetActorActionState(actor, 0);
             SetPartyMemberAnim(actor, PartyAnimStand);
             if ((actor->dwFlags & ActorFlagRoomScriptYield) && g_bRoomScriptYieldOpcode == RSOP_StartTileActorScript) {

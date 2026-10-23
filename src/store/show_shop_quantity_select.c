@@ -32,7 +32,7 @@ void ShowShopQuantitySelect(void)
     SetMenuCursorPosition(g_FredAndGeorgesShop.pRightArrow, 0xD0, 0x68);
 
     SelectTextFont(2, 0, -1);
-    text = GetDialogText(GetRewardNameStringId_candidate(g_FredAndGeorgesShop.dwItem));
+    text = GetDialogText(GetRewardNameTextId(g_FredAndGeorgesShop.dwItem));
     DrawTextLines(1, 0x2F, 0x28, 0x90, 8, &text, 0);
     // "How many do you want to buy?" / "... sell?"
     text = GetDialogText(g_FredAndGeorgesShop.dwBuyItem == SHOP_NO_ITEM ? 0x540 : 0x53F);

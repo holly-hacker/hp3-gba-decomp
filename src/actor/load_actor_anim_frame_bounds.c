@@ -13,7 +13,7 @@ void LoadActorAnimFrameBounds(Actor *actor)
     s32 i;
 
     anim = &actor->anim;
-    if (anim->bAnimFrameIndex_candidate == anim->bLastAnimFrameValue
+    if (anim->bLoadedAnimFrame == anim->bLastAnimFrameValue
         && !(actor->dwFlags & ActorFlagAnimFrameLoaded))
         return;
 

@@ -8,15 +8,15 @@
 // rebuilding the turn order first if a fighter was just knocked out.
 void PostActionBattleCheck(void)
 {
-    g_pFightState->dwPlayerActionActive_candidate = 0;
+    g_pFightState->dwBattleMessageShown = 0;
     CheckBattleDefeat();
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 != 0xFE) {
         PushBattleState(BattleStateNextTurn);
 
-        if (g_pFightState->dwDefeatCheckPending_candidate) {
-            g_pFightState->dwDefeatCheckPending_candidate = 0;
-            PruneFaintedAndRebuildTurnOrder_candidate(0);
+        if (g_pFightState->dwFighterFainted) {
+            g_pFightState->dwFighterFainted = 0;
+            PruneFaintedAndRebuildTurnOrder(0);
         }
     }
 }

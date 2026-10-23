@@ -35,7 +35,7 @@ extern const u32 g_dwCombatResultBg1Control;  // 0x0804E604
 extern const u32 g_dwCombatResultBg3Control;  // 0x0804E608
 extern const u32 g_dwCombatResultBg0Control;  // 0x0804E60C
 
-// Indexed by party stats slot (GetPartyMasterStatsSlot_candidate). The BG1 and BG2 graphics
+// Indexed by FighterType (GetCharacterFighterType). The BG1 and BG2 graphics
 // are cut up the same way, with their own destinations.
 extern const CombatResultPortraitRect g_aCombatResultBg1PortraitRects[3];        // 0x0804E640
 extern const CombatResultPortraitPosition g_aCombatResultBg1PortraitPositions[3];  // 0x0804E64C

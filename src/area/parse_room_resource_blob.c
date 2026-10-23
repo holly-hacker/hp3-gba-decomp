@@ -13,7 +13,7 @@ void ParseRoomResourceBlob(const RoomBlobHeader *pBlob)
     const RoomBlobSubBlock *pVariant;
     u8 *pTable;
 
-    g_dwRoomChainRanThisFrame_candidate = 0;
+    g_dwRoomChainRanThisFrame = 0;
     memset(g_pRoomTableBuffer, 0, 0x2200);
 
     pTable = (u8 *)pBlob + pBlob->wSize;

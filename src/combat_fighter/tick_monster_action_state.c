@@ -10,7 +10,7 @@
 // shape: a switch on Actor+0x8D (bActionState), every case branching into
 // a shared no-op tail rather than returning directly. Registered as
 // InitMonsterBattleActor's pActor->pfnTick.
-void TickFighterAttackAnimState_candidate(Actor *actor)
+void TickMonsterActionState(Actor *actor)
 {
     u8 *pFlags;
     s32 fighterType;
@@ -81,13 +81,13 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         if (--actor->dwStateTimer != 0)
             return;
 
-        if (actor->pLinkedActor_candidate != 0)
-            DestroyLinkedActor(actor->pLinkedActor_candidate);
+        if (actor->pLinkedActor != 0)
+            DestroyLinkedActor(actor->pLinkedActor);
 
         if (actor->pShadowActor != 0)
             actor->pShadowActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
 
-        if (g_pFightState->bFaintMessageCount_candidate == 0)
+        if (g_pFightState->bHitResultCount == 0)
             CheckBattleVictory(actor);
 
         if (g_pFightState->dwBattleResultPending != 0) {
@@ -145,7 +145,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             g_pFightState->savedPos = actor->pos;
 
             if (MonsterTable[active->bRosterIndex].bSpecialChance == 100) {
-                g_pFightState->bActionDelayCounter_candidate = 5;
+                g_pFightState->bAttackMoveTicks = 5;
                 if (active->bRosterIndex != 0x36) {
                     u32 destX, destY;
                     if ((u8)(active->bRosterIndex - 0x1a) < 3) {
@@ -162,12 +162,12 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
 
                 u32 roster;
                 u8 targetSlot;
-                g_pFightState->bActionDelayCounter_candidate = 10;
+                g_pFightState->bAttackMoveTicks = 10;
                 roster = active->bRosterIndex;
                 targetSlot = g_pFightState->pFighters[active->bSelectedActionIndex].bSlotParam;
                 StartActorMove(actor,
-                    (g_aBattleSlotAnchorPos_candidate[targetSlot][0] - g_aMonsterAttackOffset_candidate[roster][0]) << 16,
-                    (g_aBattleSlotAnchorPos_candidate[targetSlot][1] - g_aMonsterAttackOffset_candidate[roster][1]) << 16,
+                    (g_aPartySlotPos[targetSlot][0] - g_aMonsterAttackOffset[roster][0]) << 16,
+                    (g_aPartySlotPos[targetSlot][1] - g_aMonsterAttackOffset[roster][1]) << 16,
                     8);
 
 
@@ -184,7 +184,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         } else if (actor->bActionFlags == 0x41) {
             SetMonsterActorAnim(actor, 0);
 
-            g_pFightState->bActionDelayCounter_candidate = 0x14;
+            g_pFightState->bAttackMoveTicks = 0x14;
 
             StartActorMove(actor, g_pFightState->savedPos.x, g_pFightState->savedPos.y, 3);
 
@@ -195,8 +195,8 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         }
 
         if (actor->bActionFlags & 0x20) {
-            g_pFightState->bActionDelayCounter_candidate--;
-            if (g_pFightState->bActionDelayCounter_candidate != 0)
+            g_pFightState->bAttackMoveTicks--;
+            if (g_pFightState->bAttackMoveTicks != 0)
                 return;
 
             actor->wTimedMoveTicks = 0;
@@ -205,8 +205,8 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             return;
         }
         if (actor->bActionFlags & 0x40) {
-            g_pFightState->bActionDelayCounter_candidate--;
-            if (g_pFightState->bActionDelayCounter_candidate != 0)
+            g_pFightState->bAttackMoveTicks--;
+            if (g_pFightState->bAttackMoveTicks != 0)
                 return;
 
             actor->wMoveDuration = 0;
@@ -262,7 +262,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
             }
 
             if (g_nLastDamage != 0) {
-                ShowDamageNumber_candidate(active->bSelectedActionIndex, g_nLastDamage);
+                StageFighterDamage(active->bSelectedActionIndex, g_nLastDamage);
             } else {
                 PlaySoundById(0x4b);
             }
@@ -284,7 +284,7 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                 }
 
                 if (g_nLastDamage != 0)
-                    ShowDamageNumber_candidate(active->bSelectedActionIndex, g_nLastDamage);
+                    StageFighterDamage(active->bSelectedActionIndex, g_nLastDamage);
 
                 active->bSpellId = Flipendo;
                 ShowAttackResult(actor, active->bSelectedActionIndex);
@@ -294,45 +294,45 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
                 goto skipPhase0;
 
             if (actor->scriptState.bytes.bAttackOutcomeState == 4) {
-                // Fainted-message sweep: every living non-enemy fighter
-                // resolves once more and queues a faint/HP message.
+                // Hit sweep: every living non-enemy fighter is resolved as a
+                // target and queues a hit result.
                 actor->scriptState.bytes.bAttackOutcomeState = 0;
-                g_pFightState->pAttackAnimActor_candidate = 0;
-                g_pFightState->bAttackAnimState_candidate = 0;
-                g_pFightState->bFaintMessageCount_candidate = 0;
+                g_pFightState->pAttackOutcomeActor = 0;
+                g_pFightState->bAttackOutcomeState = 0;
+                g_pFightState->bHitResultCount = 0;
                 for (i = 0; i < g_pFightState->bFighterCount; i++) {
                     if (g_pFightState->pFighters[i].bFighterType != Enemy) {
                         g_nLastDamage = (u16)ResolveEnemyAttack(g_pFightState->bActiveFighterIndex, i);
                         if (g_nLastDamage != 0)
-                            ShowDamageNumber_candidate((u8)i, g_nLastDamage);
+                            StageFighterDamage((u8)i, g_nLastDamage);
                         if (g_nLastDamage > 999) {
                             // Handle crit damage
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pActor->wActorType;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
-                            if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
-                                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].wDamage = g_nLastDamage;
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].bTargetKind = g_pFightState->pFighters[i].pActor->wActorType;
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].bMissed = 0;
+                            if (g_pFightState->bPendingStatusMessageVariant != 0x12)
+                                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant);
                             g_nLastDamage = g_nLastDamage - 999;
                             ShowFloatingDamageNumber(g_nLastDamage, 3, i, 0);
                         } else if (g_nLastDamage != 0) {
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = g_nLastDamage;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pActor->wActorType;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 0;
-                            if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
-                                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].wDamage = g_nLastDamage;
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].bTargetKind = g_pFightState->pFighters[i].pActor->wActorType;
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].bMissed = 0;
+                            if (g_pFightState->bPendingStatusMessageVariant != 0x12)
+                                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant);
                             ShowFloatingDamageNumber(g_nLastDamage, 0, i, 0);
                         } else {
                             // Zero literal, not g_nLastDamage: on this path
                             // the compiler already holds a register known to
                             // be 0 and reuses it, which is what the ROM does.
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].wDamage = 0;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bEffectId = g_pFightState->pFighters[i].pActor->wActorType;
-                            g_pFightState->aFaintMessages_candidate[g_pFightState->bFaintMessageCount_candidate].bFlag = 1;
-                            if (g_pFightState->bPendingStatusMessageVariant_candidate != 0x12)
-                                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].wDamage = 0;
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].bTargetKind = g_pFightState->pFighters[i].pActor->wActorType;
+                            g_pFightState->aHitResults[g_pFightState->bHitResultCount].bMissed = 1;
+                            if (g_pFightState->bPendingStatusMessageVariant != 0x12)
+                                ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant);
                             ShowFloatingDamageNumber(g_nLastDamage, 2, i, 0);
                         }
-                        g_pFightState->bFaintMessageCount_candidate++;
+                        g_pFightState->bHitResultCount++;
                     }
                 }
                 if (g_pFightState->dwBattleResultPending == 0)
@@ -349,8 +349,8 @@ void TickFighterAttackAnimState_candidate(Actor *actor)
         if ((actor->dwFlags & ActorFlagActionAnimDone) == 0)
             return;
     finish:
-        g_pFightState->pAttackAnimActor_candidate = 0;
-        g_pFightState->bAttackAnimState_candidate = 0;
+        g_pFightState->pAttackOutcomeActor = 0;
+        g_pFightState->bAttackOutcomeState = 0;
         actor->scriptState.bytes.bAttackOutcomeState = 0;
         active->bSpellId = Flipendo;
         actor->anim.param.bEventMarker = 0;

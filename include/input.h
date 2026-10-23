@@ -33,7 +33,7 @@ extern u16 g_awPlayerKeysPressed[2];       // 0x030034FE: per-player newly-press
 extern u16 g_awPlayerKeysReleased[2];      // 0x03003502: per-player newly-released masks
 // 0x03003506: per-player counterpart of g_wInputDisabled, written alongside
 // it by EnableKeyInput and the uncalled DisableKeyInput; no reader found.
-extern u16 g_awPlayerInputDisabled_candidate[2];
+extern u16 g_awInputDisabledMirror[2];
 
 // Scrolling list/grid cursor state, written only by InitScrollList,
 // InitScrollGrid and the StepScroll* functions. A list row is

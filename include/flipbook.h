@@ -60,7 +60,7 @@ extern void ClearRoomTileAnimations(void);
 extern void ResumeRoomTileAnimation(s32 x, s32 y);
 extern void HaltRoomTileAnimation(s32 x, s32 y);
 extern void ApplyRoomTileAnimationAt(u8 bSet, u32 x, u32 y, u8 bFlags);
-extern Actor *SpawnRoomTileAnimationActor_candidate(u8 bColumn, u8 bRow);
+extern Actor *SpawnRoomTileAnimationActor(u8 bColumn, u8 bRow);
 extern RoomTileAnimation *FindRoomTileAnimation(s32 x, s32 y);
 extern u32 RewindRoomTileAnimationStep(RoomTileAnimation *pAnim);
 extern u32 GetRoomTileAnimFrameBlockCount(const RoomTileAnimation *pAnim);

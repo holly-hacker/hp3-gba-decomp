@@ -6,7 +6,7 @@
 
 void PlayFieldSpellHitSound(Actor *effect)
 {
-    switch (effect->wCharacterId_candidate)
+    switch (effect->wSubtype)
     {
     case FieldSpellWingardiumLeviosa:
         PlaySoundById(0x51);

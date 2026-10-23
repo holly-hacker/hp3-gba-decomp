@@ -11,13 +11,13 @@ Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
 
     SetActorPosition(pActor, pRecord->nPixelX, pRecord->nPixelY);
     pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagUnk2000
-                     | ActorFlagFourWayDirections_candidate | ActorFlagTerrainDrawLayer;
+                     | ActorFlagFourWayDirections | ActorFlagTerrainDrawLayer;
     pActor->anim.bAnimFrameDelay = 0;
     pActor->bFighterIndex = pRecord->bKind;
-    pActor->bRoomActorKind_candidate = pRecord->argC.bytes.bInteractMode;
+    pActor->bKind = pRecord->argC.bytes.bInteractMode;
 
     if ((pRecord->argC.dwWord & 0x00FFFF00) == 0)
-        pActor->bFlags_0x94_candidate |= 3;
+        pActor->bTypeFlags |= 3;
 
     pActor->pfnTick = TickNpcActor;
     pActor->apfnCollisionCallback[0] = HandleNpcActorTouch;
@@ -34,23 +34,23 @@ Actor *SpawnNpcActor(u8 bColumn, u8 bRow)
     pActor->timer84.wInteractCooldown = 0;
 
     if (pActor->bFighterIndex == 0x21)
-        pActor->dwFlags &= ~ActorFlagFourWayDirections_candidate;
+        pActor->dwFlags &= ~ActorFlagFourWayDirections;
 
     if (pActor->bFighterIndex == 0x5F)
     {
-        pActor->dwFlags &= ~ActorFlagFourWayDirections_candidate;
+        pActor->dwFlags &= ~ActorFlagFourWayDirections;
         pActor->oam.priority = 1;
         pActor->bDepthSortBias = 0xFF;
     }
     else
     {
-        pActor->pLinkedActor_candidate = SpawnShadowActor(pActor);
+        pActor->pLinkedActor = SpawnShadowActor(pActor);
     }
 
     if (pActor->bFighterIndex != 0x5F)
         pActor->oam.hFlip = pActor->bFacing == Direction4Left;
 
-    pActor->bFlags_0x94_candidate &= ~4;
+    pActor->bTypeFlags &= ~4;
 
     if ((u8)(pActor->bFighterIndex - 0x69) <= 1)
         SetActorAffineTransform(pActor, 0x1C000, 0x1C000, 0, 3);

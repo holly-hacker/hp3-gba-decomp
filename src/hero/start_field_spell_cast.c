@@ -4,7 +4,7 @@
 
 void StartFieldSpellCast(Actor *actor)
 {
-    CancelActorMove_candidate(actor);
+    StopActorMotion(actor);
     SetActorActionSubState(actor, 0);
     SetActorActionState(actor, 0x13);
     actor->bFighterIndex = g_aFieldSpells[g_bSelectedFieldSpell].dwSpell;

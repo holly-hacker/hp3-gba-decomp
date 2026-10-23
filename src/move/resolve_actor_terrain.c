@@ -10,7 +10,7 @@ void ResolveActorTerrain(Actor *actor)
     TerrainBox box;
     u32 type;
 
-    if (actor->dwFlags & (ActorFlagTerrainCollisionA_candidate | ActorFlagTerrainCollisionB_candidate))
+    if (actor->dwFlags & (ActorFlagTerrainCollision | ActorFlagSpellTerrainCollision))
     {
         g_adwEdgeEndpointTypes[0] = 0xFF;
         type = GetActorTerrainType(actor, &box);

@@ -80,7 +80,7 @@ void HandleHighScoreDifficultyMenuTick(void)
                 g_dwBuckbeakMinigameForceOverworldExit = 0;
                 break;
             case 2:
-                g_dwBoggartMinigameScriptFlag_candidate = 0;
+                g_dwBoggartMinigameForceOverworldExit = 0;
                 break;
             }
 

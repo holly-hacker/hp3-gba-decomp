@@ -4,7 +4,7 @@
 #include "items.h"
 #include "game/rewards.h"
 
-u32 GetRewardNameStringId_candidate(u32 rewardId)
+u32 GetRewardNameTextId(u32 rewardId)
 {
     if (rewardId == ITEM_REMOVE)
         return 0x3FD;  // "Remove"

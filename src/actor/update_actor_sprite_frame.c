@@ -84,14 +84,14 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
                 }
                 g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[index]++;
 
-                prevIndex = actor->anim.bAnimFrameIndex_candidate;
+                prevIndex = actor->anim.bLoadedAnimFrame;
                 if (index != prevIndex && actor->wVramTileAllocId != 0xFFFF) {
                     g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[prevIndex]--;
-                    if (g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[actor->anim.bAnimFrameIndex_candidate] == 0) {
+                    if (g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].abRefCounts[actor->anim.bLoadedAnimFrame] == 0) {
                         FreeObjVramTileAllocation(actor->wVramTileAllocId, actor->wVramPixelCount,
                                                      actor->oam.bpp8);
                         actor->wVramTileAllocId |= 0xFFFF;
-                        g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].awTileAllocIds[actor->anim.bAnimFrameIndex_candidate] |= 0xFFFF;
+                        g_pActorPoolAuxBuffer[actor->bActorPoolAuxSlot].awTileAllocIds[actor->anim.bLoadedAnimFrame] |= 0xFFFF;
                     }
                 }
             }
@@ -173,5 +173,5 @@ void UpdateActorSpriteFrame(Actor *actor, u32 mode)
         actor->dwFlags |= ActorFlagAnimFrameLoaded;
     }
 
-    actor->anim.bAnimFrameIndex_candidate = actor->anim.bLastAnimFrameValue;
+    actor->anim.bLoadedAnimFrame = actor->anim.bLastAnimFrameValue;
 }

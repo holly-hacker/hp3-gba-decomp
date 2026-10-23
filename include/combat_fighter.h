@@ -92,10 +92,10 @@ extern s32 RestoreFighterMp(s32 amount, s32 fighterIndex);
 extern void SetMonsterActorAnim(Actor *actor, u8 state);  // 0x0801539C, monster gfx tables + shadow
 extern void SetPlayerActorAnim(Actor *actor, s32 state);   // 0x08015484, party fighter anim tables
 extern void UpdateMonsterScreenShake(Actor *actor);
-extern void TickFighterAttackAnimState_candidate(Actor *actor);  // 0x08015608
+extern void TickMonsterActionState(Actor *actor);  // 0x08015608
 extern void ShowAttackResult(Actor *actor, s32 targetIndex);
 extern void TickPlayerActionState(Actor *actor);
-extern void ShowDamageNumber_candidate(s32 targetIndex, s32 damage);
+extern void StageFighterDamage(s32 targetIndex, s32 damage);
 extern s32 ResolvePlayerAttack(s32 attackerIndex, s32 targetIndex);
 extern s32 ResolveEnemyAttack(s32 attackerIndex, s32 defenderIndex);
 extern void ApplyDamageToEnemyFighter(s32 damage, s32 fighterIndex);  // 0x08017F98
@@ -103,7 +103,7 @@ extern void ApplyDamageToAllyFighter(s32 damage, s32 fighterIndex);
 extern void ShowFloatingDamageNumber(s32 damage, s32 color, s32 fighterIndex, s32 showZero);
 extern void TickFloatingDamageNumber(Actor *actor);
 extern void CheckBattleDefeat(void);
-extern void PruneFaintedAndRebuildTurnOrder_candidate(s32 arg0);
+extern void PruneFaintedAndRebuildTurnOrder(s32 arg0);
 extern void CheckBattleVictory(Actor *actor);                  // 0x080186E0
 extern void ResetAllPartyLevelsTo1(void);
 extern void ResetPartyHpMpAndStats(void);
@@ -148,7 +148,7 @@ extern const ActorAssetRecord g_TurnOrderIconContainerAsset;       // 0x0804F3F4
 extern const u8 g_aabFighterHurtSoundIds[4][3];  // 0x0804F404
 extern const MonsterTableRow MonsterTable[];  // 0x0804F410, src/combat_fighter/monsters.c
 extern const u32 g_adwFolioBrutiMonsterScale[69];  // 0x0804FA88
-extern const u8 g_aMonsterAttackOffset_candidate[69][2];  // 0x0804FB9C, [rosterIndex]
+extern const u8 g_aMonsterAttackOffset[69][2];  // 0x0804FB9C, [rosterIndex]
 extern const MonsterDropEntry g_pMonsterDropTable[69];
 extern const CharacterLevelEntry g_pHarryLevelTable[];     // 0x0804FE50, src/combat_fighter/harry_levels.c
 extern const CharacterLevelEntry g_pRonLevelTable[];       // 0x08050300, src/combat_fighter/ron_levels.c
@@ -171,10 +171,10 @@ extern const u8 g_abSpellSoundId[10][3];  // 0x080538CE, [spellId][level], unuse
 extern const u16 g_awSpellPowerBase[SPELL_COUNT][SPELL_LEVELS];
 extern const u16 g_awSpellPowerScale[SPELL_COUNT][SPELL_LEVELS];
 extern const u16 g_awSpellMpCost[SPELL_COUNT][SPELL_LEVELS];  // 0x08053964
-// Screen anchor an attacker walks to, per target's BattleFighter.bSlotParam,
-// as {x, y} in whole pixels; the monster's own {x, y} extent in
-// g_aMonsterAttackOffset_candidate is subtracted off to get the destination.
-extern const u8 g_aBattleSlotAnchorPos_candidate[3][2];  // 0x080539A0, [bSlotParam]
+// Position of each party slot (as InitPlayerBattleActor places them), per
+// BattleFighter.bSlotParam, as {x, y} in whole pixels. An attacking monster walks
+// to its target's, less its g_aMonsterAttackOffset.
+extern const u8 g_aPartySlotPos[3][2];  // 0x080539A0, [bSlotParam]
 
 extern u8 g_bInformusTargetMonster;  // monster id Informus last targeted, passed to the Folio Bruti
 extern u8 g_bSpellMissStreak;

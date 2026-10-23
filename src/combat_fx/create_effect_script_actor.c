@@ -19,7 +19,7 @@ Actor *CreateEffectScriptActor(s32 effectId, s32 attachPalette)
     actor->oam.bpp8 = 0;
     actor->oam.priority = 1;
     actor->bDepthSortBias = 0;
-    SetActorAnimData(actor, &g_aEffectAnimAssets[effectId], g_aEffectAnimData_candidate[effectId], 0);
+    SetActorAnimData(actor, &g_aEffectAnimAssets[effectId], g_aEffectAnimData[effectId], 0);
     actor->pfnTick = InterpretActorScript;
     actor->modeState.effect.bEffectId = effectId;
     if (attachPalette)

@@ -30,13 +30,13 @@ void TickActorWalkRouteOnce(Actor *actor)
         pos = actor->pos;
         target = actor->moveTarget;
         direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
-        if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
+        if (((actor->dwFlags & ActorFlagFourWayDirections) && direction == Direction4None)
             || direction == DirectionNone) {
             RunRoomRouteWaypointChain(route, waypoint);
             waypoint++;
             if (waypoint == GetRoomRouteWaypointCount(route)) {
                 direction = actor->bFacing;
-                CancelActorMove_candidate(actor);
+                StopActorMotion(actor);
                 SetActorActionSubState(actor, 14);
             }
             else {
@@ -47,7 +47,7 @@ void TickActorWalkRouteOnce(Actor *actor)
                 // room's top-left corner for a tick, until case 3 faces it toward the waypoint.
                 target.x -= pos.x;
                 target.y -= pos.y;
-                direction = GetDirectionFromVector(target, actor->dwFlags & ActorFlagFourWayDirections_candidate);
+                direction = GetDirectionFromVector(target, actor->dwFlags & ActorFlagFourWayDirections);
             }
         }
         if (actor->bFacing != direction) {

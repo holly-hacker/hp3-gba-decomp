@@ -50,7 +50,7 @@ void UpdateCheatMap(void)
 
     if (g_wKeysPressed & KeyA)
     {
-        g_abRoomScriptExitParams_candidate[0] = 0;
+        g_abRoomEntryIds[0] = 0;
         g_abQuestEventState[QUEST_SPAWN_ID_COPY] = 0;
         Mt19937AutoSeed();
         PushGameMode_2(Overworld, OverworldEntryEnterRoom, mapIndex);

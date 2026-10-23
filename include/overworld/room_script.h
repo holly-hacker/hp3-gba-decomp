@@ -34,7 +34,7 @@ typedef struct RoomScriptCallFrame {
 
 typedef void (*RoomScriptOpcodeHandler)(RoomScriptRecord *pRecord);
 
-extern u32 GetPartyMasterStatsSlot_candidate(u32 characterId);
+extern u32 GetCharacterFighterType(u32 characterId);
 // Levels a recruited Hermione or Ron up to around Harry's level.
 extern void CatchUpToHarryLevel(u8 characterId);
 extern void CycleSelectedFieldSpell(Actor *pLeader, u8 direction);

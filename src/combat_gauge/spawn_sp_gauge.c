@@ -17,9 +17,9 @@ Actor *SpawnSpGauge(s32 fighterIndex, u32 amount)
     fighterActor = g_pFightState->pFighters[fighterIndex].pActor;
     gauge = SpawnActor(fighterActor->wActorType, (fighterActor->pos.x >> 16) + 15,
                        (fighterActor->pos.y >> 16) - 54, (const ObjPalette *)gBattleHudItem003Palette);
-    fighterActor->pLinkedActor_candidate = gauge;
-    gauge->pLinkedActor_candidate = fighterActor;
-    gauge->wCharacterId_candidate = fighterIndex;
+    fighterActor->pLinkedActor = gauge;
+    gauge->pLinkedActor = fighterActor;
+    gauge->wSubtype = fighterIndex;
 
     state = SP_GAUGE_STATE(gauge);
     state->wValue = g_pFightState->pFighters[fighterIndex].stats.wHp;

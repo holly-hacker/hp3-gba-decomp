@@ -31,7 +31,7 @@ void RoomScriptOpShowMinigameUnlockedMessage(ShowMinigameUnlockedMessageRecord *
         // "You've unlocked: @3."
         blockId = 0x292;
     }
-    ShowRoomDialogBox_candidate(blockId);
-    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
-    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
+    ShowDialogBlock(blockId);
+    g_DialogState.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState.bArg1D = pRecord->bDialogArg1D;
 }

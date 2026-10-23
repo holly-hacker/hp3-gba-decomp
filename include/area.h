@@ -52,7 +52,7 @@ extern void ParseRoomResourceBlob(const RoomBlobHeader *pBlob);
 
 extern void RespawnGroupAndRunChain(u8 respawnRow, u8 chainRow);
 // Whether chain row `row` may run; false for 0, true from 2 up, and for 1 only
-// while g_wRoomResourceFlags_candidate bit 0 is clear.
+// while g_wRoomVariantFlags bit 0 is clear.
 extern u32 ShouldRunRoomIndex(u8 row);
 // Constructs the actor of record (col, row), binds it to the record and returns it.
 extern Actor *SpawnRoomGroupMember(u8 col, u8 row);
@@ -87,7 +87,9 @@ extern u16 AlignRoomSizeTo4(u16 size);
 // Spongify pads and raising platforms wait on one flag per party member (player,
 // follower 0, follower 1), set on reaching the actor or when the follower slot is empty.
 extern u32 g_adwPartyMemberArrived[3];
-extern u16 g_wRoomResourceFlags_candidate;
+// RoomBlobSubBlock.wFlags of the loaded variant. Bit 0 puts the default sub-block's
+// actor group 0, routes and script chains ahead of the variant's.
+extern u16 g_wRoomVariantFlags;
 // Chain the VM is walking; 0xFF in g_bRoomScriptPendingChain means no jump pending.
 extern u8 g_bRoomScriptCurrentChain;
 extern RoomScriptRecord *g_pRoomScriptYieldContinuation;
@@ -100,7 +102,7 @@ extern u8 g_bRoomScriptYieldOpcode;
 extern RoomBlobHeader *g_pRoomTableBuffer;
 // Set by the room chain runner while it processes a chain; consumed (cleared)
 // once per frame by HandleOverworldPauseMenuInput.
-extern u32 g_dwRoomChainRanThisFrame_candidate;
+extern u32 g_dwRoomChainRanThisFrame;
 extern RoomBlobTable *g_pRoomActorTable;
 extern RoomBlobTable *g_pRoomRouteTable;
 extern RoomScriptTable *g_pRoomScriptChainTable;

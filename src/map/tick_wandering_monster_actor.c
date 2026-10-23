@@ -16,7 +16,7 @@ void TickWanderingMonsterActor(Actor *pActor)
     if (pActor->dwStateTimer != 0 && --pActor->dwStateTimer == 0)
         pActor->dwFlags |= ActorFlagWantsCollisionCheck;
 
-    terrain = GetCollisionTypeAtPixel_candidate((PixelPoint){ (s16)(pActor->pos.x >> 16), (s16)(pActor->pos.y >> 16) });
+    terrain = GetCollisionTypeAtPixel((PixelPoint){ (s16)(pActor->pos.x >> 16), (s16)(pActor->pos.y >> 16) });
     if (terrain != 0x1A && terrain != 0x20 && terrain != 0x21)
     {
         // Off its terrain: step back and turn around.
@@ -60,7 +60,7 @@ void TickWanderingMonsterActor(Actor *pActor)
             if (g_pPlayerActor->bActionState == 0x21 && (u32)ApproximateDistance(pActor->pos, g_pPlayerActor->pos) < 0x3A0000)
             {
                 SetActorMoveTarget(pActor, g_pPlayerActor->pos.x, g_pPlayerActor->pos.y);
-                pActor->bFlags_0x94_candidate |= 1;
+                pActor->bTypeFlags |= 1;
             }
             else
                 PickWanderingMonsterRoamTarget(pActor);
@@ -76,7 +76,7 @@ void TickWanderingMonsterActor(Actor *pActor)
         }
 
         direction = GetDirectionToTarget(pActor->dwFlags, pActor->pos, pActor->moveTarget, 0x10000);
-        if (pActor->bFlags_0x94_candidate & 1)
+        if (pActor->bTypeFlags & 1)
         {
             pActor->vel.x = g_aDirection4Vectors[(s8)direction][0];
             pActor->vel.y = g_aDirection4Vectors[(s8)direction][1];

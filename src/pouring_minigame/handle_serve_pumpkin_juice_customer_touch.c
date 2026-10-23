@@ -11,12 +11,12 @@ void HandleServePumpkinJuiceCustomerTouch(Actor *customer, Actor *other)
 {
     // Kind and action state together: a full goblet still sliding (state 0).
     if (g_GameModeStackContext.dwModeState == ServePumpkinJuiceStatePlaying
-        && *(u16 *)&other->bRoomActorKind_candidate == ServePumpkinJuiceActorFullGoblet
+        && *(u16 *)&other->bKind == ServePumpkinJuiceActorFullGoblet
         && customer->bActionState != 2
         && other->bActionSubState == customer->bActionSubState)
     {
         other->bActionState = 4;
-        if (customer->wCharacterId_candidate != 6 || customer->wActionVariant == 1)
+        if (customer->wSubtype != 6 || customer->wActionVariant == 1)
         {
             // Pushed back 45 pixels less a difficulty bonus, +-5.
             s32 x = Mt19937RandRange(-5, 5) - 45;
@@ -29,11 +29,11 @@ void HandleServePumpkinJuiceCustomerTouch(Actor *customer, Actor *other)
             customer->wTimedMoveTicks = 0;
         }
 
-        if (customer->wCharacterId_candidate == 6)
+        if (customer->wSubtype == 6)
         {
             if (customer->wActionVariant == 1)
             {
-                SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wCharacterId_candidate][0],
+                SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wSubtype][0],
                                  g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimDrinkVariant], 0);
                 customer->bActionState = 2;
                 customer->wTimedMoveTicks = 0;
@@ -41,7 +41,7 @@ void HandleServePumpkinJuiceCustomerTouch(Actor *customer, Actor *other)
             else
             {
                 if (customer->bActionState == 1)
-                    SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wCharacterId_candidate][0],
+                    SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wSubtype][0],
                                      g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimWalkVariant + 1], 0);
                 else
                     SetActorAnimFrame(customer, 3);
@@ -51,7 +51,7 @@ void HandleServePumpkinJuiceCustomerTouch(Actor *customer, Actor *other)
         }
         else
         {
-            SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wCharacterId_candidate][0],
+            SetActorAnimData(customer, g_aapServePumpkinJuiceCustomerSpriteRows[customer->wSubtype][0],
                              g_aabServePumpkinJuiceCustomerAnims[ServePumpkinJuiceCustomerAnimDrink], 0);
             customer->bActionState = 2;
             customer->wTimedMoveTicks = 0;

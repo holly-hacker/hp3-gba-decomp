@@ -15,7 +15,7 @@ void DrawBuckbeakMinigameScore(void)
 
     // Centered once the time has run out, tucked into the corner while flying.
     if (g_pBuckbeakMinigame->dwTimeLeft == 0)
-        SetTextActorCenterPosition_candidate(g_apTextActors[BuckbeakMinigameTextScore], 0x78, 0x28);
+        SetTextActorCenterPosition(g_apTextActors[BuckbeakMinigameTextScore], 0x78, 0x28);
     else
         SnapActorPosition(g_apTextActors[BuckbeakMinigameTextScore], 0x60000, 0x900000);
 

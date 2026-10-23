@@ -12,8 +12,8 @@ Actor *SpawnRoomGroupMember(u8 col, u8 row)
     pRecord = (RoomActorRecord *)((u8 *)pGroup + pGroup->awOffsets[row]);
     type = pRecord->wActorType;
     pRecord->pActor = g_apRoomActorConstructors[type](col, row);
-    pRecord->pActor->bRoomTileCol_candidate = col;
-    pRecord->pActor->bRoomTileRow_candidate = row;
+    pRecord->pActor->bRoomRecordCol = col;
+    pRecord->pActor->bRoomRecordRow = row;
     pRecord->pActor->dwFlags |= ActorFlagRoomRecordBound;
     return pRecord->pActor;
 }

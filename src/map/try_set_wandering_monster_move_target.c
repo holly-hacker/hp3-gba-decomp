@@ -7,7 +7,7 @@
 // spawn terrain. Returns 1 when rejected, 0 when set.
 u32 TrySetWanderingMonsterMoveTarget(Actor *pActor, s32 x, s32 y)
 {
-    if (GetCollisionTypeAtPixel_candidate((PixelPoint){ x >> 16, y >> 16 })
+    if (GetCollisionTypeAtPixel((PixelPoint){ x >> 16, y >> 16 })
         == GetEncounterKindTerrainType(pActor->bReceivedRewardId))
     {
         SetActorMoveTarget(pActor, x, y);

@@ -18,7 +18,7 @@ void FreeActor(Actor *actor)
     ReleaseActorPalette(actor);
 
     if (actor->dwFlags & ActorFlagRoomRecordBound)
-        SetRoomActorPtr(0, actor->bRoomTileCol_candidate, actor->bRoomTileRow_candidate);
+        SetRoomActorPtr(0, actor->bRoomRecordCol, actor->bRoomRecordRow);
 
     actor->wActorType = 0xFFFF;
 
@@ -26,7 +26,7 @@ void FreeActor(Actor *actor)
     if (affineSlotState == 1 || affineSlotState == 3)
         ReleaseActorAffineSlot(actor);
 
-    if (g_dwActorListTicked_candidate == 1)
+    if (g_dwActorListTicked == 1)
         ReleaseActorOffscreenVramTiles(actor);
 
     if (g_ActiveActorListState.pTail == (ListNode *)actor)

@@ -17,7 +17,7 @@ void RoomScriptOpShowPartyLevelUpMessage(ShowPartyLevelUpMessageRecord *pRecord)
         g_dwRoomScriptRunState = 2;
     SetTextMacro1Number(pRecord->bLevelCount);
     SetTextMacro3Number(pRecord->bLevelCount);
-    ShowRoomDialogBox_candidate(0x293);
-    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
-    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
+    ShowDialogBlock(0x293);
+    g_DialogState.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState.bArg1D = pRecord->bDialogArg1D;
 }

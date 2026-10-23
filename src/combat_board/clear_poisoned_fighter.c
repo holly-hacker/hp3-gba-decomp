@@ -10,7 +10,7 @@
 // Player-only: called even for an enemy fighter, but only ever does
 // anything for a live Poisoned status, and every source of Poisoned so far
 // is player-facing.
-void ClearPoisonedFighter_candidate(u8 fighterIndex)
+void ClearPoisonedFighter(u8 fighterIndex)
 {
     BattleFighter *fighter = &g_pFightState->pFighters[fighterIndex];
     Actor *actor = fighter->pActor;

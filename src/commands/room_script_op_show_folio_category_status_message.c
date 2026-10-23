@@ -20,9 +20,9 @@ void RoomScriptOpShowFolioCategoryStatusMessage(ShowFolioCategoryStatusMessageRe
     SetTextMacro1String(GetDialogText(pRecord->bCategory + 0x405));
     SetTextMacro3String(GetDialogText(pRecord->bCategory + 0x405));
     if (pRecord->bComplete != 0)
-        ShowRoomDialogBox_candidate(0x291);
+        ShowDialogBlock(0x291);
     else
-        ShowRoomDialogBox_candidate(0x290);
-    g_DialogState_candidate.bArg1C = pRecord->bDialogArg1C;
-    g_DialogState_candidate.bArg1D = pRecord->bDialogArg1D;
+        ShowDialogBlock(0x290);
+    g_DialogState.bArg1C = pRecord->bDialogArg1C;
+    g_DialogState.bArg1D = pRecord->bDialogArg1D;
 }

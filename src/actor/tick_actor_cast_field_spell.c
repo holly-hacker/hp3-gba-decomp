@@ -3,7 +3,7 @@
 #include "move.h"
 
 // Action state 0x13: plays the cast animation, then spawns the effect of the field
-// spell in bFighterIndex on the animation event and returns to bPrevActionState_candidate
+// spell in bFighterIndex on the animation event and returns to bPrevActionState
 // once the animation ends.
 void TickActorCastFieldSpell(Actor *actor)
 {
@@ -14,7 +14,7 @@ void TickActorCastFieldSpell(Actor *actor)
         break;
     case 8:
         if (actor->dwFlags & ActorFlagAnimPaused) {
-            SetActorActionState(actor, actor->bPrevActionState_candidate);
+            SetActorActionState(actor, actor->bPrevActionState);
             SetActorActionSubState(actor, 2);
             SetPartyMemberAnim(actor, PartyAnimStand);
         }
@@ -49,7 +49,7 @@ void TickActorCastFieldSpell(Actor *actor)
         }
         else if (actor->dwFlags & ActorFlagActionAnimDone) {
             actor->dwFlags &= ~ActorFlagActionAnimDone;
-            SetActorActionState(actor, actor->bPrevActionState_candidate);
+            SetActorActionState(actor, actor->bPrevActionState);
             SetActorActionSubState(actor, 2);
             SetPartyMemberAnim(actor, PartyAnimStand);
         }

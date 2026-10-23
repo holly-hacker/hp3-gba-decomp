@@ -16,7 +16,7 @@ void SpawnServePumpkinJuiceFullGoblet(void)
     SetActorAnimData(goblet, &g_ServePumpkinJuiceGobletSprite,
                      g_aabServePumpkinJuiceGobletAnims[ServePumpkinJuiceGobletAnimFull], 0);
     goblet->dwFlags |= ActorFlagWantsCollisionCheck;
-    goblet->bRoomActorKind_candidate = ServePumpkinJuiceActorFullGoblet;
+    goblet->bKind = ServePumpkinJuiceActorFullGoblet;
     goblet->bActionState = 0;
     goblet->bActionSubState = g_ServePumpkinJuice.dwLane;
     goblet->wTimedMoveTicks = 0;

@@ -13,14 +13,14 @@ Actor *SpawnWorldActor(u8 bColumn, u8 bRow)
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation
-                      | ActorFlagTerrainCollisionA_candidate | ActorFlagUnk2000
+                      | ActorFlagTerrainCollision | ActorFlagUnk2000
                       | ActorFlagTerrainDrawLayer;
     SetActorActionState(pActor, 0);
     pActor->bTerrainBlockResponse = TerrainBlockSlide;
     pActor->anim.bAnimFrameDelay = 1;
     WORLD_ACTOR_STATE(pActor)->bKind = pRecord->bKind;
     kind = pRecord->bKind;
-    WORLD_ACTOR_STATE(pActor)->b62 = pRecord->b62;
+    WORLD_ACTOR_STATE(pActor)->bBlocksPlayer = pRecord->bBlocksPlayer;
     WORLD_ACTOR_STATE(pActor)->bPushable = pRecord->bPushable;
     WORLD_ACTOR_STATE(pActor)->bBreakable = pRecord->bBreakable;
     WORLD_ACTOR_STATE(pActor)->b65 = pRecord->b65;
@@ -28,7 +28,7 @@ Actor *SpawnWorldActor(u8 bColumn, u8 bRow)
     WORLD_ACTOR_STATE(pActor)->bChainRow = pRecord->bChainRow;
     pActor->bFacing = pRecord->bFacing;
     WORLD_ACTOR_STATE(pActor)->bActivated = 0;
-    WORLD_ACTOR_STATE(pActor)->b6A = 0;
+    WORLD_ACTOR_STATE(pActor)->bNoPlatePress = 0;
     WORLD_ACTOR_STATE(pActor)->b60 &= 0xFD;
     pActor->pfnTick = TickWorldActor;
     pActor->apfnCollisionCallback[0] = HandleWorldActorTouch;
@@ -46,7 +46,7 @@ Actor *SpawnWorldActor(u8 bColumn, u8 bRow)
         else
             pActor->oam.priority = 3;
 
-        pActor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate
+        pActor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision
                              | ActorFlagTerrainDrawLayer);
     }
     else
@@ -61,19 +61,19 @@ Actor *SpawnWorldActor(u8 bColumn, u8 bRow)
     {
     case 66:
         pActor->oam.priority = 0;
-        pActor->dwFlags &= ~(ActorFlagTerrainCollisionA_candidate | ActorFlagTerrainDrawLayer);
+        pActor->dwFlags &= ~(ActorFlagTerrainCollision | ActorFlagTerrainDrawLayer);
         break;
     case 12:
         pActor->oam.priority = 3;
         pActor->oam.hFlip = pActor->bFacing > DirectionDown;
-        pActor->dwFlags &= ~ActorFlagTerrainCollisionA_candidate;
+        pActor->dwFlags &= ~ActorFlagTerrainCollision;
         break;
     case 40:
         pActor->dwFlags &= ~ActorFlagWantsCollisionCheck;
         // fall through
     case 39:
         pActor->oam.priority = 1;
-        pActor->dwFlags &= ~ActorFlagTerrainCollisionA_candidate;
+        pActor->dwFlags &= ~ActorFlagTerrainCollision;
         break;
     case 0:
         SetActorAnimFrame(pActor, g_abWorldActorFacingFrames[pActor->bFacing]);
@@ -100,7 +100,7 @@ Actor *SpawnWorldActor(u8 bColumn, u8 bRow)
 
         break;
     case 82:
-        pActor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate
+        pActor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision
                              | ActorFlagTerrainDrawLayer);
         SetActorDrawLayer(pActor, 1);
         break;

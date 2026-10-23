@@ -11,7 +11,7 @@
 // runs the record's on or off chain; action state 1 destroys the switch.
 void TickSwitchActor(Actor *pActor)
 {
-    if (pActor->wCharacterId_candidate == 1 && SWITCH_STATE(pActor)->nPlateFlipping == 0)
+    if (pActor->wSubtype == 1 && SWITCH_STATE(pActor)->nPlateFlipping == 0)
     {
         if (SWITCH_STATE(pActor)->bStep == 1)
         {
@@ -36,7 +36,7 @@ void TickSwitchActor(Actor *pActor)
     switch (pActor->bActionState)
     {
     case 0:
-        if (pActor->wCharacterId_candidate == 11)
+        if (pActor->wSubtype == 11)
         {
             if ((SWITCH_STATE(pActor)->bStep == 1 && SWITCH_STATE(pActor)->bKeepOff == 0)
                 || (SWITCH_STATE(pActor)->bStep == -1 && SWITCH_STATE(pActor)->bKeepOff != 0))
@@ -50,7 +50,7 @@ void TickSwitchActor(Actor *pActor)
     case 3:
         if (--pActor->dwStateTimer == -1)
         {
-            if (pActor->wCharacterId_candidate == 4)
+            if (pActor->wSubtype == 4)
             {
                 pActor->dwFlags |= ActorFlagWantsCollisionCheck;
                 pActor->bActionState = 0;
@@ -62,14 +62,14 @@ void TickSwitchActor(Actor *pActor)
         }
         break;
     case 4:
-        if (pActor->wCharacterId_candidate == 9 || pActor->wCharacterId_candidate == 10)
+        if (pActor->wSubtype == 9 || pActor->wSubtype == 10)
         {
             pActor->bActionState = 0;
         }
-        else if (pActor->anim.bAnimFrameCounter-- == 0 || pActor->wCharacterId_candidate > 10)
+        else if (pActor->anim.bAnimFrameCounter-- == 0 || pActor->wSubtype > 10)
         {
             u8 step = SWITCH_STATE(pActor)->bStep;
-            u8 variant = pActor->wCharacterId_candidate;
+            u8 variant = pActor->wSubtype;
             s8 frame;
             u8 endFrame;
             RoomActorRecordSwitch *pRecord;
@@ -98,15 +98,15 @@ void TickSwitchActor(Actor *pActor)
 
                 if (step == 1)
                 {
-                    pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate,
-                                                       pActor->bRoomTileRow_candidate);
+                    pRecord = GetRoomActorStaticRecord(pActor->bRoomRecordCol,
+                                                       pActor->bRoomRecordRow);
                     RespawnGroupAndRunChain(pRecord->bOnRespawnGroup, pRecord->bOnChain);
                     SWITCH_STATE(pActor)->bStep = -1;
                 }
                 else
                 {
-                    pRecord = GetRoomActorStaticRecord(pActor->bRoomTileCol_candidate,
-                                                       pActor->bRoomTileRow_candidate);
+                    pRecord = GetRoomActorStaticRecord(pActor->bRoomRecordCol,
+                                                       pActor->bRoomRecordRow);
                     RespawnGroupAndRunChain(pRecord->bOffRespawnGroup, pRecord->bOffChain);
                     SWITCH_STATE(pActor)->bStep = 1;
                     if (variant == 2 || variant == 5)

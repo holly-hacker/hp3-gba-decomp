@@ -9,7 +9,7 @@ Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, 
 {
     Actor *actor;
 
-    g_effectStaging.bIdStaged_candidate = effectId;
+    g_effectStaging.bEffectId = effectId;
     g_effectStaging.bSlotParam = slotParam;
     g_effectStaging.bScriptParam = selectedActionIndex;
     g_effectStaging.bCasterIndex = activeFighterIndex;
@@ -20,7 +20,7 @@ Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, 
     g_effectStaging.wBlendFirstTargets = 0;
     g_effectStaging.wBlendSecondTargets = 0x1f;
     actor = CreateEffectScriptActor(effectId, 1);
-    g_pFightState->pAttackAnimActor_candidate = NULL;
-    g_pFightState->bAttackAnimState_candidate = 0;
+    g_pFightState->pAttackOutcomeActor = NULL;
+    g_pFightState->bAttackOutcomeState = 0;
     return actor;
 }

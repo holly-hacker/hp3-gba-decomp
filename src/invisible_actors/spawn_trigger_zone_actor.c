@@ -12,7 +12,7 @@ Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow)
 
     SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
     pActor->dwFlags = ActorFlagWantsCollisionCheck | ActorFlagHasTickLogic | ActorFlagUnk2000;
-    pActor->bRoomActorKind_candidate = pRecord->bKind;
+    pActor->bKind = pRecord->bKind;
     ROOM_ACTOR_WORD_STATE(pActor)->n60 = pRecord->wRearmDelay * 30;
     ROOM_ACTOR_WORD_STATE(pActor)->b70 = pRecord->bRequireAPress;
     SetActorActionState(pActor, 0);
@@ -24,7 +24,7 @@ Actor *SpawnTriggerZoneActor(u8 bColumn, u8 bRow)
     pActor->aCollisionBoxes[0].state.bState = 1;
     pActor->bCollisionBoxCount = 1;
 
-    if (pActor->bRoomActorKind_candidate == 2)
+    if (pActor->bKind == 2)
     {
         pActor->aCollisionBoxes[1] = pActor->aCollisionBoxes[0];
         pActor->bCollisionBoxCount = 2;

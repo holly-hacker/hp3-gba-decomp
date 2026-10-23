@@ -13,7 +13,7 @@
 // then fainted ally's Actor is re-allocated and restored from the snapshot
 // ExitBattle took (keeping the new Actor's list links), then the turn-order
 // icons are respawned and the active fighter's icon is highlighted.
-void RestoreFighterActors_candidate(void)
+void RestoreFighterActors(void)
 {
     u8 i;
     u8 k;
@@ -26,13 +26,13 @@ void RestoreFighterActors_candidate(void)
         actor = AllocDefaultActor();
         pNext = actor->node.pNext;
         pPrev = actor->node.pPrev;
-        *actor = g_pFightState->aSuspendedFighterActors_candidate[i];
+        *actor = g_pFightState->aSuspendedFighterActors[i];
         actor->node.pNext = pNext;
         actor->node.pPrev = pPrev;
         FIGHTER(i).pActor = actor;
         actor->dwFlags &= ~ActorFlagHasPaletteSlot;
         actor->dwFlags |= ActorFlagAnimFrameLoaded;
-        actor->pLinkedActor_candidate = 0;
+        actor->pLinkedActor = 0;
         actor->pWindupParticleEmitter = 0;
         actor->oam.affineMode = 0;
         SetActorAffineSlotId(&actor->oam, 0);
@@ -52,7 +52,7 @@ void RestoreFighterActors_candidate(void)
             shadow->bDepthSortBias = 0xC8;
             shadow->nMoveSpeed = 1;
             shadow->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation
-                              | ActorFlagUnk2000 | ActorFlagCollisionGroup_candidate;
+                              | ActorFlagUnk2000 | ActorFlagCollisionGroup;
             shadow->anim.bAnimFrameDelay = 1;
             AttachActorPalette(shadow, g_MonsterShadowGfxRow.pPalette);
             SetActorAnimData(shadow, &g_MonsterShadowGfxRow, g_MonsterShadowAnimData, 0);
@@ -87,13 +87,13 @@ void RestoreFighterActors_candidate(void)
         actor = AllocDefaultActor();
         pNext = actor->node.pNext;
         pPrev = actor->node.pPrev;
-        *actor = g_pFightState->aSuspendedFighterActors_candidate[i];
+        *actor = g_pFightState->aSuspendedFighterActors[i];
         actor->node.pNext = pNext;
         actor->node.pPrev = pPrev;
         FAINTED(k).pActor = actor;
         actor->dwFlags &= ~ActorFlagHasPaletteSlot;
         actor->dwFlags |= ActorFlagAnimFrameLoaded;
-        actor->pLinkedActor_candidate = 0;
+        actor->pLinkedActor = 0;
         actor->pWindupParticleEmitter = 0;
         actor->oam.affineMode = 0;
         SetActorAffineSlotId(&actor->oam, 0);
@@ -112,16 +112,16 @@ void RestoreFighterActors_candidate(void)
         }
 
         if (i == g_pFightState->bActiveFighterIndex) {
-            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->bDepthSortBias = 0xFD;
+            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor->bDepthSortBias = 0xFD;
             g_pFightState->apTurnOrderIconActors[i]->bDepthSortBias = 0x80;
         } else {
-            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor_candidate->bDepthSortBias = 0xFF;
+            g_pFightState->apTurnOrderIconActors[i]->pLinkedActor->bDepthSortBias = 0xFF;
             g_pFightState->apTurnOrderIconActors[i]->bDepthSortBias = 0xFE;
         }
     }
 
     if (FIGHTER(g_pFightState->bActiveFighterIndex).bFighterType == Enemy)
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[g_pFightState->bActiveFighterIndex]->pLinkedActor_candidate, 3);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[g_pFightState->bActiveFighterIndex]->pLinkedActor, 3);
     else
-        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[g_pFightState->bActiveFighterIndex]->pLinkedActor_candidate, 2);
+        SetActorAnimFrame(g_pFightState->apTurnOrderIconActors[g_pFightState->bActiveFighterIndex]->pLinkedActor, 2);
 }

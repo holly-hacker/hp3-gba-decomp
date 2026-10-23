@@ -10,7 +10,7 @@ void PickWanderingMonsterRoamTarget(Actor *pActor)
 
     do
     {
-        pActor->bFlags_0x94_candidate = 0;
+        pActor->bTypeFlags = 0;
         direction = Mt19937RandMax(3);
         switch (direction)
         {

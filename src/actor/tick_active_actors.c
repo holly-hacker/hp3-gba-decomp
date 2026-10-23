@@ -5,6 +5,6 @@
 // returns TickActorList's OAM-work result, which both callers discard.
 u32 TickActiveActors(void)
 {
-    g_dwActorListTicked_candidate = 1;
+    g_dwActorListTicked = 1;
     return TickActorList(&g_ActiveActorListState, 1);
 }

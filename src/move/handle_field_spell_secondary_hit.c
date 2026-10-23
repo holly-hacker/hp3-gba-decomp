@@ -13,23 +13,23 @@ void HandleFieldSpellSecondaryHit(Actor *effect, Actor *target)
     u8 spell;
 
     if (target->wActorType != RoomActorType_Player
-        && (effect->wCharacterId_candidate == FieldSpellReparo || (target->dwFlags & ActorFlagVisible))
-        && !(effect->dwFlags & ActorFlagNoPushTrigger_candidate)
-        && !(target->dwFlags & ActorFlagNoPushTrigger_candidate))
+        && (effect->wSubtype == FieldSpellReparo || (target->dwFlags & ActorFlagVisible))
+        && !(effect->dwFlags & ActorFlagSettled)
+        && !(target->dwFlags & ActorFlagSettled))
     {
-        spell = effect->wCharacterId_candidate;
-        switch (effect->wCharacterId_candidate)
+        spell = effect->wSubtype;
+        switch (effect->wSubtype)
         {
         case FieldSpellFlipendo:
             if (target->wActorType == RoomActorType_WorldActor
                 && WORLD_ACTOR_STATE(effect)->bKind == 0x3A)
             {
                 PlaySoundById(0x50);
-                effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-                CancelActorMove_candidate(effect);
+                effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+                StopActorMotion(effect);
                 SetActorAnimData(effect, &g_aFieldSpellAssets[spell],
-                                 g_aaFieldSpellImpactAnims[g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing]], 0);
-                if (g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing] == 3)
+                                 g_aaFieldSpellImpactAnims[g_abFacingDirection4[effect->pLinkedActor->bFacing]], 0);
+                if (g_abFacingDirection4[effect->pLinkedActor->bFacing] == 3)
                     effect->oam.hFlip = 1;
                 effect->dwStateTimer = 14;
             }

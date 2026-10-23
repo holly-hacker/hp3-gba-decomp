@@ -32,7 +32,7 @@ void TickActorFollow(Actor *actor)
         if (distance < stopDistance)
             SetActorActionSubState(actor, 6);
         direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
-        if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
+        if (((actor->dwFlags & ActorFlagFourWayDirections) && direction == Direction4None)
             || direction == DirectionNone) {
             SetActorActionSubState(actor, 6);
         }

@@ -14,7 +14,7 @@ u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSu
     pChains = (const RoomBlobTable *)((const u8 *)pVariant + offset);
     count = pChains->wCount;
 
-    if (g_wRoomResourceFlags_candidate & 1)
+    if (g_wRoomVariantFlags & 1)
         g_pRoomScriptChainTable->wHeader = count + 1;
     else
         g_pRoomScriptChainTable->wHeader = count;
@@ -22,7 +22,7 @@ u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSu
     offset = GetRoomOffsetTableSize(g_pRoomScriptChainTable->wHeader + 1);
     pOut += offset;
 
-    if (g_wRoomResourceFlags_candidate & 1)
+    if (g_wRoomVariantFlags & 1)
     {
         g_pRoomScriptChainTable->awChainOffsets[0] = offset;
         offset = pDefault->wScriptChainTableOffset;
@@ -35,7 +35,7 @@ u8 *BuildRoomScriptChainTable(const RoomBlobSubBlock *pDefault, const RoomBlobSu
     for (i = 0; i < count;)
     {
         offset = pOut - (u8 *)g_pRoomScriptChainTable;
-        if (g_wRoomResourceFlags_candidate & 1)
+        if (g_wRoomVariantFlags & 1)
             g_pRoomScriptChainTable->awChainOffsets[i + 1] = offset;
         else
             g_pRoomScriptChainTable->awChainOffsets[i] = offset;

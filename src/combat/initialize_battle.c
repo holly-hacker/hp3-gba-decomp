@@ -58,28 +58,28 @@ void InitializeBattle(void)
 
         // set turn order multiplier, see BuildTurnOrder
         if (g_aPartyMasterStats[Harry].stats.bLevel < 1)
-            g_pFightState->bEnemyScalePercent_candidate = 0x40;
+            g_pFightState->bTurnKeyStep = 0x40;
         else if (g_aPartyMasterStats[Harry].stats.bLevel < 2)
-            g_pFightState->bEnemyScalePercent_candidate = 0x30;
+            g_pFightState->bTurnKeyStep = 0x30;
         else
-            g_pFightState->bEnemyScalePercent_candidate = 0x20;
+            g_pFightState->bTurnKeyStep = 0x20;
 
         g_pFightState->bUnused = 0;
         InitBattleDisplay();
         SetupBattleRoster();
         uVar7 = GetBattleFloorGraphic();
         LoadEmbeddedPalette(uVar7, 0, 0x10);
-        ResumeBattleAfterSubmode_candidate();
+        StartOrResumeBattle();
     }
     else
     {
         // Resume after Folio Universitas, Help, or Folio Bruti (whose exit
         // rewrites the previous mode to Folio Universitas).
         InitBattleDisplay();
-        RestoreFighterActors_candidate();
+        RestoreFighterActors();
         uVar7 = GetBattleFloorGraphic();
         LoadEmbeddedPalette(uVar7, 0, 0x10);
-        ResumeBattleAfterSubmode_candidate();
+        StartOrResumeBattle();
     }
 
     if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xFF)
@@ -87,5 +87,5 @@ void InitializeBattle(void)
     else
         PlayMusicModule(g_abBattleMusicByRoom[g_bCurrentRoomId]);
 
-    g_pFightState->bPendingStatusMessageVariant_candidate = 0x12;
+    g_pFightState->bPendingStatusMessageVariant = 0x12;
 }

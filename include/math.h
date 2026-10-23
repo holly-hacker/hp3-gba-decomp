@@ -36,7 +36,7 @@ typedef enum {
     DirectionNone,
 } Direction;
 
-// Four-way direction returned for ActorFlagFourWayDirections_candidate.
+// Four-way direction returned for ActorFlagFourWayDirections.
 typedef enum {
     Direction4Up,
     Direction4Right,

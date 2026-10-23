@@ -19,7 +19,7 @@ void TickGlaciusEffect(Actor *effect)
     switch (effect->bActionSubState)
     {
     case 0:
-        effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
+        effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision;
         effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->dwStateTimer = 45;
         SetActorActionSubState(effect, 3);
@@ -39,12 +39,12 @@ void TickGlaciusEffect(Actor *effect)
         }
         break;
     case 0x10:
-        CancelActorMove_candidate(effect);
+        StopActorMotion(effect);
         SetActorActionSubState(effect, 0x12);
         break;
     case 5:
     case 0x11:
-        CancelActorMove_candidate(effect);
+        StopActorMotion(effect);
         SetActorActionSubState(effect, 0x12);
         if (effect->timer84.nFlightTicks > 0)
             PlayFieldSpellHitSound(effect);

@@ -10,7 +10,7 @@ void GetDirectionVector(FixedPoint *out, u32 actorFlags, u32 direction, s32 spee
         out->x = FixedMultiply(g_aDirection16Vectors[direction][0], speed);
         out->y = FixedMultiply(g_aDirection16Vectors[direction][1], speed);
     }
-    else if (actorFlags & ActorFlagFourWayDirections_candidate) {
+    else if (actorFlags & ActorFlagFourWayDirections) {
         out->x = FixedMultiply(g_aDirection4Vectors[direction][0], speed);
         out->y = FixedMultiply(g_aDirection4Vectors[direction][1], speed);
     }

@@ -12,7 +12,7 @@ static inline Actor *AllocTextActor(const u8 **ppText)
 
     pActor = AllocActorOfType(ActorType_Text);
     pActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic;
-    pActor->bForceOnscreen_candidate = 1;
+    pActor->bOamStrip = 1;
     pActor->oam.tileNum = pActor->wVramTileAllocId;
     pActor->oam.shape = 1;
     DrawTextActorText(pActor, ppText);

@@ -9,29 +9,29 @@
 void ShowAttackResult(Actor *actor, s32 targetIndex)
 {
     actor->scriptState.bytes.bAttackOutcomeState = 0;
-    g_pFightState->pAttackAnimActor_candidate = 0;
-    g_pFightState->bAttackAnimState_candidate = 0;
+    g_pFightState->pAttackOutcomeActor = 0;
+    g_pFightState->bAttackOutcomeState = 0;
 
     if (g_nLastDamage > 999)
     {
         ShowBattleMessage(AttackResult, g_nLastDamage, 0);
-        if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
-            ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+        if (g_pFightState->bPendingStatusMessageVariant != NO_PENDING_STATUS_MESSAGE_VARIANT)
+            ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant);
         g_nLastDamage -= 999;
         ShowFloatingDamageNumber(g_nLastDamage, 3, targetIndex, 0);
     }
     else if (g_nLastDamage != 0)
     {
         ShowBattleMessage(AttackResult, g_nLastDamage, 0);
-        if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
-            ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+        if (g_pFightState->bPendingStatusMessageVariant != NO_PENDING_STATUS_MESSAGE_VARIANT)
+            ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant);
         ShowFloatingDamageNumber(g_nLastDamage, 0, targetIndex, 0);
     }
     else
     {
         ShowBattleMessage(AttackResult, g_nLastDamage, 1);
-        if (g_pFightState->bPendingStatusMessageVariant_candidate != NO_PENDING_STATUS_MESSAGE_VARIANT)
-            ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+        if (g_pFightState->bPendingStatusMessageVariant != NO_PENDING_STATUS_MESSAGE_VARIANT)
+            ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant);
         ShowFloatingDamageNumber(g_nLastDamage, 2, targetIndex, 0);
     }
 }

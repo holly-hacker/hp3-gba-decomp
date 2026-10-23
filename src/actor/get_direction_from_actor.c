@@ -14,5 +14,5 @@ u8 GetDirectionFromActor(Actor *actor, Actor *source)
     FixedToIntPoint(source->pos, &from);
     delta.x = to.x - from.x;
     delta.y = to.y - from.y;
-    return GetDirectionFromVector(delta, actor->dwFlags & ActorFlagFourWayDirections_candidate);
+    return GetDirectionFromVector(delta, actor->dwFlags & ActorFlagFourWayDirections);
 }

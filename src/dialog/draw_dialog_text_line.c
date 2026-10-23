@@ -9,22 +9,22 @@ u32 DrawDialogTextLine(s32 charBudget)
 {
     u32 tileCursor;
 
-    tileCursor = DrawTextLineInHeight(g_DialogState_candidate.wTileCursor,
-                                      g_DialogState_candidate.bTextAlign * 56 + 0x40,
-                                      g_DialogState_candidate.bTextY, DIALOG_TEXT_MAX_WIDTH,
-                                      g_DialogState_candidate.wTextHeightLeft,
-                                      &g_DialogState_candidate.pText,
-                                      g_DialogState_candidate.bTextAlign, &charBudget);
+    tileCursor = DrawTextLineInHeight(g_DialogState.wTileCursor,
+                                      g_DialogState.bTextAlign * 56 + 0x40,
+                                      g_DialogState.bTextY, DIALOG_TEXT_MAX_WIDTH,
+                                      g_DialogState.wTextHeightLeft,
+                                      &g_DialogState.pText,
+                                      g_DialogState.bTextAlign, &charBudget);
     if (charBudget != 0)
     {
-        g_DialogState_candidate.wRevealCount = 0;
-        g_DialogState_candidate.bTextY += GetTextLineHeight();
-        g_DialogState_candidate.wTextHeightLeft -= GetTextLineHeight();
-        g_DialogState_candidate.pLineStart = g_DialogState_candidate.pText;
-        g_DialogState_candidate.wTileCursor = tileCursor;
+        g_DialogState.wRevealCount = 0;
+        g_DialogState.bTextY += GetTextLineHeight();
+        g_DialogState.wTextHeightLeft -= GetTextLineHeight();
+        g_DialogState.pLineStart = g_DialogState.pText;
+        g_DialogState.wTileCursor = tileCursor;
     }
     else
-        g_DialogState_candidate.pText = g_DialogState_candidate.pLineStart;
+        g_DialogState.pText = g_DialogState.pLineStart;
 
-    return g_DialogState_candidate.wTextHeightLeft < GetTextLineHeight();
+    return g_DialogState.wTextHeightLeft < GetTextLineHeight();
 }

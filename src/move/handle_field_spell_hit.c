@@ -13,18 +13,18 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
 
     if (target->wActorType == RoomActorType_Player)
         return;
-    if (effect->wCharacterId_candidate != FieldSpellReparo && !(target->dwFlags & ActorFlagVisible))
+    if (effect->wSubtype != FieldSpellReparo && !(target->dwFlags & ActorFlagVisible))
         return;
-    if (effect->dwFlags & ActorFlagNoPushTrigger_candidate)
+    if (effect->dwFlags & ActorFlagSettled)
         return;
-    if (target->dwFlags & ActorFlagNoPushTrigger_candidate)
+    if (target->dwFlags & ActorFlagSettled)
         return;
     if (target->wActorType == RoomActorType_Switch
-        && (target->bRoomActorKind_candidate <= 2 || target->bRoomActorKind_candidate == 6))
+        && (target->bKind <= 2 || target->bKind == 6))
         return;
 
-    spell = effect->wCharacterId_candidate;
-    switch (effect->wCharacterId_candidate)
+    spell = effect->wSubtype;
+    switch (effect->wSubtype)
     {
     case FieldSpellFlipendo:
         if (target->wActorType == RoomActorType_WorldActor)
@@ -32,11 +32,11 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
             if (WORLD_ACTOR_STATE(target)->bPushable != 0)
             {
                 PlaySoundById(0x50);
-                effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-                CancelActorMove_candidate(effect);
+                effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+                StopActorMotion(effect);
                 SetActorAnimData(effect, &g_aFieldSpellAssets[spell],
-                                 g_aaFieldSpellImpactAnims[g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing]], 0);
-                if (g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing] == 3)
+                                 g_aaFieldSpellImpactAnims[g_abFacingDirection4[effect->pLinkedActor->bFacing]], 0);
+                if (g_abFacingDirection4[effect->pLinkedActor->bFacing] == 3)
                     effect->oam.hFlip = 1;
                 effect->dwStateTimer = 14;
                 break;
@@ -45,29 +45,29 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
                 break;
         }
         PlaySoundById(0x50);
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-        CancelActorMove_candidate(effect);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_aaFieldSpellAnims[spell], 0);
         effect->dwStateTimer = 20;
         break;
     case FieldSpellReparo:
-        if (target->wActorType == RoomActorType_TriggerZone && target->bRoomActorKind_candidate != 3)
+        if (target->wActorType == RoomActorType_TriggerZone && target->bKind != 3)
             break;
         PlaySoundById(0x20);
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-        CancelActorMove_candidate(effect);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_aaFieldSpellAnims[spell], 0);
         effect->dwStateTimer = 20;
-        if (target->wActorType == RoomActorType_TriggerZone && target->bRoomActorKind_candidate == 3
-            && g_abFacingDirection4[effect->pLinkedActor_candidate->bFacing] == 3)
+        if (target->wActorType == RoomActorType_TriggerZone && target->bKind == 3
+            && g_abFacingDirection4[effect->pLinkedActor->bFacing] == 3)
             effect->oam.hFlip = 1;
         if (WORLD_ACTOR_STATE(target)->bBrokenFrame != 0xFF && WORLD_ACTOR_STATE(target)->bBreakable != 0
-            && effect->pLinkedActor_candidate == g_pPlayerActor)
+            && effect->pLinkedActor == g_pPlayerActor)
         {
-            CancelActorMove_candidate(effect->pLinkedActor_candidate);
+            StopActorMotion(effect->pLinkedActor);
             SetPartyMemberAnim(g_pPlayerActor, PartyAnimStand);
-            SetActorActionState(effect->pLinkedActor_candidate, 0);
-            SetActorPrevActionState(effect->pLinkedActor_candidate, 0x21);
+            SetActorActionState(effect->pLinkedActor, 0);
+            SetActorPrevActionState(effect->pLinkedActor, 0x21);
         }
         break;
     case FieldSpellAlohomora:
@@ -75,23 +75,23 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
         {
             PlaySoundById(0x52);
             effect->dwStateTimer = 0x44;
-            effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate
+            effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision
                                  | ActorFlagTerrainDrawLayer);
             SetActorActionState(effect, 0);
-            if (effect->pLinkedActor_candidate == g_pPlayerActor)
+            if (effect->pLinkedActor == g_pPlayerActor)
             {
-                CancelActorMove_candidate(effect->pLinkedActor_candidate);
+                StopActorMotion(effect->pLinkedActor);
                 SetPartyMemberAnim(g_pPlayerActor, PartyAnimStand);
                 SetActorActionState(g_pPlayerActor, 0);
                 SetActorPrevActionState(g_pPlayerActor, 0x21);
             }
-            effect->pLinkedActor_candidate = target;
+            effect->pLinkedActor = target;
         }
         else if (target->dwFlags != 0)
         {
             PlaySoundById(0x52);
-            effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-            CancelActorMove_candidate(effect);
+            effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+            StopActorMotion(effect);
             SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_aaFieldSpellAnims[spell], 0);
             effect->dwStateTimer = 20;
         }
@@ -99,8 +99,8 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
     case FieldSpellGlacius:
         if (effect->dwFlags & ActorFlagWantsCollisionCheck)
             PlaySoundById(0x50);
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-        CancelActorMove_candidate(effect);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+        StopActorMotion(effect);
         if (target->wActorType == RoomActorType_WorldActor && WORLD_ACTOR_STATE(target)->bKind >= 0x33
             && WORLD_ACTOR_STATE(target)->bKind <= 0x34)
             SetActorActionSubState(effect, 0x10);
@@ -110,7 +110,7 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
     case FieldSpellSpongify:
         if (effect->dwFlags & ActorFlagWantsCollisionCheck)
             PlaySoundById(0x56);
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
         if (target->wActorType == RoomActorType_SpongifyPad)
         {
             SetActorActionSubState(effect, 0x10);
@@ -122,8 +122,8 @@ void HandleFieldSpellHit(Actor *effect, Actor *target)
     case FieldSpellDiffindo:
         if (effect->dwFlags & ActorFlagWantsCollisionCheck)
             PlaySoundById(0x54);
-        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate);
-        CancelActorMove_candidate(effect);
+        effect->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision);
+        StopActorMotion(effect);
         if (target->wActorType == RoomActorType_WorldActor
             && ((WORLD_ACTOR_STATE(target)->bKind >= 0x2E && WORLD_ACTOR_STATE(target)->bKind <= 0x32)
                 || WORLD_ACTOR_STATE(target)->bKind == 0x36 || WORLD_ACTOR_STATE(target)->bKind == 0x4D))

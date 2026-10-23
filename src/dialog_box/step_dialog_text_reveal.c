@@ -5,7 +5,7 @@ void StepDialogTextReveal(void)
 {
     if (g_dwDialogPageFull == 0)
     {
-        g_DialogState_candidate.wRevealCount += g_DialogState_candidate.wRevealStep;
-        g_dwDialogPageFull = DrawDialogTextLine(g_DialogState_candidate.wRevealCount);
+        g_DialogState.wRevealCount += g_DialogState.wRevealStep;
+        g_dwDialogPageFull = DrawDialogTextLine(g_DialogState.wRevealCount);
     }
 }

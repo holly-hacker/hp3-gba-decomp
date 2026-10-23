@@ -5,11 +5,11 @@
 #include "hero.h"
 #include "main.h"
 
-s32 TickOverworldControlSlots_candidate(void)
+s32 TickOverworldControlSlots(void)
 {
     if (g_OverworldControlState.bSlotCount > 1)
     {
-        g_bControlSlotTicks_candidate++;
+        g_bControlSlotTicks++;
         g_dwGameModeFlags &= ~GameModeFlagUnk10000;
         g_dwGameModeFlags &= ~GameModeFlagUnk20000;
     }

@@ -56,7 +56,9 @@ extern const CameraFocusOffset g_PlayerCameraFocusOffset;
 extern OverworldControlState g_OverworldControlState;
 // Signed camera Y offset in pixels, added to quest event state 0x1B (GetCameraTargetPosition).
 extern s8 g_nCameraYOffset;
-extern u8 g_abRoomScriptExitParams_candidate[2];
+// [0]: the entry id (RoomEntryPoint.bEntryId) the next room spawns the player at; also
+// branched on by RoomScriptOpSetPendingChainFromExitParam. [1] is never read.
+extern u8 g_abRoomEntryIds[2];
 extern Actor *g_pPlayerActor;
 // The two party followers' actors; NULL while the slot is empty.
 extern Actor *g_pFollowerActor0;
@@ -96,7 +98,7 @@ extern const ActorAssetRecord g_MapNamePopupAsset;
 // Index into g_aFieldSpells. CycleSelectedFieldSpell steps it; it is
 // saved with the party.
 extern u8 g_bSelectedFieldSpell;
-extern Actor *g_pPlayerShadowActor_candidate;
+extern Actor *g_pPlayerShadowActor;
 
 // One step of the player's movement. The followers replay the steps a fixed number of
 // entries behind: follower 0 16 steps, follower 1 31.

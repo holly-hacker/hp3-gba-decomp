@@ -22,8 +22,8 @@ void RoomScriptOpDespawnRoomRowActors(DespawnRoomRowActorsRecord *pRecord)
             pActor = GetRoomActorPtr(row, col);
             if (pActor != NULL)
             {
-                if (pActor->pLinkedActor_candidate != NULL)
-                    pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy
+                if (pActor->pLinkedActor != NULL)
+                    pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy
                                                                | ActorFlagAnimFrameLoaded;
                 pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             }

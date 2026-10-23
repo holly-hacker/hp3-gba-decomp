@@ -16,7 +16,7 @@ void SetWizardCrackerPopItKindVariant(u32 kind, u32 variant, s32 timer)
     for (i = 0; i < ARRAY_COUNT(g_pWizardCrackerPopIt->apCrackers); i++)
     {
         pCracker = g_pWizardCrackerPopIt->apCrackers[i];
-        if (pCracker != NULL && pCracker->wCharacterId_candidate == kind)
+        if (pCracker != NULL && pCracker->wSubtype == kind)
         {
             SetWizardCrackerPopItCrackerAnim(pCracker, kind);
             pCracker->anim.bAnimFrameCounter = 3;

@@ -3,7 +3,7 @@
 
 // The monster's own {x, y} extent, subtracted from the target slot anchor
 // when it moves in to attack; indexed by roster index.
-const u8 g_aMonsterAttackOffset_candidate[69][2] = {
+const u8 g_aMonsterAttackOffset[69][2] = {
     { 32, 32 },  // 0: Ruby Fire Crab
     { 32, 32 },  // 1: Emerald Fire Crab
     { 32, 32 },  // 2: Sapphire Fire Crab

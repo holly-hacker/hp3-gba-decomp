@@ -20,7 +20,7 @@ void ClearWizardCrackerPopItSelection(void)
             {
                 pCracker->oam.objMode = 0;
                 pCracker->dwFlags &= ~ActorFlagHasPaletteSlot;
-                pCracker->oam.paletteNum = g_aWizardCrackerPopItPalettes[pCracker->wCharacterId_candidate].bIdleSlot;
+                pCracker->oam.paletteNum = g_aWizardCrackerPopItPalettes[pCracker->wSubtype].bIdleSlot;
                 if (pCracker->bActionState == 0)
                     pCracker->dwStateTimer = 0;
             }

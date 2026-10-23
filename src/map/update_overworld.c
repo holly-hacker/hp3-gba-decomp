@@ -10,8 +10,8 @@ void UpdateOverworld(void)
     if (g_dwPauseMenuCooldown != 0)
         g_dwPauseMenuCooldown--;
 
-    // TickOverworldControlSlots_candidate always returns 0, so the first branch is dead.
-    if (TickOverworldControlSlots_candidate() == 1)
+    // TickOverworldControlSlots always returns 0, so the first branch is dead.
+    if (TickOverworldControlSlots() == 1)
         g_dwGameModeFlags &= ~SerialSessionActive;
     else
         TickOwlCareKitFromOverworld();

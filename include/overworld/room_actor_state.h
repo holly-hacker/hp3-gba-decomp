@@ -56,7 +56,7 @@ typedef struct {
     u8 bTileRow;               // 0x01
     u8 bActionSubState;        // 0x02
     u8 bDepthSortBias;         // 0x03
-    u8 bRoomActorArg67;        // 0x04
+    u8 bBrokenFrame;           // 0x04
     u8 bScriptStateLow;        // 0x05
     u16 wTimedMoveTicks;       // 0x06
     u32 dwFlags;               // 0x08, without ActorFlagHasPaletteSlot

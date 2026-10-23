@@ -108,8 +108,10 @@ void SpawnParticle(ParticleEmitter *emitter)
         particle->oam.priority = 1;
     else if (emitter->wFlags & ParticleEmitterFlagPriorityAbove)
         particle->oam.priority = emitter->pTarget->oam.priority + 1;
-    else if (emitter->wFlags & ParticleEmitterFlagPriorityBelow_candidate)
+    else if (emitter->wFlags & ParticleEmitterFlagPriorityBelow)
     {
+        // BUG: tests the particle's priority, which AllocParticle zeroed, so this is always 0;
+        // it should test the target's priority.
         if (particle->oam.priority != 0)
             particle->oam.priority = emitter->pTarget->oam.priority - 1;
         else

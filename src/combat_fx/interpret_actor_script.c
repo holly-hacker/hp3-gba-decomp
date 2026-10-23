@@ -62,21 +62,21 @@ void InterpretActorScript(Actor *actor)
             actor->dwFlags = (actor->dwFlags & ~ActorFlagVisible) | ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             return;
         case BSOP_SetActorAnim:
-            SetActorAnimData(actor, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData_candidate[args[1]], args[2]);
+            SetActorAnimData(actor, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData[args[1]], args[2]);
             break;
         case BSOP_SetActorAnimAndPalette:  // SetActorAnim, then swaps in that animation's palette
-            SetActorAnimData(actor, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData_candidate[args[1]], args[2]);
+            SetActorAnimData(actor, &g_aEffectAnimAssets[args[1]], g_aEffectAnimData[args[1]], args[2]);
             ReleaseActorPalette(actor);
             AttachActorPalette(actor, g_aEffectAnimAssets[args[1]].pPalette);
             break;
         case BSOP_SetActorAnimFromTable2:  // sets asset record and animation from the second table
             SetActorAssetRecord(actor, &g_aEffectAnimAssets2[args[1]]);
-            SetActorAnimData(actor, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2_candidate[args[1]], args[2]);
+            SetActorAnimData(actor, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2[args[1]], args[2]);
             actor->anim.pAnimTable = (ActorAssetRecord *)&g_aEffectAnimAssets2[args[1]];
             break;
         case BSOP_SetActorAnimFromTable2AndPalette:  // like 0x03, then swaps in the palette
             SetActorAssetRecord(actor, &g_aEffectAnimAssets2[args[1]]);
-            SetActorAnimData(actor, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2_candidate[args[1]], args[2]);
+            SetActorAnimData(actor, &g_aEffectAnimAssets2[args[1]], g_aEffectAnimData2[args[1]], args[2]);
             ReleaseActorPalette(actor);
             AttachActorPalette(actor, g_aEffectAnimAssets2[args[1]].pPalette);
             break;
@@ -107,8 +107,8 @@ void InterpretActorScript(Actor *actor)
         case BSOP_MoveTo:
             if (args[4] == 0)
             {
-                x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam] + (s8)args[1];
-                y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam] + (s8)args[2];
+                x = g_awBattleSlotPosX[g_effectStaging.bScriptParam] + (s8)args[1];
+                y = g_abBattleSlotPosY[g_effectStaging.bScriptParam] + (s8)args[2];
             }
             else
             {
@@ -133,33 +133,33 @@ void InterpretActorScript(Actor *actor)
             child = CreateEffectScriptActor(args[1], 0);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
-            child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
+            child->pLinkedActor = actor->pLinkedActor;
             break;
         case BSOP_SpawnEffect:
             child = CreateEffectScriptActor(args[1], 1);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
-            child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
+            child->pLinkedActor = actor->pLinkedActor;
             break;
         case BSOP_SpawnEffectAtSelfNoPalette:  // spawns a child without its palette at this actor's position
             child = CreateEffectScriptActor(args[1], 0);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
-            child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
+            child->pLinkedActor = actor->pLinkedActor;
             SnapActorPosition(child, actor->pos.x, actor->pos.y);
             break;
         case BSOP_SpawnEffectAtSelf:  // spawns a child at this actor's position
             child = CreateEffectScriptActor(args[1], 1);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
-            child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
+            child->pLinkedActor = actor->pLinkedActor;
             SnapActorPosition(child, actor->pos.x, actor->pos.y);
             break;
         case BSOP_SpawnEffectOffsetNoPalette:  // spawns a child without its palette at this actor's position plus a scaled offset
             child = CreateEffectScriptActor(args[1], 0);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
-            child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
+            child->pLinkedActor = actor->pLinkedActor;
             x = (s8)args[2] * (args[3] << 16) + actor->pos.x;
             y = (s8)args[4] * (args[5] << 16) + actor->pos.y;
             SnapActorPosition(child, x, y);
@@ -168,7 +168,7 @@ void InterpretActorScript(Actor *actor)
             child = CreateEffectScriptActor(args[1], 1);
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
-            child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
+            child->pLinkedActor = actor->pLinkedActor;
             x = (s8)args[2] * (args[3] << 16) + actor->pos.x;
             y = (s8)args[4] * (args[5] << 16) + actor->pos.y;
             SnapActorPosition(child, x, y);
@@ -179,7 +179,7 @@ void InterpretActorScript(Actor *actor)
             child->bDrawFlags |= ActorDrawFlagShareTiles;
             child->modeState.effect.abLocal[0] = actor->modeState.effect.abLocal[0] + 1;
             child->modeState.effect.abLocal[1] = actor->modeState.effect.abLocal[1] + 1;
-            child->pLinkedActor_candidate = actor->pLinkedActor_candidate;
+            child->pLinkedActor = actor->pLinkedActor;
             break;
         case BSOP_ToggleActorFlipX:
             SetActorFlippedX(actor, !IsActorFlippedX(actor));
@@ -205,8 +205,8 @@ void InterpretActorScript(Actor *actor)
             SetActorPosition(actor, pos.x, pos.y);
             break;
         case BSOP_TeleportToSlotPosition:
-            x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam];
-            y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam];
+            x = g_awBattleSlotPosX[g_effectStaging.bScriptParam];
+            y = g_abBattleSlotPosY[g_effectStaging.bScriptParam];
             if (args[1] != 0)
             {
                 GetActorAnchor(targetFighter->pActor, args[1] - 1, &offset);
@@ -266,9 +266,9 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_GotoIfFighterRosterMatches:
             {
-                for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair_candidate); n++)
+                for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair); n++)
                 {
-                    if (g_abEffectRosterIdPair_candidate[n] == targetFighter->bRosterIndex)
+                    if (g_abEffectRosterIdPair[n] == targetFighter->bRosterIndex)
                         JumpToScriptLabel(actor, args[1]);
                 }
             }
@@ -287,9 +287,9 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_GotoIfFighterRosterMatches_2:
             {
-                for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair_candidate); n++)
+                for (n = 0; n < ARRAY_COUNT(g_abEffectRosterIdPair); n++)
                 {
-                    if (g_abEffectRosterIdPair_candidate[n] == targetFighter->bRosterIndex)
+                    if (g_abEffectRosterIdPair[n] == targetFighter->bRosterIndex)
                         JumpToScriptLabel(actor, args[1]);
                 }
             }
@@ -312,25 +312,25 @@ void InterpretActorScript(Actor *actor)
             break;
         case BSOP_AdvanceAttackOutcome:  // advances the caster's attack-outcome counter and publishes it
             g_pFightState->pFighters[g_effectStaging.bCasterIndex].pActor->scriptState.bytes.bAttackOutcomeState++;
-            g_pFightState->bAttackAnimState_candidate = g_pFightState->pFighters[g_effectStaging.bCasterIndex].pActor->scriptState.bytes.bAttackOutcomeState;
-            if (g_pFightState->pAttackAnimActor_candidate == NULL)
-                g_pFightState->pAttackAnimActor_candidate = g_pFightState->pFighters[g_effectStaging.bCasterIndex].pActor;
+            g_pFightState->bAttackOutcomeState = g_pFightState->pFighters[g_effectStaging.bCasterIndex].pActor->scriptState.bytes.bAttackOutcomeState;
+            if (g_pFightState->pAttackOutcomeActor == NULL)
+                g_pFightState->pAttackOutcomeActor = g_pFightState->pFighters[g_effectStaging.bCasterIndex].pActor;
             break;
         case BSOP_CreateEmitter12:  // creates an emitter (12 operands)
-            g_effectStaging.pEmitter_candidate = CreateScriptEmitter12(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
-            g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
+            g_effectStaging.pLastEmitter = CreateScriptEmitter12(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
+            g_effectStaging.pLastEmitter->bKind = 2;
             break;
         case BSOP_CreateEmitter8:  // creates an emitter (8 operands)
-            g_effectStaging.pEmitter_candidate = CreateScriptEmitter8(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-            g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
+            g_effectStaging.pLastEmitter = CreateScriptEmitter8(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+            g_effectStaging.pLastEmitter->bKind = 2;
             break;
         case BSOP_CreateEmitterOnSelf:  // creates an emitter on this actor
-            g_effectStaging.pEmitter_candidate = CreateBattleEffectEmitter(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
-            g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
+            g_effectStaging.pLastEmitter = CreateBattleEffectEmitter(actor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
+            g_effectStaging.pLastEmitter->bKind = 2;
             break;
         case BSOP_CreateEmitterOnTarget:  // creates an emitter on the target's actor
-            g_effectStaging.pEmitter_candidate = CreateBattleEffectEmitter(targetFighter->pActor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
-            g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
+            g_effectStaging.pLastEmitter = CreateBattleEffectEmitter(targetFighter->pActor, args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
+            g_effectStaging.pLastEmitter->bKind = 2;
             break;
         case BSOP_LoadParticleGfx:
             LoadParticleGfx(args[1], args[2], &g_aEffectActorAssets[args[3]]);
@@ -353,7 +353,7 @@ void InterpretActorScript(Actor *actor)
                 for (node = g_pParticleEmitterActiveListHead; node != NULL; node = next)
                 {
                     next = node->pNext;
-                    if (((ParticleEmitter *)node)->bParalysisEffectFlag_candidate == 2)
+                    if (((ParticleEmitter *)node)->bKind == 2)
                         ReleaseParticleEmitter((ParticleEmitter *)node);
                 }
             }
@@ -371,11 +371,11 @@ void InterpretActorScript(Actor *actor)
             actor->oam.paletteNum = args[1];
             break;
         case BSOP_StartOrbitMotion:
-            CopyOrbitParamsFromTable(actor, &g_aEffectOrbitParams_candidate[args[1]]);
+            CopyOrbitParamsFromTable(actor, &g_aEffectOrbitParams[args[1]]);
             actor->orbitState.orbit.wAngleX += actor->modeState.effect.abLocal[0] * args[2] << 8;
             break;
         case BSOP_StartOrbitMotionRandom:  // starts orbit motion with a random angle
-            CopyOrbitParamsFromTable(actor, &g_aEffectOrbitParams_candidate[args[1]]);
+            CopyOrbitParamsFromTable(actor, &g_aEffectOrbitParams[args[1]]);
             actor->orbitState.orbit.wAngleX = Mt19937RandMax(0xFF) << 8;
             actor->orbitState.orbit.wAngleY = -(u16)actor->orbitState.orbit.wAngleX;
             break;
@@ -396,7 +396,7 @@ void InterpretActorScript(Actor *actor)
             actor->orbitState.orbit.wRadiusY = g_effectStaging.awSavedOrbit[5];
             break;
         case BSOP_StartCasterOrbitMotion:
-            CopyOrbitParamsFromTable(casterFighter->pActor, &g_aEffectOrbitParams_candidate[args[1]]);
+            CopyOrbitParamsFromTable(casterFighter->pActor, &g_aEffectOrbitParams[args[1]]);
             casterFighter->pActor->orbitState.orbit.wAngleX += actor->modeState.effect.abLocal[0] * args[2] << 8;
             break;
         case BSOP_SetAffineScale1:  // sets affine scale (mode 1)
@@ -487,8 +487,8 @@ void InterpretActorScript(Actor *actor)
             {
                 s16 py;
 
-                x = (s16)(Mt19937RandSigned(args[1]) + g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam]);
-                py = Mt19937RandSigned(args[2]) + g_abBattleSlotPosY_candidate[args[3]];
+                x = (s16)(Mt19937RandSigned(args[1]) + g_awBattleSlotPosX[g_effectStaging.bScriptParam]);
+                py = Mt19937RandSigned(args[2]) + g_abBattleSlotPosY[args[3]];
                 SnapActorPosition(actor, x << 16, py << 16);
             }
             break;
@@ -631,13 +631,13 @@ void InterpretActorScript(Actor *actor)
             }
             break;
         case BSOP_MoveFighterToSlotPosition:
-            x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam];
-            y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam];
+            x = g_awBattleSlotPosX[g_effectStaging.bScriptParam];
+            y = g_abBattleSlotPosY[g_effectStaging.bScriptParam];
             StartActorMove(targetFighter->pActor, x << 16, y << 16, args[1]);
             break;
         case BSOP_SnapTargetToSlot:  // snaps the target to its slot position
-            x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam];
-            y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam];
+            x = g_awBattleSlotPosX[g_effectStaging.bScriptParam];
+            y = g_abBattleSlotPosY[g_effectStaging.bScriptParam];
             SnapActorPosition(targetFighter->pActor, x << 16, y << 16);
             break;
         case BSOP_SnapCasterToSpawn:  // snaps the caster to the spawn position
@@ -647,8 +647,8 @@ void InterpretActorScript(Actor *actor)
         case BSOP_MoveCasterTo:  // moves the caster to a computed position
             if (args[4] == 0)
             {
-                x = g_awBattleSlotPosX_candidate[g_effectStaging.bScriptParam] + (s8)args[1];
-                y = g_abBattleSlotPosY_candidate[g_effectStaging.bScriptParam] + (s8)args[2];
+                x = g_awBattleSlotPosX[g_effectStaging.bScriptParam] + (s8)args[1];
+                y = g_abBattleSlotPosY[g_effectStaging.bScriptParam] + (s8)args[2];
             }
             else
             {
@@ -669,41 +669,41 @@ void InterpretActorScript(Actor *actor)
             return;
         case BSOP_SetCasterAnim:  // sets the caster's animation; monster actor types are 4 + monster index
             SetActorAnimData(casterFighter->pActor, &g_pMonsterGraphicsTable[casterFighter->pActor->wActorType - 4],
-                              g_aEffectAnimData_candidate[args[1]], args[2]);
+                              g_aEffectAnimData[args[1]], args[2]);
             break;
         case BSOP_LoadBgEffect:  // loads a BG effect record
             {
                 const void *pControls;
 
-                QueueBattleBgLoad(args[1], g_aEffectBgRecords_candidate[args[2]].pGfx, g_aEffectBgRecords_candidate[args[2]].wTileOffset, args[3], &g_pFightState->effectBgTilemap);
-                SetBgScrollFixed(args[1], g_aEffectBgRecords_candidate[args[2]].wScrollX << 16, g_aEffectBgRecords_candidate[args[2]].wScrollY << 16);
-                g_effectStaging.bBgEffectId_candidate = args[2];
-                pControls = g_aEffectBgRecords_candidate[args[2]].pControls;
+                QueueBattleBgLoad(args[1], g_aEffectBgRecords[args[2]].pGfx, g_aEffectBgRecords[args[2]].wTileOffset, args[3], &g_pFightState->effectBgTilemap);
+                SetBgScrollFixed(args[1], g_aEffectBgRecords[args[2]].wScrollX << 16, g_aEffectBgRecords[args[2]].wScrollY << 16);
+                g_effectStaging.bBgEffectId = args[2];
+                pControls = g_aEffectBgRecords[args[2]].pControls;
                 if (pControls != NULL)
                 {
                     switch (args[1])
                     {
                     case 1:
-                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[1], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControls[1], 8);
                         break;
                     case 0:
-                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[2], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControls[2], 8);
                         break;
                     case 2:
-                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[0], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControls[0], 8);
                         break;
                     case 3:
-                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControlOverride_candidate[3], 8);
+                        RegisterBgTileAnimation(pControls, &g_adwEffectBgControls[3], 8);
                         break;
                     }
                 }
             }
             break;
         case BSOP_QueueScanlineEffect:  // queues a scanline-effect table
-            QueueScanlineEffectTable(g_apEffectScanlineTables_candidate[args[1]], g_abEffectScanlineTableSizes_candidate[args[1]]);
+            QueueScanlineEffectTable(g_apEffectScanlineTables[args[1]], g_abEffectScanlineTableSizes[args[1]]);
             break;
         case BSOP_SetBgEffectId:  // stores the BG effect id
-            g_effectStaging.bBgEffectId_candidate = args[1];
+            g_effectStaging.bBgEffectId = args[1];
             break;
         case BSOP_TeleportTo:
             SnapActorPosition(actor, args[1] << 16, args[2] << 16);
@@ -714,7 +714,7 @@ void InterpretActorScript(Actor *actor)
                 targetFighter->nFaintedFlag = 0xFFFF;
                 targetFighter->pActor->bActionState = 1;
                 targetFighter->pActor->dwStateTimer = 3;
-                g_pFightState->dwDefeatCheckPending_candidate = 1;
+                g_pFightState->dwFighterFainted = 1;
                 n = 0;
                 // The slot index is never advanced: a non-empty first slot
                 // spins here until it is cleared.
@@ -740,7 +740,7 @@ void InterpretActorScript(Actor *actor)
                     WaitForVBlankIntr();
                     TickParticleEmitters();
                     TickBgLayers();
-                    TickPaletteAnimations_candidate();
+                    TickPaletteAnimations();
                     TickBgTileAnimations();
                 }
             }
@@ -754,7 +754,7 @@ void InterpretActorScript(Actor *actor)
                     WaitForVBlankIntr();
                     TickParticleEmitters();
                     TickBgLayers();
-                    TickPaletteAnimations_candidate();
+                    TickPaletteAnimations();
                     TickBgTileAnimations();
                 }
             }
@@ -776,10 +776,10 @@ void InterpretActorScript(Actor *actor)
                 JumpToScriptLabel(actor, args[3]);
             break;
         case BSOP_SetBgPaletteColors:  // sets palette colors of a BG record
-            LoadBgPaletteColors((u8 *)g_aEffectBgRecords_candidate[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
+            LoadBgPaletteColors((u8 *)g_aEffectBgRecords[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
             break;
         case BSOP_SetBgPaletteColorsAdjust:  // sets palette colors and adjusts a palette entry
-            LoadBgPaletteColors((u8 *)g_aEffectBgRecords_candidate[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
+            LoadBgPaletteColors((u8 *)g_aEffectBgRecords[args[1]].pGfx + ((args[2] << 4) + 2), args[3] << 4, args[4] << 4);
             StartColorCycle((args[3] << 4) + 1, args[5], 1, 1);
             break;
         case BSOP_SetBgPriority:
@@ -849,12 +849,12 @@ void InterpretActorScript(Actor *actor)
             switch (args[1])
             {
             case BSSTATUS_SpawnEffectA:
-                g_effectStaging.pEmitter_candidate = CreateBurstToTargetEmitter(actor, args[2], args[3]);
-                g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
+                g_effectStaging.pLastEmitter = CreateBurstToTargetEmitter(actor, args[2], args[3]);
+                g_effectStaging.pLastEmitter->bKind = 2;
                 break;
             case BSSTATUS_SpawnEffectB:
-                g_effectStaging.pEmitter_candidate = CreateRandomBurstEmitter(actor, args[2], args[3]);
-                g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
+                g_effectStaging.pLastEmitter = CreateRandomBurstEmitter(actor, args[2], args[3]);
+                g_effectStaging.pLastEmitter->bKind = 2;
                 break;
             case BSSTATUS_ExtraExpBonus:
                 g_pFightState->bBonusRewardFlags |= ExtraExpBonus;
@@ -868,9 +868,9 @@ void InterpretActorScript(Actor *actor)
             case BSSTATUS_Poisoned:
                 if ((targetFighter->bStatusFlags & (PoisonImmune | Poisoned)) == 0)
                 {
-                    g_pFightState->bPendingStatusMessageVariant_candidate = 3;
+                    g_pFightState->bPendingStatusMessageVariant = 3;
 #ifdef VERSION_JP
-                    ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant_candidate);
+                    ShowBattleMessage(AttackResult, 0, g_pFightState->bPendingStatusMessageVariant);
 #endif
                     SpawnParalysisEffect(targetFighter->pActor);
                     targetFighter->pActor->wActionVariant = 1;
@@ -913,7 +913,7 @@ void InterpretActorScript(Actor *actor)
             case BSSTATUS_ParalyzeMonster:
                 if (TryApplyParalysis(targetFighter, targetFighter->bFighterType == Enemy, args[2]) != 0)
                 {
-                    g_pFightState->bPendingStatusMessageVariant_candidate = 4;
+                    g_pFightState->bPendingStatusMessageVariant = 4;
                     if (targetFighter->bFighterType != Enemy)
                     {
                         SpawnParalysisEffect(targetFighter->pActor);
@@ -924,7 +924,7 @@ void InterpretActorScript(Actor *actor)
             case BSSTATUS_ParalyzeMonsterChance:
                 if (Mt19937ChanceNoisy(args[3]) != 0 && TryApplyParalysis(targetFighter, 0, args[2]) != 0)
                 {
-                    g_pFightState->bPendingStatusMessageVariant_candidate = 4;
+                    g_pFightState->bPendingStatusMessageVariant = 4;
                     SpawnParalysisEffect(targetFighter->pActor);
                 }
                 break;
@@ -954,12 +954,12 @@ void InterpretActorScript(Actor *actor)
                 }
                 break;
             case BSSTATUS_CurePoison:
-                ClearPoisonedFighter_candidate(g_effectStaging.bTargetIndex);
+                ClearPoisonedFighter(g_effectStaging.bTargetIndex);
                 break;
             case BSSTATUS_ToggleUltimateVisual:
                 if (args[2] == 0)
                 {
-                    SetActorAnimData(targetFighter->pActor, &g_aFighterAnimTable[targetFighter->pActor->wActorType].aRecords[4], (void *)g_abFighterIdleAnimData_candidate, 0);
+                    SetActorAnimData(targetFighter->pActor, &g_aFighterAnimTable[targetFighter->pActor->wActorType].aRecords[4], (void *)g_abFighterHurtLoopAnimData, 0);
                     SetActorAnimFrame(targetFighter->pActor, 0);
                 }
                 else
@@ -972,12 +972,12 @@ void InterpretActorScript(Actor *actor)
                 targetFighter->bStatusFlags |= SpellPowerBoost;
                 break;
             case BSSTATUS_CureAilments:
-                ClearPoisonedFighter_candidate(g_effectStaging.bTargetIndex);
-                ClearParalyzedFighter_candidate(g_effectStaging.bTargetIndex);
+                ClearPoisonedFighter(g_effectStaging.bTargetIndex);
+                ClearParalyzedFighter(g_effectStaging.bTargetIndex);
                 break;
             case BSSTATUS_SpawnEffectC:
-                g_effectStaging.pEmitter_candidate = CreateSmallBurstToTargetEmitter(actor, args[2], args[3]);
-                g_effectStaging.pEmitter_candidate->bParalysisEffectFlag_candidate = 2;
+                g_effectStaging.pLastEmitter = CreateSmallBurstToTargetEmitter(actor, args[2], args[3]);
+                g_effectStaging.pLastEmitter->bKind = 2;
                 break;
             case BSSTATUS_PaletteFlash:
                 if (args[2] == 0)

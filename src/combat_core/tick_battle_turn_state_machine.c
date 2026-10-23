@@ -35,7 +35,7 @@ void TickBattleTurnStateMachine(void)
     case BattleStateNextTurn:
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
-            g_pFightState->bPendingStatusMessageVariant_candidate = 0x12;
+            g_pFightState->bPendingStatusMessageVariant = 0x12;
 
             SetFighterTurnOrderIconDone(g_pFightState->bActiveFighterIndex);
 
@@ -46,9 +46,9 @@ void TickBattleTurnStateMachine(void)
                 SetFighterTurnOrderIconActive(g_pFightState->bActiveFighterIndex);
         }
         else if (g_pFightState->wBattleStateTimer == 0) {
-            // wait for every fighter's turn-order icon (pActor->pLinkedActor_candidate) to clear
+            // wait for every fighter's turn-order icon (pActor->pLinkedActor) to clear
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
-                if (g_pFightState->pFighters[i].pActor->pLinkedActor_candidate != 0)
+                if (g_pFightState->pFighters[i].pActor->pLinkedActor != 0)
                     break;
             }
 
@@ -75,7 +75,7 @@ void TickBattleTurnStateMachine(void)
         if (g_pFightState->dwStateJustEntered) {
             g_pFightState->dwStateJustEntered = 0;
             g_pFightState->wBattleStateTimer = 0x1e;
-            g_pFightState->dwDefeatCheckPending_candidate = 0;
+            g_pFightState->dwFighterFainted = 0;
 
             for (i = 0; i < g_pFightState->bFighterCount; i++) {
                 if (g_pFightState->pFighters[i].bStatusFlags & Poisoned) {
@@ -85,7 +85,7 @@ void TickBattleTurnStateMachine(void)
                 }
             }
 
-            if (g_pFightState->dwDefeatCheckPending_candidate == 0)
+            if (g_pFightState->dwFighterFainted == 0)
                 break;
 
             CheckBattleDefeat();
@@ -93,15 +93,15 @@ void TickBattleTurnStateMachine(void)
             if (g_GameModeStackContext.dwCurrentGameModeArg3 == 0xfe)
                 break;
 
-            PruneFaintedAndRebuildTurnOrder_candidate(0);
+            PruneFaintedAndRebuildTurnOrder(0);
 
             g_pFightState->wBattleStateTimer = 0x5a;
             break;
         }
 
         if (--g_pFightState->wBattleStateTimer == 0xffff) {
-            if (g_pFightState->dwDefeatCheckPending_candidate != 0) {
-                g_pFightState->dwDefeatCheckPending_candidate = 0;
+            if (g_pFightState->dwFighterFainted != 0) {
+                g_pFightState->dwFighterFainted = 0;
                 SetFighterTurnOrderIconActive(0);
                 EndFighterTurnStub(g_pFightState->bFighterCount - 1);
             }

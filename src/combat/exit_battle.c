@@ -89,7 +89,7 @@ void ExitBattle(void)
 
             g_pFightState->pFighters[fighterIndex].pActor->wVramTileAllocId = 0xFFFF;
 
-            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterActors_candidate),
+            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterActors),
                    g_pFightState->pFighters[fighterIndex].pActor, sizeof(Actor));
         }
 
@@ -102,7 +102,7 @@ void ExitBattle(void)
 
             g_pFightState->pFaintedAllies[faintedIndex].pActor->wVramTileAllocId = 0xFFFF;
 
-            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterActors_candidate),
+            memcpy((u8 *)g_pFightState + fighterIndex * sizeof(Actor) + OFFSETOF(FightState, aSuspendedFighterActors),
                    g_pFightState->pFaintedAllies[faintedIndex].pActor, sizeof(Actor));
         }
 

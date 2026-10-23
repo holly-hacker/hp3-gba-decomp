@@ -30,7 +30,7 @@ void RestoreRoomActorState(void)
     SetActorActionState(g_pPlayerActor, 0x21);
     SetActorPrevActionState(g_pPlayerActor, 0x21);
     SetActorActionSubState(g_pPlayerActor, 0);
-    g_bRestoringRoomActors_candidate = 1;
+    g_bRestoringRoomActors = 1;
 
     if (g_pRoomActorStateBuffer->bTriggerZoneCount != 0)
     {
@@ -63,7 +63,7 @@ void RestoreRoomActorState(void)
             pActor->vel = pDefault->vel;
             SetActorActionState(pActor, pDefault->bActionState);
             SetActorActionSubState(pActor, pDefault->bActionSubState);
-            pActor->bRoomActorKind_candidate = pDefault->bRoomActorKind;
+            pActor->bKind = pDefault->bRoomActorKind;
             pActor->bFighterIndex = pDefault->bFighterIndex;
             pActor->dwStateTimer = pDefault->dwStateTimer;
         }
@@ -83,7 +83,7 @@ void RestoreRoomActorState(void)
             SnapActorPosition(pActor, pWorldActor->wPosX << 16, pWorldActor->wPosY << 16);
             pActor->vel = pWorldActor->vel;
             pActor->accel = pWorldActor->accel;
-            pActor->modeState.actor.bRoomActorArg67_candidate = pWorldActor->bRoomActorArg67;
+            WORLD_ACTOR_STATE(pActor)->bBrokenFrame = pWorldActor->bBrokenFrame;
             pActor->scriptState.bytes.bAttackOutcomeState = pWorldActor->bScriptStateLow;
         }
     }
@@ -135,5 +135,5 @@ void RestoreRoomActorState(void)
     }
 
     ClearRoomActorStateBuffer();
-    g_bRestoringRoomActors_candidate = 0;
+    g_bRestoringRoomActors = 0;
 }

@@ -311,16 +311,19 @@
     .byte RSOP_SetTileActorFollowTarget, 0, 0, 0, (\group), (\member), (\targetGroup), (\targetMember), (\useTargetTile), (\resumeDistance), (\stopDistance), (\unused)
 .endm
 
-@ Sets room actor (group, member) to action state 7 + `animStateSelector` (6 also clears
-@ ActorFlagHasAnimation) and stores the other operands in its script fields. Yields.
-.macro StartActorAnimSequence group, member, effectId, localA, route, waypoint, animStateSelector, stateByte0x60, flagsA, flagsB
-    .byte RSOP_StartActorAnimSequence, 0, 0, 0, (\group), (\member), (\effectId), (\localA), (\route), (\waypoint), (\animStateSelector), (\stateByte0x60), (\flagsA), (\flagsB), (255), (255)
+@ Starts room actor (group, member) walking route `route` from `waypoint`: action state
+@ 7 + `animStateSelector` (6 also clears ActorFlagHasAnimation), waiting `waitTicks` at each
+@ waypoint. A walk-once route ends with RespawnGroupAndRunChain(finishRespawnRow,
+@ finishChainRow). A nonzero `noPlatePress` keeps pressure plates from reacting to it. Yields.
+.macro StartActorAnimSequence group, member, finishRespawnRow, finishChainRow, route, waypoint, animStateSelector, waitTicks, noPlatePress, unused0
+    .byte RSOP_StartActorAnimSequence, 0, 0, 0, (\group), (\member), (\finishRespawnRow), (\finishChainRow), (\route), (\waypoint), (\animStateSelector), (\waitTicks), (\noPlatePress), (\unused0), (255), (255)
 .endm
 
-@ Sets room actor (group, member) to action state 15 at script position `scriptPC` and stores the other
-@ operands in its script fields. Yields.
-.macro StartTileActorScript scriptPC, effectId, localA, group, member, arg65, arg66, arg64, unused0, unused1, unused2
-    .byte RSOP_StartTileActorScript, 0, 0, 0, (((\scriptPC) >> 0) & 0xFF), (((\scriptPC) >> 8) & 0xFF), (\effectId), (\localA), (\group), (\member), (\arg65), (\arg66), (\arg64), (\unused0), (\unused1), (\unused2)
+@ Starts room actor (group, member) walking to pixel (targetX, targetY) in action state 15
+@ (facing halved for four-way actors). On arrival it runs RespawnGroupAndRunChain(respawnRow,
+@ chainRow), or stands when both are 0. Yields.
+.macro StartTileActorScript targetX, targetYLow, targetYHigh, group, member, respawnRow, chainRow, facing, unused0, unused1, unused2
+    .byte RSOP_StartTileActorScript, 0, 0, 0, (((\targetX) >> 0) & 0xFF), (((\targetX) >> 8) & 0xFF), (\targetYLow), (\targetYHigh), (\group), (\member), (\respawnRow), (\chainRow), (\facing), (\unused0), (\unused1), (\unused2)
 .endm
 
 @ StartNpcScriptAnimation on room actor (group, member) with `animId`. Yields.
@@ -436,7 +439,7 @@
     .byte RSOP_SetBackgroundPriority, 0, 0, 0, (\bg), (\priority), (\unused0), (\unused1)
 .endm
 
-@ SetCameraFollowTarget_candidate on room actor (group, member) with an uninitialized offset.
+@ SetCameraFollowTarget on room actor (group, member) with an uninitialized offset.
 .macro SetCameraFollowTileActor group, member, unused0, unused1
     .byte RSOP_SetCameraFollowTileActor, 0, 0, 0, (\group), (\member), (\unused0), (\unused1)
 .endm
@@ -554,12 +557,12 @@
 .endm
 
 @ Sets room actor (group, member) to action state 0x1B facing `facing` (halved for four-way actors)
-@ with script page `scriptPageHigh`.
-.macro SetTileActorFacingAndScriptPage group, member, facing, scriptPageHigh
-    .byte RSOP_SetTileActorFacingAndScriptPage, 0, 0, 0, (\group), (\member), (\facing), (\scriptPageHigh)
+@ and turning around every `turnInterval` ticks.
+.macro SetTileActorFacingAndScriptPage group, member, facing, turnInterval
+    .byte RSOP_SetTileActorFacingAndScriptPage, 0, 0, 0, (\group), (\member), (\facing), (\turnInterval)
 .endm
 
-@ If `set`, sets bit 0x4 of room actor (group, member)'s bFlags_0x94_candidate.
+@ If `set`, sets bit 0x4 of room actor (group, member)'s bTypeFlags (NPCs: keep the sprite frame).
 .macro SetTileActorSpecialFlag group, member, set
     .byte RSOP_SetTileActorSpecialFlag, 0, 0, 0, (\group), (\member), (\set), (255)
 .endm

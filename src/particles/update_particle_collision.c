@@ -7,7 +7,7 @@ u8 UpdateParticleCollision(Particle *particle)
 {
     u8 collision;
 
-    collision = GetCollisionTypeAtPixel_candidate(
+    collision = GetCollisionTypeAtPixel(
         (PixelPoint){ (s16)(particle->nDrawX >> 16), (s16)(particle->nDrawY >> 16) });
     particle->oam.priority = (collision >> 6) + 1;
     return collision;

@@ -15,12 +15,12 @@ Actor *SpawnWanderingMonsterActor(u8 monsterId, u16 x, u16 y, u8 encounterId, u8
     pActor = AllocActorOfType(RoomActorType_WanderingMonster);
     SetActorPosition(pActor, x, y);
     pActor->nMoveSpeed = 1;
-    pActor->bRoomActorKind_candidate = monsterId;
+    pActor->bKind = monsterId;
     pActor->bFighterIndex = encounterId;
     pActor->bEncounterVariant = variant;
     pActor->bReceivedRewardId = kind;
     pActor->dwFlags = ActorFlagVisible | ActorFlagWantsCollisionCheck | ActorFlagHasAnimation
-                      | ActorFlagTerrainCollisionA_candidate | ActorFlagFourWayDirections_candidate
+                      | ActorFlagTerrainCollision | ActorFlagFourWayDirections
                       | ActorFlagTerrainDrawLayer;
     pActor->bTerrainBlockResponse = TerrainBlockNone;
     pActor->anim.bAnimFrameDelay = 1;

@@ -32,6 +32,6 @@ void ResetQuestStateForNewGame(u32 newGamePlus)
     else
     {
         SetSickles(0);
-        ClearItemInventoryForNewGame_candidate();
+        ClearItemInventoryForNewGame();
     }
 }

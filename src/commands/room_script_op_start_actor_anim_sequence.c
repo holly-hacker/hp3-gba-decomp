@@ -8,23 +8,23 @@ typedef struct StartActorAnimSequenceRecord {
     u32 dwOpcode;
     u8 bX;
     u8 bY;
-    u8 bScriptDataLow;
-    u8 bScriptDataHigh;
-    u8 bArg64;
-    u8 bArg65;
+    u8 bFinishRespawnRow;
+    u8 bFinishChainRow;
+    u8 bRoute;
+    u8 bWaypoint;
     u8 bActionSelector;
-    u8 bScriptPc;
-    u8 bArg6A;
-    u8 bArg6B;
+    u8 bWaitTicks;
+    u8 bNoPlatePress;
+    u8 bUnused6B;
 } StartActorAnimSequenceRecord;
 
 void RoomScriptOpStartActorAnimSequence(StartActorAnimSequenceRecord *pRecord)
 {
     Actor *pActor;
     u8 actionState = 0;
-    u8 *pScriptData;
-    u8 scriptDataLow;
-    u8 scriptDataHigh;
+    u8 *pFinish;
+    u8 finishRespawnRow;
+    u8 finishChainRow;
 
     if (g_dwFieldSpellActive != 0)
         EndFieldSpellEffect(g_pFieldSpellEffectActor);
@@ -62,17 +62,17 @@ void RoomScriptOpStartActorAnimSequence(StartActorAnimSequenceRecord *pRecord)
     }
 
     SetActorActionState(pActor, actionState);
-    scriptDataLow = pRecord->bScriptDataLow;
-    pScriptData = (u8 *)&pActor->modeState.actor.wStagedDamage;
-    *pScriptData = scriptDataLow;
-    scriptDataHigh = pRecord->bScriptDataHigh;
-    ++pScriptData;
-    *pScriptData = scriptDataHigh;
-    pActor->modeState.actor.bRoomScriptArg64_candidate = pRecord->bArg64;
-    pActor->modeState.actor.bFollowResumeDistance = pRecord->bArg65;
-    pActor->scriptState.wScriptPc = pRecord->bScriptPc;
-    pActor->modeState.actor.bRoomScriptArg6A_candidate = pRecord->bArg6A;
-    pActor->modeState.actor.bRoomScriptArg6B_candidate = pRecord->bArg6B;
+    finishRespawnRow = pRecord->bFinishRespawnRow;
+    pFinish = (u8 *)&pActor->modeState.route.finish;
+    *pFinish = finishRespawnRow;
+    finishChainRow = pRecord->bFinishChainRow;
+    ++pFinish;
+    *pFinish = finishChainRow;
+    pActor->modeState.route.bRoute = pRecord->bRoute;
+    pActor->modeState.route.bWaypoint = pRecord->bWaypoint;
+    pActor->scriptState.wScriptPc = pRecord->bWaitTicks;
+    pActor->modeState.actor.bNoPlatePress = pRecord->bNoPlatePress;
+    pActor->modeState.route.bUnused6B = pRecord->bUnused6B;
     SetActorActionSubState(pActor, 0);
     pActor->dwFlags |= ActorFlagHasTickLogic;
 }

@@ -22,7 +22,7 @@ void ProcessBuckbeakMinigameFrame(void)
         if (bank != g_pBuckbeakMinigame->dwBankState)
         {
             g_pBuckbeakMinigame->dwBankState = bank;
-            frame = g_pBuckbeakMinigame->pBuckbeak->anim.bAnimFrameIndex_candidate;
+            frame = g_pBuckbeakMinigame->pBuckbeak->anim.bLoadedAnimFrame;
             SetActorAnimDataAtCommand(g_pBuckbeakMinigame->pBuckbeak, &g_aBuckbeakMinigameBuckbeakAssets[bank],
                                       g_abBuckbeakMinigameFlyAnimData, frame);
 
@@ -43,7 +43,7 @@ void ProcessBuckbeakMinigameFrame(void)
         if (bank != g_pBuckbeakMinigame->dwBankState)
         {
             g_pBuckbeakMinigame->dwBankState = bank;
-            frame = g_pBuckbeakMinigame->pBuckbeak->anim.bAnimFrameIndex_candidate;
+            frame = g_pBuckbeakMinigame->pBuckbeak->anim.bLoadedAnimFrame;
             SetActorAnimDataAtCommand(g_pBuckbeakMinigame->pBuckbeak, &g_aBuckbeakMinigameBuckbeakAssets[bank],
                                       g_abBuckbeakMinigameFlyAnimData, frame);
 
@@ -63,7 +63,7 @@ void ProcessBuckbeakMinigameFrame(void)
         if (bank != g_pBuckbeakMinigame->dwBankState)
         {
             g_pBuckbeakMinigame->dwBankState = bank;
-            frame = g_pBuckbeakMinigame->pBuckbeak->anim.bAnimFrameIndex_candidate;
+            frame = g_pBuckbeakMinigame->pBuckbeak->anim.bLoadedAnimFrame;
             SetActorAnimDataAtCommand(g_pBuckbeakMinigame->pBuckbeak, &g_aBuckbeakMinigameBuckbeakAssets[bank],
                                       g_abBuckbeakMinigameFlyAnimData, frame);
 

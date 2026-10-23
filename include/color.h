@@ -38,7 +38,7 @@ typedef struct ColorCycle {
     u8 bCurrentColor;
     u8 bEndColor;
     u8 bColorCount;
-    u8 bColorCount2_candidate;  // written equal to bColorCount, never seen read
+    u8 bColorCountCopy;  // written equal to bColorCount, never read
 } ColorCycle;
 
 // A color-cycle request in a ColorCycleTable.
@@ -59,10 +59,10 @@ typedef struct ColorCycleTable {
 // from pFrames, looping over bFrameCount frames when flag 0x10 is set.
 typedef struct PaletteEffect {
     u16 wFlags;
-    u8 bStepTicks_candidate;
-    u8 bStepTimer_candidate;
-    u8 bDelayTimer_candidate;
-    u8 bDelay_candidate;
+    u8 bStepTicks;
+    u8 bStepTimer;
+    u8 bDelayTimer;
+    u8 bDelay;
     u8 bStartColor;
     u8 bEndColor;
     u8 bFrameCount;
@@ -116,7 +116,7 @@ extern void LoadBgPaletteColors(const void *pColors, u32 firstColor, u32 colorCo
 extern void LoadObjPaletteColors(const u16 *pColors, u32 firstColor, u32 colorCount);
 extern s32 QueueObjPaletteLoad(const u16 *pPalette, u32 firstColor, u32 colorCount);  // queues an OBJ palette load (25 max); returns 1 when the queue is full
 extern s32 QueueObjPaletteLoadAtOffset(const u8 *pPalettes, u32 byteOffset, u32 firstColor, u32 colorCount);  // QueueObjPaletteLoad from pPalettes + byteOffset
-extern void TickPaletteAnimations_candidate(void);  // run by TickFrameSystems
+extern void TickPaletteAnimations(void);  // run by TickFrameSystems
 extern void UploadPaletteAnimations(void);
 extern void FlushObjPaletteQueue(void);
 extern void ClearPaletteRam(void);

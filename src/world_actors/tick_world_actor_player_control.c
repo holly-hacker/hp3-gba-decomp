@@ -30,13 +30,13 @@ void TickWorldActorPlayerControl(Actor *pActor)
         else
         {
             SetActorActionSubState(pActor, 2);
-            CancelActorMove_candidate(pActor);
+            StopActorMotion(pActor);
         }
     }
     else
     {
         SetActorActionSubState(pActor, 2);
-        CancelActorMove_candidate(pActor);
+        StopActorMotion(pActor);
     }
 
     if ((pActor->bActionFlags & 2) && pActor->bActionSubState == 3)
@@ -50,7 +50,7 @@ void TickWorldActorPlayerControl(Actor *pActor)
         if (next.x < camera[0] || next.x > camera[0] + 240 || next.y < camera[1] || next.y > camera[1] + 160)
         {
             SetActorActionSubState(pActor, 2);
-            CancelActorMove_candidate(pActor);
+            StopActorMotion(pActor);
         }
     }
 
@@ -59,6 +59,6 @@ void TickWorldActorPlayerControl(Actor *pActor)
         SetActorActionSubState(pActor, 2);
         SetActorActionState(pActor, 0);
         SetActorActionState(g_pPlayerActor, 0x21);
-        WORLD_ACTOR_STATE(pActor)->b6A = 0;
+        WORLD_ACTOR_STATE(pActor)->bNoPlatePress = 0;
     }
 }

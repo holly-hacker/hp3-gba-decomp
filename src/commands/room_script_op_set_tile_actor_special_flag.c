@@ -14,5 +14,5 @@ void RoomScriptOpSetTileActorSpecialFlag(SetTileActorSpecialFlagRecord *pRecord)
     Actor *pActor = GetRoomActorPtr(pRecord->bTileX, pRecord->bTileY);
 
     if (pRecord->bSet != 0)
-        pActor->bFlags_0x94_candidate |= 4;
+        pActor->bTypeFlags |= 4;
 }

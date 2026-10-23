@@ -7,7 +7,7 @@ Actor *SpawnLupinPotionEffectActor(s32 kind, FixedPoint pos)
 
     if (pActor != NULL)
     {
-        pActor->wCharacterId_candidate = kind;
+        pActor->wSubtype = kind;
         pActor->dwFlags = ActorFlagVisible | ActorFlagHasTickLogic | ActorFlagHasAnimation;
         pActor->oam.objMode = 0;
         pActor->oam.bpp8 = 0;

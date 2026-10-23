@@ -14,11 +14,11 @@ void RoomScriptOpRecruitPartyFollower(RecruitPartyFollowerRecord *pRecord)
     if (g_pFollowerActor0 == NULL)
     {
         SpawnFollowerActor0(pRecord->bCharacterId);
-        g_bPartyCharId1 = g_pFollowerActor0->wCharacterId_candidate;
+        g_bPartyCharId1 = g_pFollowerActor0->wSubtype;
     }
     else
     {
         SpawnFollowerActor1(pRecord->bCharacterId);
-        g_bPartyCharId2 = g_pFollowerActor1->wCharacterId_candidate;
+        g_bPartyCharId2 = g_pFollowerActor1->wSubtype;
     }
 }

@@ -32,20 +32,20 @@
 .set CheckActorCollisionsIwram,  0x03001A10  @ IWRAM copy of CheckActorCollisions
 .set g_ActorPoolState,              0x03001C08  @ ActorPoolState, 0x1B4 bytes
 .set g_pActorPoolAuxBuffer,         0x03001DBC  @ void *: 0x104-byte AllocZeroed'd buffer
-.set g_dwActorListTicked_candidate, 0x03001DC0  @ set to 1 by TickActiveActors, never cleared; gates FreeActor's VRAM tile release
+.set g_dwActorListTicked, 0x03001DC0  @ set to 1 by TickActiveActors, never cleared; gates FreeActor's VRAM tile release
 .set g_dwOamScaleRoundBias,                0x03001DC4  @ zeroed by InitActorPool
 .set g_ReceivedItemGfx,              0x03001DC8  @ ActorGfxRecord: the item TickActorReceiveReward holds up
 
 @ --- include/area.h ---
 .set g_adwPartyMemberArrived,          0x03001DD0  @ u32[3]: player and follower 0/1 reached a Spongify pad or raising platform
-.set g_wRoomResourceFlags_candidate, 0x03001DDC  @ u16: bit 0 = the room also has a second actor/switch row
+.set g_wRoomVariantFlags, 0x03001DDC  @ u16: RoomBlobSubBlock.wFlags of the loaded variant
 .set g_bRoomScriptCurrentChain,        0x03001DDE  @ u8: chain the VM is walking
 .set g_pRoomScriptYieldContinuation, 0x03001DE0  @ u32 *: record to resume at after a yield, or 0
 .set g_pRoomScriptNextRecord,        0x03001DE4  @ u32 *: record following the one being dispatched
 .set g_bRoomScriptCallStackDepth,    0x03001DE8  @ u8: nested chain calls in flight
 .set g_bRoomScriptYieldOpcode,            0x03001DE9  @ u8: opcode a running room script yielded on
 .set g_pRoomTableBuffer,                  0x03001DEC  @ RoomBlobHeader *: 0x2200-byte buffer holding the room's runtime tables
-.set g_dwRoomChainRanThisFrame_candidate, 0x03001DF0  @ u32: set to 1 by RespawnGroupAndRunChain while it runs a room chain; cleared by
+.set g_dwRoomChainRanThisFrame, 0x03001DF0  @ u32: set to 1 by RespawnGroupAndRunChain while it runs a room chain; cleared by
                                                       @ HandleOverworldPauseMenuInput each frame, which skips the menu check while it is set
 .set g_pRoomActorTable,            0x03001DF4  @ RoomBlobTable *: per-column, per-row tile records
 .set g_pRoomRouteTable,       0x03001DF8  @ RoomBlobTable *: per-route waypoint lists
@@ -58,7 +58,7 @@
 .set g_bForcePendingBgWritesFlush,               0x03002038
 
 @ --- include/boggart_minigame.h ---
-.set g_dwBoggartMinigameScriptFlag_candidate,    0x03002040  @ u32: set by StartMinigame
+.set g_dwBoggartMinigameForceOverworldExit,    0x03002040  @ u32: set by StartMinigame
 .set g_BoggartMinigame,                          0x03002048  @ BoggartMinigameState
 
 @ --- include/buckbeak_minigame.h ---
@@ -66,9 +66,9 @@
 .set g_pBuckbeakMinigame,                         0x03002088  @ BuckbeakMinigameState *: allocated for the minigame's duration
 
 @ --- include/camera.h ---
-.set g_aCameraEffects_candidate,                 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot
+.set g_aCameraEffects,                 0x03002090  @ CameraEffect[2]: one 0x2C-byte record per control slot
 .set g_aCameraFocusSlots,                        0x030020E8  @ CameraFocusSlot[2]: 0x38 bytes each
-.set g_aCameraFollowOffsets,                     0x03002158  @ s32[2][2]: per-slot (X, Y) offset set by SetCameraFollowTarget_candidate
+.set g_aCameraFollowOffsets,                     0x03002158  @ s32[2][2]: per-slot (X, Y) offset set by SetCameraFollowTarget
 
 @ --- include/char_block.h ---
 .set g_bBgTileAnimationCount,                    0x03002168  @ u8: number of registered BG tile animations
@@ -168,7 +168,7 @@
 .set g_dwRoomScriptRunState,    0x0300279C  @ u32: room script run state; InitializeOverworld resets 4 to 0 and only resumes a chain in state 2
 .set g_abQuestEventState,       0x030027A0  @ u8[]: quest event state bytes
 .set g_bRoomScriptPendingChain, 0x030028A0  @ u8: chain a handler asked to jump to; 0xFF = none
-.set g_bCameraShakeSoundHandle,   0x030028A4  @ u8: sound handle TickCameraFocus_candidate stops when a camera shake ends
+.set g_bCameraShakeSoundHandle,   0x030028A4  @ u8: sound handle TickCameraFocus stops when a camera shake ends
 
 @ --- include/credits_cutscene.h ---
 .set g_dwCreditsScrollRow,    0x030028A8  @ u32: last credits text row the scroll reached
@@ -194,11 +194,11 @@
 .set g_nMenuScreenPaletteEffectSlot,                  0x03002E0C  @ s32: selection pulse palette effect of BeginMenuScreen, -1 when none
 
 @ --- include/dementor_minigame.h ---
-.set g_dwDementorMinigameScriptFlag_candidate,         0x03002E10  @ u32: set by StartMinigame
+.set g_dwDementorMinigameForceOverworldExit,         0x03002E10  @ u32: set by StartMinigame
 .set g_DementorMinigame,                               0x03002E18  @ DementorMinigameState
 
 @ --- include/dialog.h ---
-.set g_DialogState_candidate,                          0x03002E88  @ DialogState
+.set g_DialogState,                          0x03002E88  @ DialogState
 .set g_pDialogMacroExpandBuffer,                       0x03002EA8  @ u8 *: 0x400-byte buffer, allocated by InitDialogBox
 .set g_awSavedBgPalette0,                              0x03002EAC  @ u16[16]: BG palette bank 0 saved by InitializeDialog and InitializeChooseCharacter, restored by their exits
 .set g_adwSavedBgPriority,                             0x03002ED0  @ u32[2]: BG0/BG1 priority saved by InitializeDialog, restored by ExitDialog
@@ -239,7 +239,7 @@
 @ --- include/hero.h ---
 .set g_OverworldControlState,                          0x03003358  @ OverworldControlState: 2 x 16-byte control slots, then slot count (+0x20) and index (+0x21)
 .set g_nCameraYOffset,               0x0300337C  @ s8: camera Y offset in pixels; 18 after InitRoomBgState
-.set g_abRoomScriptExitParams_candidate, 0x0300337D  @ u8[2]: filled by the dialog-close and return-to-overworld opcodes
+.set g_abRoomEntryIds, 0x0300337D  @ u8[2]: [0] is the entry id the next room spawns the player at
 .set g_pPlayerActor,                    0x03003380  @ Actor *: the player's overworld actor
 .set g_pFollowerActor0,                 0x03003384  @ Actor *: first party follower, NULL while empty
 .set g_pFollowerActor1,                 0x03003388  @ Actor *: second party follower, NULL while empty
@@ -247,7 +247,7 @@
 .set g_bPartyCharId1,                    0x0300338D  @ u8: character id of the first follower
 .set g_bPartyCharId2,                    0x0300338E  @ u8: character id of the second follower
 .set g_bSelectedFieldSpell,              0x0300338F  @ u8: index into g_aFieldSpells
-.set g_pPlayerShadowActor_candidate,   0x03003390  @ Actor *: type 0x11 actor SpawnPlayerActor creates for the player
+.set g_pPlayerShadowActor,   0x03003390  @ Actor *: type 0x11 actor SpawnPlayerActor creates for the player
 .set g_pPartyTrail,                    0x03003398  @ PartyTrailStep *: ring buffer of PARTY_TRAIL_LENGTH player steps the followers replay
 .set g_bPartyTrailWriteIndex,          0x0300339C  @ u8: next g_pPartyTrail entry the player's step is written to
 .set g_bPartyTrailReadIndex0,          0x0300339D  @ u8: next g_pPartyTrail entry follower 0 replays
@@ -282,7 +282,7 @@
 .set g_awPlayerKeysHeldPrevious, 0x030034FA  @ u16[2]: previous-frame counterpart of the above
 .set g_awPlayerKeysPressed,      0x030034FE  @ u16[2]: per-player newly-pressed masks
 .set g_awPlayerKeysReleased,     0x03003502  @ u16[2]: per-player newly-released masks
-.set g_awPlayerInputDisabled_candidate, 0x03003506  @ u16[2]: written with g_wInputDisabled by EnableKeyInput and DisableKeyInput; no reader found
+.set g_awInputDisabledMirror, 0x03003506  @ u16[2]: written with g_wInputDisabled by EnableKeyInput and DisableKeyInput; no reader found
 .set g_dwScrollListRowCount,     0x0300350C  @ u32: row count of the scrolling list/grid
 .set g_dwScrollListTopRow,       0x03003510  @ u32: first visible row
 .set g_dwScrollListCursorRow,    0x03003514  @ u32: cursor row within the visible window
@@ -339,9 +339,9 @@
 
 @ --- include/map.h ---
 .set g_bCurrentRoomId,                       0x03003B50  @ byte: current room/map id
-.set g_bControlSlotTicks_candidate,          0x03003B58  @ byte: bumped by TickOverworldControlSlots_candidate, zeroed on room entry, never read
-.set g_bPendingQuestStateOverride_candidate, 0x03003B5A  @ u8: 0xFF = none; else copied into quest state 0 on room entry
-.set g_dwRoomBgFlag_candidate,               0x03003B5C  @ u32: set to 1 by many rooms while loading; also read by EndFieldSpellEffect
+.set g_bControlSlotTicks,          0x03003B58  @ byte: bumped by TickOverworldControlSlots, zeroed on room entry, never read
+.set g_bStoryStageToRestore, 0x03003B5A  @ u8: story stage CheckBattleDefeat saved; restored on room entry, 0xFF = none
+.set g_dwRoomUsesBg0,               0x03003B5C  @ u32: the room keeps BG0 for its own layer; Lumos then leaves BG0 alone
 .set g_dwPauseMenuLocked,                    0x03003B60  @ u32: nonzero blocks Start/Select menus (SetPauseMenuLocked)
 .set g_bRoomSwitchState,                     0x03003B64  @ u8: current room switch state (0 or 1), see SetRoomSwitchState
 .set g_pRoomActorStateBuffer,               0x03003B68  @ 0x20BC-byte buffer, allocated by InitRoomState
@@ -581,7 +581,7 @@
 .set g_dwSerialExchangeCount, 0x03005A90  @ u32: completed exchange rounds
 .set g_dwSerialChecksumExchangeCount, 0x03005A94  @ u32: g_dwSerialExchangeCount latched by SubmitSerialMessage for message checksums
 .set g_dwSerialLastExchangeTime, 0x03005A98  @ u32: dwVBlankCount when the last exchange round finished
-.set g_dwSerialPollFlags_candidate, 0x03005A9C  @ u32: bit 0 selects the message type queued by ExchangeSerialFrame_candidate
+.set g_dwSerialSendFlags, 0x03005A9C  @ u32: bit 0 selects the message type queued by ExchangeSerialFrame
 .set g_dwSerialMaxPlayers, 0x03005AA0  @ u32: SerialConnect argument; a higher terminal ID drops the session
 .set g_dwSerialUnk03005AA4, 0x03005AA4  @ u32: zeroed by InitSerial, no other access found
 .set g_dwSerialUnk03005AA8, 0x03005AA8  @ u32: zeroed by InitSerial, no other access found
@@ -641,7 +641,7 @@
 .set g_wCoolTrainTimer,          0x03005E14  @ u16: frames left in the Cool Train cutscene
 
 @ --- include/trigger_actor.h ---
-.set g_bRestoringRoomActors_candidate, 0x03005E18  @ u8: 1 while RestoreRoomActorState respawns actors; also set when the overworld pushes a pause menu
+.set g_bRestoringRoomActors, 0x03005E18  @ u8: 1 while RestoreRoomActorState respawns actors; also set when the overworld pushes a pause menu
 .set g_nSwitchSoundHandle,       0x03005E1C  @ s32: handle of the switch actor sound
 
 @ --- include/video.h ---

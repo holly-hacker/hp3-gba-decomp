@@ -34,7 +34,7 @@ void TickServePumpkinJuiceBartenderArm(Actor *arm)
             SetActorAnimData(arm, &g_ServePumpkinJuiceBartenderArmSprite, g_aabServePumpkinJuiceBartenderArmAnims[2], 0);
         }
 
-        if (arm->pOwnerActor->pLinkedActor_candidate != NULL)
+        if (arm->pOwnerActor->pLinkedActor != NULL)
             arm->dwFlags &= ~ActorFlagVisible;
         break;
     default:

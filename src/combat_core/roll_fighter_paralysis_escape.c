@@ -14,7 +14,7 @@ u8 RollFighterParalysisEscape(u8 fighterIndex)
     {
         if (Mt19937ChanceNoisy(g_pFightState->pFighters[fighterIndex].bParalysisEscapeChance))
         {
-            ClearParalyzedFighter_candidate(fighterIndex);
+            ClearParalyzedFighter(fighterIndex);
             return 3;
         }
 

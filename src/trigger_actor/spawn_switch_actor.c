@@ -14,11 +14,11 @@ Actor *SpawnSwitchActor(u8 bColumn, u8 bRow)
         SnapActorPosition(pActor, pRecord->nPixelX << 16, pRecord->nPixelY << 16);
         pActor->wActorType = pRecord->dwActorType;
         pActor->dwFlags = ActorFlagHasTickLogic | ActorFlagTickHandlerSuspendsMovement;
-        pActor->wCharacterId_candidate = pRecord->bVariant;
+        pActor->wSubtype = pRecord->bVariant;
         pActor->oam.objMode = 0;
         pActor->oam.bpp8 = 0;
         pActor->oam.priority = 3;
-        SetActorPendingPalette(pActor, g_apRoomSwitchEffectData[pActor->wCharacterId_candidate]);
+        SetActorPendingPalette(pActor, g_apRoomSwitchEffectData[pActor->wSubtype]);
         pActor->bActionState = 0;
         SWITCH_STATE(pActor)->bFrame = 0;
         SWITCH_STATE(pActor)->bStep = 1;
@@ -26,16 +26,16 @@ Actor *SpawnSwitchActor(u8 bColumn, u8 bRow)
         SWITCH_STATE(pActor)->nRearmTicks = pRecord->wRearmDelay * 30;
         pActor->pfnTick = TickSwitchActor;
 
-        if (pActor->wCharacterId_candidate <= 10)
+        if (pActor->wSubtype <= 10)
         {
-            SetActorAssetRecord(pActor, g_apRoomSwitchAssetRecords[pActor->wCharacterId_candidate]);
+            SetActorAssetRecord(pActor, g_apRoomSwitchAssetRecords[pActor->wSubtype]);
 
-            if ((pActor->wCharacterId_candidate == 9 || pActor->wCharacterId_candidate == 10) && pRecord->bInitialFrame != 0)
+            if ((pActor->wSubtype == 9 || pActor->wSubtype == 10) && pRecord->bInitialFrame != 0)
                 SetActorAnimFrame(pActor, 1);
             else
                 SetActorAnimFrame(pActor, 0);
 
-            if (g_bRestoringRoomActors_candidate == 0)
+            if (g_bRestoringRoomActors == 0)
                 pActor->bActionFlags = 0;
             else
                 pActor->bActionFlags |= 0x20;

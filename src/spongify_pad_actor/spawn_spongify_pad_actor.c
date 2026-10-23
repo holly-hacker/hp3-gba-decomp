@@ -19,14 +19,14 @@ Actor *SpawnSpongifyPadActor(u8 bColumn, u8 bRow)
     pActor->anim.bAnimFrameDelay = 1;
     pActor->pfnTick = TickSpongifyPadActor;
     pActor->apfnCollisionCallback[0] = HandleSpongifyPadTouch;
-    pActor->wCharacterId_candidate = pRecord->bVariant;
+    pActor->wSubtype = pRecord->bVariant;
     SPONGIFY_PAD_STATE(pActor)->target.x = pRecord->nArg8;
     SPONGIFY_PAD_STATE(pActor)->target.y = pRecord->nArgA;
     SPONGIFY_PAD_STATE(pActor)->bRespawnRow = pRecord->abArgD[0];
     SPONGIFY_PAD_STATE(pActor)->bChainRow = pRecord->abArgD[1];
     SPONGIFY_PAD_STATE(pActor)->dwArmed = 0;
-    SetActorPendingPalette(pActor, g_apRoomSpongifyPadEffectData[pActor->wCharacterId_candidate]);
-    SetActorAnimData(pActor, g_apRoomSpongifyPadAnimFrames[pActor->wCharacterId_candidate], (void *)g_abRoomSpongifyPadAnimData, 0);
+    SetActorPendingPalette(pActor, g_apRoomSpongifyPadEffectData[pActor->wSubtype]);
+    SetActorAnimData(pActor, g_apRoomSpongifyPadAnimFrames[pActor->wSubtype], (void *)g_abRoomSpongifyPadAnimData, 0);
     pActor->oam.priority = 3;
     pActor->bDepthSortBias = 0x80;
 

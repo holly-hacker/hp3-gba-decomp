@@ -16,13 +16,13 @@ Actor *SpawnFlamePillarActor(u8 bColumn, u8 bRow)
     pActor->anim.bAnimFrameDelay = 1;
     pActor->pfnTick = TickFlamePillarActor;
     pActor->apfnCollisionCallback[0] = HandleFlamePillarTouch;
-    pActor->wCharacterId_candidate = pRecord->abArgC[0];
+    pActor->wSubtype = pRecord->abArgC[0];
     pActor->modeState.flamePillar.touch.rows.bRespawnRow = pRecord->abArgC[1];
     pActor->modeState.flamePillar.touch.rows.bChainRow = pRecord->abArgC[2];
     pActor->scriptState.wFlameOutTicks = pRecord->wArg8;
     pActor->modeState.flamePillar.wLitTicks = pRecord->wArgA;
-    SetActorPendingPalette(pActor, g_apRoomFlamePillarEffectData[pActor->wCharacterId_candidate]);
-    SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wCharacterId_candidate], (void *)g_abRoomFlamePillarAnimData, 0);
+    SetActorPendingPalette(pActor, g_apRoomFlamePillarEffectData[pActor->wSubtype]);
+    SetActorAnimData(pActor, g_apRoomFlamePillarAnimFrames[pActor->wSubtype], (void *)g_abRoomFlamePillarAnimData, 0);
     pActor->oam.priority = 1;
     pActor->bDepthSortBias = 0x80;
     return pActor;

@@ -8,7 +8,7 @@
 // tick.
 void TickSpongifyEffect(Actor *effect)
 {
-    u32 spell = effect->wCharacterId_candidate;
+    u32 spell = effect->wSubtype;
 
     if (effect->bActionSubState == 3 && (u16)--effect->timer84.nFlightTicks == 0xFFFF)
     {
@@ -19,7 +19,7 @@ void TickSpongifyEffect(Actor *effect)
     switch (effect->bActionSubState)
     {
     case 0:
-        effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionB_candidate;
+        effect->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagSpellTerrainCollision;
         effect->bTerrainBlockResponse = TerrainBlockEndFlight;
         effect->dwStateTimer = 45;
         SetActorActionSubState(effect, 3);
@@ -37,13 +37,13 @@ void TickSpongifyEffect(Actor *effect)
         }
         break;
     case 0x10:
-        CancelActorMove_candidate(effect);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_abSpongifyHitAnim, 0);
         SetActorActionSubState(effect, 0x12);
         break;
     case 5:
     case 0x11:
-        CancelActorMove_candidate(effect);
+        StopActorMotion(effect);
         SetActorAnimData(effect, &g_aFieldSpellAssets[spell], g_abSpongifyEndAnim, 0);
         SetActorActionSubState(effect, 0x12);
         FreeAllParticleEmitters();

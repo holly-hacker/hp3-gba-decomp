@@ -21,7 +21,7 @@ void HandleSpongifyPadTouch(Actor *pSelf, Actor *pOther)
             pOther->moveTarget.y = pSelf->pos.y;
             SetActorActionState(pOther, 0);
             SetActorActionSubState(pOther, 3);
-            ClearActorFlags(g_pPlayerActor, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate);
+            ClearActorFlags(g_pPlayerActor, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision);
 
             if (g_pFollowerActor0 != NULL)
             {
@@ -29,7 +29,7 @@ void HandleSpongifyPadTouch(Actor *pSelf, Actor *pOther)
                 g_pFollowerActor0->moveTarget.x = pSelf->pos.x;
                 g_pFollowerActor0->moveTarget.y = pSelf->pos.y;
                 SetActorActionSubState(g_pFollowerActor0, 3);
-                ClearActorFlags(g_pFollowerActor0, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate);
+                ClearActorFlags(g_pFollowerActor0, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision);
             }
             else
             {
@@ -42,7 +42,7 @@ void HandleSpongifyPadTouch(Actor *pSelf, Actor *pOther)
                 g_pFollowerActor1->moveTarget.x = pSelf->pos.x;
                 g_pFollowerActor1->moveTarget.y = pSelf->pos.y;
                 SetActorActionSubState(g_pFollowerActor1, 3);
-                ClearActorFlags(g_pFollowerActor1, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollisionA_candidate);
+                ClearActorFlags(g_pFollowerActor1, ActorFlagWantsCollisionCheck | ActorFlagTerrainCollision);
             }
             else
             {
@@ -66,7 +66,7 @@ void HandleSpongifyPadTouch(Actor *pSelf, Actor *pOther)
         }
         break;
     case RoomActorType_FieldSpellEffect:
-        if (pOther->wCharacterId_candidate == FieldSpellSpongify && SPONGIFY_PAD_STATE(pSelf)->dwArmed == 0)
+        if (pOther->wSubtype == FieldSpellSpongify && SPONGIFY_PAD_STATE(pSelf)->dwArmed == 0)
         {
             ReleaseParticleGfx(2, 0);
             ReleaseParticleGfx(2, 1);

@@ -21,9 +21,9 @@ void HandleWorldActorTouch(Actor *pSelf, Actor *pOther)
     s32 camera[2];
     IntPoint screen;
 
-    if (pSelf->dwFlags & ActorFlagNoPushTrigger_candidate)
+    if (pSelf->dwFlags & ActorFlagSettled)
         return;
-    if (pOther->dwFlags & ActorFlagNoPushTrigger_candidate)
+    if (pOther->dwFlags & ActorFlagSettled)
         return;
 
     kind = WORLD_ACTOR_STATE(pSelf)->bKind;
@@ -70,7 +70,7 @@ void HandleWorldActorTouch(Actor *pSelf, Actor *pOther)
         pOther->vel.y = 0;
         break;
     case RoomActorType_FieldSpellEffect:
-        spell = pOther->wCharacterId_candidate;
+        spell = pOther->wSubtype;
         switch (spell)
         {
         case FieldSpellFlipendo:

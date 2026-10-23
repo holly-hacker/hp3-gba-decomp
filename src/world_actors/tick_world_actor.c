@@ -78,13 +78,13 @@ void TickWorldActor(Actor *pActor)
             pActor->vel.y = 0;
             SetActorActionSubState(pActor, 1);
             SetActorAnimFrame(pActor, 1);
-            pActor->dwFlags |= ActorFlagNoPushTrigger_candidate;
+            pActor->dwFlags |= ActorFlagSettled;
             pActor->bDepthSortBias = 0xFF;
         }
         break;
     case 5:
-        if (pActor->pLinkedActor_candidate != NULL)
-            pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        if (pActor->pLinkedActor != NULL)
+            pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         return;
     }
@@ -205,15 +205,15 @@ void TickWorldActor(Actor *pActor)
             {
                 SetActorActionState(g_pPlayerActor, 0x21);
                 SetActorPrevActionState(g_pPlayerActor, 0x21);
-                if (pActor->pLinkedActor_candidate != NULL)
-                    pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+                if (pActor->pLinkedActor != NULL)
+                    pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
                 pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             }
         }
         else if (pActor->dwFlags & ActorFlagActionAnimDone)
         {
-            if (pActor->pLinkedActor_candidate != NULL)
-                pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+            if (pActor->pLinkedActor != NULL)
+                pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
             pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         }
         else if (kind == 51)
@@ -222,8 +222,8 @@ void TickWorldActor(Actor *pActor)
         }
         break;
     case 1:
-        if (pActor->pLinkedActor_candidate != NULL)
-            pActor->pLinkedActor_candidate->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
+        if (pActor->pLinkedActor != NULL)
+            pActor->pLinkedActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         pActor->dwFlags |= ActorFlagPendingDestroy | ActorFlagAnimFrameLoaded;
         break;
     }

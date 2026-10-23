@@ -17,7 +17,7 @@ void TickActorPadWalk(Actor *actor)
     subState = actor->bActionSubState;
     switch (subState) {
     case 0:
-        actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate);
+        actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollision);
         if (g_pFollowerActor0 != 0) {
             g_pFollowerActor0->dwFlags &= ~ActorFlagVisible;
             g_pFollowerActor0->bFacing = actor->bFacing;
@@ -31,16 +31,16 @@ void TickActorPadWalk(Actor *actor)
         actor->moveTarget.y = ROOM_ACTOR_WORD_STATE(actor)->n64 << 16;
         break;
     case 3:
-        actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate);
+        actor->dwFlags &= ~(ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollision);
         direction = GetDirectionToTarget(actor->dwFlags, actor->pos, actor->moveTarget, actor->nMoveSpeed);
-        if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
+        if (((actor->dwFlags & ActorFlagFourWayDirections) && direction == Direction4None)
             || direction == DirectionNone) {
             direction = actor->bPadFinalFacing;
             if (actor->bFacing != direction) {
                 actor->bFacing = direction;
                 actor->bActionFlags |= 0x10;
             }
-            CancelActorMove_candidate(actor);
+            StopActorMotion(actor);
             SetActorActionSubState(actor, 14);
         }
         else if (actor->bFacing != direction) {
@@ -49,7 +49,7 @@ void TickActorPadWalk(Actor *actor)
         }
         break;
     case 14:
-        actor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate;
+        actor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollision;
         if (g_pFollowerActor0 != 0) {
             g_pFollowerActor0->dwFlags |= ActorFlagVisible;
             SetActorActionSubState(g_pFollowerActor0, 0);
@@ -60,8 +60,8 @@ void TickActorPadWalk(Actor *actor)
             SetActorActionSubState(g_pFollowerActor1, 0);
             g_pFollowerActor1->pOwnerActor = 0;
         }
-        g_pPlayerShadowActor_candidate->dwFlags |= ActorFlagVisible;
-        actor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollisionA_candidate;
+        g_pPlayerShadowActor->dwFlags |= ActorFlagVisible;
+        actor->dwFlags |= ActorFlagWantsCollisionCheck | ActorFlagHasAnimation | ActorFlagTerrainCollision;
         SetActorActionState(actor, 0x21);
         if (actor->padFinish.wPair != 0)
             RespawnGroupAndRunChain(actor->padFinish.rows.bRespawnRow,

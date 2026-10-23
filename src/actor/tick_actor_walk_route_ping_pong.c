@@ -47,7 +47,7 @@ void TickActorWalkRoutePingPong(Actor *actor)
         pos = actor->pos;
         target = actor->moveTarget;
         direction = GetDirectionToTarget(actor->dwFlags, pos, target, actor->nMoveSpeed);
-        if (((actor->dwFlags & ActorFlagFourWayDirections_candidate) && direction == Direction4None)
+        if (((actor->dwFlags & ActorFlagFourWayDirections) && direction == Direction4None)
             || direction == DirectionNone) {
             RunRoomRouteWaypointChain(route, waypoint);
             if (forward)

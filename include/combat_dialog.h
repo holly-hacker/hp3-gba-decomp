@@ -32,7 +32,7 @@ typedef enum {
     HiddenFromView    = 16,
     ImmuneToParalysis = 17,
 } BattleMessageCode;
-// bPendingStatusMessageVariant_candidate's "none" value, written at battle
+// bPendingStatusMessageVariant's "none" value, written at battle
 // init: the guard at each ShowBattleMessage(AttackResult, 0, variant) site
 // skips the second message while it holds.
 #define NO_PENDING_STATUS_MESSAGE_VARIANT 0x12
@@ -76,7 +76,7 @@ extern const ActorAssetRecord g_aBattleMenuIconAssets[61];   // 0x0804DCA4
 extern const u32 g_dwBattleFloorBgControl;  // 0x0804E074, passed to InitFloorDisplay
 extern const u32 g_dwBattleBg1Control;      // 0x0804E078
 extern const u32 g_dwBattleBg0Control;      // 0x0804E07C, also the battle text target
-extern const u32 g_dwBattleBgControlUnused_candidate;  // 0x0804E080, no reader found
+extern const u32 g_dwBattleBg3Control;      // 0x0804E080, no reader; g_adwEffectBgControls's BG3 value
 // Spell id of each spell menu row, per party FighterType (Harry, Hermione, Ron).
 extern const u8 g_aabFighterSpellMenu[3][7];  // 0x0804E084
 
@@ -89,7 +89,7 @@ extern const BattleBackgroundPair g_aBattleBackgroundPairs[ROOM_COUNT];  // 0x08
 extern const u8 g_abBattleMusicByRoom[ROOM_COUNT];  // 0x0804E254, indexed by g_bCurrentRoomId
 extern const u8 g_abBattleMusicByScriptedEncounter[15]; // 0x0804E28B, indexed by dwCurrentGameModeArg1 (scripted encounter id)
 
-extern const ActorAssetRecord g_MenuSprite003Asset_candidate;  // 0x0804E29C, no reader found
+extern const ActorAssetRecord g_MenuSprite003Asset;  // 0x0804E29C, no reader found
 
 // Battle screen scanline callbacks, copied to g_aBattleScanlineEffectBuffer by InitBattleDisplay,
 // RestoreBattleScanlineEffects and ResetBattleDisplayEffects.

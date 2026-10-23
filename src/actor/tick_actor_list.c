@@ -105,7 +105,7 @@ u32 TickActorList(ActiveActorListState *list, u8 mode)
     }
 
     if (mode == 1) {
-        if (g_ActorPoolState.bExtraOamPassEnabled_candidate != 0) {
+        if (g_ActorPoolState.bExtraOamPassPriority != 0) {
             for (queueIndex = 0; queueIndex < g_dwOamQueueCount; queueIndex++) {
                 actor = g_apOamQueue[queueIndex];
                 if (actor->dwFlags & ActorFlagExtraOamPass) {
