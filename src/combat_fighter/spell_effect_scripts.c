@@ -16,9 +16,10 @@ const u8 g_abSpellEffectScriptId[SPELL_COUNT][SPELL_LEVELS] = {
     { 0x1D, 0x1D, 0x1D },  // Spongify
 };
 
-// Another per-spell, per-level byte table with no known reader. Its values
-// (0x59-0x71) are past the last of the 65 effect scripts.
-const u8 g_abSpellUnknownByLevel[SPELL_COUNT][SPELL_LEVELS] = {
+// Sound id per spell and cast level; nothing reads it. Flipendo, Verdimillious, Diffindo,
+// Incendio and Spongify match sounds their effect scripts play; the other spells' scripts
+// play different sounds.
+const u8 g_abSpellSoundId[SPELL_COUNT][SPELL_LEVELS] = {
     { 0x5D, 0x5E, 0x5F },  // Flipendo
     { 0x64, 0x64, 0x64 },  // Informus
     { 0x59, 0x5A, 0x5C },  // Verdimillious

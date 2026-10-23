@@ -11,7 +11,8 @@ const u8 g_aFolioBrutiCursorAnim[] = {
     ANIM_JUMP(0),
 };
 
-// A single held frame, 14 bytes like the streams below.
+// Held frame 4, shown when the spell's effectiveness is unknown; padded to 14 bytes like
+// the streams below.
 const u8 g_aFolioBrutiDotUnknownAnim[14] = {
     ANIM_FRAME(4, 0), ANIM_FRAME(0, 0), ANIM_FRAME(0, 0), ANIM_FRAME(0, 0),
     ANIM_FRAME(0, 0), ANIM_FRAME(0, 0), ANIM_FRAME(0, 0),

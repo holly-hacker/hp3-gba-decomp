@@ -167,7 +167,7 @@ extern const u8 g_aFighterAnimDataTable[4][10][58];  // 0x08051560, [fighter][an
 extern const u8 g_pMonsterAnimFrameTable[69][96];  // 0x08051E70
 extern const u8 g_MonsterShadowAnimData[96];     // 0x08053850
 extern const u8 g_abSpellEffectScriptId[10][3];  // 0x080538B0, [spellId][level]
-extern const u8 g_abSpellUnknownByLevel[10][3];  // 0x080538CE, [spellId][level], no known reader
+extern const u8 g_abSpellSoundId[10][3];  // 0x080538CE, [spellId][level], unused
 extern const u16 g_awSpellPowerBase[SPELL_COUNT][SPELL_LEVELS];
 extern const u16 g_awSpellPowerScale[SPELL_COUNT][SPELL_LEVELS];
 extern const u16 g_awSpellMpCost[SPELL_COUNT][SPELL_LEVELS];  // 0x08053964
