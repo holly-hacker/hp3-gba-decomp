@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from manifest import address, read_rows  # noqa: E402
+from manifest import read_rows  # noqa: E402
 from krawall_codec import compress_pattern, derive_song_index, compute_trailing_buffer
 
 LOOP_MODES = {"none": 0, "forward": 1, "pingpong": 2}
@@ -43,39 +43,34 @@ def wav_to_pcm(path: Path) -> bytes:
     return frames
 
 
-def parse_krawall_rows(ver: str) -> tuple[list[tuple[int, int, str, str]], tuple[int, int, str, str]]:
+def parse_krawall_rows(ver: str) -> tuple[list[tuple[str, str]], tuple[str, str]]:
     """Returns (module_rows, samples_row) parsed from regions.<ver>.txt."""
     modules = []
     samples_row = None
     for lineno, parts in read_rows(f"regions.{ver}.txt"):
         if parts[0] == "krawall-module":
-            if len(parts) != 5:
-                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-module <start> <end> <json> <name>'")
-            _, start, end, jsonfile, name = parts
-            modules.append((address(start), address(end), jsonfile, name))
+            if len(parts) != 3:
+                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-module <json> <name>'")
+            modules.append((parts[1], parts[2]))
         elif parts[0] == "krawall-samples":
-            if len(parts) != 5:
-                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-samples <start> <end> <dir> <name>'")
+            if len(parts) != 3:
+                sys.exit(f"regions.{ver}.txt:{lineno}: expected 'krawall-samples <dir> <name>'")
             if samples_row is not None:
                 sys.exit(f"regions.{ver}.txt:{lineno}: duplicate krawall-samples row")
-            _, start, end, samplesdir, name = parts
-            samples_row = (address(start), address(end), samplesdir, name)
+            samples_row = (parts[1], parts[2])
     if samples_row is None:
         sys.exit(f"regions.{ver}.txt: no krawall-samples row found")
     return modules, samples_row
 
 
-def emit_bytes(lines: list[str], data: bytes) -> int:
+def emit_bytes(lines: list[str], data: bytes) -> None:
     for i in range(0, len(data), 32):
         lines.append(".byte " + ", ".join(str(b) for b in data[i:i + 32]))
-    return len(data)
 
 
-def emit_pad_to_align4(lines: list[str], cursor: int) -> int:
-    """Zero-pads to a word; cursor is the offset into the region, which
-    starts word-aligned."""
+def emit_pad_to_align4(lines: list[str]) -> None:
+    """Zero-pads to a word; each region starts word-aligned."""
     lines.append(".balign 4, 0")
-    return (-cursor) % 4
 
 
 def resolve_instruments(rows: list[list[dict]], sample_index: dict[str, int]) -> list[list[dict]]:
@@ -94,11 +89,10 @@ def resolve_instruments(rows: list[list[dict]], sample_index: dict[str, int]) ->
     return resolved
 
 
-def pack_module(start_addr: int, end_addr: int, json_path: str, name: str,
+def pack_module(json_path: str, name: str,
                  sample_index: dict[str, int]) -> str:
     module = json.loads(Path(json_path).read_text())
     lines: list[str] = [".balign 4"]
-    cursor = 0
 
     pattern_labels = []
     for i, pat in enumerate(module["patterns"]):
@@ -110,10 +104,10 @@ def pack_module(start_addr: int, end_addr: int, json_path: str, name: str,
         lines.append(f"{pat_label}:")
 
         idx_bytes = b"".join(struct.pack("<H", v) for v in index16)
-        cursor += emit_bytes(lines, idx_bytes)
-        cursor += emit_bytes(lines, bytes([len(pat["rows"])]))  # 1-byte rows count (old format)
-        cursor += emit_bytes(lines, data)
-        cursor += emit_pad_to_align4(lines, cursor)
+        emit_bytes(lines, idx_bytes)
+        emit_bytes(lines, bytes([len(pat["rows"])]))  # 1-byte rows count (old format)
+        emit_bytes(lines, data)
+        emit_pad_to_align4(lines)
 
     lines.append(f"{name}:")
 
@@ -146,20 +140,15 @@ def pack_module(start_addr: int, end_addr: int, json_path: str, name: str,
     header.append(1 if module.get("flagFastVolSlides") else 0)
     header += bytes(3)  # always-zero trailing bytes, see docs/formats/krawall.md
 
-    cursor += emit_bytes(lines, bytes(header))
+    emit_bytes(lines, bytes(header))
 
     for lbl in pattern_labels:
         lines.append(f".word {lbl}")
-        cursor += 4
-
-    if start_addr is not None and end_addr is not None and cursor != end_addr - start_addr:
-        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X} bytes, "
-                  f"regions file declares 0x{end_addr - start_addr:X}")
 
     return "\n".join(lines) + "\n"
 
 
-def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) -> tuple[str, dict[str, int]]:
+def pack_samples(samples_dir: str, name: str) -> tuple[str, dict[str, int]]:
     sdir = Path(samples_dir)
     # Sample order fixes each sample's 1-based instrument index -- the
     # authoritative order is each JSON's own "index" field (written by
@@ -180,7 +169,6 @@ def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) ->
     sample_index = {stem: idx + 1 for idx, stem, _ in entries}  # 1-based
 
     lines: list[str] = [".balign 4"]
-    cursor = 0
     labels = []
     for _, sname, meta in entries:
         pcm = wav_to_pcm(sdir / f"{sname}.wav")
@@ -188,12 +176,9 @@ def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) ->
         labels.append(sname)
         lines.append(f"{sname}:")
         lines.append(f".word {meta['loopLength']}")
-        cursor += 4
         end_label = f"{sname}_end"
         lines.append(f".word {end_label}")  # size field: address of _end, see docs/formats/krawall.md
-        cursor += 4
         lines.append(f".word {meta['c2Freq']}")
-        cursor += 4
 
         loop_mode = LOOP_MODES[meta["loop"]]
         fixed = bytes([
@@ -204,22 +189,17 @@ def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) ->
             loop_mode,
             1 if meta.get("hq") else 0,
         ])
-        cursor += emit_bytes(lines, fixed)
-        cursor += emit_bytes(lines, pcm)
+        emit_bytes(lines, fixed)
+        emit_bytes(lines, pcm)
 
         lines.append(f"{end_label}:")
         tail = compute_trailing_buffer(pcm, loop_mode, meta["loopLength"])
-        cursor += emit_bytes(lines, tail)
-        cursor += emit_pad_to_align4(lines, cursor)
+        emit_bytes(lines, tail)
+        emit_pad_to_align4(lines)
 
     lines.append(f"{name}:")
     for lbl in labels:
         lines.append(f".word {lbl}")
-        cursor += 4
-
-    if start_addr is not None and end_addr is not None and cursor != end_addr - start_addr:
-        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X} bytes, "
-                  f"regions file declares 0x{end_addr - start_addr:X}")
 
     return "\n".join(lines) + "\n", sample_index
 
@@ -229,17 +209,17 @@ def main() -> None:
         sys.exit(f"usage: {sys.argv[0]} <ver>")
     ver = sys.argv[1]
 
-    module_rows, (s_start, s_end, s_dir, s_name) = parse_krawall_rows(ver)
+    module_rows, (s_dir, s_name) = parse_krawall_rows(ver)
 
     out_dir = Path(f"build/{ver}/audio")
     (out_dir / "samples").mkdir(parents=True, exist_ok=True)
     (out_dir / "modules").mkdir(parents=True, exist_ok=True)
 
-    samples_asm, sample_index = pack_samples(s_start, s_end, s_dir, s_name)
+    samples_asm, sample_index = pack_samples(s_dir, s_name)
     (out_dir / "samples" / f"{s_name}.s").write_text(samples_asm)
 
-    for start, end, json_path, name in module_rows:
-        asm = pack_module(start, end, json_path, name, sample_index)
+    for json_path, name in module_rows:
+        asm = pack_module(json_path, name, sample_index)
         (out_dir / "modules" / f"{name}.s").write_text(asm)
 
     print(f"packed {len(module_rows)} modules + samples for {ver}", file=sys.stderr)

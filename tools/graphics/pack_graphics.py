@@ -60,12 +60,9 @@ def main() -> None:
 
         out = runs.ROOT / "build" / ver / "graphics"
         rows = runs.rows(ver, {g.name: g for gs in features.values() for g in gs})
-        for row in rows:
-            name = row.group.name
+        for group in rows:
+            name = group.name
             data = b"".join(piece for _, piece in pieces[name])
-            if row.end is not None and len(data) != row.end - row.start:
-                raise ValueError(f"{name}: packs to {len(data):#x} bytes, "
-                                 f"regions.{ver}.txt claims {row.end - row.start:#x}")
             bin_path = (out / f"{name}.bin").relative_to(runs.ROOT).as_posix()
             asm, offset = [".balign 4"], 0
             for label, piece in pieces[name]:

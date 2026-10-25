@@ -5,7 +5,7 @@ what to know before changing C.
 
 ## The pipeline
 
-A `c-file <start> <end> <source.c> <name>` row in `regions.<ver>.txt`
+A `c-file <source.c> <name>` row in `regions.<ver>.txt`
 points at a `.c` under `src/`. `tools/c/compile_c.py` runs it through the
 system `cpp` and then `agbcc`, and `tools/gen_link.py` wraps the result as
 the region's object, which `tools/assemble.py` assembles. Both steps reuse
@@ -21,10 +21,10 @@ A `c-file-arm` row compiles ARM-mode code with `agbcc_arm` and
 which it lacks).
 
 A C file's `.rodata` is normally folded into its own region. A
-`c-rodata <start> <end> <name>` row instead places the `.rodata` of the
-C row named `<name>` at its own address, for an object whose read-only
+`c-rodata <name>` row instead places the `.rodata` of the C row
+named `<name>` as a region of its own, for an object whose read-only
 data the ROM keeps apart from its code (the EEPROM library objects).
-A `c-data <start> <end> <name>` row likewise places the object's `.data`,
+A `c-data <name>` row likewise places the object's `.data`,
 initialised non-const data such as `char *table[] = { "..." }`: the
 pointer table goes to `.data` and its strings to `.rodata`, which the
 c-file row then places (`src/gamecube/joybus_error_strings.c`).
@@ -33,15 +33,15 @@ Third-party code under `3rd_party/` (Krawall) has its own rows, compiled
 with GCC 3.0.2 at `-O3` ([`compiler.md`](compiler.md)) from headers in
 `include/3rd_party/<lib>/`:
 
-- `c-file-gcc3 <start> <end> <source.c> <name> [<section> [<vma>]]` for
+- `c-file-gcc3 <source.c> <name> [<section> [<vma>]]` for
   Thumb C, `c-file-gcc3-arm` for ARM C, and `asm-file-cpp` for a
   preprocessed `.S`.
 - These objects keep `.text`, `.rodata`, `.iwram` and `.ewram` apart.
   The row places one of them, `.text` unless `<section>` names another.
-- `c-section <start> <end> <name> <section> [<vma>]` places another
+- `c-section <name> <section> [<vma>]` places another
   section of the object `<name>`; its region is `<name><section>`.
 - `<vma>` is the RAM address a section runs at when it is stored in ROM
-  at `<start>` and copied there (the IWRAM and EWRAM images).
+  and copied there (the IWRAM and EWRAM images).
 - The link fails on an object with a non-empty section that no row
   places.
 
@@ -99,8 +99,9 @@ struct layout is a compile error rather than a silently shifted table.
 
 ## Finding a mismatch
 
-`just compare` reports a byte offset in a 16 MB image; the link only fails
-at the first region a wrong size moves. To see what actually differs:
+`just compare` names the region holding the first differing byte, skipping
+pointers and branch offsets the linker filled in, which change whenever
+their target moves. To see what actually differs:
 
 ```sh
 just diff-region <name>          # us

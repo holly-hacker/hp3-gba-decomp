@@ -53,8 +53,7 @@ extract-krawall:
 
 # Gitignored (build/), like everything else pack_krawall.py writes. Reads
 # local data/audio/ (run `extract-krawall` first if missing -- version-
-# independent) plus this version's krawall-module/krawall-samples rows in
-# regions.<ver>.txt for addresses.
+# independent) and this version's krawall-module/krawall-samples rows.
 # Pack data/audio/ into this version's Krawall assembly.
 pack-krawall ver="us":
     python3 tools/krawall/pack_krawall.py {{ver}}
@@ -68,9 +67,8 @@ extract-text:
     python3 tools/text/extract_text.py
 
 # Gitignored (build/), like everything else pack_text.py writes. Reads
-# local data/text/ (run `extract-text` first if missing) plus this
-# version's dialog-text/dialog-text-table rows in regions.<ver>.txt for
-# addresses.
+# local data/text/ (run `extract-text` first if missing) and this
+# version's dialog-text/dialog-text-table rows.
 # Pack data/text/ into this version's dialog-text assembly.
 pack-text ver="us":
     python3 tools/text/pack_text.py {{ver}}
@@ -110,14 +108,15 @@ gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
 # Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
-# --no-warn-rwx-segments.
+# --no-warn-rwx-segments. --emit-relocs keeps the relocations in rom.elf for
+# tools/compare.py. The donor ROM is zero-filled to 16 MiB.
 # Assemble every region and link them in manifest order.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
-    arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/check.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
-    arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
+    arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
+    arm-none-eabi-objcopy -O binary --pad-to 0x9000000 --gap-fill 0x00 build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
-# Linked without the manifest address checks, so regions may change size.
+# Same as `build`, without the 16 MiB zero fill and leaving rom.gba alone.
 # Build a modified ROM to mod.gba.
 build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
@@ -132,16 +131,15 @@ diff-region name ver="us": (build ver)
 
 # Build and check the result matches the donor ROM byte-for-byte.
 compare ver="us": (build ver)
-    cmp baserom.{{ver}}.gba build/{{ver}}/rom.gba && echo "MATCH"
+    python3 tools/compare.py {{ver}}
 
-# Verifies donor ROMs, linked builds for both versions and manifest ordering.
+# Verifies donor ROMs, linked builds for both versions and RAM symbol ordering.
 # Full sanity sweep: run everything, confirm it all still matches. Run before committing.
 check-all: setup (compare "us") (compare "jp") check-sorted
     @echo "us and jp: linked build matches the donor ROM."
 
-# Confirm regions.<ver>.txt and ram_symbols.<ver>.inc stay sorted by address.
+# Confirm ram_symbols.<ver>.inc stays sorted by address.
 check-sorted:
-    python3 tools/check_sorted_regions.py
     python3 tools/check_sorted_ram_symbols.py
 
 # Lossy (effect remapping, pattern rewrites for playback accuracy) and NOT

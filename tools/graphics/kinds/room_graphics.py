@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[3]
 ITEMS = "rooms"
 OPTIONS = {}
 LABELS = {f"map{n}": f"BgMap{n}" for n in range(4)}
+# Where g_aRoomTable is in each donor ROM, for reading the rooms out of it.
+ROOM_TABLE = {"us": 0x08063C8C, "jp": 0x08063C18}
 LABELS.update({f"blocks{n}": f"BgBlocks{n}" for n in range(4)})
 LABELS.update({"collision_behavior": "CollisionBehavior", "collision_map": "CollisionMap",
                "tileset_a": "TilesetA", "palette_a": "PaletteA",
@@ -45,18 +47,14 @@ def build(source: Path, settings: dict, room: dict) -> list[tuple[str, bytes]]:
 def room_table(ver: str) -> tuple[int, dict[int, str]]:
     """g_aRoomTable's address, and each room's directory name, from the
     RoomNNBlob rows of regions.<ver>.txt."""
-    table, names = None, {}
+    names = {}
     for line in (ROOT / f"regions.{ver}.txt").read_text().splitlines():
         parts = line.split("#", 1)[0].split()
-        if parts and parts[-1] == "g_aRoomTable" and parts[0] in ("label", "c-file"):
-            table = int(parts[1], 16)
-        elif len(parts) == 5 and parts[0] == "asm-file":
-            m = re.fullmatch(r"Room(\d\d)Blob", parts[4])
+        if len(parts) == 3 and parts[0] == "asm-file":
+            m = re.fullmatch(r"Room(\d\d)Blob", parts[2])
             if m:
-                names[int(m.group(1))] = Path(parts[3]).stem
-    if table is None:
-        raise ValueError(f"regions.{ver}.txt does not place g_aRoomTable")
-    return table, names
+                names[int(m.group(1))] = Path(parts[1]).stem
+    return ROOM_TABLE[ver], names
 
 
 def walk(rom: bytes, ver: str, run) -> list[tuple[int, int]]:

@@ -58,7 +58,7 @@ The match search is O(n^2), so the largest resource (63 KB) takes about
 
 ## Graphics build format
 
-A `graphics <start> <end> <feature> <Group>` manifest row claims one group:
+A `graphics <feature> <Group>` manifest row claims one group:
 contiguous graphics of one feature, such as a minigame's sprites and
 backgrounds. `graphics/<feature>.yaml` describes the feature's groups for
 both versions. A version that lacks a group has no row for it. A group is a
@@ -97,14 +97,15 @@ version has, whose files would otherwise collide.
 
 `just pack <ver>` (`tools/graphics/pack_graphics.py`, kinds in
 `tools/graphics/kinds/`) builds every item through the build cache and
-writes `build/<ver>/graphics/<Group>.bin` and `.s`. The group's size must
-equal its manifest range. `include/gen/graphics/<feature>.h` declares the
+writes `build/<ver>/graphics/<Group>.bin` and `.s`.
+`include/gen/graphics/<feature>.h` declares the
 labels of every group in the feature, including groups only the other
 version has, so the headers are the same for both versions and are
 committed.
 
 `just extract-graphics [group ...]` (`tools/graphics/extract_graphics.py`)
-walks each group from its start. It takes each item's length from the item
+walks each group from its start in the donor ROM, which the script lists
+with its end for each version. It takes each item's length from the item
 itself and each run's length from its names, and the walk must end exactly
 at the group's end. Each group is extracted once, from the US ROM if its
 manifest has the group and from JP otherwise, and every item must rebuild

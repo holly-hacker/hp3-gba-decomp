@@ -269,8 +269,8 @@ def main() -> None:
         if line
     ]
     rows = [parts for parts in lines if parts[0] in C_FILE_DIRECTIVES]
-    separate_rodata = {parts[3] for parts in lines if parts[0] == "c-rodata"}
-    separate_data = {parts[3] for parts in lines if parts[0] == "c-data"}
+    separate_rodata = {parts[1] for parts in lines if parts[0] == "c-rodata"}
+    separate_data = {parts[1] for parts in lines if parts[0] == "c-data"}
     if not rows:
         print(f"no c-file rows in regions.{ver}.txt -- nothing to compile")
         return
@@ -278,7 +278,7 @@ def main() -> None:
     prefix = agbcc_prefix()
     tools = buildcache.tool_digest()
     def compile_row(row):
-        directive, _, _, src, name = row[:5]
+        directive, src, name = row[:3]
         if directive in SECTIONED_DIRECTIVES:
             compile_sectioned(src, f"build/{ver}/c/{name}.s", prefix, tools,
                               directive)

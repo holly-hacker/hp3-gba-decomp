@@ -1,6 +1,6 @@
 """Graphics groups: the `graphics` rows of regions.<ver>.txt.
 
-A manifest row `graphics <start> <end> <feature> <Group>` claims one group:
+A manifest row `graphics <feature> <Group>` claims one group:
 contiguous graphics of one feature, made of runs of one kind each.
 graphics/<feature>.yaml describes the feature's groups, shared by both
 versions:
@@ -52,7 +52,7 @@ for sub in ("tools", "tools/graphics", "tools/images", "tools/graphic_blob", "to
     if str(ROOT / sub) not in sys.path:
         sys.path.insert(0, str(ROOT / sub))
 
-from manifest import address, read_rows  # noqa: E402
+from manifest import read_rows  # noqa: E402
 from kinds import fonts, graphic_blobs, image_bank, room_graphics, tile_frames, tile_streams  # noqa: E402
 
 KINDS = {"image-bank": image_bank, "graphic-blobs": graphic_blobs, "tile-streams": tile_streams,
@@ -136,25 +136,19 @@ def groups() -> dict[str, Group]:
     return {g.name: g for gs in features().values() for g in gs}
 
 
-class Row:
-    def __init__(self, start: int, end: int, group: Group):
-        self.start, self.end, self.group = start, end, group
-
-
-def rows(ver: str, known: dict[str, Group]) -> list[Row]:
-    """The graphics rows of regions.<ver>.txt, in manifest order. A row
-    without an address has None for start and end."""
+def rows(ver: str, known: dict[str, Group]) -> list[Group]:
+    """The groups of the graphics rows of regions.<ver>.txt, in manifest
+    order."""
     path = ROOT / f"regions.{ver}.txt"
     out = []
     for lineno, parts in read_rows(str(path)):
         if parts[0] == "graphics":
-            if len(parts) != 5:
-                raise ValueError(f"{path.name}:{lineno}: expected graphics <start> <end> <feature> <group>")
-            group = known.get(parts[4])
-            if group is None or group.feature != parts[3]:
-                raise ValueError(f"{path.name}:{lineno}: graphics/{parts[3]}.yaml has no group {parts[4]}")
-            start = address(parts[1])
-            out.append(Row(start, None if start is None else address(parts[2]), group))
+            if len(parts) != 3:
+                raise ValueError(f"{path.name}:{lineno}: expected graphics <feature> <group>")
+            group = known.get(parts[2])
+            if group is None or group.feature != parts[1]:
+                raise ValueError(f"{path.name}:{lineno}: graphics/{parts[1]}.yaml has no group {parts[2]}")
+            out.append(group)
     return out
 
 

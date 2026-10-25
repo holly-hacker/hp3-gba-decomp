@@ -665,6 +665,3 @@
 
 @ --- include/interrupts.h ---
 .set gIntrVectorPtr,             0x03007FFC  @ BIOS-called user interrupt handler pointer
-
-@ --- include/text.h ---
-.set sDialogLanguageTable,       0x0806BD78  @ ROM: 8 x u32, one string-table blob pointer per language

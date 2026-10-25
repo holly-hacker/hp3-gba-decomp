@@ -2,6 +2,8 @@
 """Compare an existing linked ROM region against the donor bytes.
 
 Does not rebuild: use just diff-region NAME VERSION for a fresh build.
+The region's range is where the build stored it, which is where the donor
+has it too as long as everything before it matches.
 Instruction mode comes from the row's directive (ARM for c-file-arm and
 c-file-gcc3-arm objects), or for assembly from the source's first mode
 directive; --arm/--thumb override it. Byte equality includes literal pools and padding.
@@ -18,12 +20,12 @@ from manifest import (  # noqa: E402
     ASM_CPP_DIRECTIVE,
     ASM_FILE_DIRECTIVE,
     C_SECTION_DIRECTIVE,
-    LABEL_DIRECTIVES,
-    NEXT_START,
+    LABEL_DIRECTIVE,
     SECTIONED_DIRECTIVES,
     parse_manifest,
     read_rows,
 )
+from rom_elf import region_ranges  # noqa: E402
 
 CONTEXT = 4
 
@@ -42,21 +44,22 @@ def asm_mode(path: str) -> str:
     return "arm" if directive.startswith(("arm", ".arm")) or directive.endswith("32") else "thumb"
 
 
-def mode_for(ver: str, address: int) -> str:
-    """The mode of the row starting at address: ARM C objects by directive,
+def mode_for(ver: str, name: str) -> str:
+    """The mode of the region row named name: ARM C objects by directive,
     assembly by its source's first mode directive, otherwise Thumb."""
     rows = [parts for _, parts in read_rows(f"regions.{ver}.txt")
-            if parts[0] not in LABEL_DIRECTIVES]
-    objects = {parts[4]: parts for parts in rows if parts[0] in SECTIONED_DIRECTIVES}
-    for parts in rows:
-        if parts[1] == NEXT_START or int(parts[1], 16) != address:
+            if parts[0] != LABEL_DIRECTIVE]
+    objects = {parts[2]: parts for parts in rows if parts[0] in SECTIONED_DIRECTIVES}
+    regions, _ = parse_manifest(f"regions.{ver}.txt", ver)
+    for parts, region in zip(rows, regions):
+        if region[1] != name:
             continue
         if parts[0] == C_SECTION_DIRECTIVE:
-            parts = objects[parts[3]]
+            parts = objects[parts[1]]
         if parts[0] in ARM_C_DIRECTIVES:
             return "arm"
         if parts[0] in (ASM_FILE_DIRECTIVE, ASM_CPP_DIRECTIVE):
-            return asm_mode(parts[3])
+            return asm_mode(parts[1])
         return "thumb"
     return "thumb"
 
@@ -91,17 +94,16 @@ def main() -> None:
     ver, name = args.version, args.name
 
     regions, _ = parse_manifest(f"regions.{ver}.txt", ver)
-    match = [r for r in regions if r[3] == name]
+    match = [r for r in regions if r[1] == name]
     if not match:
         sys.exit(f"no region named {name} in regions.{ver}.txt")
-    start, end, srcfile, _ = match[0]
-    if start is None or end is None:
-        sys.exit(f"{name} has no address range in regions.{ver}.txt to diff")
+    srcfile = match[0][0]
 
     base = f"baserom.{ver}.gba"
     built = f"build/{ver}/rom.gba"
     if not os.path.exists(built):
         sys.exit(f"{built} missing -- run `just build {ver}` first")
+    start, end = region_ranges(f"build/{ver}/rom.elf")[name]
     off, size = start - 0x08000000, end - start
     want = open(base, "rb").read()[off:off + size]
     got = open(built, "rb").read()[off:off + size]
@@ -112,7 +114,7 @@ def main() -> None:
         return
 
     mode = ("arm" if args.arm else
-            "thumb" if args.thumb else mode_for(ver, start))
+            "thumb" if args.thumb else mode_for(ver, name))
     a, b = disasm(want, start, mode), disasm(got, start, mode)
     print(f"{mode} mode; ROM on the left, build on the right\n")
     differing = [i for i in range(max(len(a), len(b)))
