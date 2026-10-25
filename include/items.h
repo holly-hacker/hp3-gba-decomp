@@ -36,9 +36,10 @@ s32 GetPotionEffect(s32 item);
 s32 GetPotionMagnitude(s32 item);
 
 // No callers, and nothing else reads ItemEntry.dwFlags bits 0 and 1: bit 0 is set on
-// potions only, bit 1 on potions and misc items.
-u32 IsItemUsableInBattle_candidate(u32 item);
-u32 IsItemListedInItemsMenu_candidate(u32 item);
+// exactly the battle item slots' potions, bit 1 on exactly the items the Items
+// screen's "All" section lists.
+u32 IsItemUsableInBattle(u32 item);
+u32 IsItemListedInItemsMenu(u32 item);
 u32 IsItemConsumable(s32 item);
 
 void ClearItemInventoryForNewGame(void);
@@ -54,7 +55,7 @@ u32 GrantReward(s32 rewardId, u32 amount);
 u32 RemoveItems(u32 item, u32 count);
 u32 GetItemQuantity(u32 item);
 u32 BuildFilteredItemList(u32 filter, u32 *pItems, u32 withRemove);
-u32 BuildBattleItemList_candidate(u32 *pItems);  // no callers
+u32 BuildBattleItemList(u32 *pItems);  // no callers
 u32 CountOwnedPotionKinds(void);
 u32 IsBattleItemSlotUsable(u32 slot);
 u32 OwnsItemInCategory(u32 category);

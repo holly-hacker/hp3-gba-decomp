@@ -58,8 +58,10 @@ typedef struct ItemEntry {
     s32 nSellPrice;          // 0x14 -- shop sell price (Sickles)
     u32 dwCategory;          // 0x18 -- ItemCategory
     s32 nCharacterMask;      // 0x1C -- ItemCharacterMask bits
-    u32 dwFlags;             // 0x20 -- bit 2: consumable (potions); bits 0 and 1
-                             // unread
+    u32 dwFlags;             // 0x20 -- bit 0: battle item (the six potions);
+                             // bit 1: listed under the Items screen's "All"
+                             // section (non-equipment); bit 2: consumable
+                             // (potions). Only IsItemConsumable is called
     ItemStats stats;         // 0x24
     u32 dwUnused;            // 0x2C -- zero for every item; never read
     s32 nMagicDefense;       // 0x30 -- M.Def stat

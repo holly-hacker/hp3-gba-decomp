@@ -560,8 +560,9 @@ typedef struct Actor {
     u8 bDrawFlags;          // 0x115, ActorDrawFlags
     u8 bActorPoolAuxSlot;  // 0x116, index into g_pActorPoolAuxBuffer's 0x34-byte-stride
                              // records; see ReleaseActorOffscreenVramTiles
-    s8 bAnimSet_candidate;  // 0x117, set by SetActorAnimSet_candidate; GetActorVariantAnchorPosition
-                             // selects the slot's variant table with it. Neither has a caller
+    s8 bAnchorVariantTableIndex;  // 0x117, outer pSpriteVariantTables index read only by
+                             // GetActorVariantAnchorPosition; set by
+                             // SetActorAnchorVariantTableIndex. Neither has a caller
     ActorVariantSlot aVariantSlots[1];  // 0x118
     s8 bSpriteVariantTableIndex;  // 0x124, shared by every variant slot
     s8 bSpriteVariantIndex;       // 0x125
@@ -783,7 +784,7 @@ extern const s32 g_aDirection16Vectors[16][2];      // 0x0804BE1C
 extern const s32 g_aDirection32Vectors[32][2];      // 0x0804BE9C
 extern u8 FindActorsByType(u8 type, u8 subtype, Actor **out, u8 maxCount);
 extern s32 ActorIsNullActorType(Actor *actor);
-extern void SetActorAnimSet_candidate(Actor *actor, u8 animSet);
+extern void SetActorAnchorVariantTableIndex(Actor *actor, u8 tableIndex);
 extern void UnsetActorHasAnimation(Actor *actor);
 
 extern void StartActorTimedMove(Actor *actor, s32 x, s32 y, u16 ticks);

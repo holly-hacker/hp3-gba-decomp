@@ -3,9 +3,9 @@
 #include "items.h"
 #include "items_inline.h"
 
-// Lists the owned non-equipment items with dwFlags bit 0 set (only potions
-// carry it) and returns the count.
-u32 BuildBattleItemList_candidate(u32 *pItems)
+// Lists the owned non-equipment items with dwFlags bit 0 set and returns the
+// count: the same items, in the same order, as the battle item slots.
+u32 BuildBattleItemList(u32 *pItems)
 {
     u32 count = 0;
     u32 item = 0;

@@ -96,7 +96,7 @@ c-file 0x08001D3C _ src/actor/find_actors_by_type.c FindActorsByType
 c-file 0x08001D90 _ src/actor/set_actor_depth_sort_enabled.c SetActorDepthSortEnabled
 c-file 0x08001D9C _ src/actor/do_actors_overlap.c DoActorsOverlap
 c-file 0x08001DF8 _ src/actor/actor_is_null_actor_type.c ActorIsNullActorType
-c-file 0x08001E0C _ src/actor/set_actor_anim_set.c SetActorAnimSet_candidate
+c-file 0x08001E0C _ src/actor/set_actor_anchor_variant_table_index.c SetActorAnchorVariantTableIndex
 c-file 0x08001E4C _ src/actor/unset_actor_has_animation.c UnsetActorHasAnimation
 c-file 0x08001E58 _ src/actor/set_actor_action_sub_state.c SetActorActionSubState
 c-file 0x08001E7C _ src/actor/set_actor_action_state.c SetActorActionState
@@ -1153,8 +1153,8 @@ c-file 0x08026CB4 _ src/items/get_item_agility.c GetItemAgility
 c-file 0x08026CC8 _ src/items/get_item_magic_defense.c GetItemMagicDefense
 c-file 0x08026CDC _ src/items/get_potion_effect.c GetPotionEffect
 c-file 0x08026CF0 _ src/items/get_potion_magnitude.c GetPotionMagnitude
-c-file 0x08026D04 _ src/items/is_item_usable_in_battle.c IsItemUsableInBattle_candidate
-c-file 0x08026D1C _ src/items/is_item_listed_in_items_menu.c IsItemListedInItemsMenu_candidate
+c-file 0x08026D04 _ src/items/is_item_usable_in_battle.c IsItemUsableInBattle
+c-file 0x08026D1C _ src/items/is_item_listed_in_items_menu.c IsItemListedInItemsMenu
 c-file 0x08026D34 _ src/items/is_item_consumable.c IsItemConsumable
 c-file 0x08026D4C _ src/items/clear_item_inventory_for_new_game.c ClearItemInventoryForNewGame
 c-file 0x08026D58 _ src/items/clear_item_inventory.c ClearItemInventory
@@ -1164,7 +1164,7 @@ c-file 0x08026DE0 _ src/items/grant_reward.c GrantReward
 c-file 0x08026E2C _ src/items/remove_items.c RemoveItems
 c-file 0x08026E4C _ src/items/get_item_quantity.c GetItemQuantity
 c-file 0x08026E58 _ src/items/build_filtered_item_list.c BuildFilteredItemList
-c-file 0x08026EC0 _ src/items/build_battle_item_list.c BuildBattleItemList_candidate
+c-file 0x08026EC0 _ src/items/build_battle_item_list.c BuildBattleItemList
 c-file 0x08026F10 _ src/items/count_owned_potion_kinds.c CountOwnedPotionKinds
 c-file 0x08026F34 _ src/items/is_battle_item_slot_usable.c IsBattleItemSlotUsable
 c-file 0x08026F48 _ src/items/owns_item_in_category.c OwnsItemInCategory
