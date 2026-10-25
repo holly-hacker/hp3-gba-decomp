@@ -29,7 +29,9 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import buildcache  # noqa: E402
 
-AS_FLAGS = ["-mcpu=arm7tdmi"]
+# --strip-local-absolute keeps assembler constants (the room-blob macros'
+# counters and opcode numbers, defined in every blob) out of the symbols.
+AS_FLAGS = ["-mcpu=arm7tdmi", "--strip-local-absolute"]
 
 
 def read_deps(depfile: str, source: str) -> list[str]:

@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """Locate and precisely bound all Krawall audio data in a ROM, and write
-each region out as a raw binary asm/krawall/<kind>/<name>.bin file plus
-the corresponding regions.<ver>.txt row (gen_link.py .incbin's these
-directly -- see its handling of a .bin asm-file extension). The .bin
-files are the game's actual copyrighted audio content and must never be
-committed (gitignored, like baserom.*.gba); regenerate them locally by
-running this script before building -- see the `dump-krawall` recipe.
+each region out as a raw binary asm/krawall/<kind>/<name>.bin file. The
+.bin files are the game's actual copyrighted audio content and must never
+be committed (gitignored, like baserom.*.gba); see the `dump-krawall`
+recipe.
 
 Pure deterministic parsing, no heuristic discovery tool involved: the
 sample list address and every module header address are hardcoded below
@@ -30,15 +28,13 @@ docs/formats/krawall.md. `unkrawerter` is still used
 directly (not via this script) by `just dump-music-xm` for casual
 .xm listening exports.
 
-Usage: dump_krawall.py <ver>   (writes asm/krawall/, prints manifest
-                                    rows for regions.<ver>.txt to stdout)
+Usage: dump_krawall.py <ver>   (writes asm/krawall/)
 """
 import struct
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-ROM_BASE = 0x08000000
 
 # Sample list address and count -- see docs/formats/krawall.md.
 SAMPLE_LIST = {
@@ -266,7 +262,6 @@ def main() -> None:
 
     for r in regions:
         write_region_file(data, r)
-        print(f"0x{ROM_BASE + r.start:08X} 0x{ROM_BASE + r.end:08X} {r.path} {r.name}")
 
 
 if __name__ == "__main__":

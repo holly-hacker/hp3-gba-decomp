@@ -26,7 +26,7 @@ gen-link ver="us": (pack ver)
 # tools/krawall/krawall_codec.py. See docs/formats/krawall.md.
 # Dump the raw Krawall regions as .bin files (not build input).
 dump-krawall ver="us":
-    python3 tools/krawall/dump_krawall.py {{ver}} > /dev/null
+    python3 tools/krawall/dump_krawall.py {{ver}}
 
 # Research/debugging aid only -- NOT build input (the collision data is
 # built from data/room_graphics/, see docs/formats/room_graphics.md).
@@ -116,15 +116,8 @@ build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver
     arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --pad-to 0x9000000 --gap-fill 0x00 build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
-# Same as `build`, without the 16 MiB zero fill and leaving rom.gba alone.
-# Build a modified ROM to mod.gba.
-build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
-    python3 tools/assemble.py {{ver}}
-    arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf
-    arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/mod.elf build/{{ver}}/mod.gba
-
-# For matching work: `just compare` only reports a byte offset, this says
-# which instructions differ.
+# For matching work: `just compare` names the first differing region, this
+# says which instructions differ.
 # Disassemble one region side by side against the donor ROM.
 diff-region name ver="us": (build ver)
     python3 tools/diff_region.py {{ver}} {{name}}
