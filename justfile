@@ -111,14 +111,13 @@ gen-compile-commands:
 
 # Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
 # --no-warn-rwx-segments.
-# Assemble every region and link them at their manifest addresses.
+# Assemble every region and link them in manifest order.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
     arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
-    python3 tools/check_sections.py {{ver}}
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
-# Build without the section check
+# Build to mod.gba, leaving rom.gba alone.
 build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
     arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf

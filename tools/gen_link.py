@@ -9,11 +9,13 @@ Writes, all under build/<ver>/ and none of it committed:
                       .incbin straight from the baserom
   obj/<name>.o        a lib-object row's member, extracted unchanged from
                       agbcc's installed archive
-  link.ld             places each of those sections at its manifest address
+  link.ld             places those sections one after another, in manifest
+                      order, each at its own alignment
 
-The linker, not the order of a concatenated file, decides where things
-land, so a region that assembles to the wrong size is caught by ld or by
-tools/check_sections.py rather than silently shifting its neighbours.
+Every section is followed by an ASSERT that it starts at its manifest
+address, so a region that assembles to the wrong size fails the link at the
+first region it moves. Without the ASSERTs, the same script links a ROM in
+which everything after a resized region has moved.
 
 Wrappers are named after their region, not its position, and unchanged
 ones are left alone, so inserting a manifest row changes no other wrapper
@@ -75,9 +77,7 @@ def write_region(objdir: str, ver: str, region,
     split = split or {}
     start, end, srcfile, name = region
     out = prelude(ver)
-    # ld rounds an output section's size up to its alignment, so a region
-    # that came out a couple of bytes short still measures full there.
-    # These bracket the real content for tools/check_sections.py.
+    # These bracket the region's content in the linked ELF.
     for section, region_name in split.items():
         out += [f".section {section}", f"__rgn_{region_name}_beg:", ".text"]
     out.append(f"__rgn_{name}_beg:")
@@ -201,6 +201,16 @@ def main() -> None:
 
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write("SECTIONS\n{\n")
+        # The game's own RAM variables are fixed addresses
+        # (ram_symbols.<ver>.inc); a library object's .bss is placed where
+        # the ROM's references to it point. These come first, so the
+        # location counter only ever moves forward.
+        for i, (stem, (_, _, bss)) in enumerate(sorted(lib_objects.items())):
+            if bss is not None:
+                f.write(f"    .libbss{i:03d} {hex(bss)} (NOLOAD) : "
+                        f"{{ {objdir}/{stem}.o(.bss) }}\n")
+        f.write(f"    . = {hex(BASE_ADDR)};\n")
+        prev, prev_runs_from_ram = None, False
         for address, section, stem, input_section, region_name, vma in placements:
             contents = f"{objdir}/{stem}.o({input_section})"
             if stem in lib_objects or region_name in sectioned:
@@ -208,19 +218,23 @@ def main() -> None:
                 # wrapper that brackets the content.
                 contents = (f'"__rgn_{region_name}_beg" = .; {contents} '
                             f'"__rgn_{region_name}_end" = .;')
-            # A section that runs from RAM is linked at its RAM address
-            # and stored at its ROM one. Every section states where it is
-            # stored: ld would otherwise give the sections after one that
-            # runs from RAM that one's offset between the two.
-            run = hex(address if vma is None else vma)
-            f.write(f"    {section} {run} : AT({hex(address)}) {{ {contents} }}\n")
-        # The game's own RAM variables are fixed addresses
-        # (ram_symbols.<ver>.inc); a library object's .bss is placed where
-        # the ROM's references to it point.
-        for i, (stem, (_, _, bss)) in enumerate(sorted(lib_objects.items())):
-            if bss is not None:
-                f.write(f"    .libbss{i:03d} {hex(bss)} (NOLOAD) : "
-                        f"{{ {objdir}/{stem}.o(.bss) }}\n")
+            # Each section is stored right after the previous one, at its
+            # own alignment. A section that runs from RAM is linked at its
+            # RAM address, which leaves the location counter there, so the
+            # next ROM section restarts it from where that one is stored and
+            # states that it is stored where it runs: ld would otherwise
+            # keep the RAM section's offset between the two.
+            if vma is None and prev_runs_from_ram:
+                f.write(f"    . = LOADADDR({prev}) + SIZEOF({prev});\n")
+                f.write(f"    {section} : AT(ADDR({section})) {{ {contents} }}\n")
+            elif vma is None:
+                f.write(f"    {section} : {{ {contents} }}\n")
+            else:
+                stored = f"ALIGN(LOADADDR({prev}) + SIZEOF({prev}), ALIGNOF({section}))"
+                f.write(f"    {section} {hex(vma)} : AT({stored}) {{ {contents} }}\n")
+            f.write(f'    ASSERT(LOADADDR({section}) == {hex(address)}, '
+                    f'"{region_name or section} is not at {hex(address)}")\n')
+            prev, prev_runs_from_ram = section, vma is not None
         # A label inside a region has no gap to be defined in. Unless the
         # region's own source defines it, it names a ROM address the
         # original link supplied, such as where a RAM image is stored or
@@ -242,6 +256,11 @@ def main() -> None:
                     offset = f" + {hex(point - start)}" if point > start else ""
                     f.write(f"    {labels[point][0]} = LOADADDR(.rgn{i:03d}){offset};\n")
         f.write("    /DISCARD/ : { *(.comment) *(.ARM.attributes) *(.note*) }\n")
+        # Anything still unplaced is a section of an object that no
+        # manifest row places; ld would otherwise put it where it likes.
+        f.write("    .unplaced : { *(*) }\n")
+        f.write(f'    ASSERT(SIZEOF(.unplaced) == 0, "an object has a section '
+                f'that no regions.{ver}.txt row places")\n')
         f.write("}\n")
 
     print(f"{ver}: {len(regions)} regions + {len(gaps)} gaps -> "

@@ -42,8 +42,8 @@ with GCC 3.0.2 at `-O3` ([`compiler.md`](compiler.md)) from headers in
   section of the object `<name>`; its region is `<name><section>`.
 - `<vma>` is the RAM address a section runs at when it is stored in ROM
   at `<start>` and copied there (the IWRAM and EWRAM images).
-- `check_sections.py` rejects an object with a non-empty section that no
-  row places.
+- The link fails on an object with a non-empty section that no row
+  places.
 
 Third-party source follows its upstream style rather than the rules
 below.
@@ -99,8 +99,8 @@ struct layout is a compile error rather than a silently shifted table.
 
 ## Finding a mismatch
 
-`just compare` reports a byte offset in a 16 MB image; `check_sections.py`
-catches only wrong size or address. To see what actually differs:
+`just compare` reports a byte offset in a 16 MB image; the link only fails
+at the first region a wrong size moves. To see what actually differs:
 
 ```sh
 just diff-region <name>          # us
