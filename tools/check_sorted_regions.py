@@ -2,8 +2,9 @@
 """Check that regions.<ver>.txt rows are sorted by address.
 
 Every row starts with a directive keyword whose second field is the
-region's start address (or the label/thumb-func address). This checks
-those addresses are non-decreasing top to bottom; comments and blank
+region's start address (or the label/thumb-func address), or `_` for a
+row without one. This checks the addresses are non-decreasing top to
+bottom; comments and blank
 lines are ignored, so a comment attached above one entry (see
 regions.us.txt's own conventions) doesn't affect the check.
 
@@ -31,6 +32,10 @@ def check(path: str) -> list[str]:
             line = raw_line.strip()
             if not line or line.startswith("#"):
                 continue
+            fields = line.split("#", 1)[0].split()
+            if len(fields) >= 2 and fields[1] == NEXT_START:
+                prev_region = None
+                continue  # a row without an address
             try:
                 addr = addr_of(line)
             except (IndexError, ValueError):
@@ -41,7 +46,6 @@ def check(path: str) -> list[str]:
                     f"(follows {path}:{prev_lineno}'s {prev_addr:#010x})"
                 )
             prev_addr, prev_lineno = addr, lineno
-            fields = line.split("#", 1)[0].split()
             if fields[0] in LABEL_DIRECTIVES:
                 continue
             if prev_region is not None and prev_region[1] == addr:

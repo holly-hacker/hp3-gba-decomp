@@ -114,10 +114,11 @@ gen-compile-commands:
 # Assemble every region and link them in manifest order.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
-    arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
+    arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/check.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --gap-fill 0xFF build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
-# Build to mod.gba, leaving rom.gba alone.
+# Linked without the manifest address checks, so regions may change size.
+# Build a modified ROM to mod.gba.
 build-mod ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
     arm-none-eabi-ld --no-warn-rwx-segments -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/mod.elf

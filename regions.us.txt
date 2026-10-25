@@ -1,7 +1,9 @@
 # Extracted-region manifest for the US ROM; regions.jp.txt follows the same
 # syntax. Rows are sorted by address; unclaimed bytes are taken from the
 # baserom. An <end> of `_` means the start of the next region row; a
-# region followed by unclaimed bytes needs an explicit <end>.
+# region followed by unclaimed bytes needs an explicit <end>. A row with
+# `_` for both has no address: it is linked right after the row above it,
+# and nothing checks where it lands.
 #
 # label <address> <name>
 #   A symbol other code can address, see also ram_symbols.us.inc. Code

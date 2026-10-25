@@ -19,6 +19,7 @@ from manifest import (  # noqa: E402
     ASM_FILE_DIRECTIVE,
     C_SECTION_DIRECTIVE,
     LABEL_DIRECTIVES,
+    NEXT_START,
     SECTIONED_DIRECTIVES,
     parse_manifest,
     read_rows,
@@ -48,7 +49,7 @@ def mode_for(ver: str, address: int) -> str:
             if parts[0] not in LABEL_DIRECTIVES]
     objects = {parts[4]: parts for parts in rows if parts[0] in SECTIONED_DIRECTIVES}
     for parts in rows:
-        if int(parts[1], 16) != address:
+        if parts[1] == NEXT_START or int(parts[1], 16) != address:
             continue
         if parts[0] == C_SECTION_DIRECTIVE:
             parts = objects[parts[3]]
@@ -94,6 +95,8 @@ def main() -> None:
     if not match:
         sys.exit(f"no region named {name} in regions.{ver}.txt")
     start, end, srcfile, _ = match[0]
+    if start is None or end is None:
+        sys.exit(f"{name} has no address range in regions.{ver}.txt to diff")
 
     base = f"baserom.{ver}.gba"
     built = f"build/{ver}/rom.gba"

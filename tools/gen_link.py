@@ -11,11 +11,12 @@ Writes, all under build/<ver>/ and none of it committed:
                       agbcc's installed archive
   link.ld             places those sections one after another, in manifest
                       order, each at its own alignment
+  check.ld            link.ld plus an ASSERT per section that it starts at
+                      its manifest address
 
-Every section is followed by an ASSERT that it starts at its manifest
-address, so a region that assembles to the wrong size fails the link at the
-first region it moves. Without the ASSERTs, the same script links a ROM in
-which everything after a resized region has moved.
+The matching build links with check.ld, so a region that assembles to the
+wrong size fails the link at the first region it moves. link.ld alone links
+a ROM in which everything after a resized region has moved.
 
 Wrappers are named after their region, not its position, and unchanged
 ones are left alone, so inserting a manifest row changes no other wrapper
@@ -112,15 +113,13 @@ def extract_member(objdir: str, archive: str, member: str, name: str) -> None:
     write_if_changed(os.path.join(objdir, f"{name}.o"), run.stdout)
 
 
-def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> list[str]:
+def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> None:
     """Writes one section per unclaimed range, with any declared labels
     defined inside it so extracted code can reference raw territory."""
     rom = f"baserom.{ver}.gba"
     out = [".syntax unified", '.include "macros.inc"']
-    names = []
     for i, (start, end) in enumerate(gaps):
         section = f".gap{i:03d}"
-        names.append(section)
         out.append(f'.section {section}, "ax"')
         cur = start
         for point in sorted(a for a in labels if start <= a < end):
@@ -136,7 +135,6 @@ def write_gaps(objdir: str, ver: str, gaps: list, labels: Labels) -> list[str]:
         if cur < end:
             out.append(f'.incbin "{rom}", {hex(cur - BASE_ADDR)}, {hex(end - cur)}')
     write_if_changed(os.path.join(objdir, "gaps.s"), "\n".join(out) + "\n")
-    return names
 
 
 def main() -> None:
@@ -156,15 +154,23 @@ def main() -> None:
     if len(names) != len(regions) or "gaps" in names:
         sys.exit(f"regions.{ver}.txt: region names must be unique and not 'gaps'")
 
-    # placements: (address, output section, object stem, input section,
-    # region name, RAM address or None)
+    # placements, in link order: (manifest address or None, output
+    # section, object stem, input section, region name, RAM address or None)
     placements = []
     gaps = []
+
+    def add_gap(start: int, end: int) -> None:
+        section = f".gap{len(gaps):03d}"
+        gaps.append((start, end))
+        placements.append((start, section, "gaps", section, None, None))
+
+    # Where the previous region ends; None after a row without an address,
+    # since nothing is known to be unclaimed there.
     addr = BASE_ADDR
     for i, region in enumerate(regions):
         start, end, _, name = region
-        if start > addr:
-            gaps.append((addr, start))
+        if start is not None and addr is not None and start > addr:
+            add_gap(addr, start)
         addr = end
         if name in sectioned:
             stem, section, vma = sectioned[name]
@@ -186,12 +192,9 @@ def main() -> None:
                  if name + s in names}
         write_region(objdir, ver, region, split)
         placements.append((start, f".rgn{i:03d}", name, ".text", name, None))
-    if addr < BASE_ADDR + rom_size:
-        gaps.append((addr, BASE_ADDR + rom_size))
-
-    gap_sections = write_gaps(objdir, ver, gaps, labels)
-    placements += [(g[0], s, "gaps", s, None, None) for g, s in zip(gaps, gap_sections)]
-    placements.sort()
+    if addr is not None and addr < BASE_ADDR + rom_size:
+        add_gap(addr, BASE_ADDR + rom_size)
+    write_gaps(objdir, ver, gaps, labels)
 
     # Objects of regions that no longer exist would otherwise be linked.
     keep = {f"{p[2]}{ext}" for p in placements for ext in (".s", ".o")}
@@ -199,6 +202,7 @@ def main() -> None:
         if entry not in keep:
             os.remove(os.path.join(objdir, entry))
 
+    asserts = []
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write("SECTIONS\n{\n")
         # The game's own RAM variables are fixed addresses
@@ -232,8 +236,9 @@ def main() -> None:
             else:
                 stored = f"ALIGN(LOADADDR({prev}) + SIZEOF({prev}), ALIGNOF({section}))"
                 f.write(f"    {section} {hex(vma)} : AT({stored}) {{ {contents} }}\n")
-            f.write(f'    ASSERT(LOADADDR({section}) == {hex(address)}, '
-                    f'"{region_name or section} is not at {hex(address)}")\n')
+            if address is not None:
+                asserts.append(f'ASSERT(LOADADDR({section}) == {hex(address)}, '
+                               f'"{region_name or section} is not at {hex(address)}")\n')
             prev, prev_runs_from_ram = section, vma is not None
         # A label inside a region has no gap to be defined in. Unless the
         # region's own source defines it, it names a ROM address the
@@ -242,6 +247,8 @@ def main() -> None:
         # defined relative to where that region is stored, so it moves
         # with the region.
         for i, (start, end, srcfile, name) in enumerate(regions):
+            if start is None or end is None:
+                continue
             points = sorted(a for a in labels if start <= a < end)
             if not points:
                 continue
@@ -262,6 +269,9 @@ def main() -> None:
         f.write(f'    ASSERT(SIZEOF(.unplaced) == 0, "an object has a section '
                 f'that no regions.{ver}.txt row places")\n')
         f.write("}\n")
+
+    with open(f"build/{ver}/check.ld", "w") as f:
+        f.write(f"INCLUDE build/{ver}/link.ld\n" + "".join(asserts))
 
     print(f"{ver}: {len(regions)} regions + {len(gaps)} gaps -> "
           f"{len(placements)} placed sections")

@@ -23,7 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from manifest import read_rows  # noqa: E402
+from manifest import address, read_rows  # noqa: E402
 from text_codec import (
     RAW_LANGS, VERSION_LANGS, build_blob, build_tree_from_strings,
     editable_to_bytes,
@@ -59,14 +59,14 @@ def parse_text_rows(ver: str):
                 sys.exit(f"regions.{ver}.txt:{lineno}: {json_path} doesn't match a known language code {langs}")
             if lang in lang_rows:
                 sys.exit(f"regions.{ver}.txt:{lineno}: duplicate dialog-text row for language {lang!r}")
-            lang_rows[lang] = (int(start, 16), int(end, 16), json_path, name)
+            lang_rows[lang] = (address(start), address(end), json_path, name)
         elif parts[0] == "dialog-text-table":
             if len(parts) != 4:
                 sys.exit(f"regions.{ver}.txt:{lineno}: expected 'dialog-text-table <start> <end> <name>'")
             if table_row is not None:
                 sys.exit(f"regions.{ver}.txt:{lineno}: duplicate dialog-text-table row")
             _, start, end, name = parts
-            table_row = (int(start, 16), int(end, 16), name)
+            table_row = (address(start), address(end), name)
     if not lang_rows and table_row is None:
         # Not an error: this manifest has no dialog-text rows.
         return lang_rows, table_row
@@ -92,7 +92,7 @@ def pack_language(lang: str, start_addr: int, end_addr: int, json_path: str, nam
     cursor += emit_bytes(lines, blob)
     cursor += emit_pad_to_align4(lines, cursor)
 
-    if cursor != end_addr - start_addr:
+    if start_addr is not None and end_addr is not None and cursor != end_addr - start_addr:
         sys.exit(f"{name} ({lang}): packed size mismatch: got 0x{cursor:X} bytes, "
                   f"regions file declares 0x{end_addr - start_addr:X}")
 
@@ -106,7 +106,7 @@ def pack_table(ver: str, start_addr: int, end_addr: int, name: str, lang_rows: d
         _, _, _, lang_name = lang_rows[lang]
         lines.append(f".word {lang_name}")
         cursor += 4
-    if cursor != end_addr - start_addr:
+    if start_addr is not None and end_addr is not None and cursor != end_addr - start_addr:
         sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X} bytes, "
                   f"regions file declares 0x{end_addr - start_addr:X}")
     return "\n".join(lines) + "\n"

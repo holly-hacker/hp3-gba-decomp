@@ -34,6 +34,8 @@ def walk(ver: str, rom: bytes, known) -> tuple[dict[str, list[runs.Run]], dict[s
     item's address."""
     found, addresses = {}, {}
     for row in runs.rows(ver, known):
+        if row.start is None:
+            continue  # not in the baserom
         addr, walked = row.start, []
         for run in row.group.runs:
             run = copy.copy(run)

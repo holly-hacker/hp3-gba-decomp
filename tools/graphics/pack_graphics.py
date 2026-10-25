@@ -63,7 +63,7 @@ def main() -> None:
         for row in rows:
             name = row.group.name
             data = b"".join(piece for _, piece in pieces[name])
-            if len(data) != row.end - row.start:
+            if row.end is not None and len(data) != row.end - row.start:
                 raise ValueError(f"{name}: packs to {len(data):#x} bytes, "
                                  f"regions.{ver}.txt claims {row.end - row.start:#x}")
             bin_path = (out / f"{name}.bin").relative_to(runs.ROOT).as_posix()

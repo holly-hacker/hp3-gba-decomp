@@ -8,8 +8,9 @@ object instead.
 """
 import sys
 
-# (start, end, asmfile, name)
-Region = tuple[int, int, str, str]
+# (start, end, asmfile, name); start and end are None for a row without
+# an address, and end alone after a `_` end followed by such a row.
+Region = tuple[int | None, int | None, str, str]
 # address -> (name, is_thumb), for symbols inside not-yet-extracted
 # (still-incbin) territory that extracted code needs to reference.
 # is_thumb marks a Thumb code entry point so the assembler sets the
@@ -91,8 +92,24 @@ LIB_OBJECT_DIRECTIVE = "lib-object"
 LABEL_DIRECTIVES = {"label", "thumb-func", "arm-func"}
 
 # A region row's <end> may be written as this, meaning the start of the
-# next region row.
+# next region row. A row whose <start> is this too has no address: it
+# holds code or data the original ROM does not have, placed after the row
+# above it, and only links without the manifest address checks.
 NEXT_START = "_"
+
+
+def address(field: str) -> int | None:
+    """A row's <start> or resolved <end>; None for a row without one."""
+    return None if field == NEXT_START else int(field, 16)
+
+
+def region_range(path: str, lineno: int, start_s: str, end_s: str) -> tuple[int | None, int | None]:
+    start, end = address(start_s), address(end_s)
+    if start is None:
+        return None, None
+    if end is not None and end <= start:
+        sys.exit(f"{path}:{lineno}: end must be after start")
+    return start, end
 
 
 def read_rows(path: str) -> list[tuple[int, list[str]]]:
@@ -113,7 +130,7 @@ def read_rows(path: str) -> list[tuple[int, list[str]]]:
                 sys.exit(f"{path}:{lineno}: expected a start address")
             pending[2] = parts[1]
             pending = None
-        if len(parts) >= 3 and parts[2] == NEXT_START:
+        if len(parts) >= 3 and parts[2] == NEXT_START and parts[1] != NEXT_START:
             pending = parts
             pending_lineno = lineno
     if pending is not None:
@@ -148,7 +165,8 @@ def read_placements(path: str) -> dict[str, tuple[str, str, int | None]]:
 
 
 def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
-    """Returns (regions, labels): regions sorted and non-overlapping."""
+    """Returns (regions, labels): regions in manifest order, which is
+    address order for the rows that have one."""
     regions: list[Region] = []
     labels: Labels = {}
     for lineno, parts in read_rows(path):
@@ -162,9 +180,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if len(parts) != 5:
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
             _, start_s, end_s, _source, name = parts
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             kind = KRAWALL_DIRECTIVES[parts[0]]
             asmfile = f"build/{ver}/audio/{kind}/{name}.s"
             regions.append((start, end, asmfile, name))
@@ -173,27 +189,21 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if len(parts) not in (5, 6, 7):
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name> [<section> [<vma>]]'")
             _, start_s, end_s, _source, name = parts[:5]
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             regions.append((start, end, f"build/{ver}/c/{name}.s", name))
             continue
         if parts[0] == C_SECTION_DIRECTIVE:
             if len(parts) not in (5, 6):
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <name> <section> [<vma>]'")
             _, start_s, end_s, name, section = parts[:5]
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             regions.append((start, end, f"build/{ver}/c/{name}.s", name + section))
             continue
         if parts[0] in C_FILE_DIRECTIVES:
             if len(parts) != 5:
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <source> <name>'")
             _, start_s, end_s, _source, name = parts
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             asmfile = f"build/{ver}/c/{name}.s"
             regions.append((start, end, asmfile, name))
             continue
@@ -201,9 +211,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if len(parts) != 4:
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <name>'")
             _, start_s, end_s, name = parts
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             asmfile = f"build/{ver}/c/{name}.s"
             regions.append((start, end, asmfile, name + SPLIT_SECTION_DIRECTIVES[parts[0]]))
             continue
@@ -211,9 +219,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if len(parts) != 5:
                 sys.exit(f"{path}:{lineno}: expected 'graphics <start> <end> <feature> <group>'")
             _, start_s, end_s, _feature, name = parts
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             regions.append((start, end, f"build/{ver}/graphics/{name}.s", name))
             continue
         if parts[0] in DIALOG_TEXT_DIRECTIVES:
@@ -222,18 +228,14 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end>"
                           f"{' <json>' if parts[0] == 'dialog-text' else ''} <name>'")
             start_s, end_s, name = parts[1], parts[2], parts[-1]
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             asmfile = f"build/{ver}/text/{name}.s"
             regions.append((start, end, asmfile, name))
             continue
         if parts[0] == LIB_OBJECT_DIRECTIVE:
             if len(parts) not in (5, 6):
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <archive> <member> [<bss>]'")
-            start, end = int(parts[1], 16), int(parts[2], 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, parts[1], parts[2])
             archive, member = parts[3], parts[4]
             if not member.endswith(".o"):
                 sys.exit(f"{path}:{lineno}: library member must be a .o")
@@ -243,9 +245,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             if len(parts) != 5:
                 sys.exit(f"{path}:{lineno}: expected '{parts[0]} <start> <end> <asm-file> <name>'")
             _, start_s, end_s, asmfile, name = parts
-            start, end = int(start_s, 16), int(end_s, 16)
-            if end <= start:
-                sys.exit(f"{path}:{lineno}: end must be after start")
+            start, end = region_range(path, lineno, start_s, end_s)
             regions.append((start, end, asmfile, name))
             continue
         sys.exit(f"{path}:{lineno}: unrecognized directive '{parts[0]}'")
@@ -259,8 +259,11 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             for directive, suffix in SPLIT_SECTION_DIRECTIVES.items():
                 if r[3].endswith(suffix) and r[3][:-len(suffix)] not in names:
                     sys.exit(f"{path}: {directive} row {r[3][:-len(suffix)]} has no c-file row")
-    regions.sort(key=lambda r: r[0])
-    for i in range(1, len(regions)):
-        if regions[i][0] < regions[i - 1][1]:
-            sys.exit(f"overlapping regions: {regions[i-1]} and {regions[i]}")
+    prev = None
+    for r in regions:
+        if r[0] is None:
+            continue
+        if prev is not None and r[0] < (prev[0] if prev[1] is None else prev[1]):
+            sys.exit(f"{path}: regions out of order or overlapping: {prev} and {r}")
+        prev = r
     return regions, labels

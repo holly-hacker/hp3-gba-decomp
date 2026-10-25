@@ -52,7 +52,7 @@ for sub in ("tools", "tools/graphics", "tools/images", "tools/graphic_blob", "to
     if str(ROOT / sub) not in sys.path:
         sys.path.insert(0, str(ROOT / sub))
 
-from manifest import read_rows  # noqa: E402
+from manifest import address, read_rows  # noqa: E402
 from kinds import fonts, graphic_blobs, image_bank, room_graphics, tile_frames, tile_streams  # noqa: E402
 
 KINDS = {"image-bank": image_bank, "graphic-blobs": graphic_blobs, "tile-streams": tile_streams,
@@ -142,7 +142,8 @@ class Row:
 
 
 def rows(ver: str, known: dict[str, Group]) -> list[Row]:
-    """The graphics rows of regions.<ver>.txt, in address order."""
+    """The graphics rows of regions.<ver>.txt, in manifest order. A row
+    without an address has None for start and end."""
     path = ROOT / f"regions.{ver}.txt"
     out = []
     for lineno, parts in read_rows(str(path)):
@@ -152,8 +153,9 @@ def rows(ver: str, known: dict[str, Group]) -> list[Row]:
             group = known.get(parts[4])
             if group is None or group.feature != parts[3]:
                 raise ValueError(f"{path.name}:{lineno}: graphics/{parts[3]}.yaml has no group {parts[4]}")
-            out.append(Row(int(parts[1], 16), int(parts[2], 16), group))
-    return sorted(out, key=lambda r: r.start)
+            start = address(parts[1])
+            out.append(Row(start, None if start is None else address(parts[2]), group))
+    return out
 
 
 def named(run: Run, items: list[dict]) -> dict:
