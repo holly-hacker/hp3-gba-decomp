@@ -9,10 +9,8 @@ docs/formats/text.md.
 Mirrors tools/krawall/pack_krawall.py's role for audio: emits real .s text with
 real labels (so the language pointer table resolves through the normal
 assembler/linker), byte-exact against the real ROM (see
-docs/formats/text.md). Each language blob is padded to 4-byte
-alignment to match the real ROM layout (verified: the padding is always
-zero bytes, and its length is exactly what closes the gap to the next
-language's real base address).
+docs/formats/text.md). Each language blob starts word-aligned and
+is zero-padded to a word, which is the real ROM layout.
 
 Writes to build/<ver>/text/ -- gitignored, like the rest of build/.
 data/text/ itself is never touched by this script.
@@ -39,10 +37,10 @@ def emit_bytes(lines: list[str], data: bytes) -> int:
 
 
 def emit_pad_to_align4(lines: list[str], cursor: int) -> int:
-    pad = (-cursor) % 4
-    if pad:
-        lines.append(".byte " + ", ".join(["0"] * pad))
-    return pad
+    """Zero-pads to a word; cursor is the offset into the region, which
+    starts word-aligned."""
+    lines.append(".balign 4, 0")
+    return (-cursor) % 4
 
 
 def parse_text_rows(ver: str):
@@ -89,28 +87,28 @@ def pack_language(lang: str, start_addr: int, end_addr: int, json_path: str, nam
     tree, encode_map = build_tree_from_strings(strings)
     blob = build_blob(tree, strings, encode_map)
 
-    lines: list[str] = [f"{name}:"]
-    cursor = start_addr
+    lines: list[str] = [".balign 4", f"{name}:"]
+    cursor = 0
     cursor += emit_bytes(lines, blob)
     cursor += emit_pad_to_align4(lines, cursor)
 
-    if cursor != end_addr:
-        sys.exit(f"{name} ({lang}): packed size mismatch: got 0x{cursor:X}, "
-                  f"regions file declares end 0x{end_addr:X}")
+    if cursor != end_addr - start_addr:
+        sys.exit(f"{name} ({lang}): packed size mismatch: got 0x{cursor:X} bytes, "
+                  f"regions file declares 0x{end_addr - start_addr:X}")
 
     return "\n".join(lines) + "\n"
 
 
 def pack_table(ver: str, start_addr: int, end_addr: int, name: str, lang_rows: dict[str, tuple[int, int, str, str]]) -> str:
-    lines = [f"{name}:"]
-    cursor = start_addr
+    lines = [".balign 4", f"{name}:"]
+    cursor = 0
     for lang in VERSION_LANGS[ver]:
         _, _, _, lang_name = lang_rows[lang]
         lines.append(f".word {lang_name}")
         cursor += 4
-    if cursor != end_addr:
-        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X}, "
-                  f"regions file declares end 0x{end_addr:X}")
+    if cursor != end_addr - start_addr:
+        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X} bytes, "
+                  f"regions file declares 0x{end_addr - start_addr:X}")
     return "\n".join(lines) + "\n"
 
 

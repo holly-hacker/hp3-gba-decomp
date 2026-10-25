@@ -9,9 +9,9 @@ outputFile()/Sample::output() would have produced) rather than raw binary
 normal assembler/linker, and so a module's or sample's symbol
 (e.g. `Module0`, `Sample12`) is directly referenceable from other .s files
 once matched game code needs to point at it. Byte layout (not text
-formatting) is what has to match the original ROM; alignment padding is
-computed from absolute addresses in Python rather than trusted to `.align`,
-so there's no ambiguity about how many bytes get inserted.
+formatting) is what has to match the original ROM. Each region starts
+word-aligned and pads with `.balign 4, 0`, so it is correct wherever the
+linker places it.
 
 Writes to build/<ver>/audio/ -- gitignored, like the rest of build/.
 data/audio/ itself is never touched by this script.
@@ -72,10 +72,10 @@ def emit_bytes(lines: list[str], data: bytes) -> int:
 
 
 def emit_pad_to_align4(lines: list[str], cursor: int) -> int:
-    pad = (-cursor) % 4
-    if pad:
-        lines.append(".byte " + ", ".join(["0"] * pad))
-    return pad
+    """Zero-pads to a word; cursor is the offset into the region, which
+    starts word-aligned."""
+    lines.append(".balign 4, 0")
+    return (-cursor) % 4
 
 
 def resolve_instruments(rows: list[list[dict]], sample_index: dict[str, int]) -> list[list[dict]]:
@@ -97,8 +97,8 @@ def resolve_instruments(rows: list[list[dict]], sample_index: dict[str, int]) ->
 def pack_module(start_addr: int, end_addr: int, json_path: str, name: str,
                  sample_index: dict[str, int]) -> str:
     module = json.loads(Path(json_path).read_text())
-    lines: list[str] = []
-    cursor = start_addr
+    lines: list[str] = [".balign 4"]
+    cursor = 0
 
     pattern_labels = []
     for i, pat in enumerate(module["patterns"]):
@@ -152,9 +152,9 @@ def pack_module(start_addr: int, end_addr: int, json_path: str, name: str,
         lines.append(f".word {lbl}")
         cursor += 4
 
-    if cursor != end_addr:
-        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X}, "
-                  f"regions file declares end 0x{end_addr:X}")
+    if cursor != end_addr - start_addr:
+        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X} bytes, "
+                  f"regions file declares 0x{end_addr - start_addr:X}")
 
     return "\n".join(lines) + "\n"
 
@@ -179,8 +179,8 @@ def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) ->
 
     sample_index = {stem: idx + 1 for idx, stem, _ in entries}  # 1-based
 
-    lines: list[str] = []
-    cursor = start_addr
+    lines: list[str] = [".balign 4"]
+    cursor = 0
     labels = []
     for _, sname, meta in entries:
         pcm = wav_to_pcm(sdir / f"{sname}.wav")
@@ -217,9 +217,9 @@ def pack_samples(start_addr: int, end_addr: int, samples_dir: str, name: str) ->
         lines.append(f".word {lbl}")
         cursor += 4
 
-    if cursor != end_addr:
-        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X}, "
-                  f"regions file declares end 0x{end_addr:X}")
+    if cursor != end_addr - start_addr:
+        sys.exit(f"{name}: packed size mismatch: got 0x{cursor:X} bytes, "
+                  f"regions file declares 0x{end_addr - start_addr:X}")
 
     return "\n".join(lines) + "\n", sample_index
 

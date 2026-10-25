@@ -34,6 +34,7 @@
 
 @ ---- blob header and stage index ----------------------------------------
 .macro RoomBlob entries
+    .balign 4
     .set RoomBlobBase, .
     .2byte 4 + 8 * (\entries), \entries
 .endm

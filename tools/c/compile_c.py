@@ -199,6 +199,10 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
         asm = re.sub(r"^(\s*\.align\s+\d+)\s*$", r"\1, 0", asm, flags=re.M)
         asm = merge_section_flags(asm)
     place_in_text(asm, src, keep_rodata=True)
+    # The assembler ignores everything after .END, padding included.
+    end = re.search(r"^\s*\.end\b", asm, re.M | re.I)
+    if end:
+        asm = asm[:end.start()]
     padding = "".join(f"\t.section\t{name}\n\t.align\t2\n"
                       for name in section_names(asm) if name != ".bss")
     wrapped = (".syntax divided\n" + (".arm\n" if arm else ".thumb\n") + asm
@@ -241,9 +245,14 @@ def wrap_asm(asm: str, src: str, keep_rodata: bool = False,
     The region wrapper is .syntax unified; agbcc emits divided syntax.
     agbcc_arm doesn't state its instruction set, so .arm does.
     The trailing .align pads to the 4-byte boundary with explicit zeros,
-    which is what the ROM has.
+    which is what the ROM has. A .rodata or .data that a row of its own
+    places starts word-aligned, as every object did.
     """
+    split = ((["\t.section\t.rodata\n"] if keep_rodata else [])
+             + (["\t.data\n"] if keep_data else []))
     return (".syntax divided\n" + (".arm\n" if arm else "")
+            + "".join(f"{s}\t.align\t2, 0\n" for s in split)
+            + ("\t.text\n" if split else "")
             + place_in_text(asm, src, keep_rodata, keep_data)
             + "\t.align\t2, 0\n" + ".syntax unified\n")
 

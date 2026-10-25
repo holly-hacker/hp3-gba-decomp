@@ -202,12 +202,6 @@ def main() -> None:
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write("SECTIONS\n{\n")
         for address, section, stem, input_section, region_name, vma in placements:
-            # SUBALIGN(1): a compiled region's .text carries a 4-byte
-            # section-alignment attribute (from compile_c.py's trailing
-            # `.align 2, 0`) even when it adds no actual padding. Without
-            # this, ld pads its LMA to that alignment for overlap checking
-            # and falsely reports it overlapping the next region whenever
-            # its real ROM address isn't itself 4-aligned.
             contents = f"{objdir}/{stem}.o({input_section})"
             if stem in lib_objects or region_name in sectioned:
                 # Neither a library object nor a sectioned one has a
@@ -219,7 +213,7 @@ def main() -> None:
             # stored: ld would otherwise give the sections after one that
             # runs from RAM that one's offset between the two.
             run = hex(address if vma is None else vma)
-            f.write(f"    {section} {run} : AT({hex(address)}) SUBALIGN(1) {{ {contents} }}\n")
+            f.write(f"    {section} {run} : AT({hex(address)}) {{ {contents} }}\n")
         # The game's own RAM variables are fixed addresses
         # (ram_symbols.<ver>.inc); a library object's .bss is placed where
         # the ROM's references to it point.
@@ -230,8 +224,10 @@ def main() -> None:
         # A label inside a region has no gap to be defined in. Unless the
         # region's own source defines it, it names a ROM address the
         # original link supplied, such as where a RAM image is stored or
-        # an empty table that shares the next object's address.
-        for start, end, srcfile, name in regions:
+        # an empty table that shares the next object's address. It is
+        # defined relative to where that region is stored, so it moves
+        # with the region.
+        for i, (start, end, srcfile, name) in enumerate(regions):
             points = sorted(a for a in labels if start <= a < end)
             if not points:
                 continue
@@ -243,7 +239,8 @@ def main() -> None:
                 own = set(exported_labels(srcfile))
             for point in points:
                 if labels[point][0] not in own:
-                    f.write(f"    {labels[point][0]} = {hex(point)};\n")
+                    offset = f" + {hex(point - start)}" if point > start else ""
+                    f.write(f"    {labels[point][0]} = LOADADDR(.rgn{i:03d}){offset};\n")
         f.write("    /DISCARD/ : { *(.comment) *(.ARM.attributes) *(.note*) }\n")
         f.write("}\n")
 

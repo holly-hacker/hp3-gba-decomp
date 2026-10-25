@@ -67,7 +67,7 @@ def main() -> None:
                 raise ValueError(f"{name}: packs to {len(data):#x} bytes, "
                                  f"regions.{ver}.txt claims {row.end - row.start:#x}")
             bin_path = (out / f"{name}.bin").relative_to(runs.ROOT).as_posix()
-            asm, offset = [], 0
+            asm, offset = [".balign 4"], 0
             for label, piece in pieces[name]:
                 asm += [f".global {label}", f"{label}:", f'    .incbin "{bin_path}", {offset:#x}, {len(piece):#x}']
                 offset += len(piece)
