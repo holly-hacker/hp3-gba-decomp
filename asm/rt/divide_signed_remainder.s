@@ -4,7 +4,7 @@
 @ stored through the pointer passed in r2. Not compiler runtime --
 @ libgcc's are the Thumb lib-object routines.
 	arm_func_start DivideSignedRemainder
-DivideSignedRemainder: @ 0x080002A4
+DivideSignedRemainder:
 	stmdb sp!, {r2}
 	ands r3, r1, #0x80000000
 	rsbmi r1, r1, #0

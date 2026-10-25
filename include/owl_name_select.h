@@ -5,7 +5,7 @@
 // Game mode 0x42 (OwlNameSelect), the Owl Care Kit setup pushed by the GameCube link and
 // connectivity screens. dwCurrentGameModeArg1 is the page: 0 picks the owl's name, 1 its type.
 // dwModeScratchA is set once the page was left with B instead of A.
-extern const u32 g_dwOwlNameSelectBg3Control;  // 0x08068BF8
+extern const u32 g_dwOwlNameSelectBg3Control;
 
 extern void InitializeOwlNameSelect(void);
 extern void UpdateOwlNameSelect(void);

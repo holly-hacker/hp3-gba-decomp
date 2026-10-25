@@ -37,9 +37,9 @@ extern void InitSpongifyPadParticleEmitter0(ParticleEmitter *pEmitter, Actor *pE
 extern void InitSpongifyPadParticleEmitter1(ParticleEmitter *pEmitter, Actor *pEffect);
 extern void SpawnSpongifyPadEffect(Actor *pPad, Actor *pPlayer);
 // [3] is the effect sprite of SpawnSpongifyPadEffect.
-extern const ActorGfxRecord g_aRoomSpongifyPadSprites[4];             // ROM 0x0806B8DC (US)
-extern const ActorGfxRecord *const g_apRoomSpongifyPadAnimFrames[3];  // ROM 0x0806B8FC (US)
-extern const void *const g_apRoomSpongifyPadEffectData[3];             // ROM 0x0806B908 (US)
-extern const u8 g_abRoomSpongifyPadAnimData[30];                       // ROM 0x0806B914 (US)
-extern const ActorGfxRecord g_RoomSpongifyPadParticleGfx0;             // ROM 0x0806B934 (US)
-extern const ActorGfxRecord g_RoomSpongifyPadParticleGfx1;             // ROM 0x0806B93C (US)
+extern const ActorGfxRecord g_aRoomSpongifyPadSprites[4];
+extern const ActorGfxRecord *const g_apRoomSpongifyPadAnimFrames[3];
+extern const void *const g_apRoomSpongifyPadEffectData[3];
+extern const u8 g_abRoomSpongifyPadAnimData[30];
+extern const ActorGfxRecord g_RoomSpongifyPadParticleGfx0;
+extern const ActorGfxRecord g_RoomSpongifyPadParticleGfx1;

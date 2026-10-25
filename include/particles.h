@@ -142,9 +142,9 @@ extern u16 g_wActiveParticleCount;                  // 0x0300519C
 extern u16 g_wParticleHighWaterMark;                // 0x0300519E
 extern ListNode *g_pParticleFreeListHead;           // 0x030051AC
 extern ListNode *g_pParticleActiveListHead;         // 0x030051CC
-extern const u8 g_abOppositeDirection8[8];          // 0x08068BFC
-extern const u8 g_abOppositeDirection4[4];          // 0x08068C04
-extern const u8 g_abUnusedDiagonalMirror8[8];       // 0x08068C08
+extern const u8 g_abOppositeDirection8[8];
+extern const u8 g_abOppositeDirection4[4];
+extern const u8 g_abUnusedDiagonalMirror8[8];
 
 // Takes a particle from the free list, zeroed, and counts it.
 static inline Particle *AllocParticle(void)

@@ -20,7 +20,7 @@ typedef enum {
 extern u8 *gDialogTextScratchBuf;  // 0x400-byte buffer GetDialogText decodes into
 extern u8 gCurrentLanguage;
 extern u8 gLocaleThousandsSep;
-extern DialogTextBlob *sDialogTextTable[8];  // 0x0806BD78
+extern DialogTextBlob *sDialogTextTable[8];
 
 u8 *FormatDecimal(s32 value, u8 *pBuf);
 void InitDialogTextEngine(void);

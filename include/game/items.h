@@ -18,7 +18,7 @@ typedef enum {
     ItemCategoryDummyEnd   = 12,
 } ItemCategory;
 
-// nCharacterMask, a bitmask -- CanFighterEquipItem (0x080267D0) ORs
+// nCharacterMask, a bitmask -- CanFighterEquipItem ORs
 // together the bit for whichever FighterType is equipping. Only read
 // for dwCategory < ItemCategoryPotion; items outside that range store 0 here.
 typedef enum {

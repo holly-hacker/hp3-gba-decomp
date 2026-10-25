@@ -38,9 +38,9 @@ extern void BuildListMenu(const ListMenuDefinition *pDefinition);
 extern void MoveListMenuCursor(void);
 extern void DrawListMenuRow(u32 row);
 
-extern const ListMenuEntry g_aInGameMenuEntries[6];  // 0x08068C38
-extern const ActorAssetRecord g_aInGameMenuRowActors[6];  // 0x08068C80
-extern const ListMenuDefinition g_InGameMenuDefinition;  // 0x08068CE0
+extern const ListMenuEntry g_aInGameMenuEntries[6];
+extern const ActorAssetRecord g_aInGameMenuRowActors[6];
+extern const ListMenuDefinition g_InGameMenuDefinition;
 
 extern void UpdateInGameMenu(void);
 extern void InitializeInGameMenu(void);

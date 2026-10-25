@@ -11,8 +11,8 @@
 #define MINIGAME_DIFFICULTY_COUNT 3
 #define MINIGAME_ERASE_SCORES_ROW 3
 
-extern const u32 g_adwMinigameDifficultyTextIds[4];  // 0x0806601C: "Easy", "Medium", "Hard", "Erase High Scores"
-extern const GameMode g_aeMinigameDifficultyModes[4];  // 0x0806602C: mode started for each minigame
+extern const u32 g_adwMinigameDifficultyTextIds[4];  // "Easy", "Medium", "Hard", "Erase High Scores"
+extern const GameMode g_aeMinigameDifficultyModes[4];  // mode started for each minigame
 
 // Draws one row of the menu in the given font color.
 extern void DrawMinigameDifficultyRow(s32 row, u32 fontColor);

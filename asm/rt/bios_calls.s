@@ -7,74 +7,74 @@
 @ register is ignored by BIOS but agbcc's libc still sets it up here).
 
 	thumb_func_start bios_ArcTan2
-bios_ArcTan2: @ 0x08049E84
+bios_ArcTan2:
 	svc #0xa
 	bx lr
 
 	thumb_func_start bios_BgAffineSet
-bios_BgAffineSet: @ 0x08049E88
+bios_BgAffineSet:
 	svc #0xe
 	bx lr
 
 	thumb_func_start bios_CPUFastSet
-bios_CPUFastSet: @ 0x08049E8C
+bios_CPUFastSet:
 	svc #0xc
 	bx lr
 
 	thumb_func_start bios_CPUSet
-bios_CPUSet: @ 0x08049E90
+bios_CPUSet:
 	svc #0xb
 	bx lr
 
 	thumb_func_start bios_Div
-bios_Div: @ 0x08049E94
+bios_Div:
 	svc #6
 	bx lr
 
 	thumb_func_start bios_Mod
-bios_Mod: @ 0x08049E98
+bios_Mod:
 	svc #6
 	adds r0, r1, #0
 	bx lr
 	.align 2, 0
 
 	thumb_func_start bios_HuffUnComp
-bios_HuffUnComp: @ 0x08049EA0
+bios_HuffUnComp:
 	svc #0x13
 	bx lr
 
 	thumb_func_start bios_LZ77UnCompVRAM
-bios_LZ77UnCompVRAM: @ 0x08049EA4
+bios_LZ77UnCompVRAM:
 	svc #0x12
 	bx lr
 
 	thumb_func_start bios_LZ77UnCompWRAM
-bios_LZ77UnCompWRAM: @ 0x08049EA8
+bios_LZ77UnCompWRAM:
 	svc #0x11
 	bx lr
 
 	thumb_func_start bios_ObjAffineSet
-bios_ObjAffineSet: @ 0x08049EAC
+bios_ObjAffineSet:
 	svc #0xf
 	bx lr
 
 	thumb_func_start bios_RLUnCompVRAM
-bios_RLUnCompVRAM: @ 0x08049EB0
+bios_RLUnCompVRAM:
 	svc #0x15
 	bx lr
 
 	thumb_func_start bios_RLUnCompReadNormalWrite8bit
-bios_RLUnCompReadNormalWrite8bit: @ 0x08049EB4
+bios_RLUnCompReadNormalWrite8bit:
 	svc #0x14
 	bx lr
 
 	thumb_func_start bios_Sqrt
-bios_Sqrt: @ 0x08049EB8
+bios_Sqrt:
 	svc #8
 	bx lr
 
 	thumb_func_start bios_VBlankIntrWait
-bios_VBlankIntrWait: @ 0x08049EBC
+bios_VBlankIntrWait:
 	movs r2, #0
 	svc #5
 	bx lr

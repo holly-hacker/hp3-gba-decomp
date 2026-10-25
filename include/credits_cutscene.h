@@ -28,9 +28,9 @@ typedef struct {
     u32 dwLineCount;     // 0x08; 1 for a single-page cutscene
 } LinearCutsceneEntry;
 
-extern const LinearCutsceneEntry g_aLinearCutsceneTable[10];  // 0x0805E028
-extern const u32 g_dwLinearCutsceneBg0Control;                // 0x0805E020
-extern const u32 g_dwLinearCutsceneBg1Control;                // 0x0805E024
+extern const LinearCutsceneEntry g_aLinearCutsceneTable[10];
+extern const u32 g_dwLinearCutsceneBg0Control;
+extern const u32 g_dwLinearCutsceneBg1Control;
 
 // Credits scroll state.
 extern u32 g_dwCreditsScrollRow;   // 0x030028A8: last text row the scroll reached

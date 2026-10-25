@@ -119,11 +119,11 @@ extern const u32 g_dwBg3Control;
 extern const u32 g_dwBg0Control;
 
 // Scene-effect resources selected by room-script opcode 0x33.
-extern const BgTileAnimation128 g_aSpecialSceneBg2;  // 0x08063074
-extern const BgTileAnimation128 g_aSpecialSceneBg0;  // 0x0806347C
-extern const BgTileAnimation128 g_aSpecialSceneBg1;  // 0x08063884
+extern const BgTileAnimation128 g_aSpecialSceneBg2;
+extern const BgTileAnimation128 g_aSpecialSceneBg0;
+extern const BgTileAnimation128 g_aSpecialSceneBg1;
 
-extern const RoomTableEntry g_aRoomTable[ROOM_COUNT];  // ROM 0x08063C8C
+extern const RoomTableEntry g_aRoomTable[ROOM_COUNT];
 
 // Krawall module id per room, read as a byte at [room * 4]; used instead of
 // bDefaultMusicModule while quest event state 0x1A is set.

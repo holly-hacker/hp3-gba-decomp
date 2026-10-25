@@ -68,50 +68,50 @@ extern void TickBattleMenuStub(void);  // does nothing; called by TickBattleMenu
 
 // Label of each battle top menu row (Cast Spell, Special Move, Informus, Use Item, Flee,
 // Folio Bruti, Help).
-extern const u32 g_adwBattleTopMenuTextIds[7];  // 0x0804D808
-extern const ActorAssetRecord g_aPartyFaceAssets[4];         // 0x0804D824
-extern const ActorAssetRecord g_aMonsterFaceAssets[68];      // 0x0804D864
-extern const ActorAssetRecord g_aBattleMenuIconAssets[61];   // 0x0804DCA4
+extern const u32 g_adwBattleTopMenuTextIds[7];
+extern const ActorAssetRecord g_aPartyFaceAssets[4];
+extern const ActorAssetRecord g_aMonsterFaceAssets[68];
+extern const ActorAssetRecord g_aBattleMenuIconAssets[61];
 
-extern const u32 g_dwBattleFloorBgControl;  // 0x0804E074, passed to InitFloorDisplay
-extern const u32 g_dwBattleBg1Control;      // 0x0804E078
-extern const u32 g_dwBattleBg0Control;      // 0x0804E07C, also the battle text target
-extern const u32 g_dwBattleBg3Control;      // 0x0804E080, no reader; g_adwEffectBgControls's BG3 value
+extern const u32 g_dwBattleFloorBgControl;  // passed to InitFloorDisplay
+extern const u32 g_dwBattleBg1Control;
+extern const u32 g_dwBattleBg0Control;      // also the battle text target
+extern const u32 g_dwBattleBg3Control;      // no reader; g_adwEffectBgControls's BG3 value
 // Spell id of each spell menu row, per party FighterType (Harry, Hermione, Ron).
-extern const u8 g_aabFighterSpellMenu[3][7];  // 0x0804E084
+extern const u8 g_aabFighterSpellMenu[3][7];
 
 typedef struct {
     const void *pFloor;  // graphic blob, see docs/formats/graphic_blob.md
     const void *pWall;
 } BattleBackgroundPair;
-extern const BattleBackgroundPair g_aBattleBackgroundPairs[ROOM_COUNT];  // 0x0804E09C, indexed by g_bCurrentRoomId
+extern const BattleBackgroundPair g_aBattleBackgroundPairs[ROOM_COUNT];  // indexed by g_bCurrentRoomId
 
-extern const u8 g_abBattleMusicByRoom[ROOM_COUNT];  // 0x0804E254, indexed by g_bCurrentRoomId
-extern const u8 g_abBattleMusicByScriptedEncounter[15]; // 0x0804E28B, indexed by dwCurrentGameModeArg1 (scripted encounter id)
+extern const u8 g_abBattleMusicByRoom[ROOM_COUNT];  // indexed by g_bCurrentRoomId
+extern const u8 g_abBattleMusicByScriptedEncounter[15]; // indexed by dwCurrentGameModeArg1 (scripted encounter id)
 
-extern const ActorAssetRecord g_MenuSprite003Asset;  // 0x0804E29C, no reader found
+extern const ActorAssetRecord g_MenuSprite003Asset;  // no reader found
 
 // Battle screen scanline callbacks, copied to g_aBattleScanlineEffectBuffer by InitBattleDisplay,
 // RestoreBattleScanlineEffects and ResetBattleDisplayEffects.
-extern const ScanlineEffectEntry g_aBattleScanlineEffects[4];  // 0x0804E2AC
+extern const ScanlineEffectEntry g_aBattleScanlineEffects[4];
 
 // TickBattleMenuInput calls the bMenuScreen entry of the confirm table on A and of the cancel
 // table on B, passing the active fighter's FighterType and record.
 typedef void (*BattleMenuInputHandler)(u32 fighterType, BattleFighter *pFighter);
-extern const BattleMenuInputHandler g_apfnBattleMenuConfirmHandlers[11];  // 0x0804E2EC
-extern const BattleMenuInputHandler g_apfnBattleMenuCancelHandlers[11];   // 0x0804E318
+extern const BattleMenuInputHandler g_apfnBattleMenuConfirmHandlers[11];
+extern const BattleMenuInputHandler g_apfnBattleMenuCancelHandlers[11];
 
 // Battle message text ids. The per-fighter tables hold the four party FighterTypes, then the
 // 69 monsters from index 4.
-extern const u32 g_adwFighterActionTextIds[73];      // 0x0804E344, "Harry casts a spell:", "... attacks!"
-extern const u32 g_adwFighterFaintTextIds[73];       // 0x0804E468, "... falls unconscious!", "... goes away!"
-extern const u32 g_adwSpecialMoveResultTextIds[16];  // 0x0804E58C, by ShowBattleMessage's variant
-extern const u32 g_adwReviveTextIds[5];              // 0x0804E5CC, by FighterType; 4 = the whole party
+extern const u32 g_adwFighterActionTextIds[73];      // "Harry casts a spell:", "... attacks!"
+extern const u32 g_adwFighterFaintTextIds[73];       // "... falls unconscious!", "... goes away!"
+extern const u32 g_adwSpecialMoveResultTextIds[16];  // by ShowBattleMessage's variant
+extern const u32 g_adwReviveTextIds[5];              // by FighterType; 4 = the whole party
 
-extern const u8 g_abSpellMaxLevel[SPELL_COUNT];  // 0x0804E5E0, by spell id; caps TrackSpellFamiliarity
-extern const u8 g_abSpellLevelUpThreshold[2];  // 0x0804E5EA, by cast level - 1
-extern const u32 g_adwFighterCantMoveTextIds[4];  // 0x0804E5EC, by party FighterType
-extern const u8 g_sBattleTextSpace[];             // 0x0804E5FC, " "
+extern const u8 g_abSpellMaxLevel[SPELL_COUNT];  // by spell id; caps TrackSpellFamiliarity
+extern const u8 g_abSpellLevelUpThreshold[2];  // by cast level - 1
+extern const u32 g_adwFighterCantMoveTextIds[4];  // by party FighterType
+extern const u8 g_sBattleTextSpace[];             // " "
 
 // The target flash palette effect's two frames: the sprite's own palette, then
 // gTargetFlashPalette.

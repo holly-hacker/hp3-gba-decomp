@@ -19,16 +19,16 @@ typedef struct {
 } StatusEquipSlot;
 
 // Status/equip screen character rotations, indexed by SpawnStatusCharacterActor.
-extern const ActorAssetRecord g_aStatusCharacterAssets[3];  // 0x0806B250
-extern const StatusEquipSlot g_aStatusEquipSlots[6];  // 0x0806B2FC
+extern const ActorAssetRecord g_aStatusCharacterAssets[3];
+extern const StatusEquipSlot g_aStatusEquipSlots[6];
 
-extern const ActorAssetRecord g_StatusEquipSlotFrameAsset;        // 0x0806B280
-extern const void *const g_pStatusEquipSlotFramePalette;          // 0x0806B290
-extern const ActorAssetRecord g_StatusEquipSlotCursorAsset;       // 0x0806B294
-extern const void *const g_pStatusEquipSlotCursorPalette;         // 0x0806B2A4
-extern const u8 g_abStatusEquipSlotCursorPulseAnim[14];           // 0x0806B2A8
-extern const u8 g_abStatusEquipSlotCursorDimAnim[2];              // 0x0806B2B6
-extern const u8 g_abStatusCharacterSpinAnim[66];                  // 0x0806B2B8
+extern const ActorAssetRecord g_StatusEquipSlotFrameAsset;
+extern const void *const g_pStatusEquipSlotFramePalette;
+extern const ActorAssetRecord g_StatusEquipSlotCursorAsset;
+extern const void *const g_pStatusEquipSlotCursorPalette;
+extern const u8 g_abStatusEquipSlotCursorPulseAnim[14];
+extern const u8 g_abStatusEquipSlotCursorDimAnim[2];
+extern const u8 g_abStatusCharacterSpinAnim[66];
 
 // Screen actors and state of the slot select screen.
 typedef struct {

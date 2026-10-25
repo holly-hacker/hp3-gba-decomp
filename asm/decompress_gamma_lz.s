@@ -17,7 +17,7 @@
 @ byte3:byte2:(8-byte3) into bits[23:16]:[15:8]:[7:0] once, so callers
 @ pull either width out with a plain mask/shift.
 	arm_func_start DecompressGammaLz
-DecompressGammaLz:                     @ 0x080005EC
+DecompressGammaLz:
 	push {r1, r2, r4, r5, r6, r7, r8, sb, sl, fp, ip, lr}
 	sub sp, sp, #0x24                @ scratch: sp+0 unused pad, sp+4.. holds the copied length table
 	ldr fp, [r0], #4                 @ fp = codec header word (LE byte0..3)
@@ -29,7 +29,7 @@ DecompressGammaLz:                     @ 0x080005EC
 	rsb r5, r5, #8                   @ r5 = 8 - byte3
 	add r2, r5, r2, lsl #8           @ r2 = byte3:byte2:(8-byte3) packed
 	add r5, sp, #4                   @ r5 = length-table destination
-.Ltable_copy_loop:                   @ 0x08000618
+.Ltable_copy_loop:
 	ldr fp, [r0], #4
 	str fp, [r5], #4
 	subs r3, r3, #4
@@ -46,7 +46,7 @@ DecompressGammaLz:                     @ 0x080005EC
 @ a value in [1, 255] (1 if the very first bit was 0). This is the
 @ length/distance/literal-selector code read at the top of most tokens.
 	arm_func_start GetGammaCode
-GetGammaCode:                        @ 0x08000634
+GetGammaCode:
 	mov r5, #1
 	mov sb, r5                       @ sb counts consumed 1-bits, +1 (bias)
 	adds r8, r8, r8                  @ GetBit, inlined and unrolled x4 below x2
@@ -54,7 +54,7 @@ GetGammaCode:                        @ 0x08000634
 	adcseq r8, r8, r8
 	blo .Lbits_done                  @ bit was 0: stop counting, no extra bits to append
 	add sb, sb, #1
-.Lunary_loop:                        @ 0x08000650
+.Lunary_loop:
 	adds r8, r8, r8
 	ldreq r8, [r0], #4
 	adcseq r8, r8, r8
@@ -80,13 +80,13 @@ GetGammaCode:                        @ 0x08000634
 @ GetBit: single raw bit, left in the carry flag for the caller's own
 @ conditional branch.
 	arm_func_start GetBit
-GetBit:                              @ 0x080006A0
+GetBit:
 	ldr r8, [r0], #4                 @ reached only mid-refill, via the caller's own inlined
 	adcseq r8, r8, r8                @ `adds r8,r8,r8` -- completes that refill+shift
 	bx lr
 @ AppendBits(sb): r5 = (r5 << sb) | next `sb` raw bits -- extends an
 @ existing accumulator.
-.Lappend_bits:                       @ 0x080006AC
+.Lappend_bits:
 	lsls r3, r8, sb
 	beq .Lbits_loop                  @ fewer than `sb` bits buffered: slow one-bit-at-a-time fallback
 	rsb r3, sb, #0x20
@@ -98,7 +98,7 @@ GetBit:                              @ 0x080006A0
 
 @ ReadBits(sb): r5 = next `sb` raw bits, fresh (previous r5 discarded).
 	arm_func_start ReadBits
-ReadBits:                            @ 0x080006C8
+ReadBits:
 	lsls r5, r8, sb
 	beq .Lbits_loop                  @ fewer than `sb` bits buffered: slow one-bit-at-a-time fallback
 	rsb r5, sb, #0x20
@@ -111,14 +111,14 @@ ReadBits:                            @ 0x080006C8
 @ the AppendBits/ReadBits fallback above; also reachable via the fixed
 @ sb=8 entry below for a raw literal-byte read.
 	arm_func_start ReadByteSlow
-ReadByteSlow:                        @ 0x080006E0
+ReadByteSlow:
 	mov sb, #8
-.Lbits_loop:                         @ 0x080006E4
+.Lbits_loop:
 	adds r8, r8, r8
 	ldreq r8, [r0], #4
 	adcseq r8, r8, r8
 	adc r5, r5, r5
-.Lbits_done:                         @ 0x080006F4
+.Lbits_done:
 	subs sb, sb, #1
 	bne .Lbits_loop
 	bx lr
@@ -142,20 +142,20 @@ ReadByteSlow:                        @ 0x080006E0
 @ All emitted bytes go out via `strh` in pairs, packed through `ip`
 @ (0/1 parity) and `sl` (pending halfword) -- same mechanism as
 @ DecompressLzRle's parity pair, different register assignment.
-.Lliteral_via_swap:                  @ 0x08000700
+.Lliteral_via_swap:
 	lsrs sb, r2, #0x10
 	blne ReadBits
 	mov fp, r4                       @ SWAP(r4, r5)
 	mov r4, r5
 	mov r5, fp
-.Lemit_literal:                      @ 0x08000714  @ literal emission (also the top-level "not a match" path)
+.Lemit_literal:  @ literal emission (also the top-level "not a match" path)
 	ands sb, r2, #0xff
 	blne .Lappend_bits               @ append the low (8-byte3) bits to complete the literal byte
 	eors ip, ip, #1
 	movne sl, r5                     @ odd byte: buffer as pending low byte
 	addeq sl, sl, r5, lsl #8         @ even byte: completes the pending halfword
 	strheq sl, [r1], #2
-.Ldispatch:                          @ 0x0800072C  @ top-level dispatch / loop continuation
+.Ldispatch:  @ top-level dispatch / loop continuation
 	mov r5, #0
 	mov fp, #0
 	lsrs sb, r2, #0x10
@@ -182,7 +182,7 @@ ReadByteSlow:                        @ 0x080006E0
 	and r6, r6, #0xff
 	bl GetGammaCode
 	sub fp, r5, #1
-.Ldecode_run:                        @ 0x08000794
+.Ldecode_run:
 	bl GetGammaCode                  @ read the fill-byte code
 	cmp r5, #0x20
 	addlo r5, r5, #3                 @ code < 0x20: table[code-1] (table starts at sp+4)
@@ -192,16 +192,16 @@ ReadByteSlow:                        @ 0x080006E0
 	and r5, r5, #0xff                @ r5 = the fill byte
 	add r6, r6, #1                   @ r6 = run length: low byte + 1, high byte from fp
 	add r6, r6, fp, lsl #8
-.Lemit_run:                          @ 0x080007B8  @ emit `r6` halfword-pairs of fill byte `r5`
+.Lemit_run:  @ emit `r6` halfword-pairs of fill byte `r5`
 	tst ip, #1
 	addne sl, sl, r5, lsl #8
 	strhne sl, [r1], #2
 	subne r6, r6, #1
 	add sl, r5, r5, lsl #8
-.Lemit_run_pack:                     @ 0x080007CC
+.Lemit_run_pack:
 	and r5, r6, #1
 	lsrs r6, r6, #1
-.Lemit_run_loop:                     @ 0x080007D4
+.Lemit_run_loop:
 	strhne sl, [r1], #2
 	subs r6, r6, #1
 	bgt .Lemit_run_loop
@@ -209,7 +209,7 @@ ReadByteSlow:                        @ 0x080006E0
 	andne sl, sl, #0xff
 	b .Ldispatch
 
-.Lmatch_extended:                    @ 0x080007EC  @ code >= 2: extended-length back-reference
+.Lmatch_extended:  @ code >= 2: extended-length back-reference
 	bl GetGammaCode                  @ read the length code proper
 	cmp r5, #0xff
 	beq .Lstream_end                 @ length code 0xff: end-of-stream sentinel
@@ -220,7 +220,7 @@ ReadByteSlow:                        @ 0x080006E0
 	lsl fp, fp, sb
 	bl ReadBits                      @ else fold in `byte2` extra raw bits (fresh)
 	orr fp, fp, r5
-.Lmatch_copy:                        @ 0x08000814  @ shared back-reference copy (fp = distance high part, 0 for length-2)
+.Lmatch_copy:  @ shared back-reference copy (fp = distance high part, 0 for length-2)
 	lsls r5, r8, #8
 	lsrne r5, r8, #0x18
 	lslne r8, r8, #8
@@ -241,12 +241,12 @@ ReadByteSlow:                        @ 0x080006E0
 	strh sl, [r1], #2
 	sub r6, r6, #1
 	b .Lemit_run_pack
-.Lmatch_copy_gap0:                   @ 0x08000864  @ gap 0: source==dest, must copy byte-by-byte so each write is visible
+.Lmatch_copy_gap0:  @ gap 0: source==dest, must copy byte-by-byte so each write is visible
 	tst ip, #1
 	ldrbeq r5, [r7], #1
 	andne r5, sl, #0xff
 	b .Lemit_run
-.Lmatch_copy_bulk:                   @ 0x08000874  @ gap > 1: bulk-copy from far enough behind the write cursor
+.Lmatch_copy_bulk:  @ gap > 1: bulk-copy from far enough behind the write cursor
 	tst r7, #1
 	beq .Lmatch_copy_halfwords
 	ldrb r5, [r7], #1                @ peel one byte first if the copy source is halfword-misaligned
@@ -255,18 +255,18 @@ ReadByteSlow:                        @ 0x080006E0
 	addeq sl, sl, r5, lsl #8
 	strheq sl, [r1], #2
 	subs r6, r6, #1
-.Lmatch_copy_halfwords:              @ 0x08000894
+.Lmatch_copy_halfwords:
 	lsrs fp, r6, #1                  @ fp = whole halfwords left to copy
 	beq .Lmatch_copy_tail_odd
 	tst ip, #1
 	bne .Lmatch_copy_unaligned_loop  @ pending byte set: repack every source halfword
-.Lmatch_copy_aligned_loop:           @ 0x080008A4  @ fast path: aligned halfword-for-halfword copy
+.Lmatch_copy_aligned_loop:  @ fast path: aligned halfword-for-halfword copy
 	ldrh r5, [r7], #2
 	strh r5, [r1], #2
 	subs fp, fp, #1
 	bne .Lmatch_copy_aligned_loop
 	b .Lmatch_copy_tail
-.Lmatch_copy_unaligned_loop:         @ 0x080008B8  @ slow path: repack every source halfword into the pending offset
+.Lmatch_copy_unaligned_loop:  @ slow path: repack every source halfword into the pending offset
 	ldrh r5, [r7], #2
 	add r5, sl, r5, lsl #8
 	strh r5, [r1], #2
@@ -274,10 +274,10 @@ ReadByteSlow:                        @ 0x080006E0
 	subs fp, fp, #1
 	bne .Lmatch_copy_unaligned_loop
 	mov ip, #1
-.Lmatch_copy_tail:                   @ 0x080008D4
+.Lmatch_copy_tail:
 	tst r6, #1
 	beq .Ldispatch                   @ even total length: nothing left over
-.Lmatch_copy_tail_odd:               @ 0x080008DC
+.Lmatch_copy_tail_odd:
 	ldrb r5, [r7], #1                @ odd total length: one trailing byte
 	eors ip, ip, #1
 	movne sl, r5
@@ -285,7 +285,7 @@ ReadByteSlow:                        @ 0x080006E0
 	strheq sl, [r1], #2
 	b .Ldispatch
 
-.Lstream_end:                        @ 0x080008F4  @ end of stream (length code 0xff)
+.Lstream_end:  @ end of stream (length code 0xff)
 	tst ip, #1
 	strbne sl, [r1], #1              @ flush a final odd pending byte
 	add sp, sp, #0x24

@@ -24,13 +24,13 @@ typedef struct {
     s32 nActorBY;  // 0x0C
 } HarryHermionePortInTimePosition;
 
-extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeActorPos[2];  // 0x0806BF40
+extern const HarryHermionePortInTimePosition g_aHarryHermionePortInTimeActorPos[2];
 extern const IntPoint g_aHarryHermionePortInTimeCameraStart[2];
 extern const ActorAssetRecord g_aHarryHermionePortInTimeActorAssets[2];
 extern const u8 g_aHarryHermionePortInTimeAnims[2][32];
 extern const ActorGfxRecord g_HarryHermionePortInTimeShadowGfx;
 
-// The cutscene's start and destination maps, ROM 0x0806BE38 (US).
+// The cutscene's start and destination maps.
 extern const RoomTableEntry g_aTimeTurnerCutsceneRoomTable[2];
 
 void InitializeHarryHermionePortInTimeCutscene(void);

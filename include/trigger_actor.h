@@ -35,10 +35,10 @@ typedef struct SwitchActorState {
 extern Actor *SpawnSwitchActor(u8 bColumn, u8 bRow);
 extern void TickSwitchActor(Actor *pActor);
 extern void HandleSwitchActorTouch(Actor *pSelf, Actor *pOther);
-extern const ActorGfxRecord g_aRoomSwitchSprites[5];                // ROM 0x0806C178 (US)
-extern const ActorGfxRecord *const g_apRoomSwitchAssetRecords[12];  // ROM 0x0806C1A0 (US)
-extern const void *const g_apRoomSwitchEffectData[12];               // ROM 0x0806C1D0 (US)
-extern const u8 g_aabUnusedRoomSwitchAnims[12][20];                // ROM 0x0806C200 (US)
+extern const ActorGfxRecord g_aRoomSwitchSprites[5];
+extern const ActorGfxRecord *const g_apRoomSwitchAssetRecords[12];
+extern const void *const g_apRoomSwitchEffectData[12];
+extern const u8 g_aabUnusedRoomSwitchAnims[12][20];
 
 // 1 while RestoreRoomActorState respawns the room's saved actors, and set
 // when the overworld pushes a pause menu. Switches flipping while it is set,

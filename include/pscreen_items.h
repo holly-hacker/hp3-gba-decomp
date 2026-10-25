@@ -8,10 +8,10 @@
 
 // Section select (mode 0x10). Each row selects an item list filter: 0xA
 // (all non-equipment items), ItemCategoryPotion or ItemCategoryMisc.
-extern const ListMenuEntry g_aItemsSectionEntries[3];          // 0x0806B190
-extern const u32 g_aItemsSectionFilters[3];                    // 0x0806B1B4
-extern const ActorAssetRecord g_aItemsSectionRowActors[3];   // 0x0806B1C0
-extern const ListMenuDefinition g_ItemsSectionMenuDefinition;  // 0x0806B1F0
+extern const ListMenuEntry g_aItemsSectionEntries[3];
+extern const u32 g_aItemsSectionFilters[3];
+extern const ActorAssetRecord g_aItemsSectionRowActors[3];
+extern const ListMenuDefinition g_ItemsSectionMenuDefinition;
 
 extern void UpdateItemsSectionSelect(void);
 extern void InitializeItemsSectionSelect(void);

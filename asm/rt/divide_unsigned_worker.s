@@ -5,7 +5,7 @@
 @ unrolled restoring division. Not compiler runtime -- libgcc's are the
 @ Thumb lib-object routines.
 	arm_func_start DivideUnsignedWorker
-DivideUnsignedWorker: @ 0x080002E0
+DivideUnsignedWorker:
 	cmp r1, #1
 	beq _080005A4
 	mov r2, #0

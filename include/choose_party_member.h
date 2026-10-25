@@ -23,22 +23,22 @@ extern ChooseCharacterState g_ChooseCharacterState;  // 0x03002260
 extern u32 g_dwChooseCharacterBgRow;             // 0x0300227C, BG2 tile row of the panel
 
 // Story stage per row, ended by 0xFF. A row is the current stage's position in this list.
-extern const u8 g_abChooseCharacterStages[7];  // 0x0804D6CC
+extern const u8 g_abChooseCharacterStages[7];
 
 // Per stage row: the name variant shown for each cursor position (0 = none; 1 Harry, 2 Hermione,
 // 3 Harry and Hermione, 4 Ron, 5 Harry and Ron, 6 Ron and Hermione), then a bitmask of the
 // option actors present.
-extern const u8 g_aabChooseCharacterOptionRows[6][4];  // 0x0804D6D3
+extern const u8 g_aabChooseCharacterOptionRows[6][4];
 
 // Per stage row and cursor position: the objective text shown under the character name.
-extern const u32 g_aadwChooseCharacterObjectiveTextIds[6][CHOOSE_CHARACTER_OPTION_COUNT];  // 0x0804D6EC
+extern const u32 g_aadwChooseCharacterObjectiveTextIds[6][CHOOSE_CHARACTER_OPTION_COUNT];
 
 // The X pixel of each option actor, indexed [stage row][cursor position][option actor].
-extern const u8 g_aaabChooseCharacterActorX[6][3][3];  // 0x0804D734
+extern const u8 g_aaabChooseCharacterActorX[6][3][3];
 
 // Per stage row: 1 when only two options are offered.
-extern const u8 g_abChooseCharacterTwoOptions[6];  // 0x0804D76A
-extern const ScanlineEffectEntry g_aChooseCharacterScanlineEffects[2];  // 0x0804D770
+extern const u8 g_abChooseCharacterTwoOptions[6];
+extern const ScanlineEffectEntry g_aChooseCharacterScanlineEffects[2];
 
 extern void InitializeChooseCharacter(void);
 extern void UpdateChooseCharacter(void);

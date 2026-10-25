@@ -10,10 +10,10 @@ typedef struct {
 } CheatMapState;
 
 extern CheatMapState g_CheatMapState;  // 0x030021E8
-extern const u32 g_dwCheatMapBg0Control;  // 0x0804C4A0
-extern const u32 g_dwCheatMapBg1Control;  // 0x0804C4A4
-extern const ActorAssetRecord g_CheatMapAnimFrames;  // 0x0804C4A8
-extern const u8 g_CheatMapAnimData[18];    // 0x0804C4B8
+extern const u32 g_dwCheatMapBg0Control;
+extern const u32 g_dwCheatMapBg1Control;
+extern const ActorAssetRecord g_CheatMapAnimFrames;
+extern const u8 g_CheatMapAnimData[18];
 
 extern void InitializeCheatMap(void);
 extern void UpdateCheatMap(void);

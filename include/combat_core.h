@@ -13,4 +13,4 @@ extern u8 RollFighterParalysisEscape(u8 fighterIndex);  // 0 = acts normally, 1 
 extern void TrackSpellFamiliarity(u32 fighterType, u32 spellId, s32 spellLevel, SavedFighterStats *pStats);
 extern void DispatchPendingAction(s32 fighterIndex);
 
-extern const ActorAssetRecord g_BattleEffect001Asset;  // 0x0804D7F8, passed to LoadParticleGfx by InitBattleDisplay
+extern const ActorAssetRecord g_BattleEffect001Asset;  // passed to LoadParticleGfx by InitBattleDisplay

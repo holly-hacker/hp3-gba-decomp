@@ -46,21 +46,21 @@ extern void HandleWorldActorSecondaryTouch(Actor *pSelf, Actor *pOther);
 extern void HandleWorldActorTouch(Actor *pSelf, Actor *pOther);
 extern void BreakWorldActor(Actor *pActor);
 extern void InitWorldActorBreakEmitter(ParticleEmitter *pEmitter, Actor *pWorldActor);
-extern const ActorGfxRecord g_aWorldActorSprites[80];             // ROM 0x0806C304 (US)
-extern const ActorGfxRecord *const g_apWorldActorAnimFrames[91];  // ROM 0x0806C584 (US)
-extern const void *const g_apWorldActorEffectData[91];            // ROM 0x0806C6F0 (US)
-extern const s32 g_aWorldActorPushVelocity[8][2];                 // ROM 0x0806C85C (US)
-extern const u32 g_adwWorldActorPushFacing[8];                    // ROM 0x0806C89C (US)
-extern const ActorGfxRecord g_WorldActorParticleGfx0;             // ROM 0x0806C8BC (US)
-extern const ActorGfxRecord g_WorldActorParticleGfx1;             // ROM 0x0806C8C4 (US)
-extern const ActorGfxRecord g_WorldActorParticleGfx2;             // ROM 0x0806C8CC (US)
-extern const ActorGfxRecord g_WorldActorParticleGfx3;             // ROM 0x0806C8D4 (US)
-extern const ActorGfxRecord g_WorldActorParticleGfx4;             // ROM 0x0806C8DC (US)
-extern const ActorGfxRecord g_WorldActorParticleGfx5;             // ROM 0x0806C8E4 (US)
-extern const ActorGfxRecord g_WorldActorParticleGfx6;             // ROM 0x0806C8EC (US)
-extern const u8 g_abWorldActorAnimData[91][90];                   // ROM 0x0806C8F4 (US)
-extern const u8 g_abWorldActorFacingFrames[8];                    // ROM 0x0806E8F2 (US)
-extern const u8 g_abWorldActorFacingAnimStart[8];                 // ROM 0x0806E8FA (US)
+extern const ActorGfxRecord g_aWorldActorSprites[80];
+extern const ActorGfxRecord *const g_apWorldActorAnimFrames[91];
+extern const void *const g_apWorldActorEffectData[91];
+extern const s32 g_aWorldActorPushVelocity[8][2];
+extern const u32 g_adwWorldActorPushFacing[8];
+extern const ActorGfxRecord g_WorldActorParticleGfx0;
+extern const ActorGfxRecord g_WorldActorParticleGfx1;
+extern const ActorGfxRecord g_WorldActorParticleGfx2;
+extern const ActorGfxRecord g_WorldActorParticleGfx3;
+extern const ActorGfxRecord g_WorldActorParticleGfx4;
+extern const ActorGfxRecord g_WorldActorParticleGfx5;
+extern const ActorGfxRecord g_WorldActorParticleGfx6;
+extern const u8 g_abWorldActorAnimData[91][90];
+extern const u8 g_abWorldActorFacingFrames[8];
+extern const u8 g_abWorldActorFacingAnimStart[8];
 
 extern void SnapActorXToTileGrid(Actor *actor);
 // Puts a world actor into its consumed state; used to restore a used switch.

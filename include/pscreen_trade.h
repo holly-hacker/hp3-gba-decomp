@@ -47,10 +47,10 @@ typedef struct {
 
 extern CardTradeState g_CardTradeState;  // 0x03005568
 
-extern const ListMenuEntry g_aCardTradeEntries[3];                    // 0x0806B35C
-extern const ListMenuDefinition g_CardTradeMenuDefinition;            // 0x0806B380
-extern const CardTradeSlotPosition g_aCardTradeSlotPositions[2];      // 0x0806B3A4
-extern const ActorAssetRecord g_aCardTradeReadyIconAssets[2];         // 0x0806B3AC: not ready, ready
+extern const ListMenuEntry g_aCardTradeEntries[3];
+extern const ListMenuDefinition g_CardTradeMenuDefinition;
+extern const CardTradeSlotPosition g_aCardTradeSlotPositions[2];
+extern const ActorAssetRecord g_aCardTradeReadyIconAssets[2];         // not ready, ready
 
 extern const u8 gCardTradeOverlay[];
 

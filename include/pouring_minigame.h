@@ -74,34 +74,34 @@ typedef enum {
 } ServePumpkinJuiceCustomerAnim;
 
 // BG control words, graphics, animations and strings.
-extern const u8 g_aabServePumpkinJuiceGobletAnims[6][10];      // 0x08069038
-extern const u8 g_aabServePumpkinJuiceBartenderAnims[4][28];   // 0x08069074
-extern const u8 g_aabServePumpkinJuiceBartenderArmAnims[3][12];  // 0x080690E4
-extern const u8 g_aabServePumpkinJuiceCustomerAnims[5][10];    // 0x08069108
-extern const u8 g_abServePumpkinJuicePuffAnim[14];             // 0x0806913A
-extern const u32 g_adwServePumpkinJuiceCustomerTypeBits[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT];  // 0x08069148
-extern const IntPoint g_aServePumpkinJuiceTapCells[SERVE_PUMPKIN_JUICE_LANE_COUNT];  // 0x0806916C
-extern const u32 g_dwServePumpkinJuiceBg0Control;  // 0x08069184
-extern const u32 g_dwServePumpkinJuiceBg1Control;  // 0x08069188
-extern const u32 g_dwServePumpkinJuiceBg2Control;  // 0x0806918C
-extern const u32 g_dwServePumpkinJuiceBg3Control;  // 0x08069190
-extern const ActorGfxRecord g_ServePumpkinJuiceGobletSprite;      // 0x08069194
-extern const ActorGfxRecord g_ServePumpkinJuiceBartenderSprite;   // 0x0806919C
-extern const ActorGfxRecord g_ServePumpkinJuiceBartenderArmSprite;  // 0x080691A4
-extern const ActorGfxRecord g_ServePumpkinJuicePuffSprite;        // 0x080691AC
+extern const u8 g_aabServePumpkinJuiceGobletAnims[6][10];
+extern const u8 g_aabServePumpkinJuiceBartenderAnims[4][28];
+extern const u8 g_aabServePumpkinJuiceBartenderArmAnims[3][12];
+extern const u8 g_aabServePumpkinJuiceCustomerAnims[5][10];
+extern const u8 g_abServePumpkinJuicePuffAnim[14];
+extern const u32 g_adwServePumpkinJuiceCustomerTypeBits[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT];
+extern const IntPoint g_aServePumpkinJuiceTapCells[SERVE_PUMPKIN_JUICE_LANE_COUNT];
+extern const u32 g_dwServePumpkinJuiceBg0Control;
+extern const u32 g_dwServePumpkinJuiceBg1Control;
+extern const u32 g_dwServePumpkinJuiceBg2Control;
+extern const u32 g_dwServePumpkinJuiceBg3Control;
+extern const ActorGfxRecord g_ServePumpkinJuiceGobletSprite;
+extern const ActorGfxRecord g_ServePumpkinJuiceBartenderSprite;
+extern const ActorGfxRecord g_ServePumpkinJuiceBartenderArmSprite;
+extern const ActorGfxRecord g_ServePumpkinJuicePuffSprite;
 extern const ActorGfxRecord
-    g_aaServePumpkinJuiceCustomerSprites[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT][2];  // 0x080691B4
+    g_aaServePumpkinJuiceCustomerSprites[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT][2];
 // Per type, how many body palettes follow the part palette in the row below.
-extern const u8 g_abServePumpkinJuiceCustomerPaletteCounts[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT];  // 0x08069244
+extern const u8 g_abServePumpkinJuiceCustomerPaletteCounts[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT];
 // Per type, the part's palette, then the body palettes picked from at random.
 extern const ObjPalette *const
-    g_aapServePumpkinJuiceCustomerPalettes[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT][4];  // 0x08069250
+    g_aapServePumpkinJuiceCustomerPalettes[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT][4];
 // Per type, the body and part sprites.
 extern const ActorGfxRecord *const
-    g_aapServePumpkinJuiceCustomerSpriteRows[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT][2];  // 0x080692E0
-extern const BgTileAnimation16 g_ServePumpkinJuiceTable;  // 0x08069328
-extern const u8 g_ServePumpkinJuicePauseText[];    // 0x080693B0
-extern const u8 g_ServePumpkinJuiceResultsText[];  // 0x080693C0
+    g_aapServePumpkinJuiceCustomerSpriteRows[SERVE_PUMPKIN_JUICE_CUSTOMER_TYPE_COUNT][2];
+extern const BgTileAnimation16 g_ServePumpkinJuiceTable;
+extern const u8 g_ServePumpkinJuicePauseText[];
+extern const u8 g_ServePumpkinJuiceResultsText[];
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

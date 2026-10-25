@@ -3,7 +3,7 @@
 #include "actor.h"
 
 // The SP gauge sprites spawned by SpawnSpGauge: [0] for party members, [1] for enemies.
-extern const ActorGfxRecord g_aSpGaugeGfx[2];  // 0x0805BA7C
+extern const ActorGfxRecord g_aSpGaugeGfx[2];
 
 // Actor bytes 0x60-0x6B of an SP gauge. The gauge counts wValue down by wDrainTotal,
 // in steps that grow by wDrainRate / 256 each time.

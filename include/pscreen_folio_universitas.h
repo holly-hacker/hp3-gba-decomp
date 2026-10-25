@@ -35,22 +35,22 @@ typedef enum {
 // first time, and returns the card's count.
 u32 IncrementFolioUniversitasCard(u32 cardIndex);
 
-extern const u32 g_dwFolioUniversitasBg3Control;  // 0x080696B0
-extern const u32 g_dwFolioUniversitasBg1Control;  // 0x080696B4
-extern const u32 g_dwFolioUniversitasBg0Control;  // 0x080696B8
+extern const u32 g_dwFolioUniversitasBg3Control;
+extern const u32 g_dwFolioUniversitasBg1Control;
+extern const u32 g_dwFolioUniversitasBg0Control;
 
 // Cursor, button prompts, three unused-looking sprites and the copy-count badges.
-extern const ActorGfxRecord g_aFolioUniversitasActorGfx[6];  // 0x080696BC
+extern const ActorGfxRecord g_aFolioUniversitasActorGfx[6];
 #define FOLIO_UNIVERSITAS_CURSOR_GFX   (&g_aFolioUniversitasActorGfx[0])
 #define FOLIO_UNIVERSITAS_PROMPTS_GFX  (&g_aFolioUniversitasActorGfx[1])
 #define FOLIO_UNIVERSITAS_BADGES_GFX   (&g_aFolioUniversitasActorGfx[5])
 
 // Indexed by card number; entry 51 is the face-down card.
-extern const ActorAssetRecord g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT + 1];  // 0x080696EC
+extern const ActorAssetRecord g_aFolioCardThumbnails[FOLIO_UNIVERSITAS_CARD_COUNT + 1];
 
-extern const u8 g_aFolioUniversitasCursorAnim[];        // 0x08069614
-extern const u8 g_aFolioUniversitasBattleCursorAnim[];  // 0x0806963E
-extern const u8 g_aFolioButtonPromptAnims[4][18];       // 0x08069668
+extern const u8 g_aFolioUniversitasCursorAnim[];
+extern const u8 g_aFolioUniversitasBattleCursorAnim[];
+extern const u8 g_aFolioButtonPromptAnims[4][18];
 
 extern void InitializeFolioUniversitas(void);
 extern void UpdateFolioUniversitas(void);

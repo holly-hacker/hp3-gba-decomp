@@ -11,9 +11,9 @@ extern u8 g_bPatronusGraphicIndex;   // 0x030051F0: cycles through g_apPatronusG
 extern s16 g_swPatronusBgParam;      // 0x030051F2: SetBgZoom argument, starts 0x180 then 0x200
 extern s32 g_nPatronusBgOffset;      // 0x030051F4: 16.16; SetBgRotationCenter gets the integer part
 
-extern const u32 g_dwPatronusBg2Control;             // 0x08068C30
-extern const u32 g_dwPatronusBg3Control;             // 0x08068C34
-extern const u8 *const g_apPatronusGraphics[6];      // 0x08FAAEF8
+extern const u32 g_dwPatronusBg2Control;
+extern const u32 g_dwPatronusBg3Control;
+extern const u8 *const g_apPatronusGraphics[6];
 
 extern void InitializeHarryPatronusCutscene(void);
 extern void UpdateHarryPatronusCutscene(void);

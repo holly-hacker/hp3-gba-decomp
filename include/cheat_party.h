@@ -11,10 +11,10 @@ typedef struct {
 } CheatPartyState;
 
 extern CheatPartyState g_CheatPartyState;  // 0x030021F8
-extern const u32 g_dwCheatPartyBg0Control;  // 0x0804C4CC
-extern const u32 g_dwCheatPartyBg1Control;  // 0x0804C4D0
-extern const ActorAssetRecord g_CheatPartyAnimFrames;  // 0x0804C4D4
-extern const u8 g_CheatPartyAnimData[18];    // 0x0804C4E4
+extern const u32 g_dwCheatPartyBg0Control;
+extern const u32 g_dwCheatPartyBg1Control;
+extern const ActorAssetRecord g_CheatPartyAnimFrames;
+extern const u8 g_CheatPartyAnimData[18];
 
 extern void InitializeCheatParty(void);
 extern void UpdateCheatParty(void);
@@ -23,4 +23,4 @@ extern void ExitCheatParty(void);
 extern void DrawCheatPartyRows(void);
 extern void ApplyCheatParty(void);
 extern void DrawCheatPartyCharacters(void);
-extern const u8 sPlayableCharacterNames[9][32];  // 0x0804C4F6
+extern const u8 sPlayableCharacterNames[9][32];

@@ -42,29 +42,29 @@ extern u8 *g_pRoomCollisionTilemapBuffer;
 extern u16 *g_pRoomCollisionTilemap;
 extern u32 g_dwRoomCollisionPatternCount;
 
-// ROM 0x08066094 (US): the facing opposite to each of the eight facings.
+// The facing opposite to each of the eight facings.
 extern const u8 g_abOppositeFacing[8];
-// ROM 0x0806609C (US): a tile's four edges, indexed by facing / 2.
+// A tile's four edges, indexed by facing / 2.
 extern const SlopeLineSegment g_aTileEdgeSegments[4];
-// ROM 0x080660A4 (US): terrain types 2-25.
+// Terrain types 2-25.
 extern const SlopeLineSegment g_aSlopeLineSegments[24];
 
-extern void ResolveActorTerrain(Actor *actor);  // 0x0802D704
-extern u32 GetActorTerrainType(Actor *actor, TerrainBox *box);  // 0x0802D868
-extern u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type);  // 0x0802D8F4
-extern void RespondToTerrain(Actor *actor, u32 type);  // 0x0802DA20
-extern u32 TrySlideAlongSlope(Actor *actor, u32 type);  // 0x0802DB20
-extern u32 ScanTerrainEdge(u32 direction, TerrainBox *box);  // 0x0802DC3C
-extern u32 NudgeAlongVelocity(Actor *actor, PixelVector delta);  // 0x0802DF74
-extern u32 TryNudgeActor(Actor *actor, PixelVector delta);  // 0x0802DFB4
-extern u32 GetCollisionLayerAtPixel(PixelPoint pixel);  // 0x0802E030
-extern void SetRoomCollisionPattern(u16 x, u16 y, u16 patternId);  // 0x0802DDD4
-extern u16 GetRoomCollisionPattern(u16 x, u16 y);  // 0x0802DE00
-extern void ReverseActorDirection(Actor *actor);  // 0x0802DE28
-extern u8 StartMoveVelocity(Actor *actor);  // 0x0802DE68
-extern void GetActorTerrainBox(Actor *actor, TerrainBox *box);  // 0x0802DEE0
-extern u32 IsBlockingCollisionType(u32 type);  // 0x0802DF28, nonzero for types 1-25
-extern u32 GetCollisionTypeAtPixel(PixelPoint pixel);  // 0x0802D7A0
+extern void ResolveActorTerrain(Actor *actor);
+extern u32 GetActorTerrainType(Actor *actor, TerrainBox *box);
+extern u32 ApplyTerrainTypeEffect(Actor *actor, TerrainBox *box, u32 type);
+extern void RespondToTerrain(Actor *actor, u32 type);
+extern u32 TrySlideAlongSlope(Actor *actor, u32 type);
+extern u32 ScanTerrainEdge(u32 direction, TerrainBox *box);
+extern u32 NudgeAlongVelocity(Actor *actor, PixelVector delta);
+extern u32 TryNudgeActor(Actor *actor, PixelVector delta);
+extern u32 GetCollisionLayerAtPixel(PixelPoint pixel);
+extern void SetRoomCollisionPattern(u16 x, u16 y, u16 patternId);
+extern u16 GetRoomCollisionPattern(u16 x, u16 y);
+extern void ReverseActorDirection(Actor *actor);
+extern u8 StartMoveVelocity(Actor *actor);
+extern void GetActorTerrainBox(Actor *actor, TerrainBox *box);
+extern u32 IsBlockingCollisionType(u32 type);  // nonzero for types 1-25
+extern u32 GetCollisionTypeAtPixel(PixelPoint pixel);
 extern void NoopInit2(void);
 extern void LoadRoomCollision(const void *pCollisionBehaviorTable, const void *pCollisionTilemap);
 // Called by ExitOverworldScreen.
@@ -92,7 +92,7 @@ extern Actor *g_pFieldSpellEffectActor;
 extern Actor *g_pFieldSpellCompanionActor;
 extern s32 g_nLumosScale;
 
-// ROM 0x080660D4 (US): field spell effect sprites and animations, see
+// Field spell effect sprites and animations, see
 // src/move/field_spell_effects.globals.c.
 extern const ActorAssetRecord g_aFieldSpellCastAssets[8];
 extern const ActorAssetRecord g_aFieldSpellAssets[8];

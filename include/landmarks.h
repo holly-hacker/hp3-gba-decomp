@@ -9,12 +9,12 @@
 // code pushes this mode.
 #define UNUSED_HOGWARTS_MAP_ENTRY_COUNT 9
 
-extern const u8 *const g_apUnusedHogwartsMapBackgrounds[UNUSED_HOGWARTS_MAP_ENTRY_COUNT];  // 0x080629B8
-extern const u32 g_dwUnusedHogwartsMapBg0Control;                                         // 0x080629DC
-extern const u32 g_dwUnusedHogwartsMapBg1Control;                                         // 0x080629E0
-extern const u32 g_dwUnusedHogwartsMapBg2Control;                                         // 0x080629E4
-extern const u32 g_dwUnusedHogwartsMapBg3Control;                                         // 0x080629E8
-extern const ActorGfxRecord g_UnusedHogwartsMapEntryGfx;                                 // 0x080629EC
+extern const u8 *const g_apUnusedHogwartsMapBackgrounds[UNUSED_HOGWARTS_MAP_ENTRY_COUNT];
+extern const u32 g_dwUnusedHogwartsMapBg0Control;
+extern const u32 g_dwUnusedHogwartsMapBg1Control;
+extern const u32 g_dwUnusedHogwartsMapBg2Control;
+extern const u32 g_dwUnusedHogwartsMapBg3Control;
+extern const ActorGfxRecord g_UnusedHogwartsMapEntryGfx;
 
 extern u32 g_dwUnusedHogwartsMapShownBg;  // 0x03003A50: entry whose background was loaded last
 extern Actor *g_pUnusedHogwartsMapCursor;  // 0x03003A54

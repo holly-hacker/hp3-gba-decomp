@@ -20,9 +20,9 @@ typedef struct RoomActorRecordChest {
 // One bit per chest flag id, set when that chest is opened. Saved with the game.
 extern u8 g_abOpenedChestFlags[32];
 
-extern const ActorGfxRecord g_RoomChestSprite;                  // ROM 0x0804D524 (US)
-extern const ActorGfxRecord *const g_apRoomChestAnimFrames[4];  // ROM 0x0804D52C (US)
-extern const u8 g_abRoomChestAnimData[4][100];                   // ROM 0x0804D53C (US)
+extern const ActorGfxRecord g_RoomChestSprite;
+extern const ActorGfxRecord *const g_apRoomChestAnimFrames[4];
+extern const u8 g_abRoomChestAnimData[4][100];
 
 extern Actor *SpawnChestActor(u8 bColumn, u8 bRow);
 extern void TickChestActor(Actor *pActor);

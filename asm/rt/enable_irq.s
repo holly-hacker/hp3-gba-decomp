@@ -2,7 +2,7 @@
 
 @ Hand-written ARM-mode: clears the CPSR I bit (enables IRQs), preserving r0.
 	arm_func_start EnableIrq
-EnableIrq: @ 0x08000104
+EnableIrq:
 	stmfd sp!, {r0}
 	mrs r0, cpsr
 	bic r0, r0, #0x80

@@ -18,10 +18,10 @@ typedef struct RoomActorRecordPushResetButton {
 extern Actor *SpawnPushResetButtonActor(u8 bColumn, u8 bRow);
 extern void TickPushResetButtonActor(Actor *pActor);
 extern void HandlePushResetButtonTouch(Actor *pSelf, Actor *pOther);
-extern const ActorGfxRecord g_PushResetButtonSprite;               // ROM 0x080693CC (US)
-extern const ActorGfxRecord *const g_apPushResetButtonSprites[2];  // ROM 0x080693D4 (US)
-extern const void *const g_apPushResetButtonPalettes[2];           // ROM 0x080693DC (US)
-extern const u8 g_aabPushResetButtonPressAnims[2][20];             // ROM 0x080693E4 (US)
+extern const ActorGfxRecord g_PushResetButtonSprite;
+extern const ActorGfxRecord *const g_apPushResetButtonSprites[2];
+extern const void *const g_apPushResetButtonPalettes[2];
+extern const u8 g_aabPushResetButtonPressAnims[2][20];
 
 // Actor bytes 0x60-0x6F: the room records the button frees and respawns, as
 // GetRoomActorPtr/SpawnRoomGroupMember arguments. (0, 0) entries are unused.

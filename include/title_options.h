@@ -40,7 +40,7 @@ typedef struct {
     s16 nY;                  // 0x16
 } OptionsMenuItem;
 
-extern const OptionsMenuItem g_aOptionsMenuItems[OPTIONS_MENU_ITEM_COUNT];  // 0x0806C048
+extern const OptionsMenuItem g_aOptionsMenuItems[OPTIONS_MENU_ITEM_COUNT];
 
 // The Sound and Music knobs' spin animations, with the knobs out of phase.
 extern const u8 g_aabOptionsKnobAnims[2][18];

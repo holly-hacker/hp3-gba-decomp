@@ -63,9 +63,9 @@ typedef struct DialogTextInfo {
     const s16 *pMacroNumber;
 } DialogTextInfo;
 
-extern const u8 g_abPartySlotDialogPortraits[4];             // US 0x0805E29C
-extern const ActorAssetRecord g_aDialogPortraits[135];       // US 0x0805E2A0
-extern const DialogTextInfo g_aDialogTextInfo[2767];         // US 0x08FAAF10
+extern const u8 g_abPartySlotDialogPortraits[4];
+extern const ActorAssetRecord g_aDialogPortraits[135];
+extern const DialogTextInfo g_aDialogTextInfo[2767];
 
 extern void InitializeDialog(void);
 extern void UpdateDialogBox(void);
@@ -89,6 +89,6 @@ extern Actor *g_pDialogCursorActor;         // 0x03002EEC
 extern u32 g_dwDialogPageFull;              // 0x03002EF0
 extern u32 g_dwDialogBoxTileRow;            // 0x03002EF4
 extern u16 g_awDialogBoxPalette[16];        // 0x03002EF8
-extern const ScanlineEffectEntry g_aDialogScanlineEffects[1];  // 0x0805E28C
+extern const ScanlineEffectEntry g_aDialogScanlineEffects[1];
 
 extern void FreeFieldHudActors(void);

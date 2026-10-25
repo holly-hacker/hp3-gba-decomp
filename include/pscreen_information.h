@@ -183,5 +183,5 @@ extern const u32 g_aHelpSpecialMovesGlossary[];
 extern const u32 g_aHelpOwlCareKit[];
 
 // Help screen sprites, drawn by SpawnHelpPageSprite with the palette of the same index.
-extern const ActorAssetRecord g_aHelpSpriteAssets[22];  // US 0x08069AB8
-extern const void *const g_apHelpSpritePalettes[22];    // US 0x08069C18
+extern const ActorAssetRecord g_aHelpSpriteAssets[22];
+extern const void *const g_apHelpSpritePalettes[22];

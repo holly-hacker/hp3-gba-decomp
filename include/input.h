@@ -48,7 +48,7 @@ extern u32 g_dwScrollGridVisibleRows;  // 0x0300352C
 
 // Direction of the held D-pad, indexed by (keys & 0xF0) >> 4;
 // DirectionNone when no single direction is held.
-extern const s8 g_abDpadDirection[16];  // 0x08060E7C
+extern const s8 g_abDpadDirection[16];
 
 extern void UpdateKeyInput(void);
 extern u32 StepScrollListSelection(u32 visibleRows, s32 wrap, u32 player);

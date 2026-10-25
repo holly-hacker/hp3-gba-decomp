@@ -2,7 +2,7 @@
 
 @ Hand-written ARM-mode: sets the CPSR I bit (disables IRQs), preserving r0.
 	arm_func_start DisableIrq
-DisableIrq: @ 0x0800011C
+DisableIrq:
 	stmfd sp!, {r0}
 	mrs r0, cpsr
 	orr r0, r0, #0x80

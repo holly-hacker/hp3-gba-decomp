@@ -32,24 +32,24 @@ extern BoggartMinigameState g_BoggartMinigame;  // 0x03002048
 
 // Sprite resources, indexed by direction. The form and form palette tables have
 // a fifth entry for the form the Boggart takes once the charm lands.
-extern const ActorAssetRecord g_aBoggartStudentAssets[4];          // US 0x0804C0AC
-extern const ObjPalette *const g_apBoggartStudentPalettes[4];      // US 0x0804C0EC
-extern const ActorAssetRecord g_aBoggartCastEffectAssets[4];       // US 0x0804C0FC
-extern const ObjPalette *const g_apBoggartCastEffectPalettes[4];   // US 0x0804C13C
-extern const ActorAssetRecord g_aBoggartFormAssets[5];             // US 0x0804C14C
-extern const ObjPalette *const g_apBoggartFormPalettes[5];         // US 0x0804C19C
+extern const ActorAssetRecord g_aBoggartStudentAssets[4];
+extern const ObjPalette *const g_apBoggartStudentPalettes[4];
+extern const ActorAssetRecord g_aBoggartCastEffectAssets[4];
+extern const ObjPalette *const g_apBoggartCastEffectPalettes[4];
+extern const ActorAssetRecord g_aBoggartFormAssets[5];
+extern const ObjPalette *const g_apBoggartFormPalettes[5];
 
-extern const u32 g_dwBoggartMinigameBg0Control;  // US 0x0804C1B0
-extern const u32 g_dwBoggartMinigameBg3Control;  // US 0x0804C1B4
+extern const u32 g_dwBoggartMinigameBg0Control;
+extern const u32 g_dwBoggartMinigameBg3Control;
 
-extern const IntPoint g_aBoggartStudentPositions[4];  // US 0x0804C1B8
+extern const IntPoint g_aBoggartStudentPositions[4];
 
 // Animation command streams; see actor_anim.h.
-extern const u8 g_abBoggartStudentCastAnimData[14];  // US 0x0804C1D8
-extern const u8 g_abBoggartCastEffectAnimData[12];   // US 0x0804C1E6
-extern const u8 g_abBoggartStopAnimData[2];          // US 0x0804C1F2
-extern const u8 g_aabBoggartWalkAnimData[4][30];     // US 0x0804C1F4
-extern const u8 g_aabBoggartHitAnimData[4][6];       // US 0x0804C26C
+extern const u8 g_abBoggartStudentCastAnimData[14];
+extern const u8 g_abBoggartCastEffectAnimData[12];
+extern const u8 g_abBoggartStopAnimData[2];
+extern const u8 g_aabBoggartWalkAnimData[4][30];
+extern const u8 g_aabBoggartHitAnimData[4][6];
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

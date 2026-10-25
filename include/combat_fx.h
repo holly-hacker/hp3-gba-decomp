@@ -625,7 +625,7 @@ enum BattleStatusEffect {
 #define BS_PlaySoundEffect(a) BSOP_PlaySoundEffect, (a)
 
 extern Actor *TriggerBattleEffect(u8 effectId, s32 slotParam, s32 selectedActionIndex, s32 activeFighterIndex, s32 targetIdx, u16 damage);
-extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);  // 0x08018BE0
+extern Actor *CreateEffectScriptActor(s32 effectId, s32 kind);
 extern void InterpretActorScript(Actor *actor);
 extern ParticleEmitter *CreateBattleEffectEmitter(Actor *actor, u8 unused, u8 spawnPeriod,
                                                   u8 lifetimeBase, u8 spread, u8 spawnsPerPeriod,
@@ -645,28 +645,28 @@ extern BgTilemapBuffer *QueueBattleBgLoad(u32 bg, const u8 *pBlob, u16 tileOffse
 extern void SpawnParalysisEffect(Actor *actor);
 
 // Data tables.
-extern const u32 g_adwEffectBgControls[4];  // 0x080539A8
-extern const ScanlineEffectEntry g_aEffectScanlineTable0[6];   // 0x080539B8
-extern const ScanlineEffectEntry g_aEffectScanlineTable1[9];   // 0x08053A18
-extern const ScanlineEffectEntry g_aEffectScanlineTable2[6];   // 0x08053AA8
-extern const ScanlineEffectEntry *const g_apEffectScanlineTables[3];  // 0x08053B08
-extern const u8 g_abEffectScanlineTableSizes[3];    // 0x08053B14
-extern const EffectStreamList32 g_RainStreakList;  // 0x08053B18
-extern const EffectStreamList8 g_RainSplashList;   // 0x08053C20
-extern const ActorOrbit g_aEffectOrbitParams[16];  // 0x08053C68
-extern const u8 g_abEffectRosterIdPair[2];         // 0x08053D28
-extern const u16 g_awBattleSlotPosX[7];            // 0x08053D2A, per fighter slot
-extern const u8 g_abBattleSlotPosY[7];             // 0x08053D38
-extern const ActorAssetRecord g_aEffectActorAssets[17];    // 0x08053D40
-extern void *const g_apEffectPalettes[5];                    // 0x08053E50
-extern const ActorAssetRecord g_aEffectAnimAssets[65];      // 0x08053E64, opcodes 0x01/0x02
-extern const ActorAssetRecord g_aEffectAnimAssets2[38];     // 0x08054274, opcodes 0x03/0x04
-extern const EffectBgRecord g_aEffectBgRecords[166];  // 0x080544D4
-extern const u8 g_abScriptOpcodeLengths[168];                // 0x08054F34, operand bytes per opcode
-extern const u8 g_abFighterHurtLoopAnimData[6];        // 0x08054FDC
-extern const u8 g_aEffectAnimData[65][226];        // 0x08054FE2
-extern const u8 g_aEffectAnimData2[38][108];       // 0x08058944
-extern const u8 *const g_apEffectScripts[65];                // 0x0805B978, one script per effect id
+extern const u32 g_adwEffectBgControls[4];
+extern const ScanlineEffectEntry g_aEffectScanlineTable0[6];
+extern const ScanlineEffectEntry g_aEffectScanlineTable1[9];
+extern const ScanlineEffectEntry g_aEffectScanlineTable2[6];
+extern const ScanlineEffectEntry *const g_apEffectScanlineTables[3];
+extern const u8 g_abEffectScanlineTableSizes[3];
+extern const EffectStreamList32 g_RainStreakList;
+extern const EffectStreamList8 g_RainSplashList;
+extern const ActorOrbit g_aEffectOrbitParams[16];
+extern const u8 g_abEffectRosterIdPair[2];
+extern const u16 g_awBattleSlotPosX[7];            // per fighter slot
+extern const u8 g_abBattleSlotPosY[7];
+extern const ActorAssetRecord g_aEffectActorAssets[17];
+extern void *const g_apEffectPalettes[5];
+extern const ActorAssetRecord g_aEffectAnimAssets[65];      // opcodes 0x01/0x02
+extern const ActorAssetRecord g_aEffectAnimAssets2[38];     // opcodes 0x03/0x04
+extern const EffectBgRecord g_aEffectBgRecords[166];
+extern const u8 g_abScriptOpcodeLengths[168];                // operand bytes per opcode
+extern const u8 g_abFighterHurtLoopAnimData[6];
+extern const u8 g_aEffectAnimData[65][226];
+extern const u8 g_aEffectAnimData2[38][108];
+extern const u8 *const g_apEffectScripts[65];                // one script per effect id
 
 extern EffectStaging g_effectStaging;
 extern QueuedBgLoad g_queuedBattleBgLoad;

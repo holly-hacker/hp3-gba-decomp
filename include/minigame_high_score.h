@@ -16,8 +16,8 @@ typedef struct MinigameTextPanel {
     s32 middleCount;
 } MinigameTextPanel;
 
-extern const ActorAssetRecord g_MinigameTextPanelCapAsset;     // 0x0806603C
-extern const ActorAssetRecord g_MinigameTextPanelMiddleAsset;  // 0x0806604C
+extern const ActorAssetRecord g_MinigameTextPanelCapAsset;
+extern const ActorAssetRecord g_MinigameTextPanelMiddleAsset;
 
 extern MinigameTextPanel *SpawnMinigameTextPanel(s32 x, s32 y, s32 widthTiles, u8 priority);
 extern void FreeMinigameTextPanel(MinigameTextPanel *pPanel);

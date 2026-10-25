@@ -2,7 +2,7 @@
 
 #include "types.h"
 
-extern const u32 g_dwUnusedMinigameBg0Control;  // 0x0804C43C
+extern const u32 g_dwUnusedMinigameBg0Control;
 
 extern void InitializeUnusedMinigame(void);
 extern void UpdateUnusedMinigame(void);

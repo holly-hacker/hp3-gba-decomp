@@ -11,11 +11,11 @@ typedef struct {
 } CheatLevelAndQuestState;
 
 extern CheatLevelAndQuestState g_CheatLevelAndQuestState;  // 0x030021C8
-extern const u8 g_abCheatLevelAndQuestMax[4];        // 0x0804C470: largest value of each row
-extern const u32 g_dwCheatLevelAndQuestBg0Control;  // 0x0804C474
-extern const u32 g_dwCheatLevelAndQuestBg1Control;  // 0x0804C478
-extern const ActorAssetRecord g_CheatLevelAndQuestAnimFrames;  // 0x0804C47C
-extern const u8 g_CheatLevelAndQuestAnimData[18];    // 0x0804C48C
+extern const u8 g_abCheatLevelAndQuestMax[4];        // largest value of each row
+extern const u32 g_dwCheatLevelAndQuestBg0Control;
+extern const u32 g_dwCheatLevelAndQuestBg1Control;
+extern const ActorAssetRecord g_CheatLevelAndQuestAnimFrames;
+extern const u8 g_CheatLevelAndQuestAnimData[18];
 
 extern void InitializeCheatLevelAndQuest(void);
 extern void UpdateCheatLevelAndQuest(void);

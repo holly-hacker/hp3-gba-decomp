@@ -112,21 +112,21 @@ typedef struct {
     u8 bY;
 } OwlCareBgFrame;
 
-extern const ActorGfxRecord g_aOwlCareSprites[16];  // 0x08060628
-extern const u32 g_dwOwlCareBg3Control;  // 0x080606A8
-extern const u32 g_dwOwlCareBg2Control;  // 0x080606AC
-extern const u32 g_dwOwlCareBg1Control;  // 0x080606B0
-extern const u32 g_dwOwlCareBg0Control;  // 0x080606B4
-extern const OwlCareBgFrame g_aOwlCareBgFrames[4];  // 0x080606B8
-extern const OwlCareActionStates g_aOwlCareActionStates[6];  // 0x080606C8
-extern const OwlAnim g_aOwlAnims[OWL_STATE_COUNT];  // 0x080606E0
+extern const ActorGfxRecord g_aOwlCareSprites[16];
+extern const u32 g_dwOwlCareBg3Control;
+extern const u32 g_dwOwlCareBg2Control;
+extern const u32 g_dwOwlCareBg1Control;
+extern const u32 g_dwOwlCareBg0Control;
+extern const OwlCareBgFrame g_aOwlCareBgFrames[4];
+extern const OwlCareActionStates g_aOwlCareActionStates[6];
+extern const OwlAnim g_aOwlAnims[OWL_STATE_COUNT];
 // By need state - OwlStateNeedFeed.
-extern const ActorAssetRecord g_aOwlThoughtBubbleSprites[OwlStateNeedTeach - OwlStateNeedFeed + 1];  // 0x080607D8
-extern const ActorAssetRecord g_OwlCareCleanerSparkles;  // 0x08060838
-extern const u8 g_abOwlThoughtBubbleAnim[28];  // 0x08060848
-extern const ActorAssetRecord g_OwlCageDoorSprite;  // 0x08060864
+extern const ActorAssetRecord g_aOwlThoughtBubbleSprites[OwlStateNeedTeach - OwlStateNeedFeed + 1];
+extern const ActorAssetRecord g_OwlCareCleanerSparkles;
+extern const u8 g_abOwlThoughtBubbleAnim[28];
+extern const ActorAssetRecord g_OwlCageDoorSprite;
 // The cage door's animations: shut, opening, open, closing.
-extern const u8 *const g_apOwlCageDoorAnims[4];  // 0x08060874
+extern const u8 *const g_apOwlCageDoorAnims[4];
 
 // Owl animation streams, see g_aOwlAnims.
 extern const u8 g_abOwlCareAnim00[4];
@@ -159,9 +159,9 @@ extern const u8 g_abOwlCageDoorAnim2[4];
 extern const u8 g_abOwlCageDoorAnim3[12];
 
 // Care counter weights of each stat meter.
-extern const u8 g_aabOwlStatMeterWeights[3][6];  // US 0x08FAA858
+extern const u8 g_aabOwlStatMeterWeights[3][6];
 // The owl's palette, by OwlCareKitState.bTypeIndex.
-extern const void *const g_apOwlTypePalettes[3];  // US 0x08FAA86C
+extern const void *const g_apOwlTypePalettes[3];
 
 extern void UpdateOwlCareKitPanel(void);
 extern void ProcessOwlMailReward(void);

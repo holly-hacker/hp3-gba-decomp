@@ -90,26 +90,26 @@ typedef enum {
 } BuckbeakMinigameText;
 
 // BG control words.
-extern const u32 g_dwBuckbeakMinigameBg2Control;        // US 0x0804C284
-extern const u32 g_dwBuckbeakMinigameBg1Control;        // US 0x0804C288
-extern const u32 g_dwBuckbeakMinigameBg0Control;        // US 0x0804C28C
-extern const u32 g_dwBuckbeakMinigameBg2GroundControl;  // US 0x0804C290
+extern const u32 g_dwBuckbeakMinigameBg2Control;
+extern const u32 g_dwBuckbeakMinigameBg1Control;
+extern const u32 g_dwBuckbeakMinigameBg0Control;
+extern const u32 g_dwBuckbeakMinigameBg2GroundControl;
 
 // Sprite resources: Buckbeak level, banking right and banking left (the same
 // sprite flipped), then the ring.
-extern const ActorAssetRecord g_aBuckbeakMinigameBuckbeakAssets[3];  // US 0x0804C294
-extern const u8 g_abBuckbeakMinigameFlyAnimData[32];                 // US 0x0804C2C4
-extern const ActorAssetRecord g_BuckbeakMinigameRingAsset;           // US 0x0804C2E4
+extern const ActorAssetRecord g_aBuckbeakMinigameBuckbeakAssets[3];
+extern const u8 g_abBuckbeakMinigameFlyAnimData[32];
+extern const ActorAssetRecord g_BuckbeakMinigameRingAsset;
 // Per difficulty: the BG1 and BG0 graphics.
-extern const void *const g_aapBuckbeakMinigameBgGraphics[3][2];      // US 0x0804C2F4
-extern const u8 g_abBuckbeakMinigameRingAnimData[28];                // US 0x0804C30C
-extern const ScanlineEffectEntry g_aBuckbeakMinigameScanlineEffects[2];  // US 0x0804C328
+extern const void *const g_aapBuckbeakMinigameBgGraphics[3][2];
+extern const u8 g_abBuckbeakMinigameRingAnimData[28];
+extern const ScanlineEffectEntry g_aBuckbeakMinigameScanlineEffects[2];
 // Start positions of the nine rings.
-extern const BuckbeakMinigameWorldPos g_aBuckbeakMinigameRingPositions[BUCKBEAK_MINIGAME_RING_COUNT];  // US 0x0804C348
-extern const BgTileAnimation16 g_BuckbeakMinigameWaterAnimation;    // US 0x0804C3B4
+extern const BuckbeakMinigameWorldPos g_aBuckbeakMinigameRingPositions[BUCKBEAK_MINIGAME_RING_COUNT];
+extern const BgTileAnimation16 g_BuckbeakMinigameWaterAnimation;
 
 // Starting time per difficulty, 8.8 seconds.
-extern const s32 g_aBuckbeakMinigameStartTimes[3];  // US 0x08FAA824
+extern const s32 g_aBuckbeakMinigameStartTimes[3];
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

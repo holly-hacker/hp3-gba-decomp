@@ -19,11 +19,11 @@ typedef struct {
     ActorAssetRecord asset;
 } FolioCardAsset;
 
-extern const FolioCardAsset g_aFolioCardAssets[FOLIO_UNIVERSITAS_CARD_COUNT];  // 0x0806B3D8
+extern const FolioCardAsset g_aFolioCardAssets[FOLIO_UNIVERSITAS_CARD_COUNT];
 
-extern const u32 g_dwFolioCardDetailBg3Control;  // 0x0806B3CC
-extern const u32 g_dwFolioCardDetailBg2Control;  // 0x0806B3D0
-extern const u32 g_dwFolioCardDetailBg1Control;  // 0x0806B3D4
+extern const u32 g_dwFolioCardDetailBg3Control;
+extern const u32 g_dwFolioCardDetailBg2Control;
+extern const u32 g_dwFolioCardDetailBg1Control;
 
 // Spawns the sprite showing a card at the given screen position and loads its palette.
 extern Actor *SpawnFolioCardActor(u32 cardIndex, s32 x, s32 y);

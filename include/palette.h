@@ -2,7 +2,7 @@
 
 #include "types.h"
 
-// OBJ palette bank cache (ROM 0x0803071C-0x08030A1C): the 16 OBJ palette banks
+// OBJ palette bank cache: the 16 OBJ palette banks
 // are handed out as reference-counted slots, shared between actors that
 // use the same palette. Gamma, color cycles and palette effects are in
 // color.h.

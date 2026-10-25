@@ -6,7 +6,7 @@
 @ [sp, #0x14] to 0x030015A0. Bit 0x2000 (Game Pak) writes 0 to SOUNDCNT_X
 @ (0x04000084) and hangs.
 	arm_func_start IntrMain
-IntrMain: @ 0x08000134
+IntrMain:
 	mov r3, #0x4000000
 	add r3, r3, #0x200
 	ldr r2, [r3]

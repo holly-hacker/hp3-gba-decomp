@@ -16,8 +16,8 @@ enum {
 extern void CompareAndBranchRoomScript(u8 lhs, u32 cmpOp, u8 rhs, u8 trueChain, u8 falseChain, u8 trueRow,
                                        u8 falseRow);
 
-extern const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93];  // ROM 0x0805BA8C
-extern const u32 g_dwSpecialSceneBgControl;  // 0x0805BC00, BG control word for the special scene effects
+extern const RoomScriptOpcodeHandler g_apRoomScriptOpcodeHandlers[93];
+extern const u32 g_dwSpecialSceneBgControl;  // BG control word for the special scene effects
 
 // Room-script opcode handlers, indexed by g_apRoomScriptOpcodeHandlers.
 struct DespawnTileActorRecord;

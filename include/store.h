@@ -69,16 +69,16 @@ typedef struct FredAndGeorgesShopState {
 } FredAndGeorgesShopState;
 extern FredAndGeorgesShopState g_FredAndGeorgesShop;  // 0x03005AC8
 
-extern const ActorAssetRecord g_aShopMainMenuIcons[3];  // 0x0806BA4C
-extern const ActorAssetRecord g_aShopCategoryIcons[7];  // 0x0806BA7C
-extern const u8 g_abShopMenuIconAnim[2];                 // 0x0806BAEC
-extern const u32 g_dwFredAndGeorgesShopBg1Control;      // 0x0806BAF0
+extern const ActorAssetRecord g_aShopMainMenuIcons[3];
+extern const ActorAssetRecord g_aShopCategoryIcons[7];
+extern const u8 g_abShopMenuIconAnim[2];
+extern const u32 g_dwFredAndGeorgesShopBg1Control;
 
 // Copied whole into a local by DrawShopMainMenuRow.
 typedef struct {
     u32 adwTextIds[3];  // Buy, Sell, Exit
 } ShopMainMenuTextIds;
-extern const ShopMainMenuTextIds g_ShopMainMenuTextIds;  // 0x0806BAF4
+extern const ShopMainMenuTextIds g_ShopMainMenuTextIds;
 
 // In ROM order, one per file under src/store/. Bodies that the ROM also
 // inlines into callers live in store_inline.h.

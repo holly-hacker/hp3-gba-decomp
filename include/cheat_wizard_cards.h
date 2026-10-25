@@ -9,11 +9,11 @@ typedef struct {
 } CheatWizardCardsState;
 
 extern CheatWizardCardsState g_CheatWizardCardsState;  // 0x03002238
-extern const u32 g_dwCheatWizardCardsBg0Control;  // 0x0804CEC0
-extern const u32 g_dwCheatWizardCardsBg1Control;  // 0x0804CEBC
-extern const u32 g_dwCheatWizardCardsBg2Control;  // 0x0804CEB8
+extern const u32 g_dwCheatWizardCardsBg0Control;
+extern const u32 g_dwCheatWizardCardsBg1Control;
+extern const u32 g_dwCheatWizardCardsBg2Control;
 
-extern const u8 sFamousWizardCardNames[51][32];  // 0x0804CEC4
+extern const u8 sFamousWizardCardNames[51][32];
 
 extern void InitializeCheatWizardCards(void);
 extern void UpdateCheatWizardCards(void);

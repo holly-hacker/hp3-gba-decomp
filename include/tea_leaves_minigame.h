@@ -41,14 +41,14 @@ typedef struct {
 extern DivinationTeaState g_DivinationTea;  // 0x03005B28
 
 // BG control words for BG2, BG0 and BG1, and the sprites and cup animation.
-extern const u8 g_DivinationTeaCupAnimData[68];                // 0x0806BB00
-extern const u32 g_dwDivinationTeaBg2Control;                  // 0x0806BB44
-extern const u32 g_dwDivinationTeaBg0Control;                  // 0x0806BB48
-extern const u32 g_dwDivinationTeaBg1Control;                  // 0x0806BB4C
-extern const ActorGfxRecord g_DivinationTeaLeafSprite;        // 0x0806BB50
-extern const ActorGfxRecord g_DivinationTeaCupSprite;         // 0x0806BB58
-extern const ActorAssetRecord g_DivinationTeaTextFrameAsset;  // 0x0806BB60, eight spawned by StartDivinationTeaFortune
-extern const BgTileAnimation64 g_DivinationTeaTable;  // 0x0806BB70
+extern const u8 g_DivinationTeaCupAnimData[68];
+extern const u32 g_dwDivinationTeaBg2Control;
+extern const u32 g_dwDivinationTeaBg0Control;
+extern const u32 g_dwDivinationTeaBg1Control;
+extern const ActorGfxRecord g_DivinationTeaLeafSprite;
+extern const ActorGfxRecord g_DivinationTeaCupSprite;
+extern const ActorAssetRecord g_DivinationTeaTextFrameAsset;  // eight spawned by StartDivinationTeaFortune
+extern const BgTileAnimation64 g_DivinationTeaTable;
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

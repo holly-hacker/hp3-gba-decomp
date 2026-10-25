@@ -10,10 +10,10 @@
 // and runs its room-script chains.
 
 // Room tile actorType -> constructor table.
-extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];  // ROM 0x0804C054 (US)
+extern const RoomActorConstructor g_apRoomActorConstructors[ROOM_ACTOR_TYPE_COUNT];
 
 // Used by FindRoomEntryPoint when the room has no record for the entry id.
-extern const RoomEntryPoint g_aDefaultRoomEntryPoints[2];  // ROM 0x0804C08C (US)
+extern const RoomEntryPoint g_aDefaultRoomEntryPoints[2];
 
 // Runtime actor table record: an 8-byte prefix, then the row's static record, which starts with
 // the actor type.

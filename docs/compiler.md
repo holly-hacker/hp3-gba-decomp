@@ -37,7 +37,7 @@ Thumb switch dispatch is the fingerprint that separates the game's own
 code from a linked-in prebuilt library.
 
 ```
-    gcc 3.3.3                        2.9-arm-000512 / this ROM (0x08003A8E)
+    gcc 3.3.3                        2.9-arm-000512 / this ROM
     ldr  r2, [pc, #N]                  lsls r0, r0, #2
     lsls r3, r3, #2                    ldr  r1, [pc, #4]
     ldr  r3, [r3, r2]                  adds r0, r0, r1
@@ -47,8 +47,7 @@ code from a linked-in prebuilt library.
 
 All 99 switch sites in the code region use the second form, in both
 ROMs. A whole-image sweep finds 138 of the second form and one apparent
-instance of the first, at `0x0841996C` (US) / `0x0841979C` (JP) --
-inside compressed asset data, not code. One `_call_via_rX` table exists
+instance of the first, inside compressed asset data, not code. One `_call_via_rX` table exists
 in the image. The game's own code has no second toolchain; Krawall,
 which was linked in as a separately built library, is the one
 exception (below).
@@ -67,9 +66,8 @@ Game ARM code is built with the SDK's separate ARM compiler, packaged as
 pret/agbcc's `gcc_arm/` and provided by `nix develop` as `agbcc_arm`
 (same `2.9-arm-000512` version string). Flags: `-O2 -mthumb-interwork
 -fomit-frame-pointer`; without `-fomit-frame-pointer` it emits an APCS
-frame the ROM lacks. The game's ARM routines (`src/arm_routines/`, from
-`0x08005F10`) match byte-for-byte under this profile (`c-file-arm`, see
-[`c.md`](c.md)).
+frame the ROM lacks. The game's ARM routines (`src/arm_routines/`) match
+byte-for-byte under this profile (`c-file-arm`, see [`c.md`](c.md)).
 
 `agbcc` and `old_agbcc` are Thumb-only: `-marm` is rejected
 (`agbcc: Invalid option 'arm'`).

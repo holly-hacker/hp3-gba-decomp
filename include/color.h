@@ -2,7 +2,7 @@
 
 #include "types.h"
 
-// Palette module (ROM 0x0800D008-0x0800DBAC): gamma-corrected shadow
+// Palette module: gamma-corrected shadow
 // palettes, color cycling and palette effects.
 
 // A RAM shadow of one 0x200-byte palette half and the palette RAM it is
@@ -102,11 +102,11 @@ extern PaletteEffect g_aPaletteEffects[12];  // 0x030022F8
 extern ObjPaletteQueueEntry g_aObjPaletteQueue[25];  // 0x030023E8
 
 
-extern const u8 g_abUnusedColorZeros[8];   // 0x0804D790
-extern const u8 g_abGammaNormalRemap[32];  // 0x0804D798
-extern const u8 g_abGammaHighRemap[32];    // 0x0804D7B8
+extern const u8 g_abUnusedColorZeros[8];
+extern const u8 g_abGammaNormalRemap[32];
+extern const u8 g_abGammaHighRemap[32];
 // Approximate inverse of g_abGammaHighRemap, used to undo it.
-extern const u8 g_abGammaHighInverseRemap[32];  // 0x0804D7D8
+extern const u8 g_abGammaHighInverseRemap[32];
 
 extern void ApplyGammaRemapTable(const u8 *pTable);
 extern void InitGammaPalette(void);

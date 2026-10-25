@@ -18,7 +18,7 @@ extern void TickFlamePillarActor(Actor *pActor);
 extern void IgniteFlamePillar(Actor *pActor);
 extern void HandleFlamePillarTouch(Actor *pSelf, Actor *pOther);
 extern s32 g_nFlamePillarSoundHandle;
-extern const ActorGfxRecord g_aRoomFlamePillarSprites[3];             // ROM 0x0806C12C (US)
-extern const ActorGfxRecord *const g_apRoomFlamePillarAnimFrames[3];  // ROM 0x0806C144 (US)
-extern const void *const g_apRoomFlamePillarEffectData[3];             // ROM 0x0806C150 (US)
-extern const u8 g_abRoomFlamePillarAnimData[22];                       // ROM 0x0806C15C (US)
+extern const ActorGfxRecord g_aRoomFlamePillarSprites[3];
+extern const ActorGfxRecord *const g_apRoomFlamePillarAnimFrames[3];
+extern const void *const g_apRoomFlamePillarEffectData[3];
+extern const u8 g_abRoomFlamePillarAnimData[22];

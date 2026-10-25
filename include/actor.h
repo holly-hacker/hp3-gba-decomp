@@ -697,7 +697,7 @@ extern u8 GetDirectionToTarget(u32 actorFlags, FixedPoint pos, FixedPoint target
 extern u8 GetUnblockedDirectionToTarget(Actor *actor, FixedPoint pos, FixedPoint target, s32 tolerance);
 extern ActorRect GetActorCollisionBoxRect(Actor *actor, s32 boxIndex);
 extern s32 DoActorsOverlap(Actor *a, Actor *b);  // tests collision box 0 of each
-extern void ReleaseActorOffscreenVramTiles(Actor *actor);  // 0x08001300
+extern void ReleaseActorOffscreenVramTiles(Actor *actor);
 extern Actor *SpawnActor(u32 type, s32 x, s32 y, const ObjPalette *pPalette);
 extern void SetActorPosition(Actor *actor, s32 x, s32 y);
 extern void SnapActorPosition(Actor *actor, u32 x, u32 y);
@@ -778,10 +778,10 @@ extern u8 GetDirectionToActor(Actor *actor, Actor *target);
 extern u8 GetDirectionFromActor(Actor *actor, Actor *source);
 extern void GetDirectionVector(FixedPoint *out, u32 actorFlags, u32 direction, s32 speed);
 // Unit vectors in 16.16 fixed point, see src/actor/direction_vectors.c.
-extern const s32 g_aDirection4Vectors[4][2];        // 0x0804BDBC
-extern const s32 g_aDirection8Vectors[8][2];        // 0x0804BDDC
-extern const s32 g_aDirection16Vectors[16][2];      // 0x0804BE1C
-extern const s32 g_aDirection32Vectors[32][2];      // 0x0804BE9C
+extern const s32 g_aDirection4Vectors[4][2];
+extern const s32 g_aDirection8Vectors[8][2];
+extern const s32 g_aDirection16Vectors[16][2];
+extern const s32 g_aDirection32Vectors[32][2];
 extern u8 FindActorsByType(u8 type, u8 subtype, Actor **out, u8 maxCount);
 extern s32 ActorIsNullActorType(Actor *actor);
 extern void SetActorAnchorVariantTableIndex(Actor *actor, u8 tableIndex);

@@ -83,12 +83,12 @@ typedef struct {
     u8 abPad_6[2];
 } WizardCrackerPopItPaletteEntry;
 
-extern const WizardCrackerPopItPaletteEntry g_aWizardCrackerPopItPalettes[WIZARD_CRACKER_POP_IT_KINDS];  // 0x08068D14
+extern const WizardCrackerPopItPaletteEntry g_aWizardCrackerPopItPalettes[WIZARD_CRACKER_POP_IT_KINDS];
 
-extern const u32 g_dwWizardCrackerPopItBg1Control;  // 0x08068D04
-extern const u32 g_dwWizardCrackerPopItBg2Control;  // 0x08068D08
-extern const u32 g_dwWizardCrackerPopItBg0Control;  // 0x08068D0C
-extern const u32 g_dwWizardCrackerPopItBg3Control;  // 0x08068D10
+extern const u32 g_dwWizardCrackerPopItBg1Control;
+extern const u32 g_dwWizardCrackerPopItBg2Control;
+extern const u32 g_dwWizardCrackerPopItBg0Control;
+extern const u32 g_dwWizardCrackerPopItBg3Control;
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.
@@ -110,16 +110,16 @@ extern void ExitWizardCrackerPopItMinigame(void);
 // Cracker sprites and animations, by WizardCrackerPopItKind. The wrapped
 // cracker pops within its own sprite; the others switch to a pop sprite from
 // g_aWizardCrackerPopItPopAssets, whose wrapped entry is empty.
-extern const ActorAssetRecord g_aWizardCrackerPopItPopAssets[WIZARD_CRACKER_POP_IT_KINDS];  // 0x08068D3C
-extern const ActorAssetRecord g_aWizardCrackerPopItCrackerAssets[WIZARD_CRACKER_POP_IT_KINDS];  // 0x08068D8C
-extern const u8 g_aWizardCrackerPopItSweetAnims[2][40];  // 0x08068DDC
-extern const u8 g_aWizardCrackerPopItDumbbellAnims[2][18];  // 0x08068E2C
-extern const u8 g_aWizardCrackerPopItTriangleAnims[2][38];  // 0x08068E50
-extern const u8 g_aWizardCrackerPopItOvalAnims[3][22];  // 0x08068E9C
+extern const ActorAssetRecord g_aWizardCrackerPopItPopAssets[WIZARD_CRACKER_POP_IT_KINDS];
+extern const ActorAssetRecord g_aWizardCrackerPopItCrackerAssets[WIZARD_CRACKER_POP_IT_KINDS];
+extern const u8 g_aWizardCrackerPopItSweetAnims[2][40];
+extern const u8 g_aWizardCrackerPopItDumbbellAnims[2][18];
+extern const u8 g_aWizardCrackerPopItTriangleAnims[2][38];
+extern const u8 g_aWizardCrackerPopItOvalAnims[3][22];
 // Variants 1 and 3 are the short turns into 2 and 0.
-extern const u8 g_aWizardCrackerPopItWrappedAnims[4][20];  // 0x08068EDE
-extern const u8 g_aWizardCrackerPopItPopAnims[WIZARD_CRACKER_POP_IT_KINDS - 1][48];  // 0x08068F2E, from the triangle
-extern const u8 g_aWizardCrackerPopItWrappedPopAnims[2][36];  // 0x08068FEE, by variant / 2
+extern const u8 g_aWizardCrackerPopItWrappedAnims[4][20];
+extern const u8 g_aWizardCrackerPopItPopAnims[WIZARD_CRACKER_POP_IT_KINDS - 1][48];  // from the triangle
+extern const u8 g_aWizardCrackerPopItWrappedPopAnims[2][36];  // by variant / 2
 
 extern void InitializeWizardCrackerPopItMinigame(void);
 extern void UpdateWizardCrackerPopItMinigame(void);

@@ -19,9 +19,9 @@ extern StatusEquipCharacterSelectState g_StatusEquipCharacterSelect;  // 0x03005
 extern u8 g_bStatusEquipCharacterSlot;  // 0x030052B8: cursor slot (0-2)
 extern u32 g_dwStatusEquipCharacter;    // 0x030052A0: FighterType chosen in character select
 
-extern const ActorAssetRecord g_aUnusedPartyAssetRecords[4];  // 0x0806940C
-extern const u32 g_adwStatusEquipCharacterNameTextIds[3];  // 0x0806944C: by FighterType
-extern const u32 g_dwStatusEquipCharacterSelectBg3Control;  // 0x08069458: BG3, the character panels
+extern const ActorAssetRecord g_aUnusedPartyAssetRecords[4];
+extern const u32 g_adwStatusEquipCharacterNameTextIds[3];  // by FighterType
+extern const u32 g_dwStatusEquipCharacterSelectBg3Control;  // BG3, the character panels
 
 extern void UpdateStatusEquipCharacterSelect(void);
 extern void InitializeStatusEquipCharacterSelect(void);

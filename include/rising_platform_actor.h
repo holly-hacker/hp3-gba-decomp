@@ -16,8 +16,8 @@ typedef struct RoomActorRecordRaisingPlatform {
 extern Actor *SpawnRaisingPlatformActor(u8 bColumn, u8 bRow);
 extern void TickRaisingPlatformActor(Actor *pActor);
 extern void HandleRaisingPlatformTouch(Actor *pSelf, Actor *pOther);
-extern const ActorGfxRecord g_RoomRaisingPlatformSprite;  // ROM 0x0806B7D4 (US)
-extern const u8 g_abRoomRaisingPlatformAnimData[46];       // ROM 0x0806B7DC (US)
+extern const ActorGfxRecord g_RoomRaisingPlatformSprite;
+extern const u8 g_abRoomRaisingPlatformAnimData[46];
 
 // Actor bytes 0x60-0x65 as set by the constructor from the record arguments.
 typedef struct RaisingPlatformState {

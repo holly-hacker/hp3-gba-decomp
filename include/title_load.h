@@ -4,7 +4,7 @@
 #include "pause_menu.h"
 
 // The No/Yes prompt shown by SelectNewGameSlot.
-extern const ListMenuDefinition g_NewGameSlotConfirmationMenuDefinition;  // 0x0806C024
+extern const ListMenuDefinition g_NewGameSlotConfirmationMenuDefinition;
 
 // The bar behind each save slot row, also used for the slot cursor.
 extern const ActorAssetRecord g_SaveSlotBarAsset;

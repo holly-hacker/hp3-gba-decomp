@@ -23,12 +23,12 @@ typedef struct SoundSample {
     u16 freq;         // kramSetFreq argument
 } SoundSample;
 
-extern const SoundConfigRow g_aSoundConfig[179];       // 0x08FB09F8
-extern const SoundSample g_aSoundSamples[164];         // 0x08FB0588
-extern const SoundSample g_aSoundVariants[15][8];      // 0x08FB0818
+extern const SoundConfigRow g_aSoundConfig[179];
+extern const SoundSample g_aSoundSamples[164];
+extern const SoundSample g_aSoundVariants[15][8];
 
 // Music and jingle modules by module id (PlayMusicModule, PlayJingle).
-extern const Module *const g_apMusicModules[52];       // 0x08FB0CC4
+extern const Module *const g_apMusicModules[52];
 
 extern s32 IsSoundActive(s32 handle);
 

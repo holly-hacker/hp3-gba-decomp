@@ -182,7 +182,7 @@ void TickPlayerActionState(Actor *actor)
         // The phase!=0 chain re-reads bAttackMoveTicks from the
         // struct at each comparison; only the flags&0x40 chain below keeps it
         // in the delay local. Caching it here too puts delay in r1 function-
-        // wide and mismatches the flags&0x40 reread (real r0, 0x08016528).
+        // wide and mismatches the flags&0x40 reread (the ROM uses r0).
         if (phase != 0) {
             g_pFightState->bAttackMoveTicks -= 1;
             if (g_pFightState->bAttackMoveTicks > 4) {

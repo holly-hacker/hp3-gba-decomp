@@ -52,26 +52,26 @@ typedef struct {
     const ObjPalette *pPalette;
 } DementorMinigameSprite;
 
-extern const DementorMinigameSprite g_DementorMinigameDementorSprite;   // US 0x0805E110
-extern const DementorMinigameSprite g_DementorMinigameHarrySprite;      // US 0x0805E124
-extern const DementorMinigameSprite g_DementorMinigameHarryCastSprite;  // US 0x0805E138
-extern const DementorMinigameSprite g_DementorMinigameSpellSprite;      // US 0x0805E14C
-extern const DementorMinigameSprite g_DementorMinigameDamageSprite;     // US 0x0805E160
+extern const DementorMinigameSprite g_DementorMinigameDementorSprite;
+extern const DementorMinigameSprite g_DementorMinigameHarrySprite;
+extern const DementorMinigameSprite g_DementorMinigameHarryCastSprite;
+extern const DementorMinigameSprite g_DementorMinigameSpellSprite;
+extern const DementorMinigameSprite g_DementorMinigameDamageSprite;
 
-extern const u32 g_dwDementorMinigameBg0Control;  // US 0x0805E174
-extern const u32 g_dwDementorMinigameBg3Control;  // US 0x0805E178
+extern const u32 g_dwDementorMinigameBg0Control;
+extern const u32 g_dwDementorMinigameBg3Control;
 
-extern const IntPoint g_aDementorStartPositions[4];  // US 0x0805E17C
+extern const IntPoint g_aDementorStartPositions[4];
 
 // Animation command streams by direction; see actor_anim.h.
-extern const u8 g_aabDementorStopAnimData[4][2];       // US 0x0805E19C
-extern const u8 g_aabDementorFlyAnimData[4][18];       // US 0x0805E1A4
-extern const u8 g_aabDementorMinigameHarryCastAnimData[4][14];  // US 0x0805E1EC
-extern const u8 g_aabDementorMinigameSpellAnimData[4][6];       // US 0x0805E224
+extern const u8 g_aabDementorStopAnimData[4][2];
+extern const u8 g_aabDementorFlyAnimData[4][18];
+extern const u8 g_aabDementorMinigameHarryCastAnimData[4][14];
+extern const u8 g_aabDementorMinigameSpellAnimData[4][6];
 
-extern const IntPoint g_aDementorMinigameSpellPositions[4];  // US 0x0805E23C
+extern const IntPoint g_aDementorMinigameSpellPositions[4];
 
-extern const u8 g_abDementorMinigameDamageAnimData[34];  // US 0x0805E25C
+extern const u8 g_abDementorMinigameDamageAnimData[34];
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

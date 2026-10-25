@@ -2,7 +2,7 @@
 
 #include "types.h"
 
-// GBA BIOS SWI wrappers -- asm/rt/bios_calls.s (US 0x08049E84-0x08049EC4).
+// GBA BIOS SWI wrappers -- asm/rt/bios_calls.s.
 // bios_Div and bios_Mod share SWI 0x6 (BIOS Div); bios_Mod just returns the
 // remainder (r1) instead of the quotient (r0).
 

@@ -27,11 +27,11 @@ typedef struct {
     u8 bZero;  // always 0
 } GameCubeOwlPacket;
 
-extern const ListMenuDefinition g_GameCubeLinkMenuDefinition;  // 0x08069A2C: title only, no rows
-extern const ActorAssetRecord g_aGameCubeLinkIconAssets[3];            // 0x08069A50
-extern const GameCubeLinkIconPosition g_aGameCubeLinkIconPositions[3];  // 0x08069A80
-extern const GameCubeLinkText g_aGameCubeLinkResultTexts[7];   // 0x08069A8C: by JOYBUS_STATE_*; wFrames holds the text
-extern const GameCubeLinkText g_aGameCubeLinkStatusTexts[4];   // 0x08069AA8: by bLinkProgress; wFrames clears the text
+extern const ListMenuDefinition g_GameCubeLinkMenuDefinition;  // title only, no rows
+extern const ActorAssetRecord g_aGameCubeLinkIconAssets[3];
+extern const GameCubeLinkIconPosition g_aGameCubeLinkIconPositions[3];
+extern const GameCubeLinkText g_aGameCubeLinkResultTexts[7];   // by JOYBUS_STATE_*; wFrames holds the text
+extern const GameCubeLinkText g_aGameCubeLinkStatusTexts[4];   // by bLinkProgress; wFrames clears the text
 
 extern void InitializeGameCubeLink(void);
 extern void UpdateGameCubeLink(void);

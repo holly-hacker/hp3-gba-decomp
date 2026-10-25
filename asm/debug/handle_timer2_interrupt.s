@@ -6,7 +6,7 @@
 @ ("PRF %r0%") that an emulator can print. On hardware it only preserves r0
 @ and returns.
 	arm_func_start HandleTimer2Interrupt
-HandleTimer2Interrupt: @ 0x080005B0
+HandleTimer2Interrupt:
 	stmfd sp!, {r0}
 	ldr r0, _080005E8 @ =g_pTimer2DebugPc
 	ldr r0, [r0]

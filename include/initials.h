@@ -29,11 +29,11 @@ typedef struct {
 
 extern HighScoreNameEntryState g_HighScoreNameEntry;  // 0x030034D0
 
-extern const u32 g_dwHighScoreNameEntryBg2Control;  // 0x08060E64
-extern const u32 g_dwHighScoreNameEntryBg3Control;  // 0x08060E68
-extern const u32 g_dwHighScoreNameEntryBg0Control;  // 0x08060E6C
-extern const u8 g_abHighScoreNameEntryKeyTemplate[];  // 0x08060E70
-extern const u8 g_abHighScoreNameEntryDoneText[];     // 0x08060E74
+extern const u32 g_dwHighScoreNameEntryBg2Control;
+extern const u32 g_dwHighScoreNameEntryBg3Control;
+extern const u32 g_dwHighScoreNameEntryBg0Control;
+extern const u8 g_abHighScoreNameEntryKeyTemplate[];
+extern const u8 g_abHighScoreNameEntryDoneText[];
 
 extern void DrawHighScoreNameEntryKeypad(void);
 extern void DrawHighScoreNameEntryPreview(void);

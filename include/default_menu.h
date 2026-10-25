@@ -14,9 +14,9 @@
 // First BG1 tile of the overlay graphic.
 #define MENU_SCREEN_OVERLAY_TILE_OFFSET 0x70
 
-extern const u32 g_dwCommonBg0Control;  // 0x0805E104: BG0 control word, the menu frame
-extern const u32 g_dwCommonBg1Control;  // 0x0805E108: BG1 control word, the overlay graphic
-extern const u32 g_dwCommonBg2Control;  // 0x0805E10C: BG2 control word, the text target for list menu rows
+extern const u32 g_dwCommonBg0Control;  // BG0 control word, the menu frame
+extern const u32 g_dwCommonBg1Control;  // BG1 control word, the overlay graphic
+extern const u32 g_dwCommonBg2Control;  // BG2 control word, the text target for list menu rows
 
 extern Actor *g_pMenuCursorActor;          // 0x03002E08: NULL when the screen has no cursor
 extern s32 g_nMenuScreenPaletteEffectSlot;  // 0x03002E0C: selection pulse, -1 when none

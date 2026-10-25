@@ -3,7 +3,7 @@
 @ Hand-written ARM-mode signed divide: quotient in r0. Not compiler
 @ runtime -- libgcc's are the Thumb lib-object routines.
 	arm_func_start DivideSignedQuotient
-DivideSignedQuotient: @ 0x0800027C
+DivideSignedQuotient:
 	ands r3, r1, #0x80000000
 	rsbmi r1, r1, #0
 	eor r3, r3, r0, asr #1

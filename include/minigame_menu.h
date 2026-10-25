@@ -3,11 +3,11 @@
 #include "types.h"
 #include "save.h"
 
-extern const u32 g_dwMinigameMenuBg3Control;  // 0x0806605C
-extern const u32 g_dwMinigameMenuBg1Control;  // 0x08066060
+extern const u32 g_dwMinigameMenuBg3Control;
+extern const u32 g_dwMinigameMenuBg1Control;
 // Large "1"-"4" numeral of each minigame, drawn on BG3 at tile column g_adwMinigameMenuNumberX[i], row 5.
-extern const u8 *const g_apMinigameMenuNumbers[4];  // 0x08066064
-extern const u32 g_adwMinigameMenuNumberX[4];       // 0x08066074
+extern const u8 *const g_apMinigameMenuNumbers[4];
+extern const u32 g_adwMinigameMenuNumberX[4];
 
 extern void HandleMinigameSelectMenuConfirm(void);
 extern void InitializeMinigameMenu(void);

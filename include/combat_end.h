@@ -30,18 +30,18 @@ typedef struct {
     u8 abPad[2];
 } CombatResultPortraitPosition;
 
-extern const u32 g_dwCombatResultBg2Control;  // 0x0804E600
-extern const u32 g_dwCombatResultBg1Control;  // 0x0804E604
-extern const u32 g_dwCombatResultBg3Control;  // 0x0804E608
-extern const u32 g_dwCombatResultBg0Control;  // 0x0804E60C
+extern const u32 g_dwCombatResultBg2Control;
+extern const u32 g_dwCombatResultBg1Control;
+extern const u32 g_dwCombatResultBg3Control;
+extern const u32 g_dwCombatResultBg0Control;
 
 // Indexed by FighterType (GetCharacterFighterType). The BG1 and BG2 graphics
 // are cut up the same way, with their own destinations.
-extern const CombatResultPortraitRect g_aCombatResultBg1PortraitRects[3];        // 0x0804E640
-extern const CombatResultPortraitPosition g_aCombatResultBg1PortraitPositions[3];  // 0x0804E64C
-extern const s8 g_abCombatResultPortraitScrollX[3];                         // 0x0804E658
-extern const CombatResultPortraitRect g_aCombatResultBg2PortraitRects[3];        // 0x0804E65C
-extern const CombatResultPortraitPosition g_aCombatResultBg2PortraitPositions[3];  // 0x0804E668
+extern const CombatResultPortraitRect g_aCombatResultBg1PortraitRects[3];
+extern const CombatResultPortraitPosition g_aCombatResultBg1PortraitPositions[3];
+extern const s8 g_abCombatResultPortraitScrollX[3];
+extern const CombatResultPortraitRect g_aCombatResultBg2PortraitRects[3];
+extern const CombatResultPortraitPosition g_aCombatResultBg2PortraitPositions[3];
 
 // Row of the XP phase's per-party-position display (left, right, centre), kept by
 // InitializeCombatResultXp for TickCombatResultXpCounter. The tile cursors mark where each
@@ -57,11 +57,11 @@ typedef struct {
 // No item in a drop slot.
 #define COMBAT_RESULT_NO_ITEM 0x85
 
-extern const ActorAssetRecord g_CombatResultCoinAsset;          // 0x0804E610
-extern const ActorAssetRecord g_CombatResultUnusedItemsAsset;   // 0x0804E620: no reader found
-extern const ActorAssetRecord g_CombatResultLevelUpSparkleAsset;  // 0x0804E630
-extern const u8 g_abCombatResultLevelUpSparkleAnim[];           // 0x0804E674
-extern const u8 g_sCombatResultMacro1Space[];                   // 0x0804E6B0
+extern const ActorAssetRecord g_CombatResultCoinAsset;
+extern const ActorAssetRecord g_CombatResultUnusedItemsAsset;   // no reader found
+extern const ActorAssetRecord g_CombatResultLevelUpSparkleAsset;
+extern const u8 g_abCombatResultLevelUpSparkleAnim[];
+extern const u8 g_sCombatResultMacro1Space[];
 
 extern u32 g_dwCombatResultUnusedCounter;  // 0x030026E8: zeroed by InitializeCombatResult, no reader found
 extern u32 g_dwCombatResultUnusedDelay;    // 0x030026EC: 0x78 after InitializeCombatResult, no reader found
@@ -83,9 +83,9 @@ extern void InitializeCombatResult(void);
 extern void UpdateCombatResult(void);
 extern void ExitCombatResult(void);
 
-extern void RollBattleItemDrops(int *pItemId0, int *pItemId1);  // 0x080147C0
-extern void InitializeCombatResultXp(void);       // 0x08013AC8: draws the party's Exp/Level/Next rows
-extern void TickCombatResultXpCounter(void);      // 0x08014004: one tick of the XP counter
-extern void InitializeCombatResultDrops(void);    // 0x0801456C: rolls and lists the drops and the gold
-extern u32 GrantPartyMemberXp(u32 fighterType, s32 xp);  // 0x080148F4: returns the number of level-ups
-extern void StartCombatResultPaletteEffect(void);       // 0x0801493C
+extern void RollBattleItemDrops(int *pItemId0, int *pItemId1);
+extern void InitializeCombatResultXp(void);       // draws the party's Exp/Level/Next rows
+extern void TickCombatResultXpCounter(void);      // one tick of the XP counter
+extern void InitializeCombatResultDrops(void);    // rolls and lists the drops and the gold
+extern u32 GrantPartyMemberXp(u32 fighterType, s32 xp);  // returns the number of level-ups
+extern void StartCombatResultPaletteEffect(void);

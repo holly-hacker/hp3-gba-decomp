@@ -9,5 +9,5 @@ typedef struct DialogBlock {
     u8 bLineCount;
 } DialogBlock;
 
-extern const u32 g_adwDialogBlockTextIds[979];  // US 0x0805BC04
-extern const DialogBlock g_aDialogBlocks[666];   // US 0x0805CB50
+extern const u32 g_adwDialogBlockTextIds[979];
+extern const DialogBlock g_aDialogBlocks[666];
