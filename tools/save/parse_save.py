@@ -16,10 +16,9 @@ stored checksum) -- encoding always recomputes a fresh, correct checksum
 from the region's data, so a valid region has nothing worth showing there.
 
 A save slot's 2712 bytes are not a fixed-offset struct: the game builds
-each slot as a bitstream (SerializeGameStateToSaveBuffer, 0x08021498),
-appending fields with three primitives (PackBytesToSaveStream/
-PackBitsToSaveStream/PackNibblesToSaveStream, 0x0803C00C/0x0803C050/
-0x0803BAF4) that track a shared byte-cursor + bit-position and realign
+each slot as a bitstream (SerializeGameStateToSaveBuffer), appending
+fields with three primitives (PackBytesToSaveStream/PackBitsToSaveStream/
+PackNibblesToSaveStream) that track a shared byte-cursor + bit-position and realign
 differently depending on which primitive runs next. SaveWriter/SaveReader
 below reimplement that exact alignment behavior (derived from the three
 primitives' disassembly) so a slot can be losslessly decoded to JSON and
@@ -32,6 +31,7 @@ same convention already used for this ROM's globals, e.g. `wHp`,
     b   1-byte scalar (JSON int)
     w   2-byte scalar / u16 (JSON int)
     dw  4-byte scalar / u32 (JSON int)
+    p   4-byte pointer (JSON int)
     fx  4-byte 16.16 fixed-point scalar (JSON float -- dividing/multiplying
         by 65536 is exact in IEEE754 double, so this round-trips losslessly)
     fl  1-bit flag (JSON bool or 0/1 int)
@@ -42,13 +42,10 @@ same convention already used for this ROM's globals, e.g. `wHp`,
     a3  array of 3-bit values (each element 0-7), size given by list
         length
 
-Struct-shaped fields (`partyStats`, `roomActorState`) carry no prefix --
-a single type/size doesn't describe them. Fields whose real meaning
-isn't identified are named `<prefix>UnknownN`, where N is that field's
-0-based index among its immediate siblings (not a global counter) --
-e.g. `roomActorState`'s own `unknownN` record tables (see below) are
-indexed separately from the top-level slot fields, and carry no prefix
-since each is a list of fixed-size records, not a scalar/blob. Each
+Struct-shaped fields (`partyStats`, `roomActorState` and its record
+tables) carry no prefix -- a single type/size doesn't describe them.
+Fields whose real meaning isn't identified are named `<prefix>UnknownN`,
+where N is that field's 0-based index among its immediate siblings. Each
 slot's fields are plain named keys on the slot object, in their on-disk
 order (JSON object order is preserved end to end); there is no separate
 index/name wrapper. A table's entry count is never serialized on its
@@ -133,10 +130,10 @@ def bits_to_bytes(bits, byte_count: int) -> bytes:
 # --------------------------------------------------------------------------
 # Save-slot bitstream engine
 #
-# Mirrors PackBytesToSaveStream (0x0803C00C) / PackBitsToSaveStream
-# (0x0803C050) / PackNibblesToSaveStream (0x0803BAF4). SaveReader is the
-# exact inverse of SaveWriter, and follows the game's own Unpack*
-# functions at 0x0803BDDC/0x0803BE10/0x0803BEE4.
+# Mirrors PackBytesToSaveStream / PackBitsToSaveStream /
+# PackNibblesToSaveStream. SaveReader is the exact inverse of SaveWriter,
+# and follows UnpackBytesFromSaveStream / UnpackBitsFromSaveStream /
+# UnpackNibblesFromSaveStream.
 # --------------------------------------------------------------------------
 
 class SaveWriter:
@@ -230,8 +227,7 @@ class SaveReader:
 # Header / options
 # --------------------------------------------------------------------------
 
-# SaveHeader offset 0xD (SaveManager_03005598.aHeader[0xd] in Ghidra) is a
-# bitmask, confirmed field-by-field against the minigame-select screen
+# SaveHeader.bHeaderFlags (HeaderFlags) is a bitmask, confirmed field-by-field against the minigame-select screen
 # (ShowMinigameLockedMessageIfNeeded/DrawMinigameSelectMenu/
 # HandleMinigameMenuSelection) and against a real save going
 # from the options menu's default to Gamma=High (bit 0x80 -- also read by
@@ -243,8 +239,8 @@ class SaveReader:
 HEADER_FLAG_BITS = {
     # Gates whether the Owl Care Kit menu entry (pause menu -> Connectivity)
     # is available at all -- delivered via a GameCube link event, per the
-    # dialog string "Owl Care Kit received!". Read by InitializeConnectivityMenu
-    # (0x08036038), which picks the Connectivity submenu's list variant.
+    # dialog string "Owl Care Kit received!". Read by InitializeConnectivityMenu,
+    # which picks the Connectivity submenu's list variant.
     "flOwlCareKitUnlocked": 0x01,
     "flWizardCrackerPopItUnlocked": 0x02,
     "flBuckbeakUnlocked": 0x04,  # confirmed: "Buckbeak's Hippogriff Glide"
@@ -255,8 +251,8 @@ HEADER_FLAG_BITS = {
     # select menu has no entry for it.
     "flHarryVsDementorsUnlocked": 0x20,
     # Set the first time the player confirms Tea Leaf Divination (minigame
-    # index 3) from the minigame select menu (HandleMinigameSelectMenuConfirm,
-    # ROM 0x0802CF38): clear routes to a one-time intro/tutorial game mode
+    # index 3) from the minigame select menu (HandleMinigameSelectMenuConfirm):
+    # clear routes to a one-time intro/tutorial game mode
     # and sets this bit; set routes straight to the normal launch.
     "flTeaLeafDivinationIntroShown": 0x40,
     "flGammaHigh": 0x80,  # options menu: Gamma Normal/High
@@ -275,17 +271,15 @@ def encode_header_flags(h: dict) -> int:
     return value
 
 
-# Per-slot bSaveFlags (0x0300318C). Bit 0: set once, only when a new game is
-# started (never cleared again) -- gates the per-frame playtime-counter tick
-# (ProcessPlaytimeTick, 0x0802165C); not a slot-validity marker (ValidateSaveSlot,
-# 0x0803C0A8, checks only the checksum). Bit 1: consumed one-shot by
-# HandleSaveLoadContinuation (0x08043AF0) -- if set, continuing this save
-# restarts the intro/fresh-start sequence instead of resuming normally; set
-# together with bit 2 by FinishLinearCutscene (0x0801D6DC) at game
-# completion, alongside starting New Game+. Bit 2: set at the same instant as
-# bit 1 but has no reader anywhere in the program -- an exhaustive xref search
-# on this byte's storage address accounts for all 10 accesses in the ROM and
-# none test bit 0x04; confirmed in-game to have no observed effect set alone.
+# Per-slot g_saveStateBlock.bSaveFlags (SaveFlags). Bit 0: set once, only
+# when a new game is started (never cleared again) -- gates the per-frame
+# playtime-counter tick (ProcessPlaytimeTick); not a slot-validity marker
+# (ValidateSaveSlot checks only the checksum). Bit 1: consumed one-shot by
+# HandleSaveLoadContinuation -- if set, continuing this save restarts the
+# intro/fresh-start sequence instead of resuming normally; set together with
+# bit 2 by FinishLinearCutscene at game completion, alongside starting New Game+. Bit 2: set at the same instant as
+# bit 1 but has no reader anywhere in the program -- none of the byte's
+# accesses test bit 0x04; confirmed in-game to have no observed effect set alone.
 # Bits 3-7 have no code touching them at all -- if a real save is ever seen
 # with any of them set, that's new information worth chasing, so they're
 # surfaced as an extra field instead of silently dropped.
@@ -318,7 +312,7 @@ def parse_header(raw: bytes) -> dict:
     magic = data[0:8]
     lang_byte = data[8]
     result = {
-        "szMagic": magic.decode("ascii", errors="replace"),
+        "szMagic": magic.decode("latin-1"),
         "flLanguageConfigured": bool(lang_byte & 0x80),
         # Options menu language selector (0=English US, 1=English UK, ...
         # as in include/text.h's language ids); confirmed against a real
@@ -343,7 +337,7 @@ def parse_header(raw: bytes) -> dict:
 
 def encode_header(h: dict) -> bytes:
     data = bytearray(16)
-    data[0:8] = h["szMagic"].encode("ascii")
+    data[0:8] = h["szMagic"].encode("latin-1")
     data[8] = (0x80 if h["flLanguageConfigured"] else 0) | (h["bLanguageIndex"] & 0x7F)
     data[9] = h["bMusicVolume"]
     data[10] = h["bSoundVolume"]
@@ -354,13 +348,13 @@ def encode_header(h: dict) -> bytes:
     return bytes(data)
 
 
-# SaveOptions holds minigame high scores (SaveManager+0x10, live RAM copy
+# SaveOptions holds minigame high scores (live RAM copy
 # g_saveManager.options, synced to EEPROM by SyncSaveOptionsIfDirty). Confirmed
 # byte-exact against a real save: bytes 4-5 are Wizard Cracker Pop-it's
 # Medium-difficulty high score (0->1080 in the sample). The write code
 # (UpdateWizardCrackerPopItMinigame) stores to
 # `aadwHighScores[HighScoreWizardCrackerPopIt][difficulty]`,
-# and the display/erase-check code (DrawDifficultySelectMenu) reads 3
+# and the display/erase-check code (DrawMinigameDifficultyHighScore) reads 3
 # consecutive u32s per minigame (`minigameIndex*0xC` outer stride) -- so
 # bytes 0-3/4-7/8-11 are very likely Wizard Cracker Pop-it's Easy/Medium/
 # Hard scores (a u32 slot per the code, even though only the low 16 bits
@@ -430,8 +424,8 @@ EQUIPPED_FIGHTER_NAMES = ["harry", "hermione", "ron"]
 EQUIP_SLOT_NAMES = ["belt", "charm", "gloves", "boots", "hat", "cloak"]
 ITEM_QUANTITY_COUNT = 132
 
-# Item index == g_pItemTable[index] (ROM 0x08060EE4, stride 0x34).
-# Each entry's +0x10 field is a text-string ID (nNameTextId);
+# Item index == g_pItemTable[index] (ITEM_* in include/constants/items.h).
+# Each entry's nNameTextId is a text-string ID;
 # resolving it through data/text/en_us.json's decoded string table gives
 # every one of these names directly -- PROVEN, cross-checked against 6
 # real-save-confirmed items (Grand Wiggenweld Potion, Monster Book of
@@ -441,8 +435,7 @@ ITEM_QUANTITY_COUNT = 132
 # groups into per-equipment-slot/category runs, each with its own local
 # string-ID base -- not one single global offset across the whole table).
 # Contiguous from index 0, so a plain list (not an index->name map) is
-# all this needs. Confirmed to end here: index 79's nNameTextId reads
-# 0 from ROM (decoding to "There you are, Harry!", the table's first
+# all this needs. Confirmed to end here: index 79's nNameTextId is 0 (decoding to "There you are, Harry!", the table's first
 # dialog string) -- not a real item, just zeroed/unrelated memory past
 # the table's real end. Matches an in-game observation of item 79 as a
 # visibly broken entry (Rat Tonic sprite, wrong name, showing under "all
@@ -601,7 +594,7 @@ def encode_party_member(w: SaveWriter, m: dict):
 
 
 # --------------------------------------------------------------------------
-# Save slot: room-actor state (0x0802A570)
+# Save slot: room-actor state (SerializeRoomActorState)
 #
 # A snapshot of every non-default actor active in the player's current
 # room (spawned monsters, pickups, switches, chests, etc.), restored when
@@ -614,152 +607,154 @@ def encode_party_member(w: SaveWriter, m: dict):
 # table's count byte is redundant with its JSON list's length, so it's
 # not itself represented in JSON.
 #
-# Each table's record layout was traced byte-for-byte from the two
-# symmetric producer/consumer functions: 0x0802A70C (capture, walks the
-# live room-actor list and picks a table per actor per its "kind",
-# *(short*)(actor+8)) and 0x0802AB34/0x0802AE64 (restore, respawn each
-# tile's default actor via 0x08005B70 then overlay these fields). Most
-# fields copy a byte/word/dword straight from a fixed offset of the live
-# `Actor` struct (include/actor.h); ones with no
-# identified meaning keep that struct's own offset in their name
-# (`bUnk_0xNN`/`wUnk_0xNN`/`dwUnk_0xNN`), matching this ROM's existing
-# `bUnk_0x0F`-style convention for unnamed fields. A record's leftover,
-# always-zero-in-practice padding bytes (confirmed zero because the
-# capture side memsets the whole buffer before writing) are round-tripped
-# via an `abPadding` key, omitted like `abTailPadding` when all-zero.
+# The records are the RoomActor*Record structs of
+# include/overworld/room_actor_state.h, filled by CaptureRoomActorState
+# (one table per RoomActorType) and read back by RestoreRoomActorState and
+# RestoreRoomActorStateMinimal, which respawn each record's tile actor
+# (SpawnRoomGroupMember) and then write the saved fields over it. Field
+# names follow those structs. A record's leftover padding bytes (zero in
+# practice, because the capture memsets the whole buffer first) are
+# round-tripped via an `abPadding` key, omitted like `abTailPadding` when
+# all-zero.
 # --------------------------------------------------------------------------
 
 # Field spec: (JSON key, byte offset within the record, struct format char).
 # Bytes not covered by any field are padding (see `abPadding` above).
 
-SPEC_DEFAULT_KIND = [
-    # kind: the fallback/default case (any kind not handled below). The
-    # richest record -- full Actor state, plus 3 linked sub-actors'
-    # tile positions (captured but never restored -- see docs).
-    ("dwActorFlags", 0x00, "I"),   # Actor+0xc, capture masks off bit 0x00200000
+
+def _anim_state_spec(base):
+    """ActorAnimState fields at `base`; the pointers are into the actor's
+    animation data."""
+    return [
+        ("bAnimFrameCounter", base + 0x00, "B"),
+        ("bAnimFrameDelay", base + 0x01, "B"),
+        ("bLoadedAnimFrame", base + 0x02, "B"),
+        ("bLastAnimFrameValue", base + 0x03, "B"),
+        ("wAnimParam", base + 0x04, "H"),
+        ("pAnimTable", base + 0x08, "I"),
+        ("pAnimFrameCursor", base + 0x0C, "I"),
+        ("pAnimFrameBase", base + 0x10, "I"),
+    ]
+
+
+SPEC_DEFAULT = [
+    # RoomActorDefaultRecord: every type the tables below don't take. The
+    # richest record -- full Actor state, plus the room tiles of the
+    # shadow, linked and owner actors (captured but never restored).
+    ("dwFlags", 0x00, "I"),          # without ActorFlagHasPaletteSlot
     ("nMoveSpeed", 0x04, "I"),
-    ("dwUnk_0x80", 0x08, "I"),
-    ("wUnk_0x86", 0x0C, "H"),
-    ("wWaitTarget_0x8a", 0x0E, "H"),  # Actor+0x8a, the WaitFrames/WaitForCounter target
-    ("bSubActorATileX", 0x10, "B"),  # tile position of Actor+0xa0's linked actor -- capture-only, never restored
-    ("bSubActorATileY", 0x11, "B"),
-    ("bSubActorBTileX", 0x12, "B"),  # Actor+0xa4's linked actor -- capture-only
-    ("bSubActorBTileY", 0x13, "B"),
-    ("bSubActorCTileX", 0x14, "B"),  # Actor+0xa8's linked actor -- capture-only
-    ("bSubActorCTileY", 0x15, "B"),
-    ("bFacing", 0x16, "B"),          # Actor+0x12
-    ("bUnk_0x8d", 0x17, "B"),
-    ("bUnk_0x8f", 0x18, "B"),
-    ("bUnk_0x8c", 0x19, "B"),
-    ("bUnk_0x91", 0x1A, "B"),
-    ("bTileX", 0x1B, "B"),           # spawn key, passed to 0x08005B70
-    ("bTileY", 0x1C, "B"),
-    ("dwUnk_0xd8", 0x20, "I"),
-    ("dwUnk_0xdc", 0x24, "I"),
-    ("dwUnk_0xe0", 0x28, "I"),
-    ("dwUnk_0xe4", 0x2C, "I"),
-    ("dwUnk_0xe8", 0x30, "I"),
-    ("dwUnk_0x60", 0x40, "I"),
-    ("dwUnk_0x64", 0x44, "I"),
-    ("dwUnk_0x68", 0x48, "I"),
-    ("dwUnk_0x6c", 0x4C, "I"),
-    ("dwUnk_0x70", 0x50, "I"),
-    ("dwUnk_0x74", 0x54, "I"),
-    ("dwUnk_0x78", 0x58, "I"),
-    ("wUnk_0x4cHi", 0x5C, "H"),      # Actor+0x4c's high 16 bits only (integer/tile part)
-    ("wUnk_0x50Hi", 0x5E, "H"),      # Actor+0x50's high 16 bits only
-    ("wPosXTile", 0x60, "H"),        # Actor+0x2c's high 16 bits -- tile-level X, sub-tile part not saved
-    ("wPosYTile", 0x62, "H"),        # Actor+0x30's high 16 bits
-    ("dwUnk_0x3c", 0x64, "I"),
-    ("dwUnk_0x40", 0x68, "I"),
+    ("dwStateTimer", 0x08, "I"),
+    ("wTimedMoveTicks", 0x0C, "H"),
+    ("wActionVariant", 0x0E, "H"),
+    ("bShadowTileCol", 0x10, "B"),
+    ("bShadowTileRow", 0x11, "B"),
+    ("bLinkedTileCol", 0x12, "B"),
+    ("bLinkedTileRow", 0x13, "B"),
+    ("bOwnerTileCol", 0x14, "B"),
+    ("bOwnerTileRow", 0x15, "B"),
+    ("bFacing", 0x16, "B"),
+    ("bActionState", 0x17, "B"),
+    ("bActionSubState", 0x18, "B"),
+    ("bRoomActorKind", 0x19, "B"),
+    ("bFighterIndex", 0x1A, "B"),
+    ("bTileCol", 0x1B, "B"),         # the room record the restore respawns
+    ("bTileRow", 0x1C, "B"),
+    *_anim_state_spec(0x20),
+    # Actor bytes 0x60-0x7B (script state and per-mode state), as a block.
+    *[(f"dwScript{i}", 0x40 + 4 * i, "I") for i in range(7)],
+    ("wMoveTargetX", 0x5C, "H"),     # pixels
+    ("wMoveTargetY", 0x5E, "H"),
+    ("wPosX", 0x60, "H"),            # pixels; the sub-pixel part is not saved
+    ("wPosY", 0x62, "H"),
+    ("dwVelX", 0x64, "I"),           # 16.16
+    ("dwVelY", 0x68, "I"),
 ]
 
-SPEC_KIND_4_OR_7 = [
-    ("bTileX", 0x0, "B"),
-    ("bTileY", 0x1, "B"),
-    ("bUnk_0x8d", 0x3, "B"),
-    ("dwActorFlags", 0x4, "I"),     # Actor+0xc, captured unmasked (unlike the other tables)
-    ("dwUnk_0x80", 0x8, "I"),
+SPEC_TRIGGER_ZONE = [
+    # RoomActorTriggerZoneRecord: RoomActorType_TriggerZone and _TriggerRect.
+    ("bTileCol", 0x0, "B"),
+    ("bTileRow", 0x1, "B"),
+    ("bActionState", 0x3, "B"),
+    ("dwFlags", 0x4, "I"),           # captured unmasked (unlike the other tables)
+    ("dwStateTimer", 0x8, "I"),
 ]
 
-SPEC_KIND_5 = [
-    ("bTileX", 0x0, "B"),
-    ("bTileY", 0x1, "B"),
-    ("bUnk_0x8f", 0x2, "B"),
-    ("bUnk_0x16", 0x3, "B"),
-    ("bUnk_0x67", 0x4, "B"),
-    ("bUnk_0x60", 0x5, "B"),
-    ("wUnk_0x86", 0x6, "H"),
-    ("dwActorFlags", 0x8, "I"),     # Actor+0xc, masked off bit 0x00200000
-    ("dwUnk_0xd8", 0xC, "I"),
-    ("dwUnk_0xdc", 0x10, "I"),
-    ("dwUnk_0xe0", 0x14, "I"),
-    ("dwUnk_0xe4", 0x18, "I"),
-    ("dwUnk_0xe8", 0x1C, "I"),
-    ("wPosXTile", 0x20, "H"),        # Actor+0x2e (high half of current X) -- tile-level only
-    ("wPosYTile", 0x22, "H"),        # Actor+0x32
-    ("dwUnk_0x3c", 0x24, "I"),
-    ("dwUnk_0x40", 0x28, "I"),
-    ("dwUnk_0x44", 0x2C, "I"),
-    ("dwUnk_0x48", 0x30, "I"),
+SPEC_WORLD_ACTOR = [
+    # RoomActorWorldActorRecord: RoomActorType_WorldActor other than the
+    # switch kind.
+    ("bTileCol", 0x0, "B"),
+    ("bTileRow", 0x1, "B"),
+    ("bActionSubState", 0x2, "B"),
+    ("bDepthSortBias", 0x3, "B"),
+    ("bBrokenFrame", 0x4, "B"),
+    ("bScriptStateLow", 0x5, "B"),
+    ("wTimedMoveTicks", 0x6, "H"),
+    ("dwFlags", 0x8, "I"),           # without ActorFlagHasPaletteSlot
+    *_anim_state_spec(0x0C),
+    ("wPosX", 0x20, "H"),            # pixels; the sub-pixel part is not saved
+    ("wPosY", 0x22, "H"),
+    ("dwVelX", 0x24, "I"),           # 16.16
+    ("dwVelY", 0x28, "I"),
+    ("dwAccelX", 0x2C, "I"),
+    ("dwAccelY", 0x30, "I"),
 ]
 
-SPEC_FLOOR_ITEM = [
-    # kind 1. The two dwords aren't Actor fields at all: on restore, the
-    # respawned actor's own (tile-level) position is used to look up an
-    # entry in a separate, static per-map item-drop table (0x08020504),
-    # and these two dwords overwrite that table entry -- i.e. this
-    # refreshes persistent floor-item state keyed by tile position, not
-    # the spawned actor itself.
-    ("bTileX", 0x0, "B"),
-    ("bTileY", 0x1, "B"),
-    ("dwItemTableField0", 0x4, "I"),
-    ("dwItemTableField1", 0x8, "I"),
+SPEC_TILE_ANIMATION = [
+    # RoomActorTileAnimationRecord: RoomActorType_TileAnimation. The fields
+    # after the tile are the RoomTileAnimation at the actor's position; the
+    # restore copies them back over the room's entry
+    # (FindRoomTileAnimation), not onto the actor.
+    ("bTileCol", 0x0, "B"),
+    ("bTileRow", 0x1, "B"),
+    ("bSet", 0x4, "B"),
+    ("bStep", 0x5, "B"),
+    ("bDelay", 0x6, "B"),
+    ("bFlags", 0x7, "B"),
+    ("wX", 0x8, "H"),
+    ("wY", 0xA, "H"),
 ]
 
-SPEC_KIND_5_SWITCH = [
-    # kind 5, sub-kind '3' (Actor+0x61 == ASCII '3') -- a per-actor
-    # toggle, structurally the same idea as the single-instance
-    # `bSwitchState` room switch above but with up to 32 independent
-    # instances per room. `bTriggered` is encoded inverted: stored as
-    # NOT(bit 0x4 of Actor+0xc); a stored `1` makes restore call
-    # 0x08046CA4, which plays a "consumed/vanish" animation and clears
-    # that same bit -- i.e. `1` means "already triggered, redisplay as such".
-    ("bTileX", 0x0, "B"),
-    ("bTileY", 0x1, "B"),
-    ("bTriggered", 0x2, "B"),
+SPEC_WORLD_ACTOR_SWITCH = [
+    # RoomActorSwitchRecord: RoomActorType_WorldActor of the switch kind
+    # ('3') -- a per-actor toggle, structurally the same idea as the
+    # single-instance `bSwitchState` room switch above but with up to 32
+    # independent instances per room. `bConsumed` is 1 when the actor's
+    # ActorFlagWantsCollisionCheck was clear; restore then calls
+    # MarkRoomActorConsumed.
+    ("bTileCol", 0x0, "B"),
+    ("bTileRow", 0x1, "B"),
+    ("bConsumed", 0x2, "B"),
 ]
 
-SPEC_PICKUP_MARKER = [
-    # kind 0xB. `bUnk_0x80` round-trips with a +1 offset applied only on
-    # restore (Actor+0x80 becomes this value + 1); captured verbatim
-    # (Actor+0x80's raw low byte) on save. `bUnk_0x8f`, when it equals
-    # `8` on restore, triggers an item-grant popup (0x08044A94).
-    ("bTileX", 0x0, "B"),
-    ("bTileY", 0x1, "B"),
-    ("bUnk_0x80", 0x2, "B"),
-    ("bUnk_0x8f", 0x3, "B"),
+SPEC_FLAME_PILLAR = [
+    # RoomActorFlamePillarRecord: RoomActorType_FlamePillar. Restore sets the
+    # actor's dwStateTimer to `bStateTimer` + 1 (captured as its low byte)
+    # and calls IgniteFlamePillar when `bActionSubState` is 8.
+    ("bTileCol", 0x0, "B"),
+    ("bTileRow", 0x1, "B"),
+    ("bStateTimer", 0x2, "B"),
+    ("bActionSubState", 0x3, "B"),
 ]
 
 SPEC_PRESENCE_MARKER = [
-    # kinds 2, 8, 10 unconditionally, plus kind 5/6 under specific
-    # status-bit conditions. Just a tile
-    # position -- restore only respawns the tile's default actor, no
-    # further state applied.
-    ("bTileX", 0x0, "B"),
-    ("bTileY", 0x1, "B"),
+    # RoomActorTileRecord: doors, push-reset buttons, Spongify pads, plain
+    # world actors and non-pushable NPCs. Just a tile position -- restore
+    # only respawns the tile's default actor, no further state applied.
+    ("bTileCol", 0x0, "B"),
+    ("bTileRow", 0x1, "B"),
 ]
 
 ROOM_ACTOR_TABLES = [
-    # (JSON key, record size, field spec) -- order matches the on-disk
-    # count/table order.
-    ("defaultKindActors", 0x6C, SPEC_DEFAULT_KIND),
-    ("kind4Or7Actors", 0x0C, SPEC_KIND_4_OR_7),
-    ("kind5Actors", 0x34, SPEC_KIND_5),
-    ("floorItemStates", 0x0C, SPEC_FLOOR_ITEM),
-    ("kind5SwitchActors", 0x04, SPEC_KIND_5_SWITCH),
-    ("pickupMarkers", 0x04, SPEC_PICKUP_MARKER),
-    ("presenceMarkers", 0x04, SPEC_PRESENCE_MARKER),
+    # (JSON key, record size, field spec, capacity) -- order matches the
+    # on-disk count/table order; capacities are RoomActorStateBuffer's
+    # array sizes.
+    ("default", 0x6C, SPEC_DEFAULT, 32),
+    ("triggerZone", 0x0C, SPEC_TRIGGER_ZONE, 32),
+    ("worldActor", 0x34, SPEC_WORLD_ACTOR, 32),
+    ("tileAnimation", 0x0C, SPEC_TILE_ANIMATION, 32),
+    ("worldActorSwitch", 0x04, SPEC_WORLD_ACTOR_SWITCH, 32),
+    ("flamePillar", 0x04, SPEC_FLAME_PILLAR, 16),
+    ("presenceMarker", 0x04, SPEC_PRESENCE_MARKER, 120),
 ]
 
 _RECORD_FMT_SIZE = {"B": 1, "H": 2, "I": 4}
@@ -826,53 +821,40 @@ def decode_room_actor_state(r: SaveReader) -> dict:
         "bPlayerFacing": facing,
         "bSwitchState": switch_state,
     }
-    for (key, rec_size, spec), count in zip(ROOM_ACTOR_TABLES, counts):
+    for (key, rec_size, spec, _), count in zip(ROOM_ACTOR_TABLES, counts):
         result[key] = [decode_record(r.read_bytes(rec_size), spec, rec_size)
                         for _ in range(count)]
     return result
 
 
-# The in-RAM pickupMarkers table has room for 16 entries before the
-# presenceMarkers table; the game does not bound the count it loads.
-MAX_PICKUP_MARKERS = 16
-
-
 def encode_room_actor_state(w: SaveWriter, state: dict):
-    if len(state["pickupMarkers"]) > MAX_PICKUP_MARKERS:
-        print(f"warning: {len(state['pickupMarkers'])} pickupMarkers exceed the "
-              f"{MAX_PICKUP_MARKERS} the game has room for; loading overwrites presenceMarkers",
-              file=sys.stderr)
+    # The game does not bound the counts it loads; an overlong table
+    # overwrites the next one in RoomActorStateBuffer.
+    for key, _, _, capacity in ROOM_ACTOR_TABLES:
+        if len(state[key]) > capacity:
+            print(f"warning: {len(state[key])} {key} records exceed the {capacity} the game "
+                  f"has room for", file=sys.stderr)
     w.write_bytes(struct.pack("<i", round(state["fxPlayerPosX"] * FIXED_POINT_SHIFT)))
     w.write_bytes(struct.pack("<i", round(state["fxPlayerPosY"] * FIXED_POINT_SHIFT)))
     w.write_bytes(bytes([state["bPlayerFacing"]]))
-    for key, _, _ in ROOM_ACTOR_TABLES:
+    for key, _, _, _ in ROOM_ACTOR_TABLES:
         w.write_bytes(bytes([len(state[key])]))
     w.write_bytes(bytes([state["bSwitchState"]]))
-    for key, rec_size, spec in ROOM_ACTOR_TABLES:
+    for key, rec_size, spec, _ in ROOM_ACTOR_TABLES:
         for entry in state[key]:
             w.write_bytes(encode_record(entry, spec, rec_size))
 
 
 # --------------------------------------------------------------------------
-# Save slot: Owl Care Kit (0x0300321C-0x0300322D)
+# Save slot: Owl Care Kit (g_saveStateBlock.owlCareKit, OwlCareKitState)
 #
-# A persistent virtual-pet-owl feature, reached from the pause menu's
-# Connectivity submenu ("Trade Cards" / "Owl Care Kit"). PROVEN, confirmed
-# end-to-end: the pause menu's "Connectivity" entry reaches a generic
-# list-menu mode (0x16) whose 2-entry list is one of three ROM variants
-# selected by g_bHeaderFlags bit 0x01 (flOwlCareKitUnlocked) -- gates
-# whether Owl Care Kit is unlocked at all, delivered via a GameCube link
-# event per the dialog string "Owl Care Kit received!". "Owl Care Kit"
-# routes to game mode 0x42 (owl name/type picker) the first time, or
-# straight to mode 0x29 (the care screen) afterward -- gated by the same
-# bit this struct's own flVisited flag tracks, confirmed via disassembly
-# of the mode-0x29 init (memsets state, checks flVisited, only
-# (re)initializes careCounters to 125 each on a still-clear flag).
+# A virtual pet owl, reached from the pause menu's Connectivity submenu once
+# the GameCube link has unlocked it (flOwlCareKitUnlocked, "Owl Care Kit
+# received!"). The first visit goes to OwlNameSelect, later ones straight
+# to the care screen (OwlCareMinigame).
 #
-# Field layout in the save stream: 4 nibbles (each nibble is the low
-# nibble of one RAM byte at 0x0300321C-0x0300321F), then 3 bytes, then 6
-# bytes, then 2 bytes, then 2 bytes -- matching SerializeOwlCareKit's pack-call
-# sequence exactly.
+# Stream layout (SerializeOwlCareKit): 4 nibbles (the low nibbles of bFlags,
+# bNameIndex, bTypeIndex, bUnknown3), then 3, 6, 2 and 2 bytes.
 # --------------------------------------------------------------------------
 
 OWL_CARE_ACTIONS = ["Feed", "Clean", "Pet", "Groom", "Exercise", "Teach"]
@@ -885,55 +867,40 @@ def decode_owl_care_kit(r: SaveReader) -> dict:
     elapsed_ticks = struct.unpack("<H", r.read_bytes(2))[0]
     mail_timer = struct.unpack("<H", r.read_bytes(2))[0]
     result = {
-        # Set the first time the player confirms Owl Care Kit from the
-        # Connectivity menu; while clear, the mode-0x29 init (re)resets
-        # careCounters to 125 each instead of keeping their existing
-        # values -- PROVEN via InitializeOwlCareKitScreen/ResetOwlCareKit.
+        # OwlCareKitFlagVisited: while clear, InitializeOwlCareKitScreen
+        # resets careCounters to 125 each (ResetOwlCareKit).
         "flVisited": bool(flags_nibble & 1),
-        # Remaining 3 bits of the flags nibble -- no confirmed meaning.
-        "bFlagsUnknown": flags_nibble >> 1,
-        # 0-13, into the 14-name owl-name list (Fiddletick..Dumpy) --
-        # PROVEN via the exact dialog text at GetDialogText base 0x676.
+        # OwlCareKitFlagMailOut: the owl is away with the mail.
+        "flMailOut": bool(flags_nibble & 2),
+        # Remaining 2 bits of the flags nibble -- no confirmed meaning.
+        "bFlagsUnknown": flags_nibble >> 2,
+        # 0-13: text 0x676 + index ("Fiddletick" .. "Dumpy").
         "bNameIndex": name_index,
-        # 0-2, into the 3-entry owl-type list (White/Brown/Gray Owl) --
-        # PROVEN via dialog text at GetDialogText base 0x673 (prompted by
-        # "Select Owl Type").
+        # 0-2: text 0x673 + index ("White Owl", "Brown Owl", "Gray Owl").
         "bTypeIndex": type_index,
-        # No evidence at all -- not even known to be meaningful.
+        # Never written by the game; sent to the GameCube with the owl.
         "nUnknown3": unk3,
-        # The 3 on-screen status bars, labeled "Mind, Body and Spirit" in
-        # the in-game help text (dialog string 0x915) and computed from
-        # careCounters below via a weighted average (UpdateOwlStatMeters).
-        # STRUCTURAL MATCH: the 3-meter identity and the derivation from
-        # careCounters are proven; this index order (Mind/Body/Spirit)
-        # matches the help text's listing order but isn't independently
-        # confirmed per-index.
+        # The status bars, "Mind, Body and Spirit" in the help text (this
+        # index order is not confirmed); UpdateOwlStatMeters moves them
+        # toward weighted means of careCounters.
         "abStatMeters": stat_meters,
-        # One counter per care action, PROVEN index order via the menu
-        # drawer and the switch dispatch both indexing off the same
-        # cursor variable (DAT_03003F14): case 0=Feed .. 5=Teach, each
-        # calling ProcessOwlCareAction(index) to lower that action's counter.
-        # Regrows toward 0xFA (250) over time when neglected.
+        # One counter per care action, in the menu's order (each lowered by
+        # ProcessOwlCareAction(index)); they regrow toward 250 when neglected.
         "careCounters": dict(zip(
             (f"b{name}Counter" for name in OWL_CARE_ACTIONS), care_counters)),
-        # Elapsed-tick counter driving careCounters' regrowth -- advances
-        # once per care-screen tick while flVisited is set and
-        # wMailTimer is 0 (ProcessOwlCareKitTick).
+        # Drives careCounters' regrowth; advances once per care-screen tick
+        # while flVisited is set and wMailTimer is 0 (ProcessOwlCareKitTick).
         "wElapsedTicks": elapsed_ticks,
-        # The "Mail" action's (case 6, dialog string 0x66F) flight
-        # countdown: set to 600 (~10s at 60fps) when the owl is sent off,
-        # explicitly decremented once per tick, gates careCounters'
-        # regrowth while nonzero. Matches the in-game help text ("sends
-        # your owl off to fetch an item... check back in a few
-        # minutes") and the mail-return item grant (ProcessOwlMailReward,
-        # GetDialogText 0xAC1 "The owl mail has arrived!").
+        # The "Mail" action's countdown: 600 when the owl is sent off,
+        # decremented once per tick; ProcessOwlMailReward grants the item
+        # ("The owl mail has arrived!").
         "wMailTimer": mail_timer,
     }
     return result
 
 
 def encode_owl_care_kit(w: SaveWriter, o: dict):
-    flags_nibble = (1 if o["flVisited"] else 0) | ((o["bFlagsUnknown"] & 7) << 1)
+    flags_nibble = (1 if o["flVisited"] else 0) | (2 if o["flMailOut"] else 0) | ((o["bFlagsUnknown"] & 3) << 2)
     w.write_nibbles([flags_nibble, o["bNameIndex"], o["bTypeIndex"], o["nUnknown3"]])
     w.write_bytes(bytes(o["abStatMeters"]))
     care_counters = o["careCounters"]
@@ -943,7 +910,7 @@ def encode_owl_care_kit(w: SaveWriter, o: dict):
 
 
 # --------------------------------------------------------------------------
-# Save slot: full field sequence (SerializeGameStateToSaveBuffer, 0x08021498)
+# Save slot: full field sequence (SerializeGameStateToSaveBuffer)
 # --------------------------------------------------------------------------
 
 def decode_slot_stream(payload: bytes) -> dict:
@@ -952,24 +919,20 @@ def decode_slot_stream(payload: bytes) -> dict:
 
     slot["dwMoney"] = struct.unpack("<I", r.read_bytes(4))[0]
     # Playtime, one byte each: hours, minutes, seconds, frames. Incremented
-    # by 1 frame per call to ProcessPlaytimeTick (0x0802165C, called
-    # unconditionally every frame from main), capped once Hours reaches 99
+    # by 1 frame per call to ProcessPlaytimeTick (called every frame from
+    # main), capped once Hours reaches 99
     # rather than rolling over. The 4th byte stays 0-28 across 26 real
     # samples -- well under a 50/60fps rollover, consistent with this.
     slot["bPlaytimeHours"] = r.read_bytes(1)[0]
     slot["bPlaytimeMinutes"] = r.read_bytes(1)[0]
     slot["bPlaytimeSeconds"] = r.read_bytes(1)[0]
     slot["bPlaytimeFrames"] = r.read_bytes(1)[0]
-    # Current room/map ID. Single write site is InitializeRoomMode
-    # (0x08029848, game mode 8's entry point, storing its incoming
-    # room-id parameter) -- every room transition funnels through
-    # pushing game mode 8 with a room-id parameter. Reset to 0x2A (the
-    # starting room) on new-game creation.
+    # RoomId. InitializeOverworld stores the Overworld mode's room
+    # argument; a new game resets it to RoomLeakyCauldronMain.
     slot["bCurrentRoomId"] = r.read_bytes(1)[0]
     slot.update(decode_save_flags(r.read_bytes(1)[0]))
-    # Index into the main-menu current-objective string table (Ghidra:
-    # g_bMainMenuObjectiveIndex, 0x030027b9) -- the same live byte as
-    # abQuestEventState[25] below, serialized twice.
+    # g_abQuestEventState[QUEST_OBJECTIVE_INDEX], serialized twice: here
+    # for the save menu, and again in abQuestEventState below.
     slot["bMainMenuObjectiveIndex"] = r.read_bytes(1)[0]
     # The party leader's level + 1, used only for the save menu's slot
     # preview: the game loads it into partyStats[0].bLevel (minus 1), which
@@ -994,8 +957,7 @@ def decode_slot_stream(payload: bytes) -> dict:
     # 256-bit bitset, one bit per chest flag id, set when that chest is
     # opened. Persists across room transitions, unlike roomActorState above.
     slot["abOpenedChestFlags"] = r.read_bytes(32).hex()
-    # Ghidra: g_abQuestEventState (0x030027a0). Index 25 = bMainMenuObjectiveIndex
-    # above. Persistent global state, not per-room (confirmed unchanged
+    # g_abQuestEventState. Index 25 = bMainMenuObjectiveIndex above. Persistent global state, not per-room (confirmed unchanged
     # across a real room-to-room crossing). Indices ~224-254 are
     # flags/counters that reset to 0 together at a specific story
     # checkpoint.
