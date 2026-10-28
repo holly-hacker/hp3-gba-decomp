@@ -188,6 +188,8 @@ class SaveReader:
             self.pos += 1
             self.bitpos = 0
         out = self.data[self.pos:self.pos + n]
+        if len(out) != n:
+            raise ValueError(f"read of {n} bytes at {self.pos} runs past the slot's end")
         self.pos += n
         return bytes(out)
 
@@ -1070,7 +1072,13 @@ def parse_slot(raw: bytes, slot_index: int) -> dict:
             "wChecksum": struct.unpack_from("<H", data, len(data) - 2)[0],
             "abRaw": data.hex(),
         }
-    return decode_slot_stream(data)
+    try:
+        return decode_slot_stream(data)
+    except ValueError:
+        # A checksum-valid slot whose stream runs past the slot's end (e.g.
+        # room-actor counts larger than the slot can hold) is not one the
+        # game wrote; keep it raw.
+        return {"abRaw": data.hex()}
 
 
 # --------------------------------------------------------------------------
