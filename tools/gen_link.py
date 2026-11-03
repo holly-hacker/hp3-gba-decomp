@@ -27,7 +27,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from buildcache import write_if_changed  # noqa: E402
 from c.compile_c import agbcc_prefix  # noqa: E402
 from manifest import (  # noqa: E402
-    RODATA_SUFFIX,
     SPLIT_SECTION_DIRECTIVES,
     object_path,
     parse_manifest,
@@ -74,15 +73,17 @@ def main() -> None:
     write_ram_symbols(ver)
 
     # placements, in link order: (output section, object, input section,
-    # region name). A row that places one section of an object another row names takes
-    # that section. Any other row takes its object's .text, and its .rodata
-    # too unless a c-rodata row places that: an asset's data is all .rodata.
+    # region name). A row that places one section of an object another row
+    # names takes that section, and a C object's own row its .text. Any
+    # other row takes its object's .text and .rodata: an asset's data is
+    # all .rodata.
     placements = []
-    for i, (_, name) in enumerate(regions):
+    for i, (source, name) in enumerate(regions):
         section = next((s for s in SPLIT_SECTION_DIRECTIVES.values()
                         if name.endswith(s) and name[:-len(s)] in names), None)
         if section is None:
-            section = ".text" if name + RODATA_SUFFIX in names else ".text .rodata"
+            c_object = os.path.dirname(source) == f"build/{ver}/c"
+            section = ".text" if c_object else ".text .rodata"
         placements.append((f".rgn{i:03d}", objects[name], section, name))
 
     with open(f"build/{ver}/link.ld", "w") as f:

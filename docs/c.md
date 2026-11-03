@@ -87,11 +87,12 @@ occupies 4, and getting this wrong shifts every subsequent offset.
 **RAM variables are `extern`, never definitions.** `int g_foo;` becomes a
 common symbol the linker places wherever it likes, but RAM addresses are
 fixed by the ROM. Declare it `extern` in C and give it an address in
-`ram_symbols.<ver>.inc`. `compile_c.py` rejects `.data` (unless a
-`c-data` row places it) and `.comm` rather than letting them vanish.
+`ram_symbols.<ver>.inc`.
 
-**`const` data is `.rodata`.** `compile_c.py` rejects `.rodata` that no
-`c-rodata` row places, as it does `.data`.
+**The link fails on unplaced data.** A C object's row places only its
+`.text`. Its `.rodata` (`const` data) needs a `c-rodata` row, its `.data`
+a `c-data` row; these and any `.comm`/`.bss` otherwise fail the link with
+"an object has a section that no regions.<ver>.txt row places".
 
 Shared constants and types belong in `include/`, so a wrong row count or
 struct layout is a compile error rather than a silently shifted table.

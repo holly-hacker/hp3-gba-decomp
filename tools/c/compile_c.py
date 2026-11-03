@@ -114,27 +114,6 @@ def section_names(asm: str) -> list[str]:
     return list(dict.fromkeys(a or f".{b.lower()}" for a, b in names))
 
 
-def check_sections(asm: str, src: str, keep_rodata: bool = False,
-                   keep_data: bool = False) -> None:
-    """Rejects sections that no manifest row places.
-
-    keep_rodata says a c-rodata row places the object's .rodata, and
-    keep_data that a c-data row places its .data. .comm/.lcomm never have a
-    home: they want writable RAM, whose addresses are fixed by the ROM, so
-    RAM variables belong in ram_symbols.<ver>.inc and are `extern` in C.
-    """
-    if not keep_rodata and re.search(r"^\s*\.section\s+\.rodata\b", asm, re.M):
-        sys.exit(f"{src}: emits .rodata that no c-rodata row places")
-    if not keep_data and re.search(r"^\s*\.data\b", asm, re.M):
-        sys.exit(f"{src}: emits .data that no c-data row places. A RAM "
-                 f"variable is extern in C, with its address in "
-                 f"ram_symbols.<ver>.inc.")
-    if re.search(r"^\s*\.l?comm\b", asm, re.M):
-        sys.exit(f"{src}: emits .comm/.lcomm (an uninitialised global). RAM "
-                 f"lives at fixed addresses -- declare it extern in C and give "
-                 f"it an address in ram_symbols.<ver>.inc.")
-
-
 SECTION_FLAGS = re.compile(r'^(\s*\.section\s+([.\w]+)),"(\w*)"(?:,%\w+)?\s*$', re.M)
 
 
@@ -157,8 +136,7 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
                       directive: str) -> None:
     """Compiles (or, for a .S, preprocesses) a third-party source.
 
-    Its sections stay apart for the manifest to place, so its read-only
-    data is not folded into .text. Each section ends padded to 4 bytes
+    Its sections stay apart for the manifest to place. Each section ends padded to 4 bytes
     with the assembler's fill (nop in code, zeros elsewhere), as it was
     between the original objects.
     """
@@ -191,7 +169,6 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
         # only the end of a section got nops. Today's fills both with nops.
         asm = re.sub(r"^(\s*\.align\s+\d+)\s*$", r"\1, 0", asm, flags=re.M)
         asm = merge_section_flags(asm)
-    check_sections(asm, src, keep_rodata=True)
     # The assembler ignores everything after .END, padding included.
     end = re.search(r"^\s*\.end\b", asm, re.M | re.I)
     if end:
@@ -202,46 +179,40 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
 
 
 def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
-                o1: bool = False, keep_rodata: bool = False,
-                keep_data: bool = False, arm: bool = False) -> None:
+                o1: bool = False, arm: bool = False) -> None:
     cc1, cppflags, cflags = profile(src, prefix, o1, ver, arm)
     pre = subprocess.run(["cpp", *cppflags, src],
                          capture_output=True, text=True)
     if pre.returncode:
         sys.exit(f"cpp failed on {src}:\n{pre.stderr}")
     key = buildcache.digest(tools, os.path.realpath(cc1), cflags, src,
-                            keep_rodata, keep_data, pre.stdout)
+                            pre.stdout)
     asm = buildcache.load("c", key)
     if asm is None:
-        asm = compile_preprocessed(src, cc1, cflags, pre.stdout, keep_rodata,
-                                   keep_data)
+        asm = compile_preprocessed(src, cc1, cflags, pre.stdout)
         buildcache.store("c", key, asm)
     buildcache.write_if_changed(out, asm)
 
 
-def compile_preprocessed(src: str, cc1: str, cflags: list[str], pre: str,
-                         keep_rodata: bool, keep_data: bool = False) -> bytes:
+def compile_preprocessed(src: str, cc1: str, cflags: list[str],
+                         pre: str) -> bytes:
     cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
                         input=pre, capture_output=True, text=True)
     if cc.returncode:
         sys.exit(f"{os.path.basename(cc1)} failed on {src}:\n{cc.stderr}")
-    return wrap_asm(cc.stdout, src, keep_rodata, keep_data).encode()
+    return wrap_asm(cc.stdout).encode()
 
 
-def wrap_asm(asm: str, src: str, keep_rodata: bool = False,
-             keep_data: bool = False) -> str:
+def wrap_asm(asm: str) -> str:
     """Makes compiler output assemble as a region's contents.
 
-    The trailing .align pads to the 4-byte boundary with explicit zeros,
-    which is what the ROM has. A .rodata or .data that a row of its own
-    places starts word-aligned, as every object did.
+    .rodata and .data start word-aligned, as every object's did. The
+    trailing .align pads to the 4-byte boundary with explicit zeros, which
+    is what the ROM has.
     """
-    split = ((["\t.section\t.rodata\n"] if keep_rodata else [])
-             + (["\t.data\n"] if keep_data else []))
-    check_sections(asm, src, keep_rodata, keep_data)
-    return ("".join(f"{s}\t.align\t2, 0\n" for s in split)
-            + ("\t.text\n" if split else "")
-            + asm + "\t.align\t2, 0\n")
+    return ("\t.section\t.rodata\n\t.align\t2, 0\n"
+            "\t.data\n\t.align\t2, 0\n"
+            "\t.text\n" + asm + "\t.align\t2, 0\n")
 
 
 def main() -> None:
@@ -256,8 +227,6 @@ def main() -> None:
         if line
     ]
     rows = [parts for parts in lines if parts[0] in C_FILE_DIRECTIVES]
-    separate_rodata = {parts[1] for parts in lines if parts[0] == "c-rodata"}
-    separate_data = {parts[1] for parts in lines if parts[0] == "c-data"}
     if not rows:
         print(f"no c-file rows in regions.{ver}.txt -- nothing to compile")
         return
@@ -272,8 +241,6 @@ def main() -> None:
             return
         compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver, tools,
                     o1=directive == "c-file-O1",
-                    keep_rodata=name in separate_rodata,
-                    keep_data=name in separate_data,
                     arm=directive == "c-file-arm")
 
     with ThreadPoolExecutor() as pool:
