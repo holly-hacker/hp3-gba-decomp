@@ -205,9 +205,7 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
         asm = asm[:end.start()]
     padding = "".join(f"\t.section\t{name}\n\t.align\t2\n"
                       for name in section_names(asm) if name != ".bss")
-    wrapped = (".syntax divided\n" + (".arm\n" if arm else ".thumb\n") + asm
-               + "\n" + padding + ".text\n.syntax unified\n")
-    buildcache.write_if_changed(out, wrapped.encode())
+    buildcache.write_if_changed(out, (asm + "\n" + padding).encode())
 
 
 def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
@@ -223,38 +221,34 @@ def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
     asm = buildcache.load("c", key)
     if asm is None:
         asm = compile_preprocessed(src, cc1, cflags, pre.stdout, keep_rodata,
-                                   keep_data, arm)
+                                   keep_data)
         buildcache.store("c", key, asm)
     buildcache.write_if_changed(out, asm)
 
 
 def compile_preprocessed(src: str, cc1: str, cflags: list[str], pre: str,
-                         keep_rodata: bool, keep_data: bool = False,
-                         arm: bool = False) -> bytes:
+                         keep_rodata: bool, keep_data: bool = False) -> bytes:
     cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
                         input=pre, capture_output=True, text=True)
     if cc.returncode:
         sys.exit(f"{os.path.basename(cc1)} failed on {src}:\n{cc.stderr}")
-    return wrap_asm(cc.stdout, src, keep_rodata, keep_data, arm).encode()
+    return wrap_asm(cc.stdout, src, keep_rodata, keep_data).encode()
 
 
 def wrap_asm(asm: str, src: str, keep_rodata: bool = False,
-             keep_data: bool = False, arm: bool = False) -> str:
+             keep_data: bool = False) -> str:
     """Makes compiler output assemble as a region's contents.
 
-    The region wrapper is .syntax unified; agbcc emits divided syntax.
-    agbcc_arm doesn't state its instruction set, so .arm does.
     The trailing .align pads to the 4-byte boundary with explicit zeros,
     which is what the ROM has. A .rodata or .data that a row of its own
     places starts word-aligned, as every object did.
     """
     split = ((["\t.section\t.rodata\n"] if keep_rodata else [])
              + (["\t.data\n"] if keep_data else []))
-    return (".syntax divided\n" + (".arm\n" if arm else "")
-            + "".join(f"{s}\t.align\t2, 0\n" for s in split)
+    return ("".join(f"{s}\t.align\t2, 0\n" for s in split)
             + ("\t.text\n" if split else "")
             + place_in_text(asm, src, keep_rodata, keep_data)
-            + "\t.align\t2, 0\n" + ".syntax unified\n")
+            + "\t.align\t2, 0\n")
 
 
 def main() -> None:
