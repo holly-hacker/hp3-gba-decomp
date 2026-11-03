@@ -14,7 +14,7 @@ The cpp output is cheap to produce and determines everything else, so it
 keys the build cache (tools/buildcache.py): unchanged sources and headers
 reuse their assembly without running agbcc.
 
-Usage: compile_c.py <ver>   (before `gen-link`)
+Usage: compile_c.py <ver>
 """
 import os
 import re

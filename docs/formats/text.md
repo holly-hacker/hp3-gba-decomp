@@ -5,7 +5,7 @@ the tree construction that reproduces the shipped trees are documented in
 `tools/text/text_codec.py`. Its `CHARMAP` holds the glyph codes. US/EU has
 one blob for each of eight languages, and JP has a single Japanese blob.
 `extract-text` writes them to the ignored `data/text/<lang>.json`, and
-`pack-text` rebuilds them byte for byte.
+`tools/text/pack_text.py` rebuilds them byte for byte.
 
 ## Charmap
 

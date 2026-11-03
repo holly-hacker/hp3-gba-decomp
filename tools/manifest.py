@@ -19,8 +19,7 @@ Labels = dict[str, str]
 
 # krawall-module/krawall-samples rows name their JSON/directory source
 # (data/audio/...), not a directly includable file -- the
-# actual assembly gets packed to this fixed build/ path by pack_krawall.py
-# (see the `pack-krawall` recipe, which must run before `gen-link`).
+# actual assembly gets packed to this fixed build/ path by pack_krawall.py.
 KRAWALL_DIRECTIVES = {"krawall-module": "modules", "krawall-samples": "samples"}
 
 # dialog-text/dialog-text-table rows: same idea, but pack_text.py names
@@ -35,9 +34,8 @@ DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 GRAPHICS_DIRECTIVE = "graphics"
 
 # c-file, c-file-O1 and c-file-arm rows name a .c under src/, compiled to
-# assembly by tools/c/compile_c.py (the `compile-c` recipe, which must run
-# before `gen-link`) with the compiler the ROM was built with -- see
-# docs/compiler.md.
+# assembly by tools/c/compile_c.py with the compiler the ROM was built
+# with -- see docs/compiler.md.
 #
 # c-file-gcc3 and c-file-gcc3-arm rows name a .c under 3rd_party/,
 # compiled the same way with the GCC 3.0.2 Krawall was built with, and

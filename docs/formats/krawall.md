@@ -33,7 +33,7 @@ The original `krawerter` output also contains:
 ## Build source
 
 `extract-krawall` writes the ignored `data/audio/` from the US ROM, and
-`pack-krawall` turns it into assembly for each version's `krawall-module`
+`tools/krawall/pack_krawall.py` turns it into assembly for each version's `krawall-module`
 and `krawall-samples` rows. The fields that are derived or always zero
 (`songIndex`, the header padding, the overrun buffers) are not stored.
 

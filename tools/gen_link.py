@@ -18,6 +18,7 @@ tools/compare.py names the region where the build first differs.
 
 Usage: gen_link.py <ver>
 """
+import io
 import os
 import re
 import subprocess
@@ -86,7 +87,7 @@ def main() -> None:
             section = ".text" if c_object else ".text .rodata"
         placements.append((f".rgn{i:03d}", objects[name], section, name))
 
-    with open(f"build/{ver}/link.ld", "w") as f:
+    with io.StringIO() as f:
         f.write(f"INPUT({object_path(ver, ram_symbols_source(ver))})\n")
         f.write("SECTIONS\n{\n")
         # The game's own RAM variables are fixed addresses
@@ -137,6 +138,7 @@ def main() -> None:
         f.write(f'    ASSERT(SIZEOF(.unplaced) == 0, "an object has a section '
                 f'that no regions.{ver}.txt row places")\n')
         f.write("}\n")
+        write_if_changed(f"build/{ver}/link.ld", f.getvalue())
 
     print(f"{ver}: {len(regions)} regions -> {len(placements)} placed sections")
 

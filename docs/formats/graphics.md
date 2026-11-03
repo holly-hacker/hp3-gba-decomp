@@ -95,7 +95,7 @@ belong to exactly one group. A subdirectory with its own `graphics.json` is
 a nested feature: `menus/us` and `menus/jp` hold the groups only one
 version has, whose files would otherwise collide.
 
-`just pack <ver>` (`tools/graphics/pack_graphics.py`, kinds in
+The build's `tools/graphics/pack_graphics.py <ver>` (kinds in
 `tools/graphics/kinds/`) builds every item through the build cache and
 writes `build/<ver>/graphics/<Group>.bin` and `.s`.
 `include/gen/graphics/<feature>.h` declares the

@@ -12,17 +12,10 @@ setup:
     sha1sum -c rom.us.sha1
     sha1sum -c rom.jp.sha1
 
-# Extracts the lib-object members and writes a linker script placing
-# every region in manifest order.
-# Generate the linker script from regions.<ver>.txt.
-gen-link ver="us": (pack ver)
-    mkdir -p build/{{ver}}
-    python3 tools/gen_link.py {{ver}}
-
 # Research/debugging aid only -- NOT build input (the build gets its
-# Krawall assembly from `pack-krawall`). Dumps each Krawall region as a
-# raw asm/krawall/<ver>/*.bin file straight from the baserom; useful for
-# diffing against pack-krawall's output while touching
+# Krawall assembly from tools/krawall/pack_krawall.py). Dumps each Krawall
+# region as a raw asm/krawall/<ver>/*.bin file straight from the baserom;
+# useful for diffing against pack_krawall.py's output while touching
 # tools/krawall/krawall_codec.py. See docs/formats/krawall.md.
 # Dump the raw Krawall regions as .bin files (not build input).
 dump-krawall ver="us":
@@ -51,13 +44,6 @@ dump-room-graphics ver="us":
 extract-krawall:
     python3 tools/krawall/extract_krawall.py
 
-# Gitignored (build/), like everything else pack_krawall.py writes. Reads
-# local data/audio/ (run `extract-krawall` first if missing -- version-
-# independent) and this version's krawall-module/krawall-samples rows.
-# Pack data/audio/ into this version's Krawall assembly.
-pack-krawall ver="us":
-    python3 tools/krawall/pack_krawall.py {{ver}}
-
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/text/ is gitignored (same footing as the baserom, see
 # AGENTS.md hard rule 2) and meant to be user-editable for future modding,
@@ -65,13 +51,6 @@ pack-krawall ver="us":
 # Bootstrap data/text/ locally from baserom.us.gba and baserom.jp.gba.
 extract-text:
     python3 tools/text/extract_text.py
-
-# Gitignored (build/), like everything else pack_text.py writes. Reads
-# local data/text/ (run `extract-text` first if missing) and this
-# version's dialog-text/dialog-text-table rows.
-# Pack data/text/ into this version's dialog-text assembly.
-pack-text ver="us":
-    python3 tools/text/pack_text.py {{ver}}
 
 # One-time per clone (see `extract-all`), NOT run automatically by
 # `build` -- data/graphics/ is gitignored (same footing as the baserom,
@@ -81,13 +60,6 @@ pack-text ver="us":
 extract-graphics *runs:
     python3 tools/graphics/extract_graphics.py {{runs}}
 
-# Builds each graphics row from data/graphics/ to build/<ver>/graphics/ and
-# writes the feature headers under include/gen/graphics/. Encoded results are
-# cached in build/cache/ by content (tools/buildcache.py).
-# Pack every graphics run for this version.
-pack ver="us":
-    python3 tools/graphics/pack_graphics.py {{ver}}
-
 # Run this once per clone, after `setup`, before the first `build` --
 # every data/ subdirectory is gitignored (same footing as the baserom,
 # AGENTS.md hard rule 2), so a fresh clone has none of it and the pack
@@ -96,26 +68,31 @@ pack ver="us":
 extract-all: extract-krawall extract-text extract-graphics
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
-# Runs agbcc, the compiler the ROM was built with -- see docs/compiler.md.
-# Compile the c-file rows of regions.<ver>.txt to assembly.
-compile-c ver="us": (pack ver)
-    python3 tools/c/compile_c.py {{ver}}
-
 # Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def
 # only -- not a build input). Re-run after a flake update, since the agbcc
 # include path lives in the Nix store.
 gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 
+# Writes build/build.ninja from the manifests. Ninja reruns it when they
+# change, so this is only needed once per clone.
+# Write the Ninja build file.
+configure:
+    python3 tools/configure.py
+
 # Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
 # --no-warn-rwx-segments. --emit-relocs keeps the relocations in rom.elf for
 # tools/compare.py. link.ld names every object it links. The donor ROM is
-# zero-filled to 16 MiB.
-# Assemble every region and link them in manifest order.
-build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
-    python3 tools/assemble.py {{ver}}
-    arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T build/{{ver}}/link.ld -o build/{{ver}}/rom.elf
-    arm-none-eabi-objcopy -O binary --pad-to 0x9000000 --gap-fill 0x00 build/{{ver}}/rom.elf build/{{ver}}/rom.gba
+# zero-filled to 16 MiB. The rules are in tools/configure.py.
+# Pack, compile, assemble and link this version's ROM.
+build ver="us":
+    test -f build/build.ninja || python3 tools/configure.py
+    ninja -f build/build.ninja build/{{ver}}/rom.gba
+
+# Build both versions' ROMs at once.
+build-all:
+    test -f build/build.ninja || python3 tools/configure.py
+    ninja -f build/build.ninja
 
 # For matching work: `just compare` names the first differing region, this
 # says which instructions differ.
@@ -129,7 +106,9 @@ compare ver="us": (build ver)
 
 # Verifies donor ROMs, linked builds for both versions and RAM symbol ordering.
 # Full sanity sweep: run everything, confirm it all still matches. Run before committing.
-check-all: setup (compare "us") (compare "jp") check-sorted
+check-all: setup build-all check-sorted
+    python3 tools/compare.py us
+    python3 tools/compare.py jp
     @echo "us and jp: linked build matches the donor ROM."
 
 # Confirm ram_symbols.<ver>.inc stays sorted by address.

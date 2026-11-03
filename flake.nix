@@ -131,6 +131,7 @@
             pkgs.gcc-arm-embedded
             pythonEnv
             pkgs.just
+            pkgs.ninja
             pkgs.mgba
             unkrawerter
             agbcc

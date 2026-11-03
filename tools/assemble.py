@@ -15,7 +15,7 @@ listed files, which also changes the second key, so a hit is always the
 object the assembler would produce now. Objects do not record the path of
 their source; the cache never shows in the linker script or the ELF.
 
-Usage: assemble.py <ver>   (after `gen-link`)
+Usage: assemble.py <ver>   (after gen_link.py)
 """
 import json
 import os

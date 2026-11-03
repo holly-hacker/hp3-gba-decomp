@@ -86,7 +86,9 @@ def store(namespace: str, key: str, data: bytes) -> None:
 
 
 def write_if_changed(path, data: bytes | str) -> None:
-    """Write a file unless it already holds exactly this content."""
+    """Write a file unless it already holds exactly this content. The file
+    is replaced whole, so a reader never sees it half-written (both versions
+    build at once and write the same headers)."""
     path = Path(path)
     if isinstance(data, str):
         data = data.encode()
@@ -95,7 +97,11 @@ def write_if_changed(path, data: bytes | str) -> None:
             return
     except FileNotFoundError:
         path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(data)
+    fd, tmp = tempfile.mkstemp(dir=path.parent)
+    with os.fdopen(fd, "wb") as f:
+        f.write(data)
+    os.chmod(tmp, 0o644)
+    os.replace(tmp, path)
 
 
 def _call(fn, args):
