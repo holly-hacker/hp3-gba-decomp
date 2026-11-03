@@ -70,40 +70,15 @@ def exported_labels(srcfile: str) -> list[str]:
         return re.findall(r"^([A-Za-z_][A-Za-z0-9_]*):", f.read(), re.M)
 
 
-def write_region(objdir: str, ver: str, region,
-                 split: dict[str, str] | None = None) -> None:
-    """Writes the wrapper .s for one region, named after it.
-
-    split maps each section of this C object that a row of its own places
-    (.rodata for c-rodata, .data for c-data) to that row's region, whose
-    markers bracket the section.
-    """
-    split = split or {}
+def write_region(objdir: str, ver: str, region) -> None:
+    """Writes the wrapper .s for one region, named after it."""
     srcfile, name = region
     out = prelude(ver)
-    # These bracket the region's content in the linked ELF.
-    for section, region_name in split.items():
-        out += [f".section {section}", f"__rgn_{region_name}_beg:", ".text"]
-    out.append(f"__rgn_{name}_beg:")
     if srcfile.endswith(".bin"):
         out += [f".global {name}", f"{name}:", f'.incbin "{srcfile}"']
     else:
         out += [f".global {label}" for label in exported_labels(srcfile)]
         out += [f'.include "{srcfile}"']
-    for section, region_name in split.items():
-        out += [f".section {section}", f"__rgn_{region_name}_end:", ".text"]
-    out.append(f"__rgn_{name}_end:")
-    write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
-
-
-def write_sectioned(objdir: str, ver: str, region) -> None:
-    """Writes the wrapper .s for a sectioned object (c-file-gcc3 and
-    friends). Its sections go to several places, some of them run from
-    RAM, so link.ld brackets each one instead of the wrapper."""
-    srcfile, name = region
-    out = prelude(ver)
-    out += [f".global {label}" for label in exported_labels(srcfile)]
-    out += [f'.include "{srcfile}"']
     write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
 
 
@@ -138,7 +113,7 @@ def main() -> None:
         if name in sectioned:
             stem, section, vma = sectioned[name]
             if stem == name:
-                write_sectioned(objdir, ver, region)
+                write_region(objdir, ver, region)
             placements.append((f".rgn{i:03d}", stem, section, name, vma))
             continue
         suffix = next((s for s in SPLIT_SECTION_DIRECTIVES.values()
@@ -151,9 +126,7 @@ def main() -> None:
             extract_member(objdir, archive, member, name)
             placements.append((f".rgn{i:03d}", name, ".text", name, None))
             continue
-        split = {s: name + s for s in SPLIT_SECTION_DIRECTIVES.values()
-                 if name + s in names}
-        write_region(objdir, ver, region, split)
+        write_region(objdir, ver, region)
         placements.append((f".rgn{i:03d}", name, ".text", name, None))
 
     write_ram_symbols(objdir, ver)
@@ -179,12 +152,10 @@ def main() -> None:
         f.write(f"    . = {hex(BASE_ADDR)};\n")
         prev, prev_runs_from_ram = None, False
         for section, stem, input_section, region_name, vma in placements:
-            contents = f"{objdir}/{stem}.o({input_section})"
-            if stem in lib_objects or region_name in sectioned:
-                # Neither a library object nor a sectioned one has a
-                # wrapper that brackets the content.
-                contents = (f'"__rgn_{region_name}_beg" = .; {contents} '
-                            f'"__rgn_{region_name}_end" = .;')
+            # The markers bracket the region's content in the linked ELF.
+            contents = (f'"__rgn_{region_name}_beg" = .; '
+                        f'{objdir}/{stem}.o({input_section}) '
+                        f'"__rgn_{region_name}_end" = .;')
             # Each section is stored right after the previous one, at its
             # own alignment. A section that runs from RAM is linked at its
             # RAM address, which leaves the location counter there, so the
