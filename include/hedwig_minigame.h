@@ -159,9 +159,9 @@ extern const u8 g_abOwlCageDoorAnim2[4];
 extern const u8 g_abOwlCageDoorAnim3[12];
 
 // Care counter weights of each stat meter.
-extern const u8 g_aabOwlStatMeterWeights[3][6];
+extern u8 g_aabOwlStatMeterWeights[3][6];
 // The owl's palette, by OwlCareKitState.bTypeIndex.
-extern const void *const g_apOwlTypePalettes[3];
+extern const void *g_apOwlTypePalettes[3];
 
 extern void UpdateOwlCareKitPanel(void);
 extern void ProcessOwlMailReward(void);

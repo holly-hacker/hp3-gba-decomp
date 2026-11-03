@@ -1,7 +1,7 @@
 #include "lupin_potion_cutscene.h"
 #include "modes.h"
 
-const LupinPotionScriptCommand
+LupinPotionScriptCommand
     g_aLupinPotionCastScripts[LUPIN_POTION_CAST_COUNT][LUPIN_POTION_SCRIPT_LENGTH] = {
     {
         { LupinPotionOpMove, -0x8000, 0, 280 },

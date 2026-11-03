@@ -10,7 +10,7 @@
 
 // Standing frame of an eight-way NPC (kind 0x21) for each Direction8 facing,
 // in the rows of g_abNpcFacingFrames.
-const u8 g_abNpcFacingFrames8[12][8] = {
+u8 g_abNpcFacingFrames8[12][8] = {
     { 4, 3, 2, 1, 0, 1, 2, 3 },
     { 2, 2, 1, 1, 0, 0, 1, 1 },
     { 4, 3, 2, 1, 0, 1, 2, 3 },

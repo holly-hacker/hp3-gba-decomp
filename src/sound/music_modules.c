@@ -2,7 +2,7 @@
 #include "sound_modules.h"
 
 // Indexed by module id: PlayMusicModule loops one, PlayJingle plays one over the music.
-const Module *const g_apMusicModules[52] = {
+const Module *g_apMusicModules[52] = {
     &MusLeakyCauldron,  // 0
     &MusLeakyCauldronCellar,  // 1
     &MusBattle,  // 2

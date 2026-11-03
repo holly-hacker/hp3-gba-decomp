@@ -65,7 +65,7 @@ typedef struct DialogTextInfo {
 
 extern const u8 g_abPartySlotDialogPortraits[4];
 extern const ActorAssetRecord g_aDialogPortraits[135];
-extern const DialogTextInfo g_aDialogTextInfo[2767];
+extern DialogTextInfo g_aDialogTextInfo[2767];
 
 extern void InitializeDialog(void);
 extern void UpdateDialogBox(void);

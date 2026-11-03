@@ -88,9 +88,9 @@ extern const u8 g_aLupinPotionPose2WalkAnims[3][24];
 extern const u8 g_aLupinPotionPose2StandAnims[3][24];
 extern const u8 g_aLupinPotionWalkBackAnims[4][24];  // by facing, moving against it
 extern const u8 g_aLupinPotionEffectAnims[2][62];
-extern const LupinPotionScriptCommand
+extern LupinPotionScriptCommand
     g_aLupinPotionCastScripts[LUPIN_POTION_CAST_COUNT][LUPIN_POTION_SCRIPT_LENGTH];
-extern const LupinPotionScriptCommand g_aLupinPotionCameraScript[LUPIN_POTION_SCRIPT_LENGTH];
+extern LupinPotionScriptCommand g_aLupinPotionCameraScript[LUPIN_POTION_SCRIPT_LENGTH];
 
 // Scanline callback that shows the panel on BG2 (see nPanelOffset).
 extern void LupinPotionPanelScanlineCallback(u32 *pPayload0, u32 *pPayload1);

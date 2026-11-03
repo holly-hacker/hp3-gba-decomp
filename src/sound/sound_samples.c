@@ -2,7 +2,7 @@
 
 // One entry per sound played by PlaySoundById's sample mode: the Krawall sample and its
 // playback frequency (see kramSetFreq).
-const SoundSample g_aSoundSamples[164] = {
+SoundSample g_aSoundSamples[164] = {
     { 1, 0x4000 }, { 2, 0x4000 }, { 3, 0x4000 }, { 0, 0x2000 },
     { 8, 0x3000 }, { 20, 0x3000 }, { 25, 0x3000 }, { 146, 0x2000 },
     { 147, 0x2000 }, { 148, 0x2000 }, { 149, 0x2000 }, { 150, 0x2000 },

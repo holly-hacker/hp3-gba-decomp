@@ -1,6 +1,6 @@
 #include "dialog.h"
 
-const DialogTextInfo g_aDialogTextInfo[2767] = {
+DialogTextInfo g_aDialogTextInfo[2767] = {
     { 4, NULL },  // 0x0: "There you are, Harry!"
     { 0, NULL },  // 0x1: "Um... Hello..."
     { 4, NULL },  // 0x2: "I am Cornelius Fudge, Harry, the Minister for Magic."

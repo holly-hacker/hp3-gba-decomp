@@ -2,7 +2,7 @@
 
 // Indexed by sound id (PlaySoundById). Sample rows index g_aSoundSamples, variant rows index
 // g_aSoundVariants.
-const SoundConfigRow g_aSoundConfig[179] = {
+SoundConfigRow g_aSoundConfig[179] = {
     { SoundModeSample, 0 }, { SoundModeSample, 1 }, { SoundModeSample, 2 },
     { SoundModeSample, 3 }, { SoundModeSample, 4 }, { SoundModeSample, 5 },
     { SoundModeSample, 6 }, { SoundModeSample, 7 }, { SoundModeSample, 8 },

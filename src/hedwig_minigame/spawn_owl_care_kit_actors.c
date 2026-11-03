@@ -7,7 +7,7 @@
 #include "gen/graphics/menus.h"
 #include "gen/graphics/minigames/owl_care.h"
 
-const void *const g_apOwlTypePalettes[3] = {
+const void *g_apOwlTypePalettes[3] = {
     gOwlCareWhiteOwlPalette,
     gOwlCareBrownOwlPalette,
     gOwlCareGrayOwlPalette,

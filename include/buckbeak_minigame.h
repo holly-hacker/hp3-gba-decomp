@@ -109,7 +109,7 @@ extern const BuckbeakMinigameWorldPos g_aBuckbeakMinigameRingPositions[BUCKBEAK_
 extern const BgTileAnimation16 g_BuckbeakMinigameWaterAnimation;
 
 // Starting time per difficulty, 8.8 seconds.
-extern const s32 g_aBuckbeakMinigameStartTimes[3];
+extern s32 g_aBuckbeakMinigameStartTimes[3];
 
 // dwModeState values. The names describe the observed behavior and are
 // provisional.

@@ -3,7 +3,7 @@
 #include "modes.h"
 #include "buckbeak_minigame.h"
 
-const s32 g_aBuckbeakMinigameStartTimes[3] = { 0xB00, 0xA00, 0x900 };
+s32 g_aBuckbeakMinigameStartTimes[3] = { 0xB00, 0xA00, 0x900 };
 
 // Puts Buckbeak back at the start with a full clock for the chosen difficulty.
 void ResetBuckbeakMinigame(void)

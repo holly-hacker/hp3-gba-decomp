@@ -23,6 +23,8 @@
 #   One language's dialog text, and the table of language pointers, packed
 #   from data/text/.
 
+# ==== .text: code ====
+
 # Boot and runtime: header, crt0, interrupt dispatch, division, GammaLz decompressor
 asm-file asm/gba_header.s          GBAHeader
 asm-file asm/rom_header_tail.us.s  ROMHeaderTail
@@ -854,6 +856,7 @@ c-file src/dev_logos/update_startup.c UpdateStartup
 c-file src/dev_logos/exit_startup.c ExitStartup
 
 # Dialog
+c-file src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file src/dialog/initialize_dialog.c InitializeDialog
 c-file src/dialog/update_dialog_box.c UpdateDialogBox
 c-file src/dialog/alloc_dialog_portrait_actor.c AllocDialogPortraitActor
@@ -1512,6 +1515,7 @@ c-file src/particles/update_particle_collision.c UpdateParticleCollision
 c-file src/particles/tick_actor_particle_emitters.c TickActorParticleEmitters
 
 # Patronus (Harry Patronus cutscene mode)
+c-file src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file src/patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file src/patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
 c-file src/patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
@@ -1996,6 +2000,10 @@ c-file src/serial/verify_serial_message_checksum.c VerifySerialMessageChecksum
 c-file src/serial/count_serial_connect_retries.c CountSerialConnectRetries
 
 # Sound (audio)
+c-file src/sound/sound_samples.c g_aSoundSamples
+c-file src/sound/sound_variants.c g_aSoundVariants
+c-file src/sound/sound_config.c g_aSoundConfig
+c-file src/sound/music_modules.c g_apMusicModules
 c-file src/sound/play_sound_by_id.c PlaySoundById
 c-file src/sound/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive
 c-file src/sound/kram_install.c kramInstall
@@ -2032,6 +2040,7 @@ c-file src/spongify_pad_actor/init_spongify_pad_particle_emitter1.c InitSpongify
 c-file src/spongify_pad_actor/spawn_spongify_pad_effect.c SpawnSpongifyPadEffect
 
 # Store (Fred and George's shop)
+c-file src/store/shop_stock_lists.c g_apShopStockLists
 c-file src/store/show_shop_main_menu.c ShowShopMainMenu
 c-file src/store/update_shop_main_menu.c UpdateShopMainMenu
 c-file src/store/move_shop_main_menu_cursor.c MoveShopMainMenuCursor
@@ -2284,9 +2293,8 @@ lib-object libgcc.a _negdi2.o
 lib-object libc.a bzero.o
 lib-object libc.a memcpy.o
 
-# End of main code section
+# ==== .rodata: read-only data ====
 
-# Start of data section
 c-file src/actor/direction_vectors.c g_aDirection4Vectors
 c-file src/actor/action_state_data.c g_abTurnAroundDirection
 c-file src/actor/direction_mirror_frames.c g_abDirection8MirrorFrames
@@ -2481,7 +2489,7 @@ c-file src/video/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file src/windows/screen_window_dispcnt_flags.c g_awScreenWindowDispcntFlags
 c-file src/world_actors/spawn_world_actor.globals.c g_aWorldActorSprites
 
-# Graphics section 1
+# Graphics section 1 (Areas)
 graphics overworld OverworldSpellEffects
 graphics battle AllyHeads
 graphics overworld OverworldPlayerSprites
@@ -2492,7 +2500,7 @@ graphics overworld ActorSprites
 graphics menus/us OptionIconUs
 graphics overworld ActorSprites2
 
-# Room-script chains (room resource blobs)
+# Area-script chains (room resource blobs)
 asm-file asm/room/blobs/defense_against_the_dark_arts_classroom.s Room00Blob
 asm-file asm/room/blobs/potions_classroom.s Room01Blob
 asm-file asm/room/blobs/potions_classroom_maze.s Room02Blob
@@ -2549,7 +2557,7 @@ asm-file asm/room/blobs/diagon_alley_test_map_3.s Room52Blob
 asm-file asm/room/blobs/diagon_alley_test_map_4.s Room53Blob
 asm-file asm/room/blobs/diagon_alley_test_map_5.s Room54Blob
 
-# Graphics section 2
+# Graphics section 2 (Combat?)
 graphics overworld SpecialSceneFrames
 graphics rooms RoomGraphics
 graphics overworld RoomAltPalettes
@@ -2560,7 +2568,7 @@ graphics overworld LumosParticles
 graphics menus EquipCharacterSelect
 graphics battle BattleHudAndEffects
 
-# Audio
+# Sound
 krawall-module data/audio/modules/MusBattleBoss.json MusBattleBoss
 krawall-module data/audio/modules/MusLeakyCauldronCellar.json MusLeakyCauldronCellar
 krawall-module data/audio/modules/MusBattle.json MusBattle
@@ -2617,7 +2625,7 @@ krawall-module data/audio/modules/Module49.json Module49
 krawall-module data/audio/modules/MusTitle.json MusTitle
 krawall-module data/audio/modules/MusPause.json MusPause
 
-# Graphics section 3
+# Graphics section 3 (Menus?)
 graphics minigames/buckbeak BuckbeakMinigameWaterFrames
 graphics cutscenes PatronusCutscene
 graphics minigames/pumpkin ServePumpkinJuiceFrames
@@ -2645,7 +2653,7 @@ graphics minigames/buckbeak BuckbeakMinigameGraphics
 graphics minigames/boggart BoggartGraphics
 graphics menus FontsAndPortraits
 
-# Dialog
+# Text
 dialog-text data/text/en_us.json DialogTextEnUs
 dialog-text data/text/en_gb.json DialogTextEnGb
 dialog-text data/text/fr.json DialogTextFr
@@ -2655,7 +2663,7 @@ dialog-text data/text/it.json DialogTextIt
 dialog-text data/text/nl.json DialogTextNl
 dialog-text data/text/da.json DialogTextDa
 
-# Graphics section 4
+# Graphics section 4 (Wizard cards)
 graphics menus FamousWizardCards
 
 # Krawall read-only data
@@ -2665,26 +2673,27 @@ c-section player .rodata
 c-file-gcc3 3rd_party/krawall/player_tables.c player_tables .rodata
 asm-file asm/krawall_trailing_word.s KrawallTrailingWord
 
-# Random data?
+# EEPROM read-only data
 c-rodata EepromV124
 c-rodata EepromNoWait
-c-rodata ResetBuckbeakMinigame
-c-data g_apJoybusErrorStrings
-c-rodata UpdateOwlStatMeters
-asm-file asm/hedwig_minigame/owl_stat_meter_weights_padding.s OwlStatMeterWeightsPadding
-c-rodata SpawnOwlCareKitActors
-c-rodata RunLupinPotionCastScripts
-c-rodata RunLupinPotionCameraScript
-c-rodata TickNpcActor
-c-file src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
-c-file src/dialog/dialog_text_info.c g_aDialogTextInfo
-c-file src/sound/sound_samples.c g_aSoundSamples
-c-file src/sound/sound_variants.c g_aSoundVariants
-c-file src/sound/sound_config.c g_aSoundConfig
-c-file src/sound/music_modules.c g_apMusicModules
-c-file src/store/shop_stock_lists.c g_apShopStockLists
 
-# Krawall code section, will be copied into IWRAM
+# ==== .data: initialized non-const data ====
+c-data ResetBuckbeakMinigame
+c-data g_apJoybusErrorStrings
+c-data UpdateOwlStatMeters
+c-data SpawnOwlCareKitActors
+c-data RunLupinPotionCastScripts
+c-data RunLupinPotionCameraScript
+c-data TickNpcActor
+c-data g_apPatronusGraphics
+c-data g_aDialogTextInfo
+c-data g_aSoundSamples
+c-data g_aSoundVariants
+c-data g_aSoundConfig
+c-data g_apMusicModules
+c-data g_apShopStockLists
+
+# ==== .iwram: Krawall, copied to IWRAM (0x03000000) by kramInstall ====
 label directsound.iwram g_KrawallIwramRomImage
 c-section directsound .iwram 0x03000000
 asm-file-cpp 3rd_party/krawall/directsound_asm.S directsound_asm .iwram 0x03000004
@@ -2693,7 +2702,7 @@ asm-file-cpp 3rd_party/krawall/mixer_func.S mixer_func .iwram 0x03000604
 c-file-gcc3-arm 3rd_party/krawall/mixer_private.arm.c mixer_private .iwram 0x03000C48
 c-section player .iwram 0x03001594
 
-# Krawall data section, will be copied into EWRAM
+# ==== .ewram: Krawall, copied to EWRAM (0x02000000) by kramInstall ====
 label directsound.ewram g_KrawallEwramRomImage
 c-section directsound .ewram 0x02000000
 c-section mixer .ewram 0x020008B4

@@ -3,7 +3,7 @@
 #include "modes.h"
 
 
-const LupinPotionScriptCommand g_aLupinPotionCameraScript[LUPIN_POTION_SCRIPT_LENGTH] = {
+LupinPotionScriptCommand g_aLupinPotionCameraScript[LUPIN_POTION_SCRIPT_LENGTH] = {
     { LupinPotionOpPanX, -0x18000, 0, 270 },
     { LupinPotionOpStop, 0, 0, 300 },
     { LupinPotionOpPanY, 0x40000, 0, 310 },

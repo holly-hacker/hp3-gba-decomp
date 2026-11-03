@@ -1,7 +1,7 @@
 #include "sound.h"
 
 // Eight variants per group; PlaySoundById picks one with Mt19937RandMax2(7).
-const SoundSample g_aSoundVariants[15][8] = {
+SoundSample g_aSoundVariants[15][8] = {
     {
         { 15, 0x2000 }, { 15, 0x2333 }, { 15, 0x1EB8 }, { 15, 0x1E14 },
         { 16, 0x2000 }, { 16, 0x21EB }, { 16, 0x2333 }, { 16, 0x1EB8 },

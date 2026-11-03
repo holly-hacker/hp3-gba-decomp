@@ -4,7 +4,7 @@
 #include "game_state.h"
 #include "hedwig_minigame.h"
 
-const u8 g_aabOwlStatMeterWeights[3][6] = {
+u8 g_aabOwlStatMeterWeights[3][6] = {
     { 2, 0, 4, 3, 0, 5 },
     { 5, 2, 3, 0, 6, 0 },
     { 0, 5, 0, 4, 1, 2 },

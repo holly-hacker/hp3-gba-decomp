@@ -3,7 +3,7 @@
 #include "gen/graphics/cutscenes.h"
 
 // BG graphics the cutscene cycles through (see g_bPatronusGraphicIndex).
-const u8 *const g_apPatronusGraphics[6] = {
+const u8 *g_apPatronusGraphics[6] = {
     gPatronusCutscene001,
     gPatronusCutscene002,
     gPatronusCutscene003,

@@ -13,7 +13,7 @@ extern const u32 g_aShopStockGloves[];
 extern const u32 g_aShopStockBoots[];
 extern const u32 g_aShopStockHats[];
 extern const u32 g_aShopStockCloaks[];
-extern const u32 *const g_apShopStockLists[7];  // indexed by FredAndGeorgesShopState.bCategory
+extern const u32 *g_apShopStockLists[7];  // indexed by FredAndGeorgesShopState.bCategory
 
 // Game mode 0x2E (FredAndGeorgesShop), the Weasleys' Wizard Wheezes shop,
 // src/store/. dwModeState is a ShopState; screen

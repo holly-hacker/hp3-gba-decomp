@@ -13,7 +13,7 @@ extern s32 g_nPatronusBgOffset;      // 0x030051F4: 16.16; SetBgRotationCenter g
 
 extern const u32 g_dwPatronusBg2Control;
 extern const u32 g_dwPatronusBg3Control;
-extern const u8 *const g_apPatronusGraphics[6];
+extern const u8 *g_apPatronusGraphics[6];
 
 extern void InitializeHarryPatronusCutscene(void);
 extern void UpdateHarryPatronusCutscene(void);

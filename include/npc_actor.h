@@ -37,4 +37,4 @@ extern const u8 g_aaabNpcWalkAnims[12][4][30];
 extern const u8 g_aabNpcScriptAnims[27][128];
 extern const u8 g_abCharacterNpcKinds[12];
 extern const ActorGfxRecord g_ShadowActorGfx;
-extern const u8 g_abNpcFacingFrames8[12][8];
+extern u8 g_abNpcFacingFrames8[12][8];

@@ -2,6 +2,8 @@
 # syntax. AgbMain's callees are labeled with their US names so shared C
 # links; a sub_<ADDR> label carries the US address, not the JP one.
 
+# ==== .text: code ====
+
 asm-file asm/gba_header.s          GBAHeader
 asm-file asm/rom_header_tail.jp.s  ROMHeaderTail
 asm-file asm/crt0.s                crt0
@@ -757,6 +759,7 @@ c-file src/dementor_minigame/launch_dementor_minigame_dementor.c LaunchDementorM
 c-file src/dev_logos/initialize_startup.c InitializeStartup
 c-file src/dev_logos/update_startup.c UpdateStartup
 c-file src/dev_logos/exit_startup.c ExitStartup
+c-file src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file src/dialog/initialize_dialog.c InitializeDialog
 c-file src/dialog/update_dialog_box.c UpdateDialogBox
 c-file src/dialog/alloc_dialog_portrait_actor.c AllocDialogPortraitActor
@@ -1328,6 +1331,7 @@ c-file src/particles/release_particle.c ReleaseParticle
 c-file src/particles/draw_particle.c DrawParticle
 c-file src/particles/update_particle_collision.c UpdateParticleCollision
 c-file src/particles/tick_actor_particle_emitters.c TickActorParticleEmitters
+c-file src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file src/patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file src/patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
 c-file src/patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCutscene
@@ -1762,6 +1766,10 @@ c-file src/serial/serial_phase2.c SerialPhase2
 c-file src/serial/mark_serial_session_closed.c MarkSerialSessionClosed
 c-file src/serial/verify_serial_message_checksum.c VerifySerialMessageChecksum
 c-file src/serial/count_serial_connect_retries.c CountSerialConnectRetries
+c-file src/sound/sound_samples.c g_aSoundSamples
+c-file src/sound/sound_variants.c g_aSoundVariants
+c-file src/sound/sound_config.c g_aSoundConfig
+c-file src/sound/music_modules.c g_apMusicModules
 c-file src/sound/play_sound_by_id.c PlaySoundById
 c-file src/sound/play_sound_by_id_unless_active.c PlaySoundByIdUnlessActive
 c-file src/sound/kram_install.c kramInstall
@@ -1794,6 +1802,7 @@ c-file src/spongify_pad_actor/tick_spongify_pad_effect.c TickSpongifyPadEffect
 c-file src/spongify_pad_actor/init_spongify_pad_particle_emitter0.c InitSpongifyPadParticleEmitter0
 c-file src/spongify_pad_actor/init_spongify_pad_particle_emitter1.c InitSpongifyPadParticleEmitter1
 c-file src/spongify_pad_actor/spawn_spongify_pad_effect.c SpawnSpongifyPadEffect
+c-file src/store/shop_stock_lists.c g_apShopStockLists
 c-file src/store/show_shop_main_menu.c ShowShopMainMenu
 c-file src/store/update_shop_main_menu.c UpdateShopMainMenu
 c-file src/store/move_shop_main_menu_cursor.c MoveShopMainMenuCursor
@@ -2004,7 +2013,7 @@ lib-object libgcc.a _negdi2.o
 lib-object libc.a bzero.o
 lib-object libc.a memcpy.o
 
-# End of main code section, start of data section
+# ==== .rodata: read-only data ====
 
 # Unit direction vectors (16.16 {x, y}) for 4, 8, 16 and 32 directions
 c-file src/actor/direction_vectors.c g_aDirection4Vectors
@@ -2379,27 +2388,31 @@ c-section player .rodata
 c-file-gcc3 3rd_party/krawall/player_tables.c player_tables .rodata
 asm-file asm/krawall_trailing_word.s KrawallTrailingWord
 
+# EEPROM read-only data
 c-rodata EepromV124
 c-rodata EepromNoWait
-c-rodata ResetBuckbeakMinigame
-c-data g_apJoybusErrorStrings
-c-rodata UpdateOwlStatMeters
-asm-file asm/hedwig_minigame/owl_stat_meter_weights_padding.s OwlStatMeterWeightsPadding
-c-rodata SpawnOwlCareKitActors
-c-rodata RunLupinPotionCastScripts
-c-rodata RunLupinPotionCameraScript
-c-rodata TickNpcActor
 
-c-file src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
-c-file src/dialog/dialog_text_info.c g_aDialogTextInfo
+# ==== .data: initialized non-const data ====
+c-data ResetBuckbeakMinigame
+c-data g_apJoybusErrorStrings
+c-data UpdateOwlStatMeters
+c-data SpawnOwlCareKitActors
+c-data RunLupinPotionCastScripts
+c-data RunLupinPotionCameraScript
+c-data TickNpcActor
+
+c-data g_apPatronusGraphics
+c-data g_aDialogTextInfo
 
 # PlaySoundById tables: sample records, random-variant records and the per-sound config rows
-c-file src/sound/sound_samples.c g_aSoundSamples
-c-file src/sound/sound_variants.c g_aSoundVariants
-c-file src/sound/sound_config.c g_aSoundConfig
-c-file src/sound/music_modules.c g_apMusicModules
+c-data g_aSoundSamples
+c-data g_aSoundVariants
+c-data g_aSoundConfig
+c-data g_apMusicModules
 
-c-file src/store/shop_stock_lists.c g_apShopStockLists
+c-data g_apShopStockLists
+
+# ==== .iwram: Krawall, copied to IWRAM (0x03000000) by kramInstall ====
 
 # ROM images of the IWRAM and EWRAM sections, which kramInstall copies to RAM.
 # The IWRAM image holds Krawall's ARM mixer code.
@@ -2410,6 +2423,8 @@ c-section mixer_arm .iwram 0x03000090
 asm-file-cpp 3rd_party/krawall/mixer_func.S mixer_func .iwram 0x03000604
 c-file-gcc3-arm 3rd_party/krawall/mixer_private.arm.c mixer_private .iwram 0x03000C48
 c-section player .iwram 0x03001594
+
+# ==== .ewram: Krawall, copied to EWRAM (0x02000000) by kramInstall ====
 label directsound.ewram g_KrawallEwramRomImage
 c-section directsound .ewram 0x02000000
 c-section mixer .ewram 0x020008B4
