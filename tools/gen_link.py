@@ -32,7 +32,7 @@ from manifest import (  # noqa: E402
     parse_manifest,
     ram_symbols_source,
     read_lib_objects,
-    read_placements,
+    read_ram_addresses,
 )
 
 BASE_ADDR = 0x08000000
@@ -64,7 +64,7 @@ def main() -> None:
 
     regions, labels = parse_manifest(f"regions.{ver}.txt", ver)
     lib_objects = read_lib_objects(f"regions.{ver}.txt")
-    sectioned = read_placements(f"regions.{ver}.txt")
+    ram_addresses = read_ram_addresses(f"regions.{ver}.txt")
     names = {name for _, name in regions}
     objects = {name: object_path(ver, source) for source, name in regions}
 
@@ -73,16 +73,12 @@ def main() -> None:
     write_ram_symbols(ver)
 
     # placements, in link order: (output section, object, input section,
-    # region name, RAM address or None)
+    # region name)
     placements = []
     for i, (_, name) in enumerate(regions):
-        vma = None
-        if name in sectioned:
-            _, section, vma = sectioned[name]
-        else:
-            section = next((s for s in SPLIT_SECTION_DIRECTIVES.values()
-                            if name.endswith(s) and name[:-len(s)] in names), ".text")
-        placements.append((f".rgn{i:03d}", objects[name], section, name, vma))
+        section = next((s for s in SPLIT_SECTION_DIRECTIVES.values()
+                        if name.endswith(s) and name[:-len(s)] in names), ".text")
+        placements.append((f".rgn{i:03d}", objects[name], section, name))
 
     with open(f"build/{ver}/link.ld", "w") as f:
         f.write(f"INPUT({object_path(ver, ram_symbols_source(ver))})\n")
@@ -97,26 +93,30 @@ def main() -> None:
                         f"{{ {objects[name]}(.bss) }}\n")
         f.write(f"    . = {hex(BASE_ADDR)};\n")
         prev, prev_runs_from_ram = None, False
-        for section, obj, input_section, region_name, vma in placements:
+        for section, obj, input_section, region_name in placements:
+            runs_from_ram = region_name in ram_addresses
             # The markers bracket the region's content in the linked ELF.
             contents = (f'"__rgn_{region_name}_beg" = .; '
                         f'{obj}({input_section}) '
                         f'"__rgn_{region_name}_end" = .;')
             # Each section is stored right after the previous one, at its
             # own alignment. A section that runs from RAM is linked at its
-            # RAM address, which leaves the location counter there, so the
+            # RAM address (the row's, or right after the previous RAM
+            # section), which leaves the location counter there, so the
             # next ROM section restarts it from where that one is stored and
             # states that it is stored where it runs: ld would otherwise
             # keep the RAM section's offset between the two.
-            if vma is None and prev_runs_from_ram:
+            if not runs_from_ram and prev_runs_from_ram:
                 f.write(f"    . = LOADADDR({prev}) + SIZEOF({prev});\n")
                 f.write(f"    {section} : AT(ADDR({section})) {{ {contents} }}\n")
-            elif vma is None:
+            elif not runs_from_ram:
                 f.write(f"    {section} : {{ {contents} }}\n")
             else:
+                address = ram_addresses[region_name]
+                at = f" {hex(address)}" if address is not None else ""
                 stored = f"ALIGN(LOADADDR({prev}) + SIZEOF({prev}), ALIGNOF({section}))"
-                f.write(f"    {section} {hex(vma)} : AT({stored}) {{ {contents} }}\n")
-            prev, prev_runs_from_ram = section, vma is not None
+                f.write(f"    {section}{at} : AT({stored}) {{ {contents} }}\n")
+            prev, prev_runs_from_ram = section, runs_from_ram
         # A label row names a symbol the original link supplied and no
         # source defines, such as where a RAM image is stored or an empty
         # table that shares the next object's address: where its region

@@ -33,15 +33,15 @@ Third-party code under `3rd_party/` (Krawall) has its own rows, compiled
 with GCC 3.0.2 at `-O3` ([`compiler.md`](compiler.md)) from headers in
 `include/3rd_party/<lib>/`:
 
-- `c-file-gcc3 <source.c> <name> [<section> [<vma>]]` for
-  Thumb C, `c-file-gcc3-arm` for ARM C, and `asm-file-cpp` for a
-  preprocessed `.S`.
+- `c-file-gcc3 <source.c> <name>` for Thumb C, `c-file-gcc3-arm` for
+  ARM C, and `asm-file-cpp` for a preprocessed `.S`. The row places the
+  object's `.text`; an object without code is still declared this way.
 - These objects keep `.text`, `.rodata`, `.iwram` and `.ewram` apart.
-  The row places one of them, `.text` unless `<section>` names another.
-- `c-section <name> <section> [<vma>]` places another
-  section of the object `<name>`; its region is `<name><section>`.
-- `<vma>` is the RAM address a section runs at when it is stored in ROM
-  and copied there (the IWRAM and EWRAM images).
+  `c-rodata <name>` places `.rodata`, and `c-iwram <name> [<address>]`
+  and `c-ewram <name> [<address>]` the sections Krawall copies to IWRAM
+  and EWRAM: stored in ROM, linked at their RAM address. The first
+  `c-iwram` and `c-ewram` row gives the address; the rows after it follow
+  on.
 - The link fails on an object with a non-empty section that no row
   places.
 

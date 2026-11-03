@@ -2176,6 +2176,10 @@ c-file src/world_actors/init_world_actor_break_emitter.c InitWorldActorBreakEmit
 c-file src/world_actors/break_world_actor.c BreakWorldActor
 c-file src/world_actors/snap_actor_x_to_tile_grid.c SnapActorXToTileGrid
 c-file src/world_actors/mark_room_actor_consumed.c MarkRoomActorConsumed
+c-file-gcc3 3rd_party/krawall/player_tables.c player_tables
+asm-file-cpp 3rd_party/krawall/directsound_asm.S directsound_asm
+asm-file-cpp 3rd_party/krawall/mixer_func.S mixer_func
+c-file-gcc3-arm 3rd_party/krawall/mixer_private.arm.c mixer_private
 c-file-gcc3 3rd_party/krawall/general.c general
 c-file-gcc3 3rd_party/krawall/directsound.c directsound
 c-file-gcc3 3rd_party/krawall/mixer.c mixer
@@ -2571,10 +2575,10 @@ dialog-text data/text/ja.json DialogTextJa
 graphics menus FamousWizardCards
 
 # Krawall read-only data
-c-section general .rodata
-c-section mixer_arm .rodata
-c-section player .rodata
-c-file-gcc3 3rd_party/krawall/player_tables.c player_tables .rodata
+c-rodata general
+c-rodata mixer_arm
+c-rodata player
+c-rodata player_tables
 asm-file asm/krawall_trailing_word.s KrawallTrailingWord
 
 # EEPROM read-only data
@@ -2606,17 +2610,17 @@ c-data g_apShopStockLists
 # ROM images of the IWRAM and EWRAM sections, which kramInstall copies to RAM.
 # The IWRAM image holds Krawall's ARM mixer code.
 label directsound.iwram g_KrawallIwramRomImage
-c-section directsound .iwram 0x03000000
-asm-file-cpp 3rd_party/krawall/directsound_asm.S directsound_asm .iwram 0x03000004
-c-section mixer_arm .iwram 0x03000090
-asm-file-cpp 3rd_party/krawall/mixer_func.S mixer_func .iwram 0x03000604
-c-file-gcc3-arm 3rd_party/krawall/mixer_private.arm.c mixer_private .iwram 0x03000C48
-c-section player .iwram 0x03001594
+c-iwram directsound 0x03000000
+c-iwram directsound_asm
+c-iwram mixer_arm
+c-iwram mixer_func
+c-iwram mixer_private
+c-iwram player
 
 # ==== .ewram: Krawall, copied to EWRAM (0x02000000) by kramInstall ====
 label directsound.ewram g_KrawallEwramRomImage
-c-section directsound .ewram 0x02000000
-c-section mixer .ewram 0x020008B4
-c-section mixer_func .ewram 0x02000E38
-c-section mixer_private .ewram 0x02001638
-c-section player .ewram 0x02001640
+c-ewram directsound 0x02000000
+c-ewram mixer
+c-ewram mixer_func
+c-ewram mixer_private
+c-ewram player

@@ -19,9 +19,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from manifest import (  # noqa: E402
     ASM_CPP_DIRECTIVE,
     ASM_FILE_DIRECTIVE,
-    C_SECTION_DIRECTIVE,
+    C_FILE_DIRECTIVES,
     LABEL_DIRECTIVE,
-    SECTIONED_DIRECTIVES,
+    SPLIT_SECTION_DIRECTIVES,
     parse_manifest,
     read_rows,
 )
@@ -49,12 +49,12 @@ def mode_for(ver: str, name: str) -> str:
     assembly by its source's first mode directive, otherwise Thumb."""
     rows = [parts for _, parts in read_rows(f"regions.{ver}.txt")
             if parts[0] != LABEL_DIRECTIVE]
-    objects = {parts[2]: parts for parts in rows if parts[0] in SECTIONED_DIRECTIVES}
+    objects = {parts[2]: parts for parts in rows if parts[0] in C_FILE_DIRECTIVES}
     regions, _ = parse_manifest(f"regions.{ver}.txt", ver)
     for parts, region in zip(rows, regions):
         if region[1] != name:
             continue
-        if parts[0] == C_SECTION_DIRECTIVE:
+        if parts[0] in SPLIT_SECTION_DIRECTIVES:
             parts = objects[parts[1]]
         if parts[0] in ARM_C_DIRECTIVES:
             return "arm"

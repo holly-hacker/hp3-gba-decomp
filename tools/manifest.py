@@ -42,9 +42,8 @@ GRAPHICS_DIRECTIVE = "graphics"
 # c-file-gcc3 and c-file-gcc3-arm rows name a .c under 3rd_party/,
 # compiled the same way with the GCC 3.0.2 Krawall was built with, and
 # asm-file-cpp rows a .S that compile_c.py preprocesses. These objects
-# keep their sections apart: the row places one of them, .text unless the
-# optional <section> says otherwise, linked at the RAM address <vma> when
-# given (code or data that runs from RAM, stored in ROM).
+# keep their sections apart: the row places .text, and c-rodata, c-iwram
+# and c-ewram rows place the others.
 GCC3_C_DIRECTIVES = {"c-file-gcc3", "c-file-gcc3-arm"}
 ASM_CPP_DIRECTIVE = "asm-file-cpp"
 SECTIONED_DIRECTIVES = GCC3_C_DIRECTIVES | {ASM_CPP_DIRECTIVE}
@@ -63,15 +62,18 @@ RODATA_SUFFIX = ".rodata"
 C_DATA_DIRECTIVE = "c-data"
 DATA_SUFFIX = ".data"
 
-# Directive -> region-name suffix for the rows that place one section of
-# a c-file/c-file-O1 row's object.
-SPLIT_SECTION_DIRECTIVES = {C_RODATA_DIRECTIVE: RODATA_SUFFIX,
-                            C_DATA_DIRECTIVE: DATA_SUFFIX}
+# `c-iwram <name> [<address>]` and `c-ewram <name> [<address>]` rows place
+# the .iwram or .ewram section of the object <name>: code or data stored in
+# ROM that Krawall copies to RAM and runs there. The first row of each
+# gives the RAM address the section starts at; the rows after it follow
+# on. The region is named <name> + the section.
+RAM_SECTION_DIRECTIVES = {"c-iwram": ".iwram", "c-ewram": ".ewram"}
 
-# c-section rows place one more section of a c-file-gcc3, c-file-gcc3-arm
-# or asm-file-cpp row's object, named <name> (at <vma>, as above, when
-# given). The region is named <name> + <section>.
-C_SECTION_DIRECTIVE = "c-section"
+# Directive -> region-name suffix, which is also the section placed, for
+# the rows that place one section of an object another row names.
+SPLIT_SECTION_DIRECTIVES = {C_RODATA_DIRECTIVE: RODATA_SUFFIX,
+                            C_DATA_DIRECTIVE: DATA_SUFFIX,
+                            **RAM_SECTION_DIRECTIVES}
 
 # asm-file rows name a committed .s under asm/ directly -- no packing or
 # compiling step, the file is already the region's assembly.
@@ -110,18 +112,15 @@ def read_lib_objects(path: str) -> dict[str, tuple[str, str, int | None]]:
     return out
 
 
-def read_placements(path: str) -> dict[str, tuple[str, str, int | None]]:
-    """Returns region name -> (object name, section, RAM address or None)
-    for every region that places one section of a sectioned object."""
+def read_ram_addresses(path: str) -> dict[str, int | None]:
+    """Returns region name -> RAM address for every c-iwram and c-ewram row:
+    the address its section starts at, or None if it follows the row
+    above."""
     out = {}
     for _, parts in read_rows(path):
-        if parts[0] in SECTIONED_DIRECTIVES:
-            section = parts[3] if len(parts) > 3 else ".text"
-            vma = int(parts[4], 16) if len(parts) > 4 else None
-            out[parts[2]] = (parts[2], section, vma)
-        elif parts[0] == C_SECTION_DIRECTIVE:
-            vma = int(parts[3], 16) if len(parts) > 3 else None
-            out[parts[1] + parts[2]] = (parts[1], parts[2], vma)
+        if parts[0] in RAM_SECTION_DIRECTIVES:
+            address = int(parts[2], 16) if len(parts) > 2 else None
+            out[parts[1] + RAM_SECTION_DIRECTIVES[parts[0]]] = address
     return out
 
 
@@ -129,6 +128,7 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     """Returns (regions, labels), regions in manifest order."""
     regions: list[Region] = []
     labels: Labels = {}
+    ram_started: set[str] = set()
     for lineno, parts in read_rows(path):
         directive, args = parts[0], parts[1:]
 
@@ -143,15 +143,16 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
             expect(2, 2, "<source> <name>")
             kind = KRAWALL_DIRECTIVES[directive]
             regions.append((f"build/{ver}/audio/{kind}/{args[1]}.s", args[1]))
-        elif directive in SECTIONED_DIRECTIVES:
-            expect(2, 4, "<source> <name> [<section> [<vma>]]")
-            regions.append((f"build/{ver}/c/{args[1]}.s", args[1]))
-        elif directive == C_SECTION_DIRECTIVE:
-            expect(2, 3, "<name> <section> [<vma>]")
-            regions.append((f"build/{ver}/c/{args[0]}.s", args[0] + args[1]))
         elif directive in C_FILE_DIRECTIVES:
             expect(2, 2, "<source> <name>")
             regions.append((f"build/{ver}/c/{args[1]}.s", args[1]))
+        elif directive in RAM_SECTION_DIRECTIVES:
+            expect(1, 2, "<name> [<address>]")
+            if len(args) == 1 and directive not in ram_started:
+                sys.exit(f"{path}:{lineno}: the first {directive} row needs an address")
+            ram_started.add(directive)
+            suffix = RAM_SECTION_DIRECTIVES[directive]
+            regions.append((f"build/{ver}/c/{args[0]}.s", args[0] + suffix))
         elif directive in SPLIT_SECTION_DIRECTIVES:
             expect(1, 1, "<name>")
             suffix = SPLIT_SECTION_DIRECTIVES[directive]
@@ -181,15 +182,10 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     for region, label in labels.items():
         if region not in names:
             sys.exit(f"{path}: label {label} names no region {region}")
-    placements = read_placements(path)
     for _, name in regions:
-        if name in placements:
-            if placements[name][0] not in names:
-                sys.exit(f"{path}: c-section row {name} has no object row")
-        else:
-            for directive, suffix in SPLIT_SECTION_DIRECTIVES.items():
-                if name.endswith(suffix) and name[:-len(suffix)] not in names:
-                    sys.exit(f"{path}: {directive} row {name[:-len(suffix)]} has no c-file row")
+        for directive, suffix in SPLIT_SECTION_DIRECTIVES.items():
+            if name.endswith(suffix) and name[:-len(suffix)] not in names:
+                sys.exit(f"{path}: {directive} row {name[:-len(suffix)]} has no object row")
     return regions, labels
 
 
