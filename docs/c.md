@@ -20,14 +20,14 @@ A `c-file-arm` row compiles ARM-mode code with `agbcc_arm` and
 `-O2 -mthumb-interwork -fomit-frame-pointer -Werror` (no `-fhex-asm`,
 which it lacks).
 
-A C file's `.rodata` is normally folded into its own region. A
-`c-rodata <name>` row instead places the `.rodata` of the C row
-named `<name>` as a region of its own, for an object whose read-only
-data the ROM keeps apart from its code (the EEPROM library objects).
-A `c-data <name>` row likewise places the object's `.data`,
-initialised non-const data such as `char *table[] = { "..." }`: the
-pointer table goes to `.data` and its strings to `.rodata`, which the
-c-file row then places (`src/gamecube/joybus_error_strings.c`).
+A `c-file` row places its object's `.text`. A `c-rodata <name>` row
+places the `.rodata` of the C row named `<name>`, its `const` data, in
+the read-only data part of the manifest. A file that holds only data
+still has its `c-file` row in the code part, at the start of its folder,
+where its `.text` is empty. A `c-data <name>` row likewise places the
+object's `.data`, initialised non-const data such as
+`char *table[] = { "..." }`: the pointer table goes to `.data` and its
+strings to `.rodata` (`src/gamecube/joybus_error_strings.c`).
 
 Third-party code under `3rd_party/` (Krawall) has its own rows, compiled
 with GCC 3.0.2 at `-O3` ([`compiler.md`](compiler.md)) from headers in
@@ -90,9 +90,8 @@ fixed by the ROM. Declare it `extern` in C and give it an address in
 `ram_symbols.<ver>.inc`. `compile_c.py` rejects `.data` (unless a
 `c-data` row places it) and `.comm` rather than letting them vanish.
 
-**`const` data is folded into `.text`.** The generated linker script
-places each region's `.text` only. `compile_c.py` rewrites
-`.section .rodata`, which changes no bytes -- both live in ROM.
+**`const` data is `.rodata`.** `compile_c.py` rejects `.rodata` that no
+`c-rodata` row places, as it does `.data`.
 
 Shared constants and types belong in `include/`, so a wrong row count or
 struct layout is a compile error rather than a silently shifted table.

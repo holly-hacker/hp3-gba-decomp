@@ -114,32 +114,25 @@ def section_names(asm: str) -> list[str]:
     return list(dict.fromkeys(a or f".{b.lower()}" for a, b in names))
 
 
-def place_in_text(asm: str, src: str, keep_rodata: bool = False,
-                  keep_data: bool = False) -> str:
-    """Fold read-only data into .text, and reject what has nowhere to go.
+def check_sections(asm: str, src: str, keep_rodata: bool = False,
+                   keep_data: bool = False) -> None:
+    """Rejects sections that no manifest row places.
 
-    The generated link.ld places each region's .text, so agbcc's
-    `.section .rodata` for const data has to become .text -- the bytes are
-    the same and both live in ROM. keep_rodata leaves it in place for a
-    source whose .rodata a c-rodata row puts at its own address, and
-    keep_data does the same for `.data` placed by a c-data row.
-    Otherwise `.data` and .comm/.lcomm have no home: they want writable
-    RAM, whose addresses are fixed by the ROM, so RAM variables belong in
-    ram_symbols.<ver>.inc and are `extern` in C.
+    keep_rodata says a c-rodata row places the object's .rodata, and
+    keep_data that a c-data row places its .data. .comm/.lcomm never have a
+    home: they want writable RAM, whose addresses are fixed by the ROM, so
+    RAM variables belong in ram_symbols.<ver>.inc and are `extern` in C.
     """
-    if not keep_rodata:
-        asm = re.sub(r"^\s*\.section\s+\.rodata\b.*$", ".text", asm, flags=re.M)
-    rejected = [(r"\.l?comm\b", ".comm/.lcomm", "an uninitialised global")]
-    if not keep_data:
-        rejected.insert(0, (r"\.data\b", ".data", "a writable global"))
-    for pattern, shown, what in rejected:
-        if re.search(rf"^\s*{pattern}", asm, re.M):
-            sys.exit(
-                f"{src}: emits {shown} ({what}). RAM lives at fixed "
-                f"addresses -- declare it extern in C and give it an address "
-                f"in ram_symbols.<ver>.inc."
-            )
-    return asm
+    if not keep_rodata and re.search(r"^\s*\.section\s+\.rodata\b", asm, re.M):
+        sys.exit(f"{src}: emits .rodata that no c-rodata row places")
+    if not keep_data and re.search(r"^\s*\.data\b", asm, re.M):
+        sys.exit(f"{src}: emits .data that no c-data row places. A RAM "
+                 f"variable is extern in C, with its address in "
+                 f"ram_symbols.<ver>.inc.")
+    if re.search(r"^\s*\.l?comm\b", asm, re.M):
+        sys.exit(f"{src}: emits .comm/.lcomm (an uninitialised global). RAM "
+                 f"lives at fixed addresses -- declare it extern in C and give "
+                 f"it an address in ram_symbols.<ver>.inc.")
 
 
 SECTION_FLAGS = re.compile(r'^(\s*\.section\s+([.\w]+)),"(\w*)"(?:,%\w+)?\s*$', re.M)
@@ -198,7 +191,7 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
         # only the end of a section got nops. Today's fills both with nops.
         asm = re.sub(r"^(\s*\.align\s+\d+)\s*$", r"\1, 0", asm, flags=re.M)
         asm = merge_section_flags(asm)
-    place_in_text(asm, src, keep_rodata=True)
+    check_sections(asm, src, keep_rodata=True)
     # The assembler ignores everything after .END, padding included.
     end = re.search(r"^\s*\.end\b", asm, re.M | re.I)
     if end:
@@ -245,10 +238,10 @@ def wrap_asm(asm: str, src: str, keep_rodata: bool = False,
     """
     split = ((["\t.section\t.rodata\n"] if keep_rodata else [])
              + (["\t.data\n"] if keep_data else []))
+    check_sections(asm, src, keep_rodata, keep_data)
     return ("".join(f"{s}\t.align\t2, 0\n" for s in split)
             + ("\t.text\n" if split else "")
-            + place_in_text(asm, src, keep_rodata, keep_data)
-            + "\t.align\t2, 0\n")
+            + asm + "\t.align\t2, 0\n")
 
 
 def main() -> None:

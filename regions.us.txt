@@ -11,8 +11,7 @@
 # c-file <source.c> <name>
 #   A compiled C file; c-file-O1 compiles it with -O1 instead of -O2.
 # c-rodata <name>
-#   The .rodata of the c-file row <name>, where the ROM keeps it apart from
-#   the code.
+#   The .rodata of the c-file row <name>.
 # graphics <feature> <group>
 #   A group of graphics, described in graphics/<feature>.yaml.
 # krawall-module <json-file> <name>
@@ -40,6 +39,10 @@ asm-file asm/debug/handle_timer2_interrupt.s HandleTimer2Interrupt
 asm-file asm/decompress_gamma_lz.s      DecompressGammaLz
 
 # Actors
+c-file src/actor/direction_vectors.c g_aDirection4Vectors
+c-file src/actor/action_state_data.c g_abTurnAroundDirection
+c-file src/actor/direction_mirror_frames.c g_abDirection8MirrorFrames
+c-file src/actor/oam_shape_sizes.c g_aOamShapeSizes
 c-file src/actor/tick_actor_list.c TickActorList
 c-file src/actor/commit_queued_actor_tile_updates.c CommitQueuedActorTileUpdates
 c-file src/actor/free_actor.c FreeActor
@@ -170,6 +173,8 @@ c-file src/actor/get_frame_cell_count.c GetFrameCellCount
 c-file src/actor/get_oam_shape_size_dims.c GetOamShapeSizeDims
 
 # Area (room loading)
+c-file src/area/room_actor_constructors.c g_apRoomActorConstructors
+c-file src/area/default_room_entry_points.c g_aDefaultRoomEntryPoints
 c-file src/area/spawn_missing_room_group_actors.c SpawnMissingRoomGroupActors
 c-file src/area/run_room_script_chain.c RunRoomScriptChain
 c-file src/area/resume_room_script_chain.c ResumeRoomScriptChain
@@ -207,6 +212,7 @@ c-file-arm src/arm_routines/find_free_obj_tile_run.c FindFreeObjTileRun
 c-file-arm src/arm_routines/sort_actors_by_depth.c SortActorsByDepth
 
 # Background (BG layers)
+c-file src/background/background.globals.c g_adwUnusedBgControls
 c-file src/background/load_bg_graphic_tiles.c LoadBgGraphicTiles
 c-file src/background/load_graphic_blob_tiles.c LoadGraphicBlobTiles
 c-file src/background/get_graphic_blob_tile_load.c GetGraphicBlobTileLoad
@@ -291,6 +297,7 @@ c-file src/background/clear_bg_state_flags.c ClearBgStateFlags
 c-file src/background/set_bg_state_flags.c SetBgStateFlags
 
 # Boggart minigame
+c-file src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
 c-file src/boggart_minigame/initialize_boggart_minigame.c InitializeBoggartMinigame
 c-file src/boggart_minigame/update_boggart_minigame.c UpdateBoggartMinigame
 c-file src/boggart_minigame/spawn_boggart_minigame_actors.c SpawnBoggartMinigameActors
@@ -317,6 +324,7 @@ c-file src/boggart_minigame/resume_boggart_minigame.c ResumeBoggartMinigame
 c-file src/boggart_minigame/leave_boggart_minigame.c LeaveBoggartMinigame
 
 # Buckbeak minigame
+c-file src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
 c-file src/buckbeak_minigame/set_up_buckbeak_minigame_scene.c SetUpBuckbeakMinigameScene
 c-file src/buckbeak_minigame/reset_buckbeak_minigame.c ResetBuckbeakMinigame
 c-file src/buckbeak_minigame/process_buckbeak_minigame_frame.c ProcessBuckbeakMinigameFrame
@@ -361,6 +369,7 @@ c-file src/camera/get_room_scroll_bounds.c GetRoomScrollBounds
 c-file src/camera/set_room_scroll_bounds.c SetRoomScrollBounds
 
 # Challenge (unused)
+c-file src/challenge_unused/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
 c-file src/challenge_unused/initialize_unused_minigame.c InitializeUnusedMinigame
 c-file src/challenge_unused/update_unused_minigame.c UpdateUnusedMinigame
 c-file src/challenge_unused/exit_unused_minigame.c ExitUnusedMinigame
@@ -376,24 +385,28 @@ c-file src/char_block/resume_bg_tile_animations.c ResumeBgTileAnimations
 c-file src/char_block/free_bg_tile_animations.c FreeBgTileAnimations
 
 # Cheat (debug menus)
+c-file src/cheat/cheat.globals.c g_dwCheatBg0Control
 c-file src/cheat/initialize_cheat.c InitializeCheat
 c-file src/cheat/update_cheat.c UpdateCheat
 c-file src/cheat/reset_cheat_party_from_args.c ResetCheatPartyFromArgs
 c-file src/cheat/exit_cheat.c ExitCheat
 c-file src/cheat/draw_cheat_entries.c DrawCheatEntries
 
+c-file src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_abCheatLevelAndQuestMax
 c-file src/cheat_level_and_quest/initialize_cheat_level_and_quest.c InitializeCheatLevelAndQuest
 c-file src/cheat_level_and_quest/update_cheat_level_and_quest.c UpdateCheatLevelAndQuest
 c-file src/cheat_level_and_quest/draw_cheat_level_and_quest_rows.c DrawCheatLevelAndQuestRows
 c-file src/cheat_level_and_quest/exit_cheat_level_and_quest.c ExitCheatLevelAndQuest
 c-file src/cheat_level_and_quest/draw_cheat_level_and_quest_values.c DrawCheatLevelAndQuestValues
 
+c-file src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control
 c-file src/cheat_map/initialize_cheat_map.c InitializeCheatMap
 c-file src/cheat_map/update_cheat_map.c UpdateCheatMap
 c-file src/cheat_map/exit_cheat_map.c ExitCheatMap
 c-file src/cheat_map/draw_cheat_map_names.c DrawCheatMapNames
 c-file src/cheat_map/scroll_cheat_map.c ScrollCheatMap
 
+c-file src/cheat_party/cheat_party.globals.c g_dwCheatPartyBg0Control
 c-file src/cheat_party/initialize_cheat_party.c InitializeCheatParty
 c-file src/cheat_party/update_cheat_party.c UpdateCheatParty
 c-file src/cheat_party/draw_cheat_party_rows.c DrawCheatPartyRows
@@ -401,28 +414,36 @@ c-file src/cheat_party/apply_cheat_party.c ApplyCheatParty
 c-file src/cheat_party/exit_cheat_party.c ExitCheatParty
 c-file src/cheat_party/draw_cheat_party_characters.c DrawCheatPartyCharacters
 
+c-file src/cheat_portraits/cheat_portraits.globals.c g_dwCheatPortraitsBg1Control
+c-file src/cheat_portraits/portrait_table.c g_apPortraitTable
 c-file src/cheat_portraits/show_cheat_portrait.c ShowCheatPortrait
 c-file src/cheat_portraits/initialize_cheat_portraits.c InitializeCheatPortraits
 c-file src/cheat_portraits/update_cheat_portraits.c UpdateCheatPortraits
 c-file src/cheat_portraits/exit_cheat_portraits.c ExitCheatPortraits
 
+c-file src/cheat_sound_test/cheat_sound_test.globals.c g_dwCheatSoundTestBg0Control
 c-file src/cheat_sound_test/initialize_cheat_sound_test.c InitializeCheatSoundTest
 c-file src/cheat_sound_test/update_cheat_sound_test.c UpdateCheatSoundTest
 c-file src/cheat_sound_test/draw_cheat_sound_test_rows.c DrawCheatSoundTestRows
 c-file src/cheat_sound_test/exit_cheat_sound_test.c ExitCheatSoundTest
 c-file src/cheat_sound_test/draw_cheat_sound_test_values.c DrawCheatSoundTestValues
 
+c-file src/cheat_wizard_cards/cheat_wizard_cards.globals.c g_dwCheatWizardCardsBg2Control
+c-file src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWizardCardNames
 c-file src/cheat_wizard_cards/initialize_cheat_wizard_cards.c InitializeCheatWizardCards
 c-file src/cheat_wizard_cards/show_cheat_wizard_card.c ShowCheatWizardCard
 c-file src/cheat_wizard_cards/update_cheat_wizard_cards.c UpdateCheatWizardCards
 c-file src/cheat_wizard_cards/exit_cheat_wizard_cards.c ExitCheatWizardCards
 
 # Chest actor
+c-file src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprite
 c-file src/chest_actor/spawn_chest_actor.c SpawnChestActor
 c-file src/chest_actor/tick_chest_actor.c TickChestActor
 c-file src/chest_actor/handle_chest_touch.c HandleChestTouch
 
 # Choose party member
+c-file src/choose_party_member/choose_character_stages.globals.c g_abChooseCharacterStages
+c-file src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
 c-file src/choose_party_member/initialize_choose_character.c InitializeChooseCharacter
 c-file src/choose_party_member/update_choose_character.c UpdateChooseCharacter
 c-file src/choose_party_member/spawn_choose_character_option_actors.c SpawnChooseCharacterOptionActors
@@ -449,6 +470,8 @@ c-file src/collision/handle_pausing_actor_touch.c HandlePausingActorTouch
 c-file src/collision/handle_contact_trigger_touch.c HandleContactTriggerTouch
 
 # Color (palette effects)
+c-file src/color/unused_color_zeros.c g_abUnusedColorZeros
+c-file src/color/gamma_remap_tables.c g_abGammaNormalRemap
 c-file src/color/apply_gamma_remap_table.c ApplyGammaRemapTable
 c-file src/color/setup_color_cycles.c SetupColorCycles
 c-file src/color/apply_gamma_to_colors.c ApplyGammaToColors
@@ -507,6 +530,7 @@ c-file src/combat_board/clear_paralyzed_fighter.c ClearParalyzedFighter
 c-file src/combat_board/clear_poisoned_fighter.c ClearPoisonedFighter
 
 # Combat core (battle setup and turn state machine)
+c-file src/combat_core/battle_effect001_asset.c g_BattleEffect001Asset
 c-file src/combat_core/init_battle_display.c InitBattleDisplay
 c-file src/combat_core/setup_battle_roster.c SetupBattleRoster
 c-file src/combat_core/restore_fighter_actors.c RestoreFighterActors
@@ -518,6 +542,18 @@ c-file src/combat_core/track_spell_familiarity.c TrackSpellFamiliarity
 c-file src/combat_core/dispatch_pending_action.c DispatchPendingAction
 
 # Combat dialog (battle menus and messages)
+c-file src/combat_dialog/battle_top_menu_text.c g_adwBattleTopMenuTextIds
+c-file src/combat_dialog/battle_hud_assets.c g_aPartyFaceAssets
+c-file src/combat_dialog/battle_bg_controls.c g_dwBattleFloorBgControl
+c-file src/combat_dialog/fighter_spell_menus.c g_aabFighterSpellMenu
+c-file src/combat_dialog/battle_backgrounds.c g_aBattleBackgroundPairs
+c-file src/combat_dialog/battle_music.c g_abBattleMusicByRoom
+c-file src/combat_dialog/menu_sprite003_asset.c g_MenuSprite003Asset
+c-file src/combat_dialog/battle_scanline_effects.c g_aBattleScanlineEffects
+c-file src/combat_dialog/battle_menu_input_handlers.c g_apfnBattleMenuConfirmHandlers
+c-file src/combat_dialog/battle_message_text.c g_adwFighterActionTextIds
+c-file src/combat_dialog/spell_leveling.c g_abSpellMaxLevel
+c-file src/combat_dialog/battle_status_text.c g_adwFighterCantMoveTextIds
 c-file src/combat_dialog/tick_battle_menu_input.c TickBattleMenuInput
 c-file src/combat_dialog/open_battle_top_menu.c OpenBattleTopMenu
 c-file src/combat_dialog/open_special_move_menu.c OpenSpecialMoveMenu
@@ -589,6 +625,10 @@ c-file src/combat_effects_hblank/restore_battle_hud_panel_tilemap.c RestoreBattl
 c-file src/combat_effects_hblank/draw_battle_message_line.c DrawBattleMessageLine_unused
 
 # Combat end (combat result screen mode)
+c-file src/combat_end/combat_result.globals.c g_dwCombatResultBg2Control
+c-file src/combat_end/combat_result_assets.globals.c g_CombatResultCoinAsset
+c-file src/combat_end/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects
+c-file src/combat_end/combat_result_level_up_sparkle.globals.c g_abCombatResultLevelUpSparkleAnim
 c-file src/combat_end/initialize_combat_result.c InitializeCombatResult
 c-file src/combat_end/update_combat_result.c UpdateCombatResult
 c-file src/combat_end/initialize_combat_result_xp.c InitializeCombatResultXp
@@ -600,6 +640,26 @@ c-file src/combat_end/grant_party_member_xp.c GrantPartyMemberXp
 c-file src/combat_end/start_combat_result_palette_effect.c StartCombatResultPaletteEffect
 
 # Combat fighter (battle actors, stats, actions and damage)
+c-file src/combat_fighter/monster_graphics_table.c g_pMonsterGraphicsTable
+c-file src/combat_fighter/fighter_hurt_sounds.c g_aabFighterHurtSoundIds
+c-file src/combat_fighter/monsters.c MonsterTable
+c-file src/combat_fighter/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
+c-file src/combat_fighter/monster_attack_offsets.c g_aMonsterAttackOffset
+c-file src/combat_fighter/monster_drop_table.c g_pMonsterDropTable
+c-file src/combat_fighter/harry_levels.c g_pHarryLevelTable
+c-file src/combat_fighter/ron_levels.c g_pRonLevelTable
+c-file src/combat_fighter/hermione_levels.c g_pHermioneLevelTable
+c-file src/combat_fighter/character_level_tables.c g_apCharacterLevelTables
+c-file src/combat_fighter/random_encounters.c g_aRandomEncounters
+c-file src/combat_fighter/scripted_encounters.c g_aScriptedEncounters
+c-file src/combat_fighter/fighter_anim_table.c g_aFighterAnimTable
+c-file src/combat_fighter/battle_effect_id_tables.c g_abHarryCardEffectId
+c-file src/combat_fighter/defeat_warp_rooms.c g_aDefeatWarpRoomId
+c-file src/combat_fighter/fighter_anim_data.c g_aFighterAnimDataTable
+c-file src/combat_fighter/monster_anim_data.c g_pMonsterAnimFrameTable
+c-file src/combat_fighter/spell_effect_scripts.c g_abSpellEffectScriptId
+c-file src/combat_fighter/spell_power.c g_awSpellPowerBase
+c-file src/combat_fighter/party_slot_pos.c g_aPartySlotPos
 c-file src/combat_fighter/reset_character_to_level.c ResetCharacterToLevel
 c-file src/combat_fighter/init_player_battle_actor.c InitPlayerBattleActor
 c-file src/combat_fighter/init_monster_battle_actor.c InitMonsterBattleActor
@@ -646,6 +706,14 @@ c-file src/combat_fighter/post_action_battle_check.c PostActionBattleCheck
 c-file src/combat_fighter/play_fighter_hurt_sound.c PlayFighterHurtSound
 
 # Combat fx (battle effect scripts and emitters)
+c-file src/combat_fx/effect_scanline_tables.c g_adwEffectBgControls
+c-file src/combat_fx/rain_stream_lists.c g_RainStreakList
+c-file src/combat_fx/effect_slot_positions.c g_aEffectOrbitParams
+c-file src/combat_fx/effect_assets.c g_aEffectActorAssets
+c-file src/combat_fx/effect_bg_records.c g_aEffectBgRecords
+c-file src/combat_fx/script_opcode_lengths.c g_abScriptOpcodeLengths
+c-file src/combat_fx/effect_anim_data.c g_abFighterHurtLoopAnimData
+c-file src/combat_fx/effect_scripts.c g_apEffectScripts
 c-file src/combat_fx/trigger_battle_effect.c TriggerBattleEffect
 c-file src/combat_fx/create_effect_script_actor.c CreateEffectScriptActor
 c-file src/combat_fx/interpret_actor_script.c InterpretActorScript
@@ -677,6 +745,7 @@ c-file src/combat_fx_script/effect_scanline_enable_blend.c EffectScanlineEnableB
 c-file src/combat_fx_script/effect_scanline_stop_hblank_dma.c EffectScanlineStopHBlankDma
 
 # Combat gauge (SP gauge)
+c-file src/combat_gauge/sp_gauge_gfx.c g_aSpGaugeGfx
 c-file src/combat_gauge/spawn_sp_gauge.c SpawnSpGauge
 c-file src/combat_gauge/tick_sp_gauge.c TickSpGauge
 c-file src/combat_gauge/destroy_slot_sp_gauge.c DestroySlotSpGauge
@@ -689,6 +758,8 @@ c-file src/combo_info/update_card_combo_description.c UpdateCardComboDescription
 c-file src/combo_info/exit_card_combo_description.c ExitCardComboDescription
 
 # Commands? (room script VM: opcode handlers and interpreter)
+c-file src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
+c-file src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
 c-file src/commands/room_script_op_show_minigame_unlocked_message.c RoomScriptOpShowMinigameUnlockedMessage
 c-file src/commands/room_script_op_queue_tile_actor_move.c RoomScriptOpQueueTileActorMove
 c-file src/commands/room_script_op_set_all_queued_move_params.c RoomScriptOpSetAllQueuedMoveParams
@@ -787,7 +858,11 @@ c-file src/commands/compare_and_branch_room_script.c CompareAndBranchRoomScript
 c-file src/crc/compute_crc8.c ComputeCrc8
 c-file src/crc/compute_joybus_checksum.c ComputeJoybusChecksum
 
+# Conversation
+c-file src/conversation/dialog_blocks.c g_adwDialogBlockTextIds
+
 # Credits/cutscenes
+c-file src/credits_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
 c-file src/credits_cutscene/initialize_credits.c InitializeCredits
 c-file src/credits_cutscene/update_credits.c UpdateCredits
 c-file src/credits_cutscene/finish_linear_cutscene.c FinishLinearCutscene
@@ -797,6 +872,7 @@ c-file src/credits_cutscene/initialize_linear_cutscene.c InitializeLinearCutscen
 c-file src/credits_cutscene/update_linear_cutscene.c UpdateLinearCutscene
 
 # Cursor (menu cursor emitter and resource deltas)
+c-file src/cursor/cursor.globals.c g_MenuCursor8bppAsset
 c-file src/cursor/spawn_menu_cursor_actor.c SpawnMenuCursorActor
 c-file src/cursor/create_menu_cursor_emitter.c CreateMenuCursorEmitter
 c-file src/cursor/release_menu_cursor.c ReleaseMenuCursor
@@ -813,6 +889,7 @@ c-file src/decompress/apply_resource_delta_pass_unused.c ApplyResourceDeltaPassU
 c-file src/decompress/apply_resource_delta_pass.c ApplyResourceDeltaPass
 
 # Default menu
+c-file src/default_menu/default_menu.globals.c g_dwCommonBg0Control
 c-file src/default_menu/initialize_menu_screen.c InitializeMenuScreen
 c-file src/default_menu/load_menu_screen_frame.c LoadMenuScreenFrame
 c-file src/default_menu/load_menu_screen_overlay.c LoadMenuScreenOverlay
@@ -823,6 +900,7 @@ c-file src/default_menu/exit_menu_screen.c ExitMenuScreen
 c-file src/default_menu/draw_menu_screen_title.c DrawMenuScreenTitle
 
 # Dementors (Harry vs Dementors minigame)
+c-file src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
 c-file src/dementor_minigame/initialize_dementor_minigame.c InitializeDementorMinigame
 c-file src/dementor_minigame/update_dementor_minigame.c UpdateDementorMinigame
 c-file src/dementor_minigame/spawn_dementor_minigame_actors.c SpawnDementorMinigameActors
@@ -851,11 +929,13 @@ c-file src/dementor_minigame/get_dementor_minigame_round_points.c GetDementorMin
 c-file src/dementor_minigame/launch_dementor_minigame_dementor.c LaunchDementorMinigameDementor
 
 # Developer logos
+c-file src/dev_logos/startup.globals.c g_dwStartupBg3Control
 c-file src/dev_logos/initialize_startup.c InitializeStartup
 c-file src/dev_logos/update_startup.c UpdateStartup
 c-file src/dev_logos/exit_startup.c ExitStartup
 
 # Dialog
+c-file src/dialog/dialog.globals.c g_aDialogScanlineEffects
 c-file src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file src/dialog/initialize_dialog.c InitializeDialog
 c-file src/dialog/update_dialog_box.c UpdateDialogBox
@@ -889,16 +969,20 @@ c-file src/display/set_dispcnt_mode.c SetDispcntMode
 c-file src/display/set_dispcnt_except_mode.c SetDispcntExceptMode
 
 # Ending cutscene (hippogriff-flies-into-air cutscene mode)
+c-file src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
 c-file src/ending_cutscene/initialize_hippogriff_flies_into_air_cutscene.c InitializeHippogriffFliesIntoAirCutscene
 c-file src/ending_cutscene/update_hippogriff_flies_into_air_cutscene.c UpdateHippogriffFliesIntoAirCutscene
 c-file src/ending_cutscene/exit_hippogriff_flies_into_air_cutscene.c ExitHippogriffFliesIntoAirCutscene
 
 # Event actors (room script effect actors)
+c-file src/event_actors/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
+c-file src/event_actors/script_effect_actor_ticks.c g_apfnScriptEffectActorTicks
 c-file src/event_actors/tick_camera_cutaway_actor.c TickCameraCutawayActor
 c-file src/event_actors/tick_delayed_respawn_actor.c TickDelayedRespawnActor
 c-file src/event_actors/spawn_script_effect_actor.c SpawnScriptEffectActor
 
 # Flipbook animations
+c-file src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
 c-file src/flipbook/add_room_tile_animation.c AddRoomTileAnimation
 c-file src/flipbook/tick_room_tile_animations.c TickRoomTileAnimations
 c-file src/flipbook/apply_room_tile_animation_frame.c ApplyRoomTileAnimationFrame
@@ -917,6 +1001,7 @@ c-file src/flipbook/get_room_tile_anim_frame_block_pos.c GetRoomTileAnimFrameBlo
 c-file src/flipbook/tick_room_tile_animation_actor.c TickRoomTileAnimationActor
 
 # Font (text rendering)
+c-file src/font/load_font_descriptor.globals.c g_aFontTable
 c-file src/font/insert_text_line_breaks.c InsertTextLineBreaks
 c-file src/font/draw_text_line.c DrawTextLine
 c-file src/font/draw_string_aligned.c DrawStringAligned
@@ -948,6 +1033,7 @@ c-file src/font/get_glyph_width.c GetGlyphWidth
 c-file src/font/set_text_macro4_string.c SetTextMacro4String
 
 # Game state (game state save and money)
+c-file src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
 c-file src/game_state/deserialize_game_state.c DeserializeGameStateFromSaveBuffer
 c-file src/game_state/serialize_game_state.c SerializeGameStateToSaveBuffer
 c-file src/game_state/noop_init.c NoopInit
@@ -962,6 +1048,7 @@ c-file src/game_state/add_sickles.c AddSickles
 c-file src/game_state/get_sickles.c GetSickles
 
 # GameCube (Joybus transport)
+c-file src/gamecube/joybus_error_strings.c g_apJoybusErrorStrings
 c-file src/gamecube/handle_joybus_interrupt.c HandleJoybusInterrupt
 c-file src/gamecube/handle_joybus_command_word.c HandleJoybusCommandWord
 c-file src/gamecube/handle_joybus_transmit.c HandleJoybusTransmit
@@ -976,6 +1063,9 @@ c-file src/gamecube/tick_joybus_timeout.c TickJoybusTimeout
 c-file src/gamecube/handle_joybus_reset.c HandleJoybusReset
 
 # Hedwig minigame (Owl Care Kit mode)
+c-file src/hedwig_minigame/owl_care_kit.globals.c g_aOwlCareSprites
+c-file src/hedwig_minigame/owl_care_anims.c g_abOwlCareAnim00
+c-file src/hedwig_minigame/owl_cage_door_anims.c g_abOwlCageDoorAnim0
 c-file src/hedwig_minigame/initialize_owl_care_kit_screen.c InitializeOwlCareKitScreen
 c-file src/hedwig_minigame/handle_owl_care_kit_screen_tick.c HandleOwlCareKitScreenTick
 c-file src/hedwig_minigame/process_owl_care_kit_tick.c ProcessOwlCareKitTick
@@ -1017,6 +1107,12 @@ c-file src/hedwig_minigame/tick_owl_thought_bubble.c TickOwlThoughtBubble
 c-file src/hedwig_minigame/destroy_owl_cleaner.c DestroyOwlCleaner
 
 # Hero
+c-file src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
+c-file src/hero/party_focus_gfx.c g_PartyLumosGfx
+c-file src/hero/field_spell_portrait_assets.c g_aFieldSpellPortraitAssets
+c-file src/hero/party_assets.c g_aPartyWalkAssets
+c-file src/hero/field_spells.c g_aFieldSpellIconAssets
+c-file src/hero/party_anims.c g_abPartyStandFrames
 c-file src/hero/spawn_player_actor.c SpawnPlayerActor
 c-file src/hero/spawn_party_follower_actor.c SpawnPartyFollowerActor
 c-file src/hero/catch_up_to_harry_level.c CatchUpToHarryLevel
@@ -1068,6 +1164,7 @@ c-file src/huffman/build_huff_tree_tile_offsets.c BuildHuffTreeTileOffsets
 c-file src/huffman/install_bg_tile_codec.c InstallBgTileCodec
 
 # Initials? (high score name entry mode)
+c-file src/initials/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
 c-file src/initials/initialize_high_score_name_entry_screen.c InitializeHighScoreNameEntryScreen
 c-file src/initials/update_high_score_name_entry.c UpdateHighScoreNameEntry
 c-file src/initials/draw_high_score_name_entry_keypad.c DrawHighScoreNameEntryKeypad
@@ -1078,6 +1175,7 @@ c-file src/initials/draw_high_score_name_entry_preview.c DrawHighScoreNameEntryP
 c-file src/initials/clear_high_score_name_entry_tail.c ClearHighScoreNameEntryTail
 
 # Input
+c-file src/input/dpad_direction.c g_abDpadDirection
 c-file src/input/update_key_input.c UpdateKeyInput
 c-file src/input/step_scroll_list_selection.c StepScrollListSelection
 c-file src/input/step_scroll_grid_row.c StepScrollGridRow
@@ -1106,6 +1204,7 @@ c-file src/instructions_screen/update_topic_screen.c UpdateTopicScreen
 c-file src/instructions_screen/exit_topic_screen.c ExitTopicScreen
 
 # Interrupt (interrupt handlers)
+c-file src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
 c-file src/interrupts/handle_vblank_interrupt.c HandleVBlankInterrupt
 c-file src/interrupts/init_interrupt_system.c InitInterruptSystem
 c-file src/interrupts/enable_interrupts.c EnableInterrupts
@@ -1134,6 +1233,8 @@ c-file src/invisible_actors/handle_trigger_zone_touch.c HandleTriggerZoneTouch
 c-file src/invisible_actors/handle_trigger_zone_world_actor_touch.c HandleTriggerZoneWorldActorTouch
 
 # Items
+c-file src/items/actor_scale_steps.c g_adwActorScaleSteps
+c-file src/items/items.c g_pItemTable
 c-file src/items/grant_random_chocolate_frog_card.c GrantRandomChocolateFrogCard
 c-file src/items/equip_item_in_slot.c EquipItemInSlot
 c-file src/items/can_fighter_equip_item.c CanFighterEquipItem
@@ -1173,6 +1274,7 @@ c-file src/items/set_actor_scale_step.c SetActorScaleStep
 c-file src/items/get_party_member_name.c GetPartyMemberName
 
 # Items list
+c-file src/items_list/items_list.globals.c g_abItemListPlaceholderText
 c-file src/items_list/tick_item_list.c TickItemList
 c-file src/items_list/set_item_list_translucent.c SetItemListTranslucent
 c-file src/items_list/spawn_item_list_actors.c SpawnItemListActors
@@ -1202,6 +1304,7 @@ c-file src/items_list/notify_item_list_cursor_move.c NotifyItemListCursorMove
 c-file src/items_list/spawn_item_list_scroll_arrows.c SpawnItemListScrollArrows
 
 # Hogwarts map (original name not known, maybe "landmarks"?)
+c-file src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
 c-file src/landmarks/initialize_unused_hogwarts_map_screen.c InitializeUnusedHogwartsMapScreen
 c-file src/landmarks/update_unused_hogwarts_map_screen.c UpdateUnusedHogwartsMapScreen
 c-file src/landmarks/slide_in_unused_hogwarts_map_background.c SlideInUnusedHogwartsMapBackground
@@ -1211,6 +1314,7 @@ c-file src/landmarks/draw_unused_hogwarts_map_selection.c DrawUnusedHogwartsMapS
 c-file src/landmarks/show_first_unused_hogwarts_map_background.c ShowFirstUnusedHogwartsMapBackground
 
 # Language (language select mode)
+c-file src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
 c-file src/language_select/initialize_language_select.c InitializeLanguageSelect
 c-file src/language_select/update_language_select.c UpdateLanguageSelect
 c-file src/language_select/exit_language_select.c ExitLanguageSelect
@@ -1236,6 +1340,7 @@ c-file src/list/list_push_head.c List_PushHead
 c-file src/list/list_remove.c List_Remove
 
 # Lupin (Lupin potion cutscene mode)
+c-file src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_LupinPotionShadowGfx
 c-file src/lupin_potion_cutscene/initialize_lupin_potion_cutscene.c InitializeLupinPotionCutscene
 c-file src/lupin_potion_cutscene/update_lupin_potion_cutscene.c UpdateLupinPotionCutscene
 c-file src/lupin_potion_cutscene/load_lupin_potion_cutscene_bgs.c LoadLupinPotionCutsceneBgs
@@ -1258,6 +1363,14 @@ c-file src/lupin_potion_cutscene/lupin_potion_panel_scanline_callback.c LupinPot
 c-file src/main.c AgbMain
 
 # Map (overworld)
+c-file src/map/unused_overworld_shadow_gfx.c g_UnusedOverworldShadowGfx
+c-file src/map/overworld.globals.c g_dwBg2Control
+c-file src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
+c-file src/map/room_table.c g_aRoomTable
+c-file src/map/room_quest_music_override.c g_adwRoomQuestMusicOverride
+c-file src/map/room_color_cycles.c g_ColorCyclesDefault
+c-file src/map/unused_map_data.c g_abUnusedMapData
+c-file src/map/wandering_monster.globals.c g_adwEncounterKindTerrainTypes
 c-file src/map/initialize_overworld.c InitializeOverworld
 c-file src/map/exit_overworld_screen.c ExitOverworldScreen
 c-file src/map/load_room_alt_presentation_palette.c LoadRoomAltPresentationPalette
@@ -1306,6 +1419,7 @@ c-file src/map_experience/grant_party_experience.c GrantPartyExperience
 c-file src/map_experience/tick_experience_popup.c TickExperiencePopup
 
 # Math
+c-file src/math/sine_table.c g_anSineTable
 c-file src/math/install_iwram_divide_routines.c InstallIwramDivideRoutines
 c-file src/math/iwram_divide_signed_quotient.c iwramDivideSignedQuotient
 c-file src/math/iwram_divide_signed_remainder.c iwramDivideSignedRemainder
@@ -1357,6 +1471,7 @@ c-file src/mem/merge_into_prev_free_block.c MergeIntoPrevFreeBlock
 c-file src/mem/absorb_next_free_block.c AbsorbNextFreeBlock
 
 # Modes (possibly sorted as "Menus")
+c-file src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTable
 c-file src/modes/tick_game_mode_stack.c TickGameModeStack
 c-file src/modes/init_game_mode_stack.c InitGameModeStack
 c-file src/modes/get_current_game_mode.c GetCurrentGameMode
@@ -1375,6 +1490,7 @@ c-file src/menu_icon/unregister_menu_icon_actor.c UnregisterMenuIconActor
 c-file src/menu_icon/handle_game_mode_none_noop.c HandleGameModeNoneNoOp
 
 # Minigame/Difficulty? (minigame difficulty select)
+c-file src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
 c-file src/minigame_difficulty_select/handle_high_score_difficulty_menu_tick.c HandleHighScoreDifficultyMenuTick
 c-file src/minigame_difficulty_select/draw_minigame_difficulty_row.c DrawMinigameDifficultyRow
 c-file src/minigame_difficulty_select/draw_minigame_difficulty_high_score.c DrawMinigameDifficultyHighScore
@@ -1382,11 +1498,13 @@ c-file src/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficult
 c-file src/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
 
 # Minigame/HighScore? (minigame high score helpers)
+c-file src/minigame_high_score/minigame_high_score.globals.c g_MinigameTextPanelCapAsset
 c-file src/minigame_high_score/sync_save_options_pausing_krawall.c SyncSaveOptionsPausingKrawall
 c-file src/minigame_high_score/spawn_minigame_text_panel.c SpawnMinigameTextPanel
 c-file src/minigame_high_score/free_minigame_text_panel.c FreeMinigameTextPanel
 
 # Minigame/Menu? (minigame menu)
+c-file src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
 c-file src/minigame_menu/handle_minigame_select_menu_confirm.c HandleMinigameSelectMenuConfirm
 c-file src/minigame_menu/handle_minigame_menu_selection.c HandleMinigameMenuSelection
 c-file src/minigame_menu/draw_minigame_select_menu.c DrawMinigameSelectMenu
@@ -1399,6 +1517,7 @@ c-file src/minigame_menu/swap_minigame_selection.c SwapMinigameSelection
 c-file src/minigame_menu/tick_minigame_switch_fade_in.c TickMinigameSwitchFadeIn
 
 # Mode7 (perspective floor on affine BG2)
+c-file src/mode7/mode7.globals.c g_aFloorScanlineEffects
 c-file src/mode7/update_floor_affine_table.c UpdateFloorAffineTable
 c-file src/mode7/build_floor_affine_table.c BuildFloorAffineTable
 c-file src/mode7/noop_init3.c NoopInit3
@@ -1414,6 +1533,8 @@ c-file src/mode7/free_floor_effect.c FreeFloorEffect
 c-file src/mode7/start_floor_affine_hblank_dma.c StartFloorAffineHBlankDma
 
 # Move? (terrain collision and camera focus)
+c-file src/move/terrain_collision.globals.c g_abOppositeFacing
+c-file src/move/field_spell_effects.globals.c g_aFieldSpellCastAssets
 c-file src/move/resolve_actor_terrain.c ResolveActorTerrain
 c-file src/move/terrain_collision.c GetCollisionTypeAtPixel
 c-file src/move/apply_room_switch_effect.c ApplyRoomSwitchEffect
@@ -1435,6 +1556,13 @@ c-file src/move/tick_field_spell_companion_actor.c TickFieldSpellCompanionActor
 c-file src/move/play_field_spell_hit_sound.c PlayFieldSpellHitSound
 
 # NPC Actor
+c-file src/npc_actor/spawn_npc_actor.globals.c g_adwNpcAnimRows
+c-file src/npc_actor/actor_type_assets.c g_aActorTypeAssets
+c-file src/npc_actor/npc_facing_frames.c g_abNpcFacingFrames
+c-file src/npc_actor/npc_walk_anims.c g_aaabNpcWalkAnims
+c-file src/npc_actor/npc_script_anims.c g_aabNpcScriptAnims
+c-file src/npc_actor/character_npc_kinds.c g_abCharacterNpcKinds
+c-file src/npc_actor/shadow_actor_gfx.c g_ShadowActorGfx
 c-file src/npc_actor/spawn_npc_actor.c SpawnNpcActor
 c-file src/npc_actor/spawn_character_npc_actor.c SpawnCharacterNpcActor
 c-file src/npc_actor/tick_npc_actor.c TickNpcActor
@@ -1444,6 +1572,7 @@ c-file src/npc_actor/start_npc_script_animation.c StartNpcScriptAnimation
 c-file src/npc_actor/tick_shadow_actor.c TickShadowActor
 
 # OAM submission
+c-file src/oam/hidden_oam_entry.c g_HiddenOamEntry
 c-file src/oam/submit_oam_attrs_nudged.c SubmitOamAttrsNudged
 c-file src/oam/init_oam_system.c InitOamSystem
 c-file src/oam/alloc_oam_entry.c AllocOamEntry
@@ -1462,6 +1591,7 @@ c-file src/oam/show_oam_entry.c ShowOamEntry
 c-file src/oam/hide_oam_entry.c HideOamEntry
 
 # Owl selection
+c-file src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
 c-file src/owl_name_select/initialize_owl_name_select.c InitializeOwlNameSelect
 c-file src/owl_name_select/update_owl_name_select.c UpdateOwlNameSelect
 c-file src/owl_name_select/step_owl_name_select_choice.c StepOwlNameSelectChoice
@@ -1489,6 +1619,8 @@ c-file src/palette/is_obj_palette_slot_reserved.c IsObjPaletteSlotReserved
 c-file src/palette/find_obj_palette_slot.c FindObjPaletteSlot
 
 # Particles
+c-file src/particles/opposite_directions.c g_abOppositeDirection8
+c-file src/particles/oam_dims_attrs.c g_abOamSizeForDims
 c-file src/particles/load_particle_gfx.c LoadParticleGfx
 c-file src/particles/reload_particle_gfx.c ReloadParticleGfx
 c-file src/particles/alloc_particle_emitter.c AllocParticleEmitter
@@ -1515,6 +1647,7 @@ c-file src/particles/update_particle_collision.c UpdateParticleCollision
 c-file src/particles/tick_actor_particle_emitters.c TickActorParticleEmitters
 
 # Patronus (Harry Patronus cutscene mode)
+c-file src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
 c-file src/patronus_cutscene/patronus_graphics.c g_apPatronusGraphics
 c-file src/patronus_cutscene/initialize_harry_patronus_cutscene.c InitializeHarryPatronusCutscene
 c-file src/patronus_cutscene/update_harry_patronus_cutscene.c UpdateHarryPatronusCutscene
@@ -1522,6 +1655,7 @@ c-file src/patronus_cutscene/exit_harry_patronus_cutscene.c ExitHarryPatronusCut
 c-file src/patronus_cutscene/handle_harry_patronus_cutscene_vblank.c HandleHarryPatronusCutsceneVBlank
 
 # Pause (in-game menu and list menu)
+c-file src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
 c-file src/pause_menu/update_in_game_menu.c UpdateInGameMenu
 c-file src/pause_menu/build_list_menu.c BuildListMenu
 c-file src/pause_menu/initialize_in_game_menu.c InitializeInGameMenu
@@ -1545,6 +1679,8 @@ c-file src/pause_menu/noop_status_equip_selected.c NoopStatusEquipSelected
 c-file src/pause_menu/noop_status_equip_returned.c NoopStatusEquipReturned
 
 # Pop-it minigame (wizard cracker pop-it minigame)
+c-file src/pop_it_minigame/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
+c-file src/pop_it_minigame/wizard_cracker_pop_it_anims.c g_aWizardCrackerPopItPopAssets
 c-file src/pop_it_minigame/initialize_wizard_cracker_pop_it_minigame.c InitializeWizardCrackerPopItMinigame
 c-file src/pop_it_minigame/update_wizard_cracker_pop_it_minigame.c UpdateWizardCrackerPopItMinigame
 c-file src/pop_it_minigame/clamp_wizard_cracker_pop_it_cursor.c ClampWizardCrackerPopItCursor
@@ -1581,6 +1717,9 @@ c-file src/pop_it_minigame/start_wizard_cracker_pop_it_palette_effects.c StartWi
 c-file src/pop_it_minigame/quit_wizard_cracker_pop_it_minigame.c QuitWizardCrackerPopItMinigame
 
 # Pumpkin Juice Pouring minigame
+c-file src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
+c-file src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
+c-file src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
 c-file src/pouring_minigame/initialize_serve_pumpkin_juice_minigame.c InitializeUnusedServePumpkinJuiceMinigame
 c-file src/pouring_minigame/update_serve_pumpkin_juice_minigame.c UpdateUnusedServePumpkinJuiceMinigame
 c-file src/pouring_minigame/tick_serve_pumpkin_juice_full_goblet.c TickServePumpkinJuiceFullGoblet
@@ -1608,11 +1747,14 @@ c-file src/pouring_minigame/spawn_serve_pumpkin_juice_puff.c SpawnServePumpkinJu
 c-file src/pouring_minigame/tick_serve_pumpkin_juice_puff.c TickServePumpkinJuicePuff
 
 # PressurePad? (push-reset button actor)
+c-file src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_PushResetButtonSprite
 c-file src/pressure_pad_actor/spawn_push_reset_button_actor.c SpawnPushResetButtonActor
 c-file src/pressure_pad_actor/tick_push_reset_button_actor.c TickPushResetButtonActor
 c-file src/pressure_pad_actor/handle_push_reset_button_touch.c HandlePushResetButtonTouch
 
 # Profile/Character? (pause subscreen: status/equip character select)
+c-file src/pscreen_character/unused_party_asset_records.c g_aUnusedPartyAssetRecords
+c-file src/pscreen_character/status_equip_character_select.globals.c g_adwStatusEquipCharacterNameTextIds
 c-file src/pscreen_character/update_status_equip_character_select.c UpdateStatusEquipCharacterSelect
 c-file src/pscreen_character/draw_status_equip_character_stats.c DrawStatusEquipCharacterStats
 c-file src/pscreen_character/begin_status_equip_character_select_screen.c BeginStatusEquipCharacterSelectScreen
@@ -1628,6 +1770,7 @@ c-file src/pscreen_character/status_equip_character_to_slot.c StatusEquipCharact
 c-file src/pscreen_character/status_equip_slot_to_column.c StatusEquipSlotToColumn
 
 # Profile/Connect? (pause subscreen: connectivity)
+c-file src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
 c-file src/pscreen_connectivity/update_connectivity_menu.c HandleConnectivityMenuTick
 c-file src/pscreen_connectivity/update_confirm_trade_screen.c UpdateConfirmTradeScreen
 c-file src/pscreen_connectivity/initialize_connectivity_menu.c InitializeConnectivityMenu
@@ -1645,11 +1788,14 @@ c-file src/pscreen_equip/select_status_equip_slot_type.c SelectStatusEquipSlotTy
 c-file src/pscreen_equip/equip_status_equip_item_selection.c EquipStatusEquipItemSelection
 
 # Profile/Folio? (pause subscreen: folios)
+c-file src/pscreen_folio/folios.globals.c g_aFoliosEntries
 c-file src/pscreen_folio/update_folios.c UpdateFolios
 c-file src/pscreen_folio/initialize_folios.c InitializeFolios
 c-file src/pscreen_folio/exit_folios.c ExitFolios
 
 # Profile/FolioBruti? (pause subscreen: Folio Bruti)
+c-file src/pscreen_folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control
+c-file src/pscreen_folio_bruti/folio_bruti_anims.c g_aFolioBrutiCursorAnim
 c-file src/pscreen_folio_bruti/initialize_folio_bruti.c InitializeFolioBruti
 c-file src/pscreen_folio_bruti/update_folio_bruti_grid_cursor.c UpdateFolioBrutiGridCursor
 c-file src/pscreen_folio_bruti/deserialize_monster_dex_levels.c DeserializeMonsterDexLevels
@@ -1665,6 +1811,9 @@ c-file src/pscreen_folio_bruti/clear_monster_dex_new_flags.c ClearMonsterDexNewF
 c-file src/pscreen_folio_bruti/draw_folio_bruti_spell_labels.c DrawFolioBrutiSpellLabels
 
 # Profile/FolioUniversitas? (pause subscreen: Folio Universitas)
+c-file src/pscreen_folio_universitas/folio_universitas_anims.c g_aFolioUniversitasCursorAnim
+c-file src/pscreen_folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
+c-file src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFolioCardThumbnails
 c-file src/pscreen_folio_universitas/initialize_folio_universitas.c InitializeFolioUniversitas
 c-file src/pscreen_folio_universitas/update_folio_universitas.c UpdateFolioUniversitas
 c-file src/pscreen_folio_universitas/increment_folio_universitas_card.c IncrementFolioUniversitasCard
@@ -1691,6 +1840,7 @@ c-file src/pscreen_folio_universitas/clear_folio_universitas_new_cards.c ClearFo
 c-file src/pscreen_folio_universitas/is_folio_universitas_card_unavailable.c IsFolioUniversitasCardUnavailable
 
 # Profile/GameCube? (pause subscreen: GameCube link)
+c-file src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
 c-file src/pscreen_gamecube/initialize_gamecube_link.c InitializeGameCubeLink
 c-file src/pscreen_gamecube/update_gamecube_link.c UpdateGameCubeLink
 c-file src/pscreen_gamecube/update_gamecube_link_status_text.c UpdateGameCubeLinkStatusText
@@ -1706,6 +1856,8 @@ c-file src/pscreen_gamecube/stage_gamecube_test_pattern.c StageGameCubeTestPatte
 c-file src/pscreen_gamecube/stage_gamecube_status_byte.c StageGameCubeStatusByte
 
 # Profile/Help? (pause subscreen: help)
+c-file src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAssets
+c-file src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
 c-file src/pscreen_information/is_help_topic_unlocked.c IsHelpTopicUnlocked
 c-file src/pscreen_information/start_help_screen.c StartHelpScreen
 c-file src/pscreen_information/update_help.c UpdateHelp
@@ -1736,6 +1888,7 @@ c-file src/pscreen_item_count/draw_selected_quantity.c DrawSelectedQuantity
 c-file src/pscreen_item_count/close_quantity_select_screen.c CloseQuantitySelectScreen
 
 # Profile/Items? (pause subscreen: items)
+c-file src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
 c-file src/pscreen_items/update_items_item_select.c UpdateItemsItemSelect
 c-file src/pscreen_items/initialize_items_item_select.c InitializeItemsItemSelect
 c-file src/pscreen_items/exit_items_item_select.c ExitItemsItemSelect
@@ -1753,6 +1906,8 @@ c-file src/pscreen_items/set_item_use_item.c SetItemUseItem
 c-file src/pscreen_items/draw_item_use_result.c DrawItemUseResult
 
 # Profile/Save? (pause subscreen: game save)
+c-file src/pscreen_save/save_confirmation_menu.c g_SaveConfirmationMenuDefinition
+c-file src/pscreen_save/no_yes_entries.c g_aNoYesEntries
 c-file src/pscreen_save/initialize_game_save.c InitializeGameSave
 c-file src/pscreen_save/update_game_save.c UpdateGameSave
 c-file src/pscreen_save/resolve_save_confirmation.c ResolveSaveConfirmation
@@ -1762,6 +1917,9 @@ c-file src/pscreen_save/show_saving_message.c ShowSavingMessage
 c-file src/pscreen_save/show_game_saved_message.c ShowGameSavedMessage
 
 # Profile/Status? (pause subscreen: status)
+c-file src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
+c-file src/pscreen_status_equip/status_equip_slot_select.globals.c g_StatusEquipSlotFrameAsset
+c-file src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
 c-file src/pscreen_status_equip/update_status_equip_slot_select.c UpdateStatusEquipSlotSelect
 c-file src/pscreen_status_equip/spawn_status_character_actor.c SpawnStatusCharacterActor
 c-file src/pscreen_status_equip/draw_status_equip_stats_panel.c DrawStatusEquipStatsPanel
@@ -1777,6 +1935,7 @@ c-file src/pscreen_status_equip/update_status_equip_slot_cursor_anim.c UpdateSta
 c-file src/pscreen_status_equip/is_status_equip_slot_selectable.c IsStatusEquipSlotSelectable
 
 # Profile/Trade? (pause subscreen: card trade)
+c-file src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
 c-file src/pscreen_trade/initialize_card_trade.c InitializeCardTrade
 c-file src/pscreen_trade/update_card_trade.c UpdateCardTrade
 c-file src/pscreen_trade/reset_card_trade_after_link_loss.c ResetCardTradeAfterLinkLoss
@@ -1796,6 +1955,8 @@ c-file src/pscreen_trade/tick_card_trade_ready_icon.c TickCardTradeReadyIcon
 c-file src/pscreen_trade/leave_card_trade_screen.c LeaveCardTradeScreen
 
 # Profile/View? (pause subscreen: folio card details)
+c-file src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
+c-file src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAssets
 c-file src/pscreen_wizard_cards/initialize_folio_card_detail_screen.c InitializeFolioCardDetailScreen
 c-file src/pscreen_wizard_cards/handle_folio_card_detail_screen_tick.c HandleFolioCardDetailScreenTick
 c-file src/pscreen_wizard_cards/exit_folio_card_detail_screen.c ExitFolioCardDetailScreen
@@ -1829,11 +1990,14 @@ c-file src/random/next.c Mt19937Next
 c-file src/random/next2.c Mt19937Next2
 
 # Riser? (raising platform actor)
+c-file src/rising_platform_actor/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
 c-file src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlatformActor
 c-file src/rising_platform_actor/tick_raising_platform_actor.c TickRaisingPlatformActor
 c-file src/rising_platform_actor/handle_raising_platform_touch.c HandleRaisingPlatformTouch
 
 # Save (save stream and EEPROM access)
+c-file src/save/write_default_save_header.globals.c g_DefaultSaveHeader
+c-file src/save/write_default_save_options.globals.c g_DefaultSaveOptions
 c-file src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
 c-file src/save/pack_bit_pairs_to_save_stream.c PackBitPairsToSaveStream
 c-file src/save/load_save_slot_previews.c LoadSaveSlotPreviews
@@ -1866,6 +2030,7 @@ c-file src/save/eeprom_transfer_begin.c EepromTransferBegin
 c-file src/save/eeprom_transfer_end.c EepromTransferEnd
 
 # Screen (screen transitions)
+c-file src/screen_transitions/screen_transition_handlers.c g_apfnScreenTransitionsIn
 c-file src/screen_transitions/tick_alpha_blend_ramps.c TickAlphaBlendRamps
 c-file src/screen_transitions/transition_in_palette_fade.c TransitionInPaletteFade
 c-file src/screen_transitions/transition_out_palette_fade.c TransitionOutPaletteFade
@@ -1959,6 +2124,7 @@ c-file src/scroll/write_bg_tilemap_entry.c WriteBgTilemapEntry
 c-file src/scroll/release_bg_tile_row.c ReleaseBgTileRow
 
 # Serial (link cable)
+c-file src/serial/serial_magic.c g_adwSerialMagic
 c-file src/serial/process_serial_messages.c ProcessSerialMessages
 c-file src/serial/queue_serial_message.c QueueSerialMessage
 c-file src/serial/set_serial_callbacks.c SetSerialCallbacks
@@ -2000,6 +2166,7 @@ c-file src/serial/verify_serial_message_checksum.c VerifySerialMessageChecksum
 c-file src/serial/count_serial_connect_retries.c CountSerialConnectRetries
 
 # Sound (audio)
+c-file src/sound/sound_sections.c g_pKrawallIwramStart
 c-file src/sound/sound_samples.c g_aSoundSamples
 c-file src/sound/sound_variants.c g_aSoundVariants
 c-file src/sound/sound_config.c g_aSoundConfig
@@ -2031,6 +2198,7 @@ c-file src/sound/enable_krawall_timer_interrupt.c EnableKrawallTimerInterrupt
 c-file src/sound/on_krawall_event.c OnKrawallEvent
 
 # Spongify (spongify pad actor)
+c-file src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
 c-file src/spongify_pad_actor/spawn_spongify_pad_actor.c SpawnSpongifyPadActor
 c-file src/spongify_pad_actor/tick_spongify_pad_actor.c TickSpongifyPadActor
 c-file src/spongify_pad_actor/handle_spongify_pad_touch.c HandleSpongifyPadTouch
@@ -2040,6 +2208,8 @@ c-file src/spongify_pad_actor/init_spongify_pad_particle_emitter1.c InitSpongify
 c-file src/spongify_pad_actor/spawn_spongify_pad_effect.c SpawnSpongifyPadEffect
 
 # Store (Fred and George's shop)
+c-file src/store/shop_stock.c g_aShopStockMisc
+c-file src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
 c-file src/store/shop_stock_lists.c g_apShopStockLists
 c-file src/store/show_shop_main_menu.c ShowShopMainMenu
 c-file src/store/update_shop_main_menu.c UpdateShopMainMenu
@@ -2077,6 +2247,8 @@ c-file src/store/update_shop_message.c UpdateShopMessage
 c-file src/store/exit_shop_message.c ExitShopMessage
 
 # Tea Leaves Minigame
+c-file src/tea_leaves_minigame/divination_tea.globals.c g_DivinationTeaCupAnimData
+c-file src/tea_leaves_minigame/divination_tea_bg_animation.c g_DivinationTeaTable
 c-file src/tea_leaves_minigame/initialize_divination_tea_minigame.c InitializeDivinationTeaMinigame
 c-file src/tea_leaves_minigame/update_divination_tea_minigame.c UpdateDivinationTeaMinigame
 c-file src/tea_leaves_minigame/spawn_divination_tea_actors.c SpawnDivinationTeaActors
@@ -2114,6 +2286,8 @@ c-file src/text_actor/clear_text_actor_slots.c ClearTextActorSlots
 c-file src/text_actor/clear_text_actor_slot.c ClearTextActorSlot
 
 # Time skip (clock skip and Hogwarts up-night cutscene modes)
+c-file src/time_skip_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
+c-file src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
 c-file src/time_skip_cutscene/initialize_clock_skip_cutscene.c InitializeClockSkipCutscene
 c-file src/time_skip_cutscene/initialize_hogwarts_up_night_cutscene.c InitializeHogwartsUpNightCutscene
 c-file src/time_skip_cutscene/update_hogwarts_up_night_cutscene.c UpdateHogwartsUpNightCutscene
@@ -2132,6 +2306,9 @@ c-file src/timers/resume_game_timer.c ResumeGameTimer
 c-file src/timers/get_game_timer_value.c GetGameTimerValue
 
 # Time turner cutscene
+c-file src/timeturner_cutscene/harry_hermione_port_in_time_shadow_gfx.c g_HarryHermionePortInTimeShadowGfx
+c-file src/timeturner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
+c-file src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeCameraStart
 c-file src/timeturner_cutscene/initialize_harry_hermione_port_in_time_cutscene.c InitializeHarryHermionePortInTimeCutscene
 c-file src/timeturner_cutscene/update_harry_hermione_port_in_time_cutscene.c UpdateHarryHermionePortInTimeCutscene
 c-file src/timeturner_cutscene/load_harry_hermione_port_in_time_room.c LoadHarryHermionePortInTimeRoom
@@ -2139,6 +2316,10 @@ c-file src/timeturner_cutscene/spawn_harry_hermione_port_in_time_actor.c SpawnHa
 c-file src/timeturner_cutscene/exit_harry_hermione_port_in_time_cutscene.c ExitHarryHermionePortInTimeCutscene
 
 # Title (main menu)
+c-file src/title/build_date.c g_szBuildDate
+c-file src/title/main_menu.globals.c g_dwMainMenuBg3Control
+c-file src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
+c-file src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
 c-file src/title/initialize_main_menu.c InitializeMainMenu
 c-file src/title/update_main_menu.c UpdateMainMenu
 c-file src/title/move_main_menu_cursor.c MoveMainMenuCursor
@@ -2152,6 +2333,8 @@ c-file src/title/has_loadable_save_slot.c HasLoadableSaveSlot
 c-file src/title/position_main_menu_cursor_actor.c PositionMainMenuCursorActor
 
 # Title/Load
+c-file src/title_load/save_slot_bar_asset.c g_SaveSlotBarAsset
+c-file src/title_load/new_game_slot_confirmation_menu.c g_NewGameSlotConfirmationMenuDefinition
 c-file src/title_load/handle_save_load_continuation.c HandleSaveLoadContinuation
 c-file src/title_load/spawn_save_slot_actors.c SpawnSaveSlotActors
 c-file src/title_load/draw_save_slot.c DrawSaveSlot
@@ -2173,6 +2356,8 @@ c-file src/title_new/confirm_load_game_slot.c ConfirmLoadGameSlot
 c-file src/title_new/move_save_slot_cursor.c MoveSaveSlotCursor
 
 # Title/Options
+c-file src/title_options/options_menu_items.c g_aOptionsMenuItems
+c-file src/title_options/options_knob_anims.c g_aabOptionsKnobAnims
 c-file src/title_options/initialize_options.c InitializeOptions
 c-file src/title_options/update_options.c UpdateOptions
 c-file src/title_options/build_options_screen.c BuildOptionsScreen
@@ -2184,22 +2369,26 @@ c-file src/title_options/draw_options_row_label.c DrawOptionsRowLabel
 c-file src/title_options/draw_options_language_hint.c DrawOptionsLanguageHint
 
 # Torch (flame pillar actor)
+c-file src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
 c-file src/torch_actor/spawn_flame_pillar_actor.c SpawnFlamePillarActor
 c-file src/torch_actor/tick_flame_pillar_actor.c TickFlamePillarActor
 c-file src/torch_actor/ignite_flame_pillar.c IgniteFlamePillar
 c-file src/torch_actor/handle_flame_pillar_touch.c HandleFlamePillarTouch
 
 # Train (cool train cutscene mode)
+c-file src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
 c-file src/train_cutscene/initialize_cool_train_cutscene.c InitializeCoolTrainCutscene
 c-file src/train_cutscene/update_cool_train_cutscene.c UpdateCoolTrainCutscene
 c-file src/train_cutscene/exit_cool_train_cutscene.c ExitCoolTrainCutscene
 
 # Trigger actor (switch actor)
+c-file src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
 c-file src/trigger_actor/spawn_switch_actor.c SpawnSwitchActor
 c-file src/trigger_actor/tick_switch_actor.c TickSwitchActor
 c-file src/trigger_actor/handle_switch_actor_touch.c HandleSwitchActorTouch
 
 # Video (scanline effects)
+c-file src/video/default_scanline_effects.c g_aDefaultScanlineEffects
 c-file src/video/init_scanline_effects.c InitScanlineEffects
 c-file src/video/queue_scanline_effect_table.c QueueScanlineEffectTable
 c-file src/video/insert_scanline_effect_entry.c InsertScanlineEffectEntry
@@ -2232,6 +2421,7 @@ c-file src/vram/clear_obj_tile_alloc_bits.c ClearObjTileAllocBits
 c-file src/vram/clear_obj_tile_free_mask_bits.c ClearObjTileFreeMaskBits
 
 # Window (screen windows)
+c-file src/windows/screen_window_dispcnt_flags.c g_awScreenWindowDispcntFlags
 c-file src/windows/expand_screen_window_from_center.c ExpandScreenWindowFromCenter
 c-file src/windows/shrink_screen_window_to_center.c ShrinkScreenWindowToCenter
 c-file src/windows/hide_screen_window.c HideScreenWindow
@@ -2249,6 +2439,7 @@ c-file src/windows/set_screen_window1_rect.c SetScreenWindow1Rect
 c-file src/windows/tick_screen_window.c TickScreenWindow
 
 # World actors
+c-file src/world_actors/spawn_world_actor.globals.c g_aWorldActorSprites
 c-file src/world_actors/spawn_world_actor.c SpawnWorldActor
 c-file src/world_actors/tick_world_actor.c TickWorldActor
 c-file src/world_actors/tick_world_actor_player_control.c TickWorldActorPlayerControl
@@ -2295,199 +2486,198 @@ lib-object libc.a memcpy.o
 
 # ==== .rodata: read-only data ====
 
-c-file src/actor/direction_vectors.c g_aDirection4Vectors
-c-file src/actor/action_state_data.c g_abTurnAroundDirection
-c-file src/actor/direction_mirror_frames.c g_abDirection8MirrorFrames
-c-file src/actor/oam_shape_sizes.c g_aOamShapeSizes
-c-file src/area/room_actor_constructors.c g_apRoomActorConstructors
-c-file src/area/default_room_entry_points.c g_aDefaultRoomEntryPoints
-c-file src/background/background.globals.c g_adwUnusedBgControls
-c-file src/boggart_minigame/boggart_minigame.globals.c g_aBoggartStudentAssets
-c-file src/buckbeak_minigame/buckbeak_minigame.globals.c g_dwBuckbeakMinigameBg2Control
-c-file src/challenge_unused/unused_minigame.globals.c g_dwUnusedMinigameBg0Control
-c-file src/cheat/cheat.globals.c g_dwCheatBg0Control
-c-file src/cheat_level_and_quest/cheat_level_and_quest.globals.c g_abCheatLevelAndQuestMax
-c-file src/cheat_map/cheat_map.globals.c g_dwCheatMapBg0Control
-c-file src/cheat_party/cheat_party.globals.c g_dwCheatPartyBg0Control
-c-file src/cheat_portraits/cheat_portraits.globals.c g_dwCheatPortraitsBg1Control
-c-file src/cheat_portraits/portrait_table.c g_apPortraitTable
-c-file src/cheat_sound_test/cheat_sound_test.globals.c g_dwCheatSoundTestBg0Control
-c-file src/cheat_wizard_cards/cheat_wizard_cards.globals.c g_dwCheatWizardCardsBg2Control
-c-file src/cheat_wizard_cards/cheat_wizard_card_names.c sFamousWizardCardNames
-c-file src/chest_actor/spawn_chest_actor.globals.c g_RoomChestSprite
-c-file src/choose_party_member/choose_character_stages.globals.c g_abChooseCharacterStages
-c-file src/choose_party_member/choose_character_effects.globals.c g_aChooseCharacterScanlineEffects
-c-file src/color/unused_color_zeros.c g_abUnusedColorZeros
-c-file src/color/gamma_remap_tables.c g_abGammaNormalRemap
-c-file src/combat_core/battle_effect001_asset.c g_BattleEffect001Asset
-c-file src/combat_dialog/battle_top_menu_text.c g_adwBattleTopMenuTextIds
-c-file src/combat_dialog/battle_hud_assets.c g_aPartyFaceAssets
-c-file src/combat_dialog/battle_bg_controls.c g_dwBattleFloorBgControl
-c-file src/combat_dialog/fighter_spell_menus.c g_aabFighterSpellMenu
-c-file src/combat_dialog/battle_backgrounds.c g_aBattleBackgroundPairs
-c-file src/combat_dialog/battle_music.c g_abBattleMusicByRoom
-c-file src/combat_dialog/menu_sprite003_asset.c g_MenuSprite003Asset
-c-file src/combat_dialog/battle_scanline_effects.c g_aBattleScanlineEffects
-c-file src/combat_dialog/battle_menu_input_handlers.c g_apfnBattleMenuConfirmHandlers
-c-file src/combat_dialog/battle_message_text.c g_adwFighterActionTextIds
-c-file src/combat_dialog/spell_leveling.c g_abSpellMaxLevel
-c-file src/combat_dialog/battle_status_text.c g_adwFighterCantMoveTextIds
-c-file src/combat_end/combat_result.globals.c g_dwCombatResultBg2Control
-c-file src/combat_end/combat_result_assets.globals.c g_CombatResultCoinAsset
-c-file src/combat_end/combat_result_portraits.globals.c g_aCombatResultBg1PortraitRects
-c-file src/combat_end/combat_result_level_up_sparkle.globals.c g_abCombatResultLevelUpSparkleAnim
-c-file src/combat_fighter/monster_graphics_table.c g_pMonsterGraphicsTable
-c-file src/combat_fighter/fighter_hurt_sounds.c g_aabFighterHurtSoundIds
-c-file src/combat_fighter/monsters.c MonsterTable
-c-file src/combat_fighter/folio_bruti_monster_scale.c g_adwFolioBrutiMonsterScale
-c-file src/combat_fighter/monster_attack_offsets.c g_aMonsterAttackOffset
-c-file src/combat_fighter/monster_drop_table.c g_pMonsterDropTable
-c-file src/combat_fighter/harry_levels.c g_pHarryLevelTable
-c-file src/combat_fighter/ron_levels.c g_pRonLevelTable
-c-file src/combat_fighter/hermione_levels.c g_pHermioneLevelTable
-c-file src/combat_fighter/character_level_tables.c g_apCharacterLevelTables
-c-file src/combat_fighter/random_encounters.c g_aRandomEncounters
-c-file src/combat_fighter/scripted_encounters.c g_aScriptedEncounters
-c-file src/combat_fighter/fighter_anim_table.c g_aFighterAnimTable
-c-file src/combat_fighter/battle_effect_id_tables.c g_abHarryCardEffectId
-c-file src/combat_fighter/defeat_warp_rooms.c g_aDefeatWarpRoomId
-c-file src/combat_fighter/fighter_anim_data.c g_aFighterAnimDataTable
-c-file src/combat_fighter/monster_anim_data.c g_pMonsterAnimFrameTable
-c-file src/combat_fighter/spell_effect_scripts.c g_abSpellEffectScriptId
-c-file src/combat_fighter/spell_power.c g_awSpellPowerBase
-c-file src/combat_fighter/party_slot_pos.c g_aPartySlotPos
-c-file src/combat_fx/effect_scanline_tables.c g_adwEffectBgControls
-c-file src/combat_fx/rain_stream_lists.c g_RainStreakList
-c-file src/combat_fx/effect_slot_positions.c g_aEffectOrbitParams
-c-file src/combat_fx/effect_assets.c g_aEffectActorAssets
-c-file src/combat_fx/effect_bg_records.c g_aEffectBgRecords
-c-file src/combat_fx/script_opcode_lengths.c g_abScriptOpcodeLengths
-c-file src/combat_fx/effect_anim_data.c g_abFighterHurtLoopAnimData
-c-file src/combat_fx/effect_scripts.c g_apEffectScripts
-c-file src/combat_gauge/sp_gauge_gfx.c g_aSpGaugeGfx
-c-file src/commands/room_script_opcode_handlers.c g_apRoomScriptOpcodeHandlers
-c-file src/commands/special_scene_bg_control.c g_dwSpecialSceneBgControl
-c-file src/conversation/dialog_blocks.c g_adwDialogBlockTextIds
-c-file src/credits_cutscene/linear_cutscene.globals.c g_dwLinearCutsceneBg0Control
-c-file src/cursor/cursor.globals.c g_MenuCursor8bppAsset
-c-file src/default_menu/default_menu.globals.c g_dwCommonBg0Control
-c-file src/dementor_minigame/dementor_minigame.globals.c g_DementorMinigameDementorSprite
-c-file src/dev_logos/startup.globals.c g_dwStartupBg3Control
-c-file src/dialog/dialog.globals.c g_aDialogScanlineEffects
-c-file src/ending_cutscene/hippogriff_flies_into_air_cutscene.globals.c g_dwHippogriffFliesIntoAirBg0Control
-c-file src/event_actors/room_script_opcode_lengths.c g_abRoomScriptOpcodeLengths
-c-file src/event_actors/script_effect_actor_ticks.c g_apfnScriptEffectActorTicks
-c-file src/flipbook/room_tile_anim_sets.c g_apRoomTileAnimSets
-c-file src/font/load_font_descriptor.globals.c g_aFontTable
-c-file src/game_state/process_playtime_tick.globals.c g_stPlaytimeZero
-c-file src/gamecube/joybus_error_strings.c g_apJoybusErrorStrings
+c-rodata g_aDirection4Vectors
+c-rodata g_abTurnAroundDirection
+c-rodata g_abDirection8MirrorFrames
+c-rodata g_aOamShapeSizes
+c-rodata g_apRoomActorConstructors
+c-rodata g_aDefaultRoomEntryPoints
+c-rodata g_adwUnusedBgControls
+c-rodata g_aBoggartStudentAssets
+c-rodata g_dwBuckbeakMinigameBg2Control
+c-rodata g_dwUnusedMinigameBg0Control
+c-rodata g_dwCheatBg0Control
+c-rodata g_abCheatLevelAndQuestMax
+c-rodata g_dwCheatMapBg0Control
+c-rodata g_dwCheatPartyBg0Control
+c-rodata g_dwCheatPortraitsBg1Control
+c-rodata g_apPortraitTable
+c-rodata g_dwCheatSoundTestBg0Control
+c-rodata g_dwCheatWizardCardsBg2Control
+c-rodata sFamousWizardCardNames
+c-rodata g_RoomChestSprite
+c-rodata g_abChooseCharacterStages
+c-rodata g_aChooseCharacterScanlineEffects
+c-rodata g_abUnusedColorZeros
+c-rodata g_abGammaNormalRemap
+c-rodata g_BattleEffect001Asset
+c-rodata g_adwBattleTopMenuTextIds
+c-rodata g_aPartyFaceAssets
+c-rodata g_dwBattleFloorBgControl
+c-rodata g_aabFighterSpellMenu
+c-rodata g_aBattleBackgroundPairs
+c-rodata g_abBattleMusicByRoom
+c-rodata g_MenuSprite003Asset
+c-rodata g_aBattleScanlineEffects
+c-rodata g_apfnBattleMenuConfirmHandlers
+c-rodata g_adwFighterActionTextIds
+c-rodata g_abSpellMaxLevel
+c-rodata g_adwFighterCantMoveTextIds
+c-rodata g_dwCombatResultBg2Control
+c-rodata g_CombatResultCoinAsset
+c-rodata g_aCombatResultBg1PortraitRects
+c-rodata g_abCombatResultLevelUpSparkleAnim
+c-rodata g_pMonsterGraphicsTable
+c-rodata g_aabFighterHurtSoundIds
+c-rodata MonsterTable
+c-rodata g_adwFolioBrutiMonsterScale
+c-rodata g_aMonsterAttackOffset
+c-rodata g_pMonsterDropTable
+c-rodata g_pHarryLevelTable
+c-rodata g_pRonLevelTable
+c-rodata g_pHermioneLevelTable
+c-rodata g_apCharacterLevelTables
+c-rodata g_aRandomEncounters
+c-rodata g_aScriptedEncounters
+c-rodata g_aFighterAnimTable
+c-rodata g_abHarryCardEffectId
+c-rodata g_aDefeatWarpRoomId
+c-rodata g_aFighterAnimDataTable
+c-rodata g_pMonsterAnimFrameTable
+c-rodata g_abSpellEffectScriptId
+c-rodata g_awSpellPowerBase
+c-rodata g_aPartySlotPos
+c-rodata g_adwEffectBgControls
+c-rodata g_RainStreakList
+c-rodata g_aEffectOrbitParams
+c-rodata g_aEffectActorAssets
+c-rodata g_aEffectBgRecords
+c-rodata g_abScriptOpcodeLengths
+c-rodata g_abFighterHurtLoopAnimData
+c-rodata g_apEffectScripts
+c-rodata g_aSpGaugeGfx
+c-rodata g_apRoomScriptOpcodeHandlers
+c-rodata g_dwSpecialSceneBgControl
+c-rodata g_adwDialogBlockTextIds
+c-rodata g_dwLinearCutsceneBg0Control
+c-rodata g_MenuCursor8bppAsset
+c-rodata g_dwCommonBg0Control
+c-rodata g_DementorMinigameDementorSprite
+c-rodata g_dwStartupBg3Control
+c-rodata g_aDialogScanlineEffects
+c-rodata g_dwHippogriffFliesIntoAirBg0Control
+c-rodata g_abRoomScriptOpcodeLengths
+c-rodata g_apfnScriptEffectActorTicks
+c-rodata g_apRoomTileAnimSets
+c-rodata g_aFontTable
+c-rodata g_stPlaytimeZero
+c-rodata g_apJoybusErrorStrings
 c-rodata InitJoybusSession
-asm-file asm/gamecube/init_joybus_session_padding.s InitJoybusSessionPadding
-c-file src/hedwig_minigame/owl_care_kit.globals.c g_aOwlCareSprites
-c-file src/hero/player_camera_focus_offset.c g_PlayerCameraFocusOffset
-c-file src/hero/party_focus_gfx.c g_PartyLumosGfx
-c-file src/hero/field_spell_portrait_assets.c g_aFieldSpellPortraitAssets
-c-file src/hero/party_assets.c g_aPartyWalkAssets
-c-file src/hero/field_spells.c g_aFieldSpellIconAssets
-c-file src/hero/party_anims.c g_abPartyStandFrames
-c-file src/initials/high_score_name_entry.globals.c g_dwHighScoreNameEntryBg2Control
-c-file src/input/dpad_direction.c g_abDpadDirection
-c-file src/interrupts/init_interrupt_system.globals.c gIntrTableTemplate
-c-file src/items/actor_scale_steps.c g_adwActorScaleSteps
-c-file src/items/items.c g_pItemTable
-c-file src/items_list/items_list.globals.c g_abItemListPlaceholderText
-c-file src/landmarks/unused_hogwarts_map_screen.globals.c g_apUnusedHogwartsMapBackgrounds
-c-file src/language_select/language_select.globals.c g_dwLanguageSelectBg3Control
-c-file src/lupin_potion_cutscene/lupin_potion_cutscene.globals.c g_LupinPotionShadowGfx
-c-file src/map/unused_overworld_shadow_gfx.c g_UnusedOverworldShadowGfx
-c-file src/map/overworld.globals.c g_dwBg2Control
-c-file src/map/special_scene_bg_animations.c g_aSpecialSceneBg2
-c-file src/map/room_table.c g_aRoomTable
-c-file src/map/room_quest_music_override.c g_adwRoomQuestMusicOverride
-c-file src/map/room_color_cycles.c g_ColorCyclesDefault
-c-file src/map/unused_map_data.c g_abUnusedMapData
-c-file src/map/wandering_monster.globals.c g_adwEncounterKindTerrainTypes
-c-file src/math/sine_table.c g_anSineTable
+c-rodata g_aOwlCareSprites
+c-rodata g_PlayerCameraFocusOffset
+c-rodata g_PartyLumosGfx
+c-rodata g_aFieldSpellPortraitAssets
+c-rodata g_aPartyWalkAssets
+c-rodata g_aFieldSpellIconAssets
+c-rodata g_abPartyStandFrames
+c-rodata g_dwHighScoreNameEntryBg2Control
+c-rodata g_abDpadDirection
+c-rodata gIntrTableTemplate
+c-rodata g_adwActorScaleSteps
+c-rodata g_pItemTable
+c-rodata g_abItemListPlaceholderText
+c-rodata g_apUnusedHogwartsMapBackgrounds
+c-rodata g_dwLanguageSelectBg3Control
+c-rodata g_LupinPotionShadowGfx
+c-rodata g_UnusedOverworldShadowGfx
+c-rodata g_dwBg2Control
+c-rodata g_aSpecialSceneBg2
+c-rodata g_aRoomTable
+c-rodata g_adwRoomQuestMusicOverride
+c-rodata g_ColorCyclesDefault
+c-rodata g_abUnusedMapData
+c-rodata g_adwEncounterKindTerrainTypes
+c-rodata g_anSineTable
 c-rodata ResetBgLayer
 c-rodata GetDirectionFromVector
-c-file src/modes/game_mode_dispatch_table.c g_pGameModeDispatchTable
-c-file src/minigame_difficulty_select/minigame_difficulty_select.globals.c g_adwMinigameDifficultyTextIds
-c-file src/minigame_high_score/minigame_high_score.globals.c g_MinigameTextPanelCapAsset
-c-file src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
-c-file src/mode7/mode7.globals.c g_aFloorScanlineEffects
-c-file src/move/terrain_collision.globals.c g_abOppositeFacing
-c-file src/move/field_spell_effects.globals.c g_aFieldSpellCastAssets
-c-file src/npc_actor/spawn_npc_actor.globals.c g_adwNpcAnimRows
-c-file src/npc_actor/actor_type_assets.c g_aActorTypeAssets
-c-file src/npc_actor/npc_facing_frames.c g_abNpcFacingFrames
-c-file src/npc_actor/npc_walk_anims.c g_aaabNpcWalkAnims
-c-file src/npc_actor/npc_script_anims.c g_aabNpcScriptAnims
-c-file src/npc_actor/character_npc_kinds.c g_abCharacterNpcKinds
-c-file src/npc_actor/shadow_actor_gfx.c g_ShadowActorGfx
-c-file src/oam/hidden_oam_entry.c g_HiddenOamEntry
-c-file src/owl_name_select/owl_name_select.globals.c g_dwOwlNameSelectBg3Control
-c-file src/particles/opposite_directions.c g_abOppositeDirection8
-c-file src/particles/oam_dims_attrs.c g_abOamSizeForDims
-c-file src/patronus_cutscene/harry_patronus_cutscene.globals.c g_dwPatronusBg2Control
-c-file src/pause_menu/in_game_menu.globals.c g_aInGameMenuEntries
-c-file src/pop_it_minigame/wizard_cracker_pop_it.globals.c g_dwWizardCrackerPopItBg1Control
-c-file src/pop_it_minigame/wizard_cracker_pop_it_anims.c g_aWizardCrackerPopItPopAssets
-c-file src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
-c-file src/pouring_minigame/serve_pumpkin_juice_bg_animation.c g_ServePumpkinJuiceTable
-c-file src/pouring_minigame/update_serve_pumpkin_juice_minigame.globals.c g_ServePumpkinJuicePauseText
-c-file src/pressure_pad_actor/spawn_push_reset_button_actor.globals.c g_PushResetButtonSprite
-c-file src/pscreen_character/unused_party_asset_records.c g_aUnusedPartyAssetRecords
-c-file src/pscreen_character/status_equip_character_select.globals.c g_adwStatusEquipCharacterNameTextIds
-c-file src/pscreen_connectivity/connectivity.globals.c g_aConnectivityGameCubeEntries
-c-file src/pscreen_folio/folios.globals.c g_aFoliosEntries
-c-file src/pscreen_folio_bruti/folio_bruti.globals.c g_dwFolioBrutiBg3Control
-c-file src/pscreen_folio_bruti/folio_bruti_anims.c g_aFolioBrutiCursorAnim
-c-file src/pscreen_folio_universitas/folio_universitas_anims.c g_aFolioUniversitasCursorAnim
-c-file src/pscreen_folio_universitas/folio_universitas.globals.c g_dwFolioUniversitasBg3Control
-c-file src/pscreen_folio_universitas/folio_card_thumbnails.c g_aFolioCardThumbnails
-c-file src/pscreen_gamecube/gamecube_link.globals.c g_GameCubeLinkMenuDefinition
-c-file src/pscreen_information/help_sprite_assets.c g_aHelpSpriteAssets
-c-file src/pscreen_information/help_pages.c g_aHelpFolioUniversitas
-c-file src/pscreen_items/items_section_select.globals.c g_aItemsSectionEntries
-c-file src/pscreen_save/save_confirmation_menu.c g_SaveConfirmationMenuDefinition
-c-file src/pscreen_save/no_yes_entries.c g_aNoYesEntries
-c-file src/pscreen_status_equip/status_character_assets.c g_aStatusCharacterAssets
-c-file src/pscreen_status_equip/status_equip_slot_select.globals.c g_StatusEquipSlotFrameAsset
-c-file src/pscreen_status_equip/status_equip_slots.c g_aStatusEquipSlots
-c-file src/pscreen_trade/card_trade.globals.c g_aCardTradeEntries
-c-file src/pscreen_wizard_cards/folio_universitas_card_details.globals.c g_dwFolioCardDetailBg3Control
-c-file src/pscreen_wizard_cards/folio_card_assets.c g_aFolioCardAssets
-c-file src/rising_platform_actor/spawn_raising_platform_actor.globals.c g_RoomRaisingPlatformSprite
-c-file src/save/write_default_save_header.globals.c g_DefaultSaveHeader
-c-file src/save/write_default_save_options.globals.c g_DefaultSaveOptions
-c-file src/screen_transitions/screen_transition_handlers.c g_apfnScreenTransitionsIn
-c-file src/serial/serial_magic.c g_adwSerialMagic
-c-file src/sound/sound_sections.c g_pKrawallIwramStart
-c-file src/spongify_pad_actor/spawn_spongify_pad_actor.globals.c g_aRoomSpongifyPadSprites
-c-file src/store/shop_stock.c g_aShopStockMisc
-c-file src/store/fred_and_georges_shop.globals.c g_aShopMainMenuIcons
-c-file src/tea_leaves_minigame/divination_tea.globals.c g_DivinationTeaCupAnimData
-c-file src/tea_leaves_minigame/divination_tea_bg_animation.c g_DivinationTeaTable
+c-rodata g_pGameModeDispatchTable
+c-rodata g_adwMinigameDifficultyTextIds
+c-rodata g_MinigameTextPanelCapAsset
+c-rodata g_dwMinigameMenuBg3Control
+c-rodata g_aFloorScanlineEffects
+c-rodata g_abOppositeFacing
+c-rodata g_aFieldSpellCastAssets
+c-rodata g_adwNpcAnimRows
+c-rodata g_aActorTypeAssets
+c-rodata g_abNpcFacingFrames
+c-rodata g_aaabNpcWalkAnims
+c-rodata g_aabNpcScriptAnims
+c-rodata g_abCharacterNpcKinds
+c-rodata g_ShadowActorGfx
+c-rodata g_HiddenOamEntry
+c-rodata g_dwOwlNameSelectBg3Control
+c-rodata g_abOppositeDirection8
+c-rodata g_abOamSizeForDims
+c-rodata g_dwPatronusBg2Control
+c-rodata g_aInGameMenuEntries
+c-rodata g_dwWizardCrackerPopItBg1Control
+c-rodata g_aWizardCrackerPopItPopAssets
+c-rodata g_aabServePumpkinJuiceGobletAnims
+c-rodata g_ServePumpkinJuiceTable
+c-rodata g_ServePumpkinJuicePauseText
+c-rodata g_PushResetButtonSprite
+c-rodata g_aUnusedPartyAssetRecords
+c-rodata g_adwStatusEquipCharacterNameTextIds
+c-rodata g_aConnectivityGameCubeEntries
+c-rodata g_aFoliosEntries
+c-rodata g_dwFolioBrutiBg3Control
+c-rodata g_aFolioBrutiCursorAnim
+c-rodata g_aFolioUniversitasCursorAnim
+c-rodata g_dwFolioUniversitasBg3Control
+c-rodata g_aFolioCardThumbnails
+c-rodata g_GameCubeLinkMenuDefinition
+c-rodata g_aHelpSpriteAssets
+c-rodata g_aHelpFolioUniversitas
+c-rodata g_aItemsSectionEntries
+c-rodata g_SaveConfirmationMenuDefinition
+c-rodata g_aNoYesEntries
+c-rodata g_aStatusCharacterAssets
+c-rodata g_StatusEquipSlotFrameAsset
+c-rodata g_aStatusEquipSlots
+c-rodata g_aCardTradeEntries
+c-rodata g_dwFolioCardDetailBg3Control
+c-rodata g_aFolioCardAssets
+c-rodata g_RoomRaisingPlatformSprite
+c-rodata g_DefaultSaveHeader
+c-rodata g_DefaultSaveOptions
+c-rodata g_apfnScreenTransitionsIn
+c-rodata g_adwSerialMagic
+c-rodata g_pKrawallIwramStart
+c-rodata g_aRoomSpongifyPadSprites
+c-rodata g_aShopStockMisc
+c-rodata g_aShopMainMenuIcons
+c-rodata g_DivinationTeaCupAnimData
+c-rodata g_DivinationTeaTable
 dialog-text-table sDialogTextTable
-c-file src/time_skip_cutscene/hogwarts_up_night_cutscene.globals.c g_dwUpNightBg0Control
-c-file src/time_skip_cutscene/clock_skip_cutscene.globals.c g_ClockSkipActor1Asset
-c-file src/timeturner_cutscene/harry_hermione_port_in_time_shadow_gfx.c g_HarryHermionePortInTimeShadowGfx
-c-file src/timeturner_cutscene/time_turner_room_table.c g_aTimeTurnerCutsceneRoomTable
-c-file src/timeturner_cutscene/harry_hermione_port_in_time_cutscene.globals.c g_aHarryHermionePortInTimeCameraStart
-c-file src/title/build_date.c g_szBuildDate
-c-file src/title/main_menu.globals.c g_dwMainMenuBg3Control
-c-file src/title/main_menu_state_timeouts.c g_adwMainMenuStateTimeouts
-c-file src/title/main_menu_title_graphics.c g_apMainMenuTitleGraphic
-c-file src/title_load/save_slot_bar_asset.c g_SaveSlotBarAsset
-c-file src/title_load/new_game_slot_confirmation_menu.c g_NewGameSlotConfirmationMenuDefinition
-c-file src/title_options/options_menu_items.c g_aOptionsMenuItems
-c-file src/title_options/options_knob_anims.c g_aabOptionsKnobAnims
-c-file src/torch_actor/spawn_flame_pillar_actor.globals.c g_aRoomFlamePillarSprites
-c-file src/train_cutscene/cool_train_cutscene.globals.c g_dwCoolTrainBg0Control
-c-file src/trigger_actor/spawn_switch_actor.globals.c g_aRoomSwitchSprites
-c-file src/video/default_scanline_effects.c g_aDefaultScanlineEffects
-c-file src/windows/screen_window_dispcnt_flags.c g_awScreenWindowDispcntFlags
-c-file src/world_actors/spawn_world_actor.globals.c g_aWorldActorSprites
+c-rodata g_dwUpNightBg0Control
+c-rodata g_ClockSkipActor1Asset
+c-rodata g_HarryHermionePortInTimeShadowGfx
+c-rodata g_aTimeTurnerCutsceneRoomTable
+c-rodata g_aHarryHermionePortInTimeCameraStart
+c-rodata g_szBuildDate
+c-rodata g_dwMainMenuBg3Control
+c-rodata g_adwMainMenuStateTimeouts
+c-rodata g_apMainMenuTitleGraphic
+c-rodata g_SaveSlotBarAsset
+c-rodata g_NewGameSlotConfirmationMenuDefinition
+c-rodata g_aOptionsMenuItems
+c-rodata g_aabOptionsKnobAnims
+c-rodata g_aRoomFlamePillarSprites
+c-rodata g_dwCoolTrainBg0Control
+c-rodata g_aRoomSwitchSprites
+c-rodata g_aDefaultScanlineEffects
+c-rodata g_awScreenWindowDispcntFlags
+c-rodata g_aWorldActorSprites
 
 # Graphics section 1 (Areas)
 graphics overworld OverworldSpellEffects
@@ -2631,9 +2821,9 @@ graphics cutscenes PatronusCutscene
 graphics minigames/pumpkin ServePumpkinJuiceFrames
 graphics minigames/divination_tea DivinationTeaFrames
 graphics minigames/owl_care OwlCareSprites
-c-file src/hedwig_minigame/owl_care_anims.c g_abOwlCareAnim00
+c-rodata g_abOwlCareAnim00
 graphics minigames/owl_care OwlCarePalettes
-c-file src/hedwig_minigame/owl_cage_door_anims.c g_abOwlCageDoorAnim0
+c-rodata g_abOwlCageDoorAnim0
 graphics minigames/owl_care OwlCare
 graphics menus DialogBackgrounds
 graphics battle BattleEffects2
