@@ -4,7 +4,7 @@
 Writes, all under build/<ver>/ and none of it committed:
 
   obj/<name>.s        a wrapper per region: the assembler prelude, then an
-                      .include (or .incbin) of the region's real source
+                      .include of the region's real source
   obj/<name>.o        a lib-object row's member, extracted unchanged from
                       agbcc's installed archive
   link.ld             places those sections one after another, in manifest
@@ -57,28 +57,10 @@ def write_ram_symbols(objdir: str, ver: str) -> None:
     write_if_changed(os.path.join(objdir, "ram_symbols.s"), "\n".join(out) + "\n")
 
 
-def exported_labels(srcfile: str) -> list[str]:
-    """Every top-level label a region source defines.
-
-    Regions used to share one assembly unit, where each label was visible
-    to all the others without saying so. Objects don't work that way, so
-    the wrapper re-exports them to keep cross-region references (a table
-    of pointers to tables, say) resolving as before. Labels the assembler
-    treats as local (.L...) are left alone.
-    """
-    with open(srcfile) as f:
-        return re.findall(r"^([A-Za-z_][A-Za-z0-9_]*):", f.read(), re.M)
-
-
 def write_region(objdir: str, ver: str, region) -> None:
     """Writes the wrapper .s for one region, named after it."""
     srcfile, name = region
-    out = prelude(ver)
-    if srcfile.endswith(".bin"):
-        out += [f".global {name}", f"{name}:", f'.incbin "{srcfile}"']
-    else:
-        out += [f".global {label}" for label in exported_labels(srcfile)]
-        out += [f'.include "{srcfile}"']
+    out = prelude(ver) + [f'.include "{srcfile}"']
     write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
 
 

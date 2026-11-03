@@ -82,7 +82,7 @@ def pack_language(lang: str, json_path: str, name: str) -> str:
     tree, encode_map = build_tree_from_strings(strings)
     blob = build_blob(tree, strings, encode_map)
 
-    lines: list[str] = [".balign 4", f"{name}:"]
+    lines: list[str] = [".balign 4", f".global {name}", f"{name}:"]
     emit_bytes(lines, blob)
     emit_pad_to_align4(lines)
 
@@ -90,7 +90,7 @@ def pack_language(lang: str, json_path: str, name: str) -> str:
 
 
 def pack_table(ver: str, name: str, lang_rows: dict[str, tuple[str, str]]) -> str:
-    lines = [".balign 4", f"{name}:"]
+    lines = [".balign 4", f".global {name}", f"{name}:"]
     for lang in VERSION_LANGS[ver]:
         _, lang_name = lang_rows[lang]
         lines.append(f".word {lang_name}")

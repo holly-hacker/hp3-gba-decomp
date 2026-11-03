@@ -109,7 +109,7 @@ def pack_module(json_path: str, name: str,
         emit_bytes(lines, data)
         emit_pad_to_align4(lines)
 
-    lines.append(f"{name}:")
+    lines += [f".global {name}", f"{name}:"]
 
     channels = module["channels"]
     order = module["order"]
@@ -197,7 +197,7 @@ def pack_samples(samples_dir: str, name: str) -> tuple[str, dict[str, int]]:
         emit_bytes(lines, tail)
         emit_pad_to_align4(lines)
 
-    lines.append(f"{name}:")
+    lines += [f".global {name}", f"{name}:"]
     for lbl in labels:
         lines.append(f".word {lbl}")
 

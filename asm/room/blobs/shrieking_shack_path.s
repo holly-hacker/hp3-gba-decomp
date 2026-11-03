@@ -1,5 +1,6 @@
     .include "asm/room_blob.inc"
 
+    .global Room44Blob
 Room44Blob:
     RoomBlob 2
     PlayerEntry 167, 502, 0, 6

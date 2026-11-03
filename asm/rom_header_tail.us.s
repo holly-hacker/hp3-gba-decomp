@@ -2,6 +2,8 @@
 
 ROMHeaderTail: @ 0x080000A0
 	.ascii "HARRY POTTER"  @ game title
+
+	.global g_dwRomHeaderGameCode
 g_dwRomHeaderGameCode:
 	.ascii "BHTE"          @ game code
 	.ascii "69"            @ maker code

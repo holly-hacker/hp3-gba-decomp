@@ -1,5 +1,6 @@
     .include "asm/room_blob.inc"
 
+    .global Room23Blob
 Room23Blob:
     RoomBlob 2
     PlayerEntry 268, 149, 0, 4
