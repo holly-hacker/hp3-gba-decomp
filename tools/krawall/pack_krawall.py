@@ -92,7 +92,7 @@ def resolve_instruments(rows: list[list[dict]], sample_index: dict[str, int]) ->
 def pack_module(json_path: str, name: str,
                  sample_index: dict[str, int]) -> str:
     module = json.loads(Path(json_path).read_text())
-    lines: list[str] = [".balign 4"]
+    lines: list[str] = [".section .rodata", ".balign 4"]
 
     pattern_labels = []
     for i, pat in enumerate(module["patterns"]):
@@ -168,7 +168,7 @@ def pack_samples(samples_dir: str, name: str) -> tuple[str, dict[str, int]]:
 
     sample_index = {stem: idx + 1 for idx, stem, _ in entries}  # 1-based
 
-    lines: list[str] = [".balign 4"]
+    lines: list[str] = [".section .rodata", ".balign 4"]
     labels = []
     for _, sname, meta in entries:
         pcm = wav_to_pcm(sdir / f"{sname}.wav")

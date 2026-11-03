@@ -1,4 +1,5 @@
     .include "asm/room_blob.inc"
+    .section .rodata
 
     .global Room04Blob
 Room04Blob:

@@ -64,7 +64,7 @@ def main() -> None:
             name = group.name
             data = b"".join(piece for _, piece in pieces[name])
             bin_path = (out / f"{name}.bin").relative_to(runs.ROOT).as_posix()
-            asm, offset = [".balign 4"], 0
+            asm, offset = [".section .rodata", ".balign 4"], 0
             for label, piece in pieces[name]:
                 asm += [f".global {label}", f"{label}:", f'    .incbin "{bin_path}", {offset:#x}, {len(piece):#x}']
                 offset += len(piece)
