@@ -1,3 +1,5 @@
+.syntax unified
+.include "macros.inc"
 .text
 
 	arm_func_start crt0

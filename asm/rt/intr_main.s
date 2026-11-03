@@ -1,3 +1,5 @@
+.syntax unified
+.include "macros.inc"
 .text
 
 @ Interrupt dispatcher installed at gIntrVectorPtr. Reads IE & IF, picks the

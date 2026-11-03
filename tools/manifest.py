@@ -6,6 +6,8 @@ under data/, src/ or 3rd_party/ and resolve to the assembly some tools/ script p
 or compiles into build/<ver>/; lib-object rows name a toolchain library
 object instead.
 """
+import os
+import re
 import sys
 
 # (asmfile, name)
@@ -189,3 +191,18 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
                 if name.endswith(suffix) and name[:-len(suffix)] not in names:
                     sys.exit(f"{path}: {directive} row {name[:-len(suffix)]} has no c-file row")
     return regions, labels
+
+
+def ram_symbols_source(ver: str) -> str:
+    """The assembly tools/gen_link.py writes to define the RAM variables."""
+    return f"build/{ver}/ram_symbols.s"
+
+
+def object_path(ver: str, source: str) -> str:
+    """The object a region's source assembles to: under build/<ver>/obj/ at
+    the source's own path, so every region placing a section of one source
+    shares its object. A lib-object row's archive(member) goes to
+    <archive>/<member>."""
+    lib = re.fullmatch(r"(\w+)\.a\((.+)\)", source)
+    rel = f"{lib[1]}/{lib[2]}" if lib else source.removeprefix(f"build/{ver}/")
+    return f"build/{ver}/obj/{os.path.splitext(rel)[0]}.o"

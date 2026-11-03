@@ -1,3 +1,5 @@
+.syntax unified
+.include "macros.inc"
 .text
 
 @ LZ77-style decompressor with a small header-supplied length table and a

@@ -1,3 +1,5 @@
+.syntax unified
+.include "macros.inc"
 .text
 
 @ Hand-written ARM-mode signed divide/modulo: quotient in r0, remainder

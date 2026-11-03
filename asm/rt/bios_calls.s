@@ -1,3 +1,5 @@
+.syntax unified
+.include "macros.inc"
 .text
 
 @ Thumb wrappers around GBA BIOS SWI calls, one instruction pair (or triple)

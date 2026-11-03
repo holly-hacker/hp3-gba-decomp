@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
-"""Turn regions.<ver>.txt into one object per region plus a linker script.
+"""Write the linker script for regions.<ver>.txt.
 
 Writes, all under build/<ver>/ and none of it committed:
 
-  obj/<name>.s        a wrapper per region: the assembler prelude, then an
-                      .include of the region's real source
-  obj/<name>.o        a lib-object row's member, extracted unchanged from
+  link.ld             places every region's section one after another, in
+                      manifest order, each at its own alignment
+  ram_symbols.s       the RAM variables of ram_symbols.<ver>.inc as global
+                      symbols
+  obj/<archive>/<member>.o
+                      a lib-object row's member, extracted unchanged from
                       agbcc's installed archive
-  link.ld             places those sections one after another, in manifest
-                      order, each at its own alignment
 
+link.ld names every object it links, so an object of a region that no
+longer exists is left out. tools/assemble.py assembles every other object.
 A region that assembles to a different size moves everything after it;
 tools/compare.py names the region where the build first differs.
-
-Wrappers are named after their region, not its position, and unchanged
-ones are left alone, so inserting a manifest row changes no other wrapper
-and tools/assemble.py reuses their objects.
 
 Usage: gen_link.py <ver>
 """
@@ -29,7 +28,9 @@ from buildcache import write_if_changed  # noqa: E402
 from c.compile_c import agbcc_prefix  # noqa: E402
 from manifest import (  # noqa: E402
     SPLIT_SECTION_DIRECTIVES,
+    object_path,
     parse_manifest,
+    ram_symbols_source,
     read_lib_objects,
     read_placements,
 )
@@ -37,40 +38,23 @@ from manifest import (  # noqa: E402
 BASE_ADDR = 0x08000000
 
 
-def prelude(ver: str) -> list[str]:
-    version = [".set VERSION_JP, 1"] if ver == "jp" else []
-    return [
-        ".syntax unified",
-        *version,
-        '.include "macros.inc"',
-        ".text",
-    ]
-
-
-def write_ram_symbols(objdir: str, ver: str) -> None:
-    """Writes obj/ram_symbols.s, which defines every RAM variable of
+def write_ram_symbols(ver: str) -> None:
+    """Writes the assembly that defines every RAM variable of
     ram_symbols.<ver>.inc as a global symbol, once for the whole link."""
     path = f"ram_symbols.{ver}.inc"
     with open(path) as f:
         names = re.findall(r"^\.set\s+(\w+)\s*,", f.read(), re.M)
     out = [f'.include "{path}"', *(f".global {name}" for name in names)]
-    write_if_changed(os.path.join(objdir, "ram_symbols.s"), "\n".join(out) + "\n")
+    write_if_changed(ram_symbols_source(ver), "\n".join(out) + "\n")
 
 
-def write_region(objdir: str, ver: str, region) -> None:
-    """Writes the wrapper .s for one region, named after it."""
-    srcfile, name = region
-    out = prelude(ver) + [f'.include "{srcfile}"']
-    write_if_changed(os.path.join(objdir, f"{name}.s"), "\n".join(out) + "\n")
-
-
-def extract_member(objdir: str, archive: str, member: str, name: str) -> None:
-    """Copies one member of agbcc's installed archive to obj/<name>.o."""
+def extract_member(archive: str, member: str, out: str) -> None:
+    """Copies one member of agbcc's installed archive to out."""
     path = os.path.join(agbcc_prefix(), "lib", archive)
     run = subprocess.run(["arm-none-eabi-ar", "p", path, member], capture_output=True)
     if run.returncode or not run.stdout:
         sys.exit(f"cannot extract {member} from {path}:\n{run.stderr.decode()}")
-    write_if_changed(os.path.join(objdir, f"{name}.o"), run.stdout)
+    write_if_changed(out, run.stdout)
 
 
 def main() -> None:
@@ -81,62 +65,42 @@ def main() -> None:
     regions, labels = parse_manifest(f"regions.{ver}.txt", ver)
     lib_objects = read_lib_objects(f"regions.{ver}.txt")
     sectioned = read_placements(f"regions.{ver}.txt")
-
-    objdir = f"build/{ver}/obj"
-    os.makedirs(objdir, exist_ok=True)
-
     names = {name for _, name in regions}
+    objects = {name: object_path(ver, source) for source, name in regions}
 
-    # placements, in link order: (output section, object stem, input
-    # section, region name, RAM address or None)
+    for name, (archive, member, _) in lib_objects.items():
+        extract_member(archive, member, objects[name])
+    write_ram_symbols(ver)
+
+    # placements, in link order: (output section, object, input section,
+    # region name, RAM address or None)
     placements = []
-    for i, region in enumerate(regions):
-        name = region[1]
+    for i, (_, name) in enumerate(regions):
+        vma = None
         if name in sectioned:
-            stem, section, vma = sectioned[name]
-            if stem == name:
-                write_region(objdir, ver, region)
-            placements.append((f".rgn{i:03d}", stem, section, name, vma))
-            continue
-        suffix = next((s for s in SPLIT_SECTION_DIRECTIVES.values()
-                       if name.endswith(s) and name[:-len(s)] in names), None)
-        if suffix is not None:
-            placements.append((f".rgn{i:03d}", name[:-len(suffix)], suffix, name, None))
-            continue
-        if name in lib_objects:
-            archive, member, _ = lib_objects[name]
-            extract_member(objdir, archive, member, name)
-            placements.append((f".rgn{i:03d}", name, ".text", name, None))
-            continue
-        write_region(objdir, ver, region)
-        placements.append((f".rgn{i:03d}", name, ".text", name, None))
-
-    write_ram_symbols(objdir, ver)
-
-    # Objects of regions that no longer exist would otherwise be linked. A
-    # library object has no wrapper to assemble over it.
-    keep = {f"{stem}{ext}" for stem in [p[1] for p in placements] + ["ram_symbols"]
-            for ext in ((".o",) if stem in lib_objects else (".s", ".o"))}
-    for entry in os.listdir(objdir):
-        if entry not in keep:
-            os.remove(os.path.join(objdir, entry))
+            _, section, vma = sectioned[name]
+        else:
+            section = next((s for s in SPLIT_SECTION_DIRECTIVES.values()
+                            if name.endswith(s) and name[:-len(s)] in names), ".text")
+        placements.append((f".rgn{i:03d}", objects[name], section, name, vma))
 
     with open(f"build/{ver}/link.ld", "w") as f:
+        f.write(f"INPUT({object_path(ver, ram_symbols_source(ver))})\n")
         f.write("SECTIONS\n{\n")
         # The game's own RAM variables are fixed addresses
         # (ram_symbols.<ver>.inc); a library object's .bss is placed where
         # the ROM's references to it point. These come first, so the
         # location counter only ever moves forward.
-        for i, (stem, (_, _, bss)) in enumerate(sorted(lib_objects.items())):
+        for i, (name, (_, _, bss)) in enumerate(sorted(lib_objects.items())):
             if bss is not None:
                 f.write(f"    .libbss{i:03d} {hex(bss)} (NOLOAD) : "
-                        f"{{ {objdir}/{stem}.o(.bss) }}\n")
+                        f"{{ {objects[name]}(.bss) }}\n")
         f.write(f"    . = {hex(BASE_ADDR)};\n")
         prev, prev_runs_from_ram = None, False
-        for section, stem, input_section, region_name, vma in placements:
+        for section, obj, input_section, region_name, vma in placements:
             # The markers bracket the region's content in the linked ELF.
             contents = (f'"__rgn_{region_name}_beg" = .; '
-                        f'{objdir}/{stem}.o({input_section}) '
+                        f'{obj}({input_section}) '
                         f'"__rgn_{region_name}_end" = .;')
             # Each section is stored right after the previous one, at its
             # own alignment. A section that runs from RAM is linked at its

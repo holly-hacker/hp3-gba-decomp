@@ -12,9 +12,9 @@ setup:
     sha1sum -c rom.us.sha1
     sha1sum -c rom.jp.sha1
 
-# One object per region, gaps .incbin'd from the baserom, and a linker
-# script placing each at its manifest address.
-# Generate the build inputs from regions.<ver>.txt.
+# Extracts the lib-object members and writes a linker script placing
+# every region in manifest order.
+# Generate the linker script from regions.<ver>.txt.
 gen-link ver="us": (pack ver)
     mkdir -p build/{{ver}}
     python3 tools/gen_link.py {{ver}}
@@ -109,11 +109,12 @@ gen-compile-commands:
 
 # Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
 # --no-warn-rwx-segments. --emit-relocs keeps the relocations in rom.elf for
-# tools/compare.py. The donor ROM is zero-filled to 16 MiB.
+# tools/compare.py. link.ld names every object it links. The donor ROM is
+# zero-filled to 16 MiB.
 # Assemble every region and link them in manifest order.
 build ver="us": (compile-c ver) (pack-krawall ver) (pack-text ver) (gen-link ver)
     python3 tools/assemble.py {{ver}}
-    arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T build/{{ver}}/link.ld build/{{ver}}/obj/*.o -o build/{{ver}}/rom.elf
+    arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T build/{{ver}}/link.ld -o build/{{ver}}/rom.elf
     arm-none-eabi-objcopy -O binary --pad-to 0x9000000 --gap-fill 0x00 build/{{ver}}/rom.elf build/{{ver}}/rom.gba
 
 # For matching work: `just compare` names the first differing region, this

@@ -1,3 +1,5 @@
+.syntax unified
+.include "macros.inc"
 .text
 
 @ Timer 2 interrupt handler (gIntrTable slot 6). IntrMain stores the

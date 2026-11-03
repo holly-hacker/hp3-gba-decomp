@@ -7,8 +7,8 @@ what to know before changing C.
 
 A `c-file <source.c> <name>` row in `regions.<ver>.txt`
 points at a `.c` under `src/`. `tools/c/compile_c.py` runs it through the
-system `cpp` and then `agbcc`, and `tools/gen_link.py` wraps the result as
-the region's object, which `tools/assemble.py` assembles. Both steps reuse
+system `cpp` and then `agbcc`, and `tools/assemble.py` assembles the
+result into the region's object. Both steps reuse
 results from `build/cache/` (`tools/buildcache.py`), keyed by the
 preprocessed source and by the assembler's inputs; deleting it is always
 safe. The flags are `-O2 -mthumb-interwork -fhex-asm -Werror`.

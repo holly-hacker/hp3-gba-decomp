@@ -242,7 +242,7 @@ def find_regions(ver: str) -> tuple[bytes, list[Region]]:
 def write_region_file(data: bytes, region: Region) -> None:
     """Raw binary, not a hex-text .s dump -- this is the game's actual
     copyrighted audio content, so it must never be committed (see
-    asm/krawall/ in .gitignore). gen_link.py .incbin's it directly."""
+    asm/krawall/ in .gitignore)."""
     path = Path(region.path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data[region.start:region.end])

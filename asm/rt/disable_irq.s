@@ -1,3 +1,5 @@
+.syntax unified
+.include "macros.inc"
 .text
 
 @ Hand-written ARM-mode: sets the CPSR I bit (disables IRQs), preserving r0.

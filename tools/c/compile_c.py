@@ -2,8 +2,8 @@
 """Compile the c-file and c-file-O1 rows of regions.<ver>.txt to assembly.
 
 agbcc is a bare cc1: it takes preprocessed C and writes assembly, so the
-pipeline is cpp -> agbcc -> build/<ver>/c/<name>.s, which gen_link.py
-wraps into the region's object.
+pipeline is cpp -> agbcc -> build/<ver>/c/<name>.s, which assemble.py
+assembles into the region's object.
 
 The manifest directive selects -O2 (c-file) or -O1 (c-file-O1), or
 agbcc_arm for ARM-mode code (c-file-arm). Third-party code has its own
