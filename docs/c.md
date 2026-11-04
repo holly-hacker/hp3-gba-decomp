@@ -91,7 +91,8 @@ fixed by the ROM. Declare it `extern` in C and give it an address in
 **The link fails on unplaced data.** A C object's row places only its
 `.text`. Its `.rodata` (`const` data) needs a `c-rodata` row, its `.data`
 a `c-data` row; these and any `.comm`/`.bss` otherwise fail the link with
-"an object has a section that no regions.<ver>.txt row places".
+"an object has a section that no regions.<ver>.txt row places", followed
+by an `unplaced: <object>: <section> (<size> bytes)` line for each.
 
 Shared constants and types belong in `include/`, so a wrong row count or
 struct layout is a compile error rather than a silently shifted table.

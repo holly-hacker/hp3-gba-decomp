@@ -68,9 +68,9 @@ extract-graphics *runs:
 extract-all: extract-krawall extract-text extract-graphics
     @echo "data/ bootstrapped -- 'just compare' will work now."
 
-# Regenerate compile_commands.json for clangd (editor diagnostics/go-to-def
-# only -- not a build input). Re-run after a flake update, since the agbcc
-# include path lives in the Nix store.
+# Editor diagnostics/go-to-def only -- not a build input. Re-run after a
+# flake update, since the agbcc include path lives in the Nix store.
+# Regenerate compile_commands.json for clangd.
 gen-compile-commands:
     python3 tools/c/gen_compile_commands.py
 

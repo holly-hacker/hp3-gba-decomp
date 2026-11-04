@@ -87,8 +87,10 @@ rule krawall_header
 # Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
 # --no-warn-rwx-segments. --emit-relocs keeps the relocations in rom.elf for
 # tools/compare.py. The donor ROM is zero-filled to 16 MiB.
+# On a failed link, the map names the objects whose sections are unplaced.
 rule link
-  command = arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T $ldscript -o $elf $
+  command = arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T $ldscript $
+    -Map $map -o $elf || {{ python3 tools/link_script.py $map; exit 1; }} $
     && arm-none-eabi-objcopy -O binary --pad-to 0x9000000 --gap-fill 0x00 $elf $gba
   description = link $gba
 
@@ -164,7 +166,7 @@ def version_edges(ver: str, prefix: str) -> list[str]:
                    for source, name in regions if name in lib_objects}
     objects = {object_path(ver, source): source for source in sources}
     ldscript = f"build/{ver}/link.ld"
-    elf, gba = f"build/{ver}/rom.elf", f"build/{ver}/rom.gba"
+    elf, gba, rom_map = (f"build/{ver}/rom.{ext}" for ext in ("elf", "gba", "map"))
 
     def script_edge(script, outputs):
         return (f"build {paths(outputs)}: script | always\n"
@@ -196,8 +198,8 @@ def version_edges(ver: str, prefix: str) -> list[str]:
         edges.append(f"build {obj}: as_{ver} {source}\n")
 
     edges.append(
-        f"build {elf} {gba}: link {ldscript} {paths({*objects, *lib_members, ram_symbols_object(ver)})}\n"
-        f"  ldscript = {ldscript}\n  elf = {elf}\n  gba = {gba}\n")
+        f"build {elf} {gba} {rom_map}: link {ldscript} {paths({*objects, *lib_members, ram_symbols_object(ver)})}\n"
+        f"  ldscript = {ldscript}\n  elf = {elf}\n  gba = {gba}\n  map = {rom_map}\n")
     return edges
 
 

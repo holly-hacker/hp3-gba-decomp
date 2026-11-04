@@ -7,6 +7,8 @@ markers. It names every object it links, so an object of a region that no
 longer exists is left out. A region that assembles to a different size
 moves everything after it; tools/compare.py names the region where the
 build first differs.
+
+Usage: link_script.py <map>   (lists the unplaced sections of a failed link)
 """
 import io
 import os
@@ -97,3 +99,32 @@ def link_script(ver: str) -> str:
                 f'that no regions.{ver}.txt row places")\n')
         f.write("}\n")
         return f.getvalue()
+
+
+def unplaced(map_path: str) -> list[str]:
+    """The non-empty input sections a link map shows in .unplaced, as
+    "<object>: <section> (<size> bytes)"."""
+    with open(map_path) as f:
+        lines = f.read().splitlines()
+    start = next(i for i, line in enumerate(lines) if line.startswith(".unplaced"))
+    out, name = [], None
+    for line in lines[start + 1:]:
+        if line and not line[0].isspace():
+            break
+        fields = line.split()
+        # A long section name gets a line of its own.
+        if len(fields) == 1:
+            name = fields[0]
+            continue
+        if len(fields) == 4:
+            name, fields = fields[0], fields[1:]
+        if len(fields) == 3 and fields[2].endswith(".o") and int(fields[1], 16):
+            out.append(f"{fields[2]}: {name} ({int(fields[1], 16)} bytes)")
+    return out
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.exit(f"usage: {sys.argv[0]} <map>")
+    for entry in unplaced(sys.argv[1]):
+        print(f"unplaced: {entry}", file=sys.stderr)
