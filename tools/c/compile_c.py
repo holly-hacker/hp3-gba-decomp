@@ -1,36 +1,26 @@
 #!/usr/bin/env python3
-"""Compile the c-file and c-file-O1 rows of regions.<ver>.txt to assembly.
+"""The C compilers' flags, and the compile step of third-party sources.
 
-agbcc is a bare cc1: it takes preprocessed C and writes assembly, so the
-pipeline is cpp -> agbcc -> build/<ver>/c/<name>.s, which assemble.py
-assembles into the region's object.
+agbcc is a bare cc1: it takes preprocessed C and writes assembly. Game C
+goes cpp -> agbcc -> build/<ver>/c/<name>.s through the rules
+tools/configure.py writes from profile(); the manifest directive selects
+-O2 (c-file), -O1 (c-file-O1) or agbcc_arm for ARM-mode code (c-file-arm).
 
-The manifest directive selects -O2 (c-file) or -O1 (c-file-O1), or
-agbcc_arm for ARM-mode code (c-file-arm). Third-party code has its own
-compiler: c-file-gcc3 and c-file-gcc3-arm use GCC 3.0.2, and asm-file-cpp
-rows are only preprocessed.
+Third-party code has its own compiler: c-file-gcc3 and c-file-gcc3-arm
+use GCC 3.0.2, and asm-file-cpp rows are only preprocessed. Their output
+needs fix-ups, so this script compiles them one file per call.
 
-The cpp output is cheap to produce and determines everything else, so it
-keys the build cache (tools/buildcache.py): unchanged sources and headers
-reuse their assembly without running agbcc.
-
-Usage: compile_c.py <ver>
+Usage: compile_c.py <directive> <source> <out>   (writes <out>.d for Ninja)
 """
 import os
 import re
 import shutil
 import subprocess
 import sys
-from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import buildcache  # noqa: E402
-from krawall.gen_header import write_public_header  # noqa: E402
-from manifest import (  # noqa: E402
-    ASM_CPP_DIRECTIVE,
-    C_FILE_DIRECTIVES,
-    SECTIONED_DIRECTIVES,
-)
+from krawall.gen_header import OUTPUT as KRAWALL_HEADER  # noqa: E402
+from manifest import ASM_CPP_DIRECTIVE, SECTIONED_DIRECTIVES  # noqa: E402
 
 GCC3_CC1 = "arm-elf-cc1-3.0.2"
 
@@ -57,12 +47,14 @@ def profile(src: str, prefix: str, o1: bool = False,
     -fomit-frame-pointer to drop the APCS frame the ROM doesn't have.
 
     __GNUC__ is agbcc's (GCC 2): -undef drops the host compiler's, and
-    Krawall's public header (generated into build/include) maps its IWRAM
-    functions to their stubs for GCC 2.
+    Krawall's public header (generated into build/include by
+    tools/krawall/gen_header.py) maps its IWRAM functions to their stubs
+    for GCC 2.
     """
     inc = os.path.join(prefix, "include")
     optimization = "-O1" if o1 else "-O2"
-    cppflags = ["-I", "include", "-I", write_public_header(), "-I", inc,
+    krawall_include = os.path.dirname(os.path.dirname(KRAWALL_HEADER))
+    cppflags = ["-I", "include", "-I", krawall_include, "-I", inc,
                 "-nostdinc", "-undef", "-D__GNUC__=2", "-std=gnu89",
                 *([f"-DVERSION_{ver.upper()}"] if ver else [])]
     if arm:
@@ -132,7 +124,7 @@ def merge_section_flags(asm: str) -> str:
         asm)
 
 
-def compile_sectioned(src: str, out: str, prefix: str, tools: str,
+def compile_sectioned(src: str, out: str, prefix: str,
                       directive: str) -> None:
     """Compiles (or, for a .S, preprocesses) a third-party source.
 
@@ -144,27 +136,21 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
     cc1, cppflags, cflags = gcc3_profile(src, prefix, arm)
     if directive == ASM_CPP_DIRECTIVE:
         cppflags = ["-x", "assembler-with-cpp", "-D__ASSEMBLER__", *cppflags]
-    pre = subprocess.run(["cpp", "-P", *cppflags, src],
+    pre = subprocess.run(["cpp", "-P", *cppflags, "-MD", "-MF", f"{out}.d",
+                          "-MT", out, src],
                          capture_output=True, text=True)
     if pre.returncode:
         sys.exit(f"cpp failed on {src}:\n{pre.stderr}")
     if directive == ASM_CPP_DIRECTIVE:
         asm = pre.stdout
     else:
-        key = buildcache.digest(tools, os.path.realpath(cc1), cflags, src,
-                                pre.stdout)
-        cached = buildcache.load("c", key)
-        if cached is None:
-            cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
-                                input=pre.stdout, capture_output=True,
-                                text=True)
-            if cc.returncode:
-                sys.exit(f"{GCC3_CC1} failed on {src}:\n{cc.stderr}")
-            cached = cc.stdout.encode()
-            buildcache.store("c", key, cached)
+        cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
+                            input=pre.stdout, capture_output=True, text=True)
+        if cc.returncode:
+            sys.exit(f"{GCC3_CC1} failed on {src}:\n{cc.stderr}")
         # `.file "<stdin>"` would make the assembler list <stdin> as a
-        # dependency (tools/assemble.py).
-        asm = re.sub(r"^\s*\.file\s.*\n", "", cached.decode(), flags=re.M)
+        # dependency.
+        asm = re.sub(r"^\s*\.file\s.*\n", "", cc.stdout, flags=re.M)
         # The original assembler filled an .align inside code with zeros;
         # only the end of a section got nops. Today's fills both with nops.
         asm = re.sub(r"^(\s*\.align\s+\d+)\s*$", r"\1, 0", asm, flags=re.M)
@@ -175,77 +161,15 @@ def compile_sectioned(src: str, out: str, prefix: str, tools: str,
         asm = asm[:end.start()]
     padding = "".join(f"\t.section\t{name}\n\t.align\t2\n"
                       for name in section_names(asm) if name != ".bss")
-    buildcache.write_if_changed(out, (asm + "\n" + padding).encode())
-
-
-def compile_one(src: str, out: str, prefix: str, ver: str, tools: str,
-                o1: bool = False, arm: bool = False) -> None:
-    cc1, cppflags, cflags = profile(src, prefix, o1, ver, arm)
-    pre = subprocess.run(["cpp", *cppflags, src],
-                         capture_output=True, text=True)
-    if pre.returncode:
-        sys.exit(f"cpp failed on {src}:\n{pre.stderr}")
-    key = buildcache.digest(tools, os.path.realpath(cc1), cflags, src,
-                            pre.stdout)
-    asm = buildcache.load("c", key)
-    if asm is None:
-        asm = compile_preprocessed(src, cc1, cflags, pre.stdout)
-        buildcache.store("c", key, asm)
-    buildcache.write_if_changed(out, asm)
-
-
-def compile_preprocessed(src: str, cc1: str, cflags: list[str],
-                         pre: str) -> bytes:
-    cc = subprocess.run([cc1, *cflags, "-o", "-", "-"],
-                        input=pre, capture_output=True, text=True)
-    if cc.returncode:
-        sys.exit(f"{os.path.basename(cc1)} failed on {src}:\n{cc.stderr}")
-    return wrap_asm(cc.stdout).encode()
-
-
-def wrap_asm(asm: str) -> str:
-    """Makes compiler output assemble as a region's contents.
-
-    .rodata and .data start word-aligned, as every object's did. The
-    trailing .align pads to the 4-byte boundary with explicit zeros, which
-    is what the ROM has.
-    """
-    return ("\t.section\t.rodata\n\t.align\t2, 0\n"
-            "\t.data\n\t.align\t2, 0\n"
-            "\t.text\n" + asm + "\t.align\t2, 0\n")
+    with open(out, "w") as f:
+        f.write(asm + "\n" + padding)
 
 
 def main() -> None:
-    if len(sys.argv) != 2:
-        sys.exit(f"usage: {sys.argv[0]} <ver>")
-    ver = sys.argv[1]
-
-    lines = [
-        line.split()
-        for raw in open(f"regions.{ver}.txt")
-        for line in [raw.split("#", 1)[0].strip()]
-        if line
-    ]
-    rows = [parts for parts in lines if parts[0] in C_FILE_DIRECTIVES]
-    if not rows:
-        print(f"no c-file rows in regions.{ver}.txt -- nothing to compile")
-        return
-
-    prefix = agbcc_prefix()
-    tools = buildcache.tool_digest()
-    def compile_row(row):
-        directive, src, name = row[:3]
-        if directive in SECTIONED_DIRECTIVES:
-            compile_sectioned(src, f"build/{ver}/c/{name}.s", prefix, tools,
-                              directive)
-            return
-        compile_one(src, f"build/{ver}/c/{name}.s", prefix, ver, tools,
-                    o1=directive == "c-file-O1",
-                    arm=directive == "c-file-arm")
-
-    with ThreadPoolExecutor() as pool:
-        list(pool.map(compile_row, rows))
-    print(f"compiled {len(rows)} C file(s) for {ver}")
+    if len(sys.argv) != 4 or sys.argv[1] not in SECTIONED_DIRECTIVES:
+        sys.exit(f"usage: {sys.argv[0]} <directive> <source> <out>")
+    directive, src, out = sys.argv[1:]
+    compile_sectioned(src, out, agbcc_prefix(), directive)
 
 
 if __name__ == "__main__":

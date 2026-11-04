@@ -1,4 +1,4 @@
-"""Content-addressed cache for the pack, compile and assemble steps.
+"""Content-addressed cache for the pack steps.
 
 A result is stored under build/cache/<namespace>/ by a SHA-256 key over
 everything that determines it: its input bytes, its settings, and the

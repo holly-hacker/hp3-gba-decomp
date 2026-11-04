@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parent.parent))
+from buildcache import write_if_changed  # noqa: E402
 from manifest import read_rows  # noqa: E402
 from text_codec import (
     RAW_LANGS, VERSION_LANGS, build_blob, build_tree_from_strings,
@@ -111,10 +112,10 @@ def main() -> None:
 
     for lang, (json_path, name) in lang_rows.items():
         asm = pack_language(lang, json_path, name)
-        (out_dir / f"{name}.s").write_text(asm)
+        write_if_changed(out_dir / f"{name}.s", asm)
 
     table_asm = pack_table(ver, table_name, lang_rows)
-    (out_dir / f"{table_name}.s").write_text(table_asm)
+    write_if_changed(out_dir / f"{table_name}.s", table_asm)
 
     print(f"packed {len(lang_rows)} language string tables + pointer table for {ver}", file=sys.stderr)
 

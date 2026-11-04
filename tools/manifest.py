@@ -34,11 +34,11 @@ DIALOG_TEXT_DIRECTIVES = {"dialog-text", "dialog-text-table"}
 GRAPHICS_DIRECTIVE = "graphics"
 
 # c-file, c-file-O1 and c-file-arm rows name a .c under src/, compiled to
-# assembly by tools/c/compile_c.py with the compiler the ROM was built
-# with -- see docs/compiler.md.
+# assembly with the compiler the ROM was built with and the flags of
+# tools/c/compile_c.py -- see docs/compiler.md.
 #
 # c-file-gcc3 and c-file-gcc3-arm rows name a .c under 3rd_party/,
-# compiled the same way with the GCC 3.0.2 Krawall was built with, and
+# compiled by compile_c.py with the GCC 3.0.2 Krawall was built with, and
 # asm-file-cpp rows a .S that compile_c.py preprocesses. These objects
 # keep their sections apart: the row places .text, and c-rodata, c-iwram
 # and c-ewram rows place the others.

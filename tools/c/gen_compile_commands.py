@@ -13,6 +13,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import compile_c
+from krawall.gen_header import write_public_header  # noqa: E402
 
 # agbcc-only or build-strictness flags that mean nothing to clang and would
 # just add noise or false errors in editor diagnostics: -fhex-asm controls
@@ -39,6 +40,8 @@ def main() -> None:
     root = os.path.dirname(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))))
     prefix = compile_c.agbcc_prefix()
+    # Game C includes it from build/include.
+    write_public_header()
 
     entries = [
         {"directory": root, "file": src, "arguments": clang_args(src, prefix)}

@@ -26,6 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parent.parent))
+from buildcache import write_if_changed  # noqa: E402
 from manifest import read_rows  # noqa: E402
 from krawall_codec import compress_pattern, derive_song_index, compute_trailing_buffer
 
@@ -216,11 +217,11 @@ def main() -> None:
     (out_dir / "modules").mkdir(parents=True, exist_ok=True)
 
     samples_asm, sample_index = pack_samples(s_dir, s_name)
-    (out_dir / "samples" / f"{s_name}.s").write_text(samples_asm)
+    write_if_changed(out_dir / "samples" / f"{s_name}.s", samples_asm)
 
     for json_path, name in module_rows:
         asm = pack_module(json_path, name, sample_index)
-        (out_dir / "modules" / f"{name}.s").write_text(asm)
+        write_if_changed(out_dir / "modules" / f"{name}.s", asm)
 
     print(f"packed {len(module_rows)} modules + samples for {ver}", file=sys.stderr)
 

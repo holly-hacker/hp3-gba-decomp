@@ -6,12 +6,11 @@ what to know before changing C.
 ## The pipeline
 
 A `c-file <source.c> <name>` row in `regions.<ver>.txt`
-points at a `.c` under `src/`. `tools/c/compile_c.py` runs it through the
-system `cpp` and then `agbcc`, and `tools/assemble.py` assembles the
-result into the region's object. Both steps reuse
-results from `build/cache/` (`tools/buildcache.py`), keyed by the
-preprocessed source and by the assembler's inputs; deleting it is always
-safe. The flags are `-O2 -mthumb-interwork -fhex-asm -Werror`.
+points at a `.c` under `src/`. The build (`build/build.ninja`, written by
+`tools/configure.py` with the flags of `tools/c/compile_c.py`) runs it
+through the system `cpp` and then `agbcc`, and assembles the result into
+the region's object; Ninja reruns a step only when its source or a header
+it read changed. The flags are `-O2 -mthumb-interwork -fhex-asm -Werror`.
 
 A `c-file-O1` row uses the same compiler and flags with `-O1` in place of
 `-O2`. The EEPROM driver (`src/eeprom/`) matches only under `-O1`.

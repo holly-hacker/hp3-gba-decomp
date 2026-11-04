@@ -12,7 +12,7 @@ Writes, all under build/<ver>/ and none of it committed:
                       agbcc's installed archive
 
 link.ld names every object it links, so an object of a region that no
-longer exists is left out. tools/assemble.py assembles every other object.
+longer exists is left out. build.ninja assembles every other object.
 A region that assembles to a different size moves everything after it;
 tools/compare.py names the region where the build first differs.
 

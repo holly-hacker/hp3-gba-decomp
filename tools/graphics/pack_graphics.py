@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Pack every graphics group of regions.<ver>.txt from data/graphics/.
+"""Pack the graphics groups of regions.<ver>.txt from data/graphics/.
 
 Every item of every group under graphics/ is built through the build cache
-(one process pool for all misses), so each feature's header,
-include/gen/graphics/<feature>.h, declares the labels of all its groups and
-is the same for every version. Each group of this version is written as
+(one process pool for all misses). Each group of this version is written as
 build/<ver>/graphics/<Group>.bin plus <Group>.s, which labels each piece
 with an .incbin of its slice. See tools/graphics/runs.py.
 
-Usage: pack_graphics.py <ver>
+`headers` writes each feature's header, include/gen/graphics/<feature>.h,
+instead: it declares the labels of all the feature's groups and is the same
+for every version.
+
+Usage: pack_graphics.py <ver> | headers
 """
 import sys
 from pathlib import Path
@@ -31,7 +33,7 @@ def write_header(feature: str, groups: list[tuple[str, list[str]]]) -> None:
 
 def main() -> None:
     if len(sys.argv) != 2:
-        sys.exit(f"usage: {sys.argv[0]} <ver>")
+        sys.exit(f"usage: {sys.argv[0]} <ver> | headers")
     ver = sys.argv[1]
     try:
         features = runs.features()
@@ -55,8 +57,11 @@ def main() -> None:
         for name, labeled in zip(owners, buildcache.cached_map("graphics", _build, jobs, keys)):
             pieces[name].extend(labeled)
 
-        for feature, groups in features.items():
-            write_header(feature, [(g.name, [label for label, _ in pieces[g.name]]) for g in groups])
+        if ver == "headers":
+            for feature, groups in features.items():
+                write_header(feature, [(g.name, [label for label, _ in pieces[g.name]]) for g in groups])
+            print(f"wrote {len(features)} graphics headers")
+            return
 
         out = runs.ROOT / "build" / ver / "graphics"
         rows = runs.rows(ver, {g.name: g for gs in features.values() for g in gs})
@@ -70,7 +75,7 @@ def main() -> None:
                 offset += len(piece)
             buildcache.write_if_changed(out / f"{name}.bin", data)
             buildcache.write_if_changed(out / f"{name}.s", "\n".join(asm) + "\n")
-        print(f"{ver}: packed {len(rows)} graphics groups ({len(jobs)} items, {len(features)} feature headers)")
+        print(f"{ver}: packed {len(rows)} graphics groups ({len(jobs)} items)")
     except (OSError, ValueError, TypeError, KeyError) as exc:
         sys.exit(str(exc))
 
