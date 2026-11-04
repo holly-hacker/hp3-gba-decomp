@@ -78,9 +78,9 @@ SPLIT_SECTION_DIRECTIVES = {C_RODATA_DIRECTIVE: RODATA_SUFFIX,
 ASM_FILE_DIRECTIVE = "asm-file"
 
 # lib-object rows name a member of an archive agbcc installs (libgcc.a,
-# libc.a); tools/gen_link.py extracts it and links it unchanged. The region
-# is named after the member without its .o. An optional last field places
-# the member's .bss at that RAM address.
+# libc.a); the build extracts it and links it unchanged. The region is
+# named after the member without its .o. An optional last field places the
+# member's .bss at that RAM address.
 LIB_OBJECT_DIRECTIVE = "lib-object"
 
 
@@ -187,9 +187,10 @@ def parse_manifest(path: str, ver: str) -> tuple[list[Region], Labels]:
     return regions, labels
 
 
-def ram_symbols_source(ver: str) -> str:
-    """The assembly tools/gen_link.py writes to define the RAM variables."""
-    return f"build/{ver}/ram_symbols.s"
+def ram_symbols_object(ver: str) -> str:
+    """The object that defines the RAM variables of ram_symbols.<ver>.inc as
+    global symbols."""
+    return f"build/{ver}/obj/ram_symbols.o"
 
 
 def object_path(ver: str, source: str) -> str:

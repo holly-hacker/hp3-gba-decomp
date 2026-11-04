@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Where each region of a linked build is stored in ROM.
 
-gen_link.py brackets every region in __rgn_<name>_beg/__rgn_<name>_end. A
-region that runs from RAM is linked, and so marked, at its RAM address;
-the section holding it says where it is stored.
+tools/link_script.py brackets every region in
+__rgn_<name>_beg/__rgn_<name>_end. A region that runs from RAM is linked,
+and so marked, at its RAM address; the section holding it says where it is
+stored.
 """
 import re
 import subprocess

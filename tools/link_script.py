@@ -1,37 +1,23 @@
-#!/usr/bin/env python3
-"""Write the linker script for regions.<ver>.txt.
+"""The linker script for regions.<ver>.txt, which tools/configure.py writes
+to build/<ver>/link.ld.
 
-Writes, all under build/<ver>/ and none of it committed:
-
-  link.ld             places every region's section one after another, in
-                      manifest order, each at its own alignment
-  ram_symbols.s       the RAM variables of ram_symbols.<ver>.inc as global
-                      symbols
-  obj/<archive>/<member>.o
-                      a lib-object row's member, extracted unchanged from
-                      agbcc's installed archive
-
-link.ld names every object it links, so an object of a region that no
-longer exists is left out. build.ninja assembles every other object.
-A region that assembles to a different size moves everything after it;
-tools/compare.py names the region where the build first differs.
-
-Usage: gen_link.py <ver>
+It places every region's section one after another, in manifest order,
+each at its own alignment, and brackets each in __rgn_<name>_beg/_end
+markers. It names every object it links, so an object of a region that no
+longer exists is left out. A region that assembles to a different size
+moves everything after it; tools/compare.py names the region where the
+build first differs.
 """
 import io
 import os
-import re
-import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from buildcache import write_if_changed  # noqa: E402
-from c.compile_c import agbcc_prefix  # noqa: E402
 from manifest import (  # noqa: E402
     SPLIT_SECTION_DIRECTIVES,
     object_path,
     parse_manifest,
-    ram_symbols_source,
+    ram_symbols_object,
     read_lib_objects,
     read_ram_addresses,
 )
@@ -39,39 +25,12 @@ from manifest import (  # noqa: E402
 BASE_ADDR = 0x08000000
 
 
-def write_ram_symbols(ver: str) -> None:
-    """Writes the assembly that defines every RAM variable of
-    ram_symbols.<ver>.inc as a global symbol, once for the whole link."""
-    path = f"ram_symbols.{ver}.inc"
-    with open(path) as f:
-        names = re.findall(r"^\.set\s+(\w+)\s*,", f.read(), re.M)
-    out = [f'.include "{path}"', *(f".global {name}" for name in names)]
-    write_if_changed(ram_symbols_source(ver), "\n".join(out) + "\n")
-
-
-def extract_member(archive: str, member: str, out: str) -> None:
-    """Copies one member of agbcc's installed archive to out."""
-    path = os.path.join(agbcc_prefix(), "lib", archive)
-    run = subprocess.run(["arm-none-eabi-ar", "p", path, member], capture_output=True)
-    if run.returncode or not run.stdout:
-        sys.exit(f"cannot extract {member} from {path}:\n{run.stderr.decode()}")
-    write_if_changed(out, run.stdout)
-
-
-def main() -> None:
-    if len(sys.argv) != 2:
-        sys.exit(f"usage: {sys.argv[0]} <ver>")
-    ver = sys.argv[1]
-
+def link_script(ver: str) -> str:
     regions, labels = parse_manifest(f"regions.{ver}.txt", ver)
     lib_objects = read_lib_objects(f"regions.{ver}.txt")
     ram_addresses = read_ram_addresses(f"regions.{ver}.txt")
     names = {name for _, name in regions}
     objects = {name: object_path(ver, source) for source, name in regions}
-
-    for name, (archive, member, _) in lib_objects.items():
-        extract_member(archive, member, objects[name])
-    write_ram_symbols(ver)
 
     # placements, in link order: (output section, object, input section,
     # region name). A row that places one section of an object another row
@@ -88,7 +47,7 @@ def main() -> None:
         placements.append((f".rgn{i:03d}", objects[name], section, name))
 
     with io.StringIO() as f:
-        f.write(f"INPUT({object_path(ver, ram_symbols_source(ver))})\n")
+        f.write(f"INPUT({ram_symbols_object(ver)})\n")
         f.write("SECTIONS\n{\n")
         # The game's own RAM variables are fixed addresses
         # (ram_symbols.<ver>.inc); a library object's .bss is placed where
@@ -138,10 +97,4 @@ def main() -> None:
         f.write(f'    ASSERT(SIZEOF(.unplaced) == 0, "an object has a section '
                 f'that no regions.{ver}.txt row places")\n')
         f.write("}\n")
-        write_if_changed(f"build/{ver}/link.ld", f.getvalue())
-
-    print(f"{ver}: {len(regions)} regions -> {len(placements)} placed sections")
-
-
-if __name__ == "__main__":
-    main()
+        return f.getvalue()

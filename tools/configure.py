@@ -11,15 +11,18 @@ the compiles and assemblies whose inputs changed:
   gcc3    a third-party source, through compile_c.py
   as      a region's source -> its object (manifest.object_path)
 
-The packers and gen_link.py are one edge per version: they run on every
-build (their inputs are whole data/ trees) and keep their own content
-caches, rewriting only files whose content changed. Two edges write the
-headers C includes: Krawall's public header and the graphics headers, which
-are the same for every version. The link reruns when an object or link.ld
-changed.
+The packers are one edge per version: they run on every build (their
+inputs are whole data/ trees) and keep their own content caches, rewriting
+only files whose content changed. Two edges write the headers C includes:
+Krawall's public header and the graphics headers, which are the same for
+every version. ram_symbols.<ver>.inc assembles to an object whose symbols
+are made global, and each lib-object row's member is extracted from agbcc's
+archive.
 
-build.ninja reruns this script when a manifest, flake.lock or the script
-changes.
+This script also writes each version's build/<ver>/link.ld
+(tools/link_script.py), only when it changed: the link reruns when an
+object or link.ld changed. build.ninja and link.ld are rewritten when a
+manifest, flake.lock or the scripts that write them change.
 
 Usage: configure.py   (then `ninja -f build/build.ninja`)
 """
@@ -29,6 +32,7 @@ import shlex
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from buildcache import write_if_changed  # noqa: E402
 from c.compile_c import agbcc_prefix, profile  # noqa: E402
 from krawall.gen_header import (  # noqa: E402
     EXPORT_HEADERS,
@@ -40,10 +44,11 @@ from manifest import (  # noqa: E402
     SECTIONED_DIRECTIVES,
     object_path,
     parse_manifest,
-    ram_symbols_source,
+    ram_symbols_object,
     read_lib_objects,
     read_rows,
 )
+from link_script import link_script  # noqa: E402
 
 VERSIONS = ["us", "jp"]
 NINJA_FILE = "build/build.ninja"
@@ -67,6 +72,7 @@ rule configure
   command = python3 tools/configure.py
   description = configure
   generator = 1
+  restat = 1
 
 rule script
   command = python3 $script $args
@@ -78,6 +84,16 @@ rule gcc3
   description = gcc3 $in
   depfile = $out.d
   deps = gcc
+
+# The .set symbols of the .inc are local until objcopy makes them global.
+rule ram_symbols
+  command = arm-none-eabi-as -mcpu=arm7tdmi $in -o $out $
+    && arm-none-eabi-objcopy --wildcard --globalize-symbol='*' $out
+  description = $out
+
+rule ar_member
+  command = arm-none-eabi-ar p $in $member > $out && test -s $out
+  description = $out
 
 rule krawall_header
   command = python3 tools/krawall/gen_header.py
@@ -146,12 +162,11 @@ def version_rules(ver: str, prefix: str) -> str:
     return "\n".join(out)
 
 
-def version_edges(ver: str) -> list[str]:
+def version_edges(ver: str, prefix: str) -> list[str]:
     manifest = f"regions.{ver}.txt"
     regions, _ = parse_manifest(manifest, ver)
     lib_objects = read_lib_objects(manifest)
     sources = {source for source, name in regions if name not in lib_objects}
-    sources.add(ram_symbols_source(ver))
     produced = {script: set() for script in PRODUCERS.values()}
     for source in sources:
         top = source.removeprefix(f"build/{ver}/").split("/")[0]
@@ -161,8 +176,8 @@ def version_edges(ver: str) -> list[str]:
     graphics = produced["tools/graphics/pack_graphics.py"]
     graphics |= {os.path.splitext(s)[0] + ".bin" for s in set(graphics)}
 
-    lib_members = {object_path(ver, source) for source, name in regions
-                   if name in lib_objects}
+    lib_members = {object_path(ver, source): lib_objects[name][:2]
+                   for source, name in regions if name in lib_objects}
     objects = {object_path(ver, source): source for source in sources}
     ldscript = f"build/{ver}/link.ld"
     elf, gba = f"build/{ver}/rom.elf", f"build/{ver}/rom.gba"
@@ -172,8 +187,10 @@ def version_edges(ver: str) -> list[str]:
                 f"  script = {script}\n  args = {ver}\n")
 
     edges = [script_edge(script, outputs) for script, outputs in produced.items()]
-    edges.append(script_edge("tools/gen_link.py",
-                             {ldscript, ram_symbols_source(ver), *lib_members}))
+    edges.append(f"build {ram_symbols_object(ver)}: ram_symbols ram_symbols.{ver}.inc\n")
+    for obj, (archive, member) in sorted(lib_members.items()):
+        edges.append(f"build {obj}: ar_member {prefix}/lib/{archive}\n"
+                     f"  member = {member}\n")
 
     # C includes the generated headers; the depfiles name the ones each
     # file read once it has been compiled.
@@ -195,7 +212,7 @@ def version_edges(ver: str) -> list[str]:
         edges.append(f"build {obj}: as_{ver} {source}\n")
 
     edges.append(
-        f"build {elf} {gba}: link {ldscript} {paths(set(objects) | lib_members)}\n"
+        f"build {elf} {gba}: link {ldscript} {paths({*objects, *lib_members, ram_symbols_object(ver)})}\n"
         f"  ldscript = {ldscript}\n  elf = {elf}\n  gba = {gba}\n")
     return edges
 
@@ -203,8 +220,10 @@ def version_edges(ver: str) -> list[str]:
 def main() -> None:
     prefix = agbcc_prefix()
     edges = [RULES,
-             f"build {NINJA_FILE}: configure | tools/configure.py "
-             f"tools/manifest.py tools/c/compile_c.py flake.lock "
+             f"build {NINJA_FILE} "
+             + " ".join(f"build/{ver}/link.ld" for ver in VERSIONS)
+             + ": configure | tools/configure.py tools/link_script.py "
+             "tools/manifest.py tools/c/compile_c.py flake.lock "
              + " ".join(f"regions.{ver}.txt" for ver in VERSIONS) + "\n",
              f"build {' '.join(graphics_headers())}: script | always\n"
              f"  script = tools/graphics/pack_graphics.py\n  args = headers\n",
@@ -212,7 +231,8 @@ def main() -> None:
              + " ".join(graphics_headers()) + "\n"]
     for ver in VERSIONS:
         edges.append(version_rules(ver, prefix))
-        edges += version_edges(ver)
+        edges += version_edges(ver, prefix)
+        write_if_changed(f"build/{ver}/link.ld", link_script(ver))
     edges.append("default " + " ".join(f"build/{ver}/rom.gba" for ver in VERSIONS) + "\n")
     os.makedirs("build", exist_ok=True)
     with open(NINJA_FILE, "w") as f:
