@@ -12,9 +12,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from rom_elf import region_at, region_ranges, relocated_bytes  # noqa: E402
-
-ROM_BASE = 0x08000000
+from rom_elf import ROM_BASE, region_at, region_ranges, relocated_bytes  # noqa: E402
 
 
 def main() -> None:

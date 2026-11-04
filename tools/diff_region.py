@@ -25,7 +25,7 @@ from manifest import (  # noqa: E402
     parse_manifest,
     read_rows,
 )
-from rom_elf import region_ranges  # noqa: E402
+from rom_elf import ROM_BASE, region_ranges  # noqa: E402
 
 CONTEXT = 4
 
@@ -104,7 +104,7 @@ def main() -> None:
     if not os.path.exists(built):
         sys.exit(f"{built} missing -- run `just build {ver}` first")
     start, end = region_ranges(f"build/{ver}/rom.elf")[name]
-    off, size = start - 0x08000000, end - start
+    off, size = start - ROM_BASE, end - start
     want = open(base, "rb").read()[off:off + size]
     got = open(built, "rb").read()[off:off + size]
 

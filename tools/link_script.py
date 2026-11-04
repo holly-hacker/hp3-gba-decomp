@@ -21,8 +21,7 @@ from manifest import (  # noqa: E402
     read_lib_objects,
     read_ram_addresses,
 )
-
-BASE_ADDR = 0x08000000
+from rom_elf import ROM_BASE  # noqa: E402
 
 
 def link_script(ver: str) -> str:
@@ -57,7 +56,7 @@ def link_script(ver: str) -> str:
             if bss is not None:
                 f.write(f"    .libbss{i:03d} {hex(bss)} (NOLOAD) : "
                         f"{{ {objects[name]}(.bss) }}\n")
-        f.write(f"    . = {hex(BASE_ADDR)};\n")
+        f.write(f"    . = {hex(ROM_BASE)};\n")
         prev, prev_runs_from_ram = None, False
         for section, obj, input_section, region_name in placements:
             runs_from_ram = region_name in ram_addresses

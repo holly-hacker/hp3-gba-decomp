@@ -36,12 +36,6 @@ def file_digest(path) -> str:
     return _file_digests[key]
 
 
-def tree_digest(directory: Path) -> list[tuple[str, str]]:
-    """(relative path, digest) of every file under a directory."""
-    return [(p.relative_to(directory).as_posix(), file_digest(p))
-            for p in sorted(directory.rglob("*")) if p.is_file()]
-
-
 def digest(*parts) -> str:
     """A key over bytes and JSON-like values."""
     h = hashlib.sha256()

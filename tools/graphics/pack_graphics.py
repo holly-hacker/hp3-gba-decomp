@@ -60,7 +60,6 @@ def main() -> None:
         if ver == "headers":
             for feature, groups in features.items():
                 write_header(feature, [(g.name, [label for label, _ in pieces[g.name]]) for g in groups])
-            print(f"wrote {len(features)} graphics headers")
             return
 
         out = runs.ROOT / "build" / ver / "graphics"
@@ -75,7 +74,6 @@ def main() -> None:
                 offset += len(piece)
             buildcache.write_if_changed(out / f"{name}.bin", data)
             buildcache.write_if_changed(out / f"{name}.s", "\n".join(asm) + "\n")
-        print(f"{ver}: packed {len(rows)} graphics groups ({len(jobs)} items)")
     except (OSError, ValueError, TypeError, KeyError) as exc:
         sys.exit(str(exc))
 

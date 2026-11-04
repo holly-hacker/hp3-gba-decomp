@@ -80,18 +80,19 @@ gen-compile-commands:
 configure:
     python3 tools/configure.py
 
-# Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
-# --no-warn-rwx-segments. --emit-relocs keeps the relocations in rom.elf for
-# tools/compare.py. link.ld names every object it links. The donor ROM is
-# zero-filled to 16 MiB. The rules are in tools/configure.py.
+# Writes build/build.ninja on a fresh clone; afterwards Ninja keeps it
+# current itself.
+[private]
+ninja-file:
+    @test -f build/build.ninja || python3 tools/configure.py
+
+# The rules are in tools/configure.py.
 # Pack, compile, assemble and link this version's ROM.
-build ver="us":
-    test -f build/build.ninja || python3 tools/configure.py
+build ver="us": ninja-file
     ninja -f build/build.ninja build/{{ver}}/rom.gba
 
 # Build both versions' ROMs at once.
-build-all:
-    test -f build/build.ninja || python3 tools/configure.py
+build-all: ninja-file
     ninja -f build/build.ninja
 
 # For matching work: `just compare` names the first differing region, this

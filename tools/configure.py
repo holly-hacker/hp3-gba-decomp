@@ -1,28 +1,12 @@
 #!/usr/bin/env python3
-"""Write build/build.ninja, which builds both versions' ROMs.
+"""Write build/build.ninja, which builds both versions' ROMs, and each
+version's build/<ver>/link.ld (tools/link_script.py).
 
-Every C source and every object has its own edge, with the headers and
-included files it read recorded through depfiles, so Ninja reruns exactly
-the compiles and assemblies whose inputs changed:
-
-  agbcc   cpp -> agbcc -> build/<ver>/c/<name>.s, flags from
-          compile_c.profile(), then the section prologue and the trailing
-          word alignment every object has
-  gcc3    a third-party source, through compile_c.py
-  as      a region's source -> its object (manifest.object_path)
-
-The packers are one edge per version: they run on every build (their
-inputs are whole data/ trees) and keep their own content caches, rewriting
-only files whose content changed. Two edges write the headers C includes:
-Krawall's public header and the graphics headers, which are the same for
-every version. ram_symbols.<ver>.inc assembles to an object whose symbols
-are made global, and each lib-object row's member is extracted from agbcc's
-archive.
-
-This script also writes each version's build/<ver>/link.ld
-(tools/link_script.py), only when it changed: the link reruns when an
-object or link.ld changed. build.ninja and link.ld are rewritten when a
-manifest, flake.lock or the scripts that write them change.
+Every C source and every object has its own edge, with depfiles naming the
+files it read. The packers run on every build, since their inputs are
+whole data/ trees, and rewrite only files whose content changed. Ninja
+reruns this script when a manifest, flake.lock or one of the scripts that
+write these files changes.
 
 Usage: configure.py   (then `ninja -f build/build.ninja`)
 """
@@ -100,6 +84,9 @@ rule krawall_header
   description = $out
   restat = 1
 
+# Krawall's IWRAM code is writable (kradInterrupt patches itself), hence
+# --no-warn-rwx-segments. --emit-relocs keeps the relocations in rom.elf for
+# tools/compare.py. The donor ROM is zero-filled to 16 MiB.
 rule link
   command = arm-none-eabi-ld --no-warn-rwx-segments --emit-relocs -T $ldscript -o $elf $
     && arm-none-eabi-objcopy -O binary --pad-to 0x9000000 --gap-fill 0x00 $elf $gba
@@ -131,19 +118,16 @@ def paths(items) -> str:
     return " ".join(sorted(items))
 
 
-def graphics_yaml() -> list[str]:
-    return sorted(glob.glob("graphics/**/*.yaml", recursive=True))
-
-
 def graphics_headers() -> list[str]:
+    """include/gen/graphics/<feature>.h for every graphics/<feature>.yaml."""
     return [f"include/gen/graphics/{os.path.splitext(os.path.relpath(path, 'graphics'))[0]}.h"
-            for path in graphics_yaml()]
+            for path in sorted(glob.glob("graphics/**/*.yaml", recursive=True))]
 
 
 def version_rules(ver: str, prefix: str) -> str:
     out = []
     for suffix, o1, arm in AGBCC_VARIANTS.values():
-        cc1, cppflags, cflags = profile("", prefix, o1, ver, arm)
+        cc1, cppflags, cflags = profile(prefix, o1, ver, arm)
         out.append(
             f"rule agbcc_{ver}_{suffix}\n"
             f"  command = cpp {shlex.join(cppflags)} -MD -MF $out.d -MT $out -o $out.i $in"

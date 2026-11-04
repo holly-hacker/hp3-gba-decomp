@@ -117,8 +117,6 @@ def main() -> None:
     table_asm = pack_table(ver, table_name, lang_rows)
     write_if_changed(out_dir / f"{table_name}.s", table_asm)
 
-    print(f"packed {len(lang_rows)} language string tables + pointer table for {ver}", file=sys.stderr)
-
 
 if __name__ == "__main__":
     main()

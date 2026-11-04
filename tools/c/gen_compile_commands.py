@@ -24,7 +24,7 @@ DROP = {"-fhex-asm", "-mthumb-interwork", "-Werror", "-O2"}
 
 
 def clang_args(src: str, prefix: str) -> list[str]:
-    _, cppflags, cflags = compile_c.profile(src, prefix)
+    _, cppflags, cflags = compile_c.profile(prefix)
     flags = [f for f in [*cppflags, *cflags] if f not in DROP]
     return ["clang", "-xc", *flags, "-c", src]
 

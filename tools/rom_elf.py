@@ -9,6 +9,9 @@ stored.
 import re
 import subprocess
 
+# Where the cartridge ROM is mapped.
+ROM_BASE = 0x08000000
+
 MARKER = re.compile(r"^([0-9a-f]+)\s+\S+\s+__rgn_(\S+)_(beg|end)$")
 SECTION = re.compile(r"^\s*\d+\s+\S+\s+([0-9a-f]+)\s+([0-9a-f]+)\s+([0-9a-f]+)\s", re.M)
 RELOC = re.compile(r"^([0-9a-f]{8})\s+\S+\s+(R_ARM_\w+)", re.M)

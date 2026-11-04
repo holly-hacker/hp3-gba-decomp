@@ -223,8 +223,6 @@ def main() -> None:
         asm = pack_module(json_path, name, sample_index)
         write_if_changed(out_dir / "modules" / f"{name}.s", asm)
 
-    print(f"packed {len(module_rows)} modules + samples for {ver}", file=sys.stderr)
-
 
 if __name__ == "__main__":
     main()

@@ -24,10 +24,10 @@ from manifest import ASM_CPP_DIRECTIVE, SECTIONED_DIRECTIVES  # noqa: E402
 
 GCC3_CC1 = "arm-elf-cc1-3.0.2"
 
-# Krawall's build configuration: mixing
-# buffers, channels and player state in EWRAM. The 16 kHz, 60 Hz default
-# needs no define.
+# Krawall's build configuration: mixing buffers, channels and player state
+# in EWRAM. The 16 kHz, 60 Hz default needs no define.
 KRAWALL_DEFINES = ["-DIWRAM_USAGE_SMALL"]
+
 
 def agbcc_prefix() -> str:
     exe = shutil.which("agbcc")
@@ -36,10 +36,9 @@ def agbcc_prefix() -> str:
     return os.path.dirname(os.path.dirname(os.path.realpath(exe)))
 
 
-def profile(src: str, prefix: str, o1: bool = False,
-            ver: str | None = None,
+def profile(prefix: str, o1: bool = False, ver: str | None = None,
             arm: bool = False) -> tuple[str, list[str], list[str]]:
-    """Returns (cc1, cppflags, cflags) for a source file.
+    """Returns (cc1, cppflags, cflags) for game C.
 
     ver defines VERSION_US or VERSION_JP for game code whose source differs
     between the two ROMs. arm selects agbcc_arm, which lacks -fhex-asm,
@@ -128,9 +127,9 @@ def compile_sectioned(src: str, out: str, prefix: str,
                       directive: str) -> None:
     """Compiles (or, for a .S, preprocesses) a third-party source.
 
-    Its sections stay apart for the manifest to place. Each section ends padded to 4 bytes
-    with the assembler's fill (nop in code, zeros elsewhere), as it was
-    between the original objects.
+    Its sections stay apart for the manifest to place. Each section ends
+    padded to 4 bytes with the assembler's fill (nop in code, zeros
+    elsewhere), as it was between the original objects.
     """
     arm = directive != "c-file-gcc3"
     cc1, cppflags, cflags = gcc3_profile(src, prefix, arm)
