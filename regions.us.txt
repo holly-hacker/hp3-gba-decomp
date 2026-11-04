@@ -936,7 +936,6 @@ c-file src/dev_logos/exit_startup.c ExitStartup
 
 # Dialog
 c-file src/dialog/dialog.globals.c g_aDialogScanlineEffects
-c-file src/dialog/dialog_text_info.c g_aDialogTextInfo
 c-file src/dialog/initialize_dialog.c InitializeDialog
 c-file src/dialog/update_dialog_box.c UpdateDialogBox
 c-file src/dialog/alloc_dialog_portrait_actor.c AllocDialogPortraitActor
@@ -1420,6 +1419,7 @@ c-file src/map_experience/tick_experience_popup.c TickExperiencePopup
 
 # Math
 c-file src/math/sine_table.c g_anSineTable
+c-file src/math/fixed_origin.c g_FixedOrigin
 c-file src/math/install_iwram_divide_routines.c InstallIwramDivideRoutines
 c-file src/math/iwram_divide_signed_quotient.c iwramDivideSignedQuotient
 c-file src/math/iwram_divide_signed_remainder.c iwramDivideSignedRemainder
@@ -1715,6 +1715,9 @@ c-file src/pop_it_minigame/is_wizard_cracker_pop_it_board_clear.c IsWizardCracke
 c-file src/pop_it_minigame/draw_wizard_cracker_pop_it_results_menu.c DrawWizardCrackerPopItResultsMenu
 c-file src/pop_it_minigame/start_wizard_cracker_pop_it_palette_effects.c StartWizardCrackerPopItPaletteEffects
 c-file src/pop_it_minigame/quit_wizard_cracker_pop_it_minigame.c QuitWizardCrackerPopItMinigame
+
+# Dialog speaker portraits
+c-file src/portraits/dialog_text_info.c g_aDialogTextInfo
 
 # Pumpkin Juice Pouring minigame
 c-file src/pouring_minigame/serve_pumpkin_juice.globals.c g_aabServePumpkinJuiceGobletAnims
@@ -2602,7 +2605,7 @@ c-rodata g_ColorCyclesDefault
 c-rodata g_abUnusedMapData
 c-rodata g_adwEncounterKindTerrainTypes
 c-rodata g_anSineTable
-c-rodata ResetBgLayer
+c-rodata g_FixedOrigin
 c-rodata GetDirectionFromVector
 c-rodata g_pGameModeDispatchTable
 c-rodata g_adwMinigameDifficultyTextIds
