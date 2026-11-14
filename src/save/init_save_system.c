@@ -3,9 +3,9 @@
 #include "text.h"
 #include "save.h"
 
-// Allocates the slot buffer and loads the header, options and slot previews
+// Allocates the slot buffer and loads the header, high scores and slot previews
 // from EEPROM. An invalid header means an uninitialized or foreign save: the
-// header and options are reset, and each slot's first two blocks are zeroed
+// header and high scores are reset, and each slot's first two blocks are zeroed
 // so that no slot validates.
 void InitSaveSystem(void)
 {
@@ -17,14 +17,14 @@ void InitSaveSystem(void)
     if (!ValidateSaveHeader())
     {
         WriteDefaultSaveHeader();
-        WriteDefaultSaveOptions();
+        WriteDefaultHighScores();
         ClearSaveSlotBuffer();
         for (i = 0, block = SAVE_SLOT_FIRST_BLOCK; i < SAVE_SLOT_COUNT; block += SAVE_SLOT_BLOCKS, i++)
             EepromWriteBlocks(block, 2, g_saveManager.pSlotBuffer);
     }
 
-    if (!ValidateSaveOptions())
-        WriteDefaultSaveOptions();
+    if (!ValidateHighScores())
+        WriteDefaultHighScores();
 
     SetLanguage(g_saveManager.header.language.bLanguageIndex);
     LoadSaveSlotPreviews();

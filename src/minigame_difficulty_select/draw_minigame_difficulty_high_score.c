@@ -13,7 +13,7 @@ void DrawMinigameDifficultyHighScore(s32 row)
     u32 halfTiles;
 
     if (g_dwSelectedMinigame <= 2 && row <= MINIGAME_DIFFICULTY_COUNT - 1
-        && (score = g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][row]) != 0)
+        && (score = g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][row]) != 0)
     {
         SelectTextFont(4, 1, 0);
         SetTextMacro1Number(score);

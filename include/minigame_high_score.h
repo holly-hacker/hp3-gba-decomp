@@ -22,5 +22,5 @@ extern const ActorAssetRecord g_MinigameTextPanelMiddleAsset;
 extern MinigameTextPanel *SpawnMinigameTextPanel(s32 x, s32 y, s32 widthTiles, u8 priority);
 extern void FreeMinigameTextPanel(MinigameTextPanel *pPanel);
 
-// Shared minigame exit teardown: DisableKrawall, SyncSaveOptionsIfDirty, EnableKrawall.
-extern void SyncSaveOptionsPausingKrawall(void);
+// Shared minigame exit teardown: DisableKrawall, SyncHighScoresIfDirty, EnableKrawall.
+extern void SyncHighScores(void);

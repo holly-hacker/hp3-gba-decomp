@@ -350,8 +350,8 @@ def encode_header(h: dict) -> bytes:
     return bytes(data)
 
 
-# SaveOptions holds minigame high scores (live RAM copy
-# g_saveManager.options, synced to EEPROM by SyncSaveOptionsIfDirty). Confirmed
+# SaveHighScores holds minigame high scores (live RAM copy
+# g_saveManager.highScores, synced to EEPROM by SyncHighScoresIfDirty). Confirmed
 # byte-exact against a real save: bytes 4-5 are Wizard Cracker Pop-it's
 # Medium-difficulty high score (0->1080 in the sample). The write code
 # (UpdateWizardCrackerPopItMinigame) stores to

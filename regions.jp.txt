@@ -1332,7 +1332,7 @@ c-file src/minigame_difficulty_select/draw_minigame_difficulty_high_score.c Draw
 c-file src/minigame_difficulty_select/initialize_wizard_cracker_pop_it_difficulty_select.c InitializeWizardCrackerPopItDifficultySelect
 c-file src/minigame_difficulty_select/exit_wizard_cracker_pop_it_difficulty_select.c ExitWizardCrackerPopItDifficultySelect
 c-file src/minigame_high_score/minigame_high_score.globals.c g_MinigameTextPanelCapAsset
-c-file src/minigame_high_score/sync_save_options_pausing_krawall.c SyncSaveOptionsPausingKrawall
+c-file src/minigame_high_score/sync_high_scores.c SyncHighScores
 c-file src/minigame_high_score/spawn_minigame_text_panel.c SpawnMinigameTextPanel
 c-file src/minigame_high_score/free_minigame_text_panel.c FreeMinigameTextPanel
 c-file src/minigame_menu/minigame_menu.globals.c g_dwMinigameMenuBg3Control
@@ -1771,7 +1771,7 @@ c-file src/rising_platform_actor/spawn_raising_platform_actor.c SpawnRaisingPlat
 c-file src/rising_platform_actor/tick_raising_platform_actor.c TickRaisingPlatformActor
 c-file src/rising_platform_actor/handle_raising_platform_touch.c HandleRaisingPlatformTouch
 c-file src/save/write_default_save_header.globals.c g_DefaultSaveHeader
-c-file src/save/write_default_save_options.globals.c g_DefaultSaveOptions
+c-file src/save/write_default_high_scores.globals.c g_DefaultHighScores
 c-file src/save/pack_nibbles_to_save_stream.c PackNibblesToSaveStream
 c-file src/save/pack_bit_pairs_to_save_stream.c PackBitPairsToSaveStream
 c-file src/save/load_save_slot_previews.c LoadSaveSlotPreviews
@@ -1792,12 +1792,12 @@ c-file src/save/validate_save_slot.c ValidateSaveSlot
 c-file src/save/load_save_slot.c LoadSaveSlot
 c-file src/save/write_save_slot.c WriteSaveSlot
 c-file src/save/sync_save_header_if_dirty.c SyncSaveHeaderIfDirty
-c-file src/save/sync_save_options_if_dirty.c SyncSaveOptionsIfDirty
+c-file src/save/sync_high_scores_if_dirty.c SyncHighScoresIfDirty
 c-file src/save/sum16.c Sum16
 c-file src/save/write_default_save_header.c WriteDefaultSaveHeader
 c-file src/save/validate_save_header.c ValidateSaveHeader
-c-file src/save/write_default_save_options.c WriteDefaultSaveOptions
-c-file src/save/validate_save_options.c ValidateSaveOptions
+c-file src/save/write_default_high_scores.c WriteDefaultHighScores
+c-file src/save/validate_high_scores.c ValidateHighScores
 c-file src/save/eeprom_read_blocks.c EepromReadBlocks
 c-file src/save/eeprom_write_blocks.c EepromWriteBlocks
 c-file src/save/eeprom_transfer_begin.c EepromTransferBegin
@@ -2383,7 +2383,7 @@ c-rodata g_dwFolioCardDetailBg3Control
 c-rodata g_aFolioCardAssets
 c-rodata g_RoomRaisingPlatformSprite
 c-rodata g_DefaultSaveHeader
-c-rodata g_DefaultSaveOptions
+c-rodata g_DefaultHighScores
 c-rodata g_apfnScreenTransitionsIn
 c-rodata g_adwSerialMagic
 c-rodata g_pKrawallIwramStart

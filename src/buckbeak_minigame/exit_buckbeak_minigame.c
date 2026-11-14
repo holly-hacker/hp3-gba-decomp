@@ -23,5 +23,5 @@ void ExitBuckbeakMinigame(void)
     }
 
     FreeBlock(g_pBuckbeakMinigame);
-    SyncSaveOptionsPausingKrawall();
+    SyncHighScores();
 }

@@ -1,4 +1,4 @@
 #include "save.h"
 
 // No minigame high scores yet.
-const SaveOptions g_DefaultSaveOptions = { 0 };
+const SaveHighScores g_DefaultHighScores = { 0 };

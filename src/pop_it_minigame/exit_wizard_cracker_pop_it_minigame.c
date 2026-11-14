@@ -33,5 +33,5 @@ void ExitWizardCrackerPopItMinigame(void)
     g_GameModeStackContext.dwCurrentGameModeArg2 = 1;
     FreeAllParticles();
     FreeBlock(g_pWizardCrackerPopIt);
-    SyncSaveOptionsPausingKrawall();
+    SyncHighScores();
 }

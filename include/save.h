@@ -51,20 +51,20 @@ typedef enum {
     flGammaHigh                    = 0x80,
 } HeaderFlags;
 
-// Row of SaveOptions.aadwHighScores; also the minigame index of the minigame menu.
+// Row of SaveHighScores.aadwHighScores; also the minigame index of the minigame menu.
 typedef enum {
     HighScoreWizardCrackerPopIt = 0,
     HighScoreBuckbeak = 1,
     HighScoreBoggart = 2,
 } HighScoreMinigame;
 
-// The file-level options block (blocks 2-6), holding the minigame high
+// The file-level high score block (blocks 2-6), holding the minigame high
 // scores indexed by difficulty (Easy/Medium/Hard).
 typedef struct {
     u32 aadwHighScores[3][3];                // 0x00: [HighScoreMinigame][difficulty]
     u8 abPadding[2];                         // 0x24
-    u16 wChecksum;                           // 0x26: -Sum16(options, 0x26)
-} SaveOptions;
+    u16 wChecksum;                           // 0x26: -Sum16(highScores, 0x26)
+} SaveHighScores;
 
 // A slot's summary for the save/load menus, unpacked from the first fields
 // of the slot's save stream (see UnpackSaveSlotPreview).
@@ -87,7 +87,7 @@ typedef enum {
     SaveStreamUnpacking = 2,
 } SaveStreamMode;
 
-// EEPROM layout: header in blocks 0-1, options in blocks 2-6, then three
+// EEPROM layout: header in blocks 0-1, high scores in blocks 2-6, then three
 // slots of SAVE_SLOT_BLOCKS 8-byte blocks each.
 #define SAVE_SLOT_SIZE 0xA98
 #define SAVE_SLOT_BLOCKS (SAVE_SLOT_SIZE / 8)
@@ -108,7 +108,7 @@ typedef struct {
 // The live save manager at 0x03005598.
 typedef struct {
     SaveHeader header;
-    SaveOptions options;              // 0x10
+    SaveHighScores highScores;        // 0x10
     u8 *pSlotBuffer;                  // 0x38: 0xA98-byte staging buffer for one slot
     SaveSlotPreview aSlotPreview[3];  // 0x3C
     u32 adwSlotValid[3];      // 0x60: ValidateSaveSlot's result per slot, 1 when the checksum is good
@@ -176,7 +176,7 @@ typedef struct {
 } SaveStateBlock;
 
 extern const SaveHeader g_DefaultSaveHeader;
-extern const SaveOptions g_DefaultSaveOptions;
+extern const SaveHighScores g_DefaultHighScores;
 
 u16 Sum16(const void *data, u32 size);
 
@@ -194,12 +194,12 @@ void ClearSaveSlotBuffer(void);
 void UnpackBytesFromSaveStream(void *dst, u32 len);
 u32 ValidateSaveHeader(void);
 void WriteDefaultSaveHeader(void);
-u32 ValidateSaveOptions(void);
-void WriteDefaultSaveOptions(void);
+u32 ValidateHighScores(void);
+void WriteDefaultHighScores(void);
 
 extern s32 SetSaveLanguageFlag(void);
 u32 SyncSaveHeaderIfDirty(void);
-u32 SyncSaveOptionsIfDirty(void);
+u32 SyncHighScoresIfDirty(void);
 void LoadSaveSlot(u32 slot);
 void WriteSaveSlot(u32 slot);
 u32 ValidateSaveSlot(u32 slot);

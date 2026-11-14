@@ -53,8 +53,8 @@ void UpdateWizardCrackerPopItMinigame(void)
             StartWizardCrackerPopItRound();
             g_pWizardCrackerPopIt->dwScore = score;
             if (score >
-                g_saveManager.options.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3])
-                g_saveManager.options.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3] =
+                g_saveManager.highScores.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3])
+                g_saveManager.highScores.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3] =
                     score;
 
             FillBgTilemapRect(3, 0, 8, 0x1E, 6, 0);
@@ -136,8 +136,8 @@ void UpdateWizardCrackerPopItMinigame(void)
         break;
     case WizardCrackerPopItStateResultsMenu:
         if (g_pWizardCrackerPopIt->dwScore >
-            g_saveManager.options.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3])
-            g_saveManager.options.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3] =
+            g_saveManager.highScores.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3])
+            g_saveManager.highScores.aadwHighScores[HighScoreWizardCrackerPopIt][g_GameModeStackContext.dwCurrentGameModeArg3] =
                 g_pWizardCrackerPopIt->dwScore;
 
         if (g_wKeysPressed & KeyA)

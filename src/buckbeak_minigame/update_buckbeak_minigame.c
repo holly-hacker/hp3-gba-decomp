@@ -28,8 +28,8 @@ void UpdateBuckbeakMinigame(void)
     case BuckbeakMinigameStateFinished:
         pState = g_pBuckbeakMinigame;
         if (pState->dwScore >
-            g_saveManager.options.aadwHighScores[HighScoreBuckbeak][g_GameModeStackContext.dwCurrentGameModeArg3])
-            g_saveManager.options.aadwHighScores[HighScoreBuckbeak][g_GameModeStackContext.dwCurrentGameModeArg3] =
+            g_saveManager.highScores.aadwHighScores[HighScoreBuckbeak][g_GameModeStackContext.dwCurrentGameModeArg3])
+            g_saveManager.highScores.aadwHighScores[HighScoreBuckbeak][g_GameModeStackContext.dwCurrentGameModeArg3] =
                 pState->dwScore;
 
         InitializeBuckbeakMinigameResultsMenu();

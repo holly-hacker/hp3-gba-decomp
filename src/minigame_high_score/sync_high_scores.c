@@ -3,9 +3,9 @@
 #include "sound.h"
 #include "minigame_high_score.h"
 
-void SyncSaveOptionsPausingKrawall(void)
+void SyncHighScores(void)
 {
     DisableKrawall();
-    SyncSaveOptionsIfDirty();
+    SyncHighScoresIfDirty();
     EnableKrawall();
 }

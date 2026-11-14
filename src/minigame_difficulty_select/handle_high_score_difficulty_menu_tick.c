@@ -39,9 +39,9 @@ void HandleHighScoreDifficultyMenuTick(void)
     {
         lastRow = MINIGAME_DIFFICULTY_COUNT - 1;
         PlaySoundById(0);
-        if (g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][0] != 0
-            || g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][1] != 0
-            || g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][2] != 0)
+        if (g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][0] != 0
+            || g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][1] != 0
+            || g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][2] != 0)
             lastRow = MINIGAME_ERASE_SCORES_ROW;
 
         if (g_wKeysPressed & KeyUp)
@@ -91,14 +91,14 @@ void HandleHighScoreDifficultyMenuTick(void)
         else
         {
             for (i = 0; i < MINIGAME_DIFFICULTY_COUNT; i++)
-                g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][i] = 0;
+                g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][i] = 0;
 
             DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 1);
             g_GameModeStackContext.dwModeScratchB = 0;
             DrawMinigameDifficultyRow(g_GameModeStackContext.dwModeScratchB, 6);
             DrawMinigameDifficultyHighScore(g_GameModeStackContext.dwModeScratchB);
             MoveCursorToSelectedRow();
-            SyncSaveOptionsPausingKrawall();
+            SyncHighScores();
         }
     }
     else if (g_wKeysPressed & KeyB)

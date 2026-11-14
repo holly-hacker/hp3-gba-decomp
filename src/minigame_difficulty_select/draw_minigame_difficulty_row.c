@@ -21,9 +21,9 @@ void DrawMinigameDifficultyRow(s32 row, u32 fontColor)
     if (row > MINIGAME_DIFFICULTY_COUNT - 1)
     {
         align = 1;
-        visible = g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][0] != 0
-               || g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][1] != 0
-               || g_saveManager.options.aadwHighScores[g_dwSelectedMinigame][2] != 0;
+        visible = g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][0] != 0
+               || g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][1] != 0
+               || g_saveManager.highScores.aadwHighScores[g_dwSelectedMinigame][2] != 0;
     }
 
     if (visible)

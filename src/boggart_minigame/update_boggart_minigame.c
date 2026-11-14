@@ -76,8 +76,8 @@ void UpdateBoggartMinigame(void)
         if (g_wKeysPressed & (KeyA | KeyStart))
         {
             if (g_BoggartMinigame.dwScore >
-                g_saveManager.options.aadwHighScores[HighScoreBoggart][g_GameModeStackContext.dwCurrentGameModeArg3])
-                g_saveManager.options.aadwHighScores[HighScoreBoggart][g_GameModeStackContext.dwCurrentGameModeArg3] =
+                g_saveManager.highScores.aadwHighScores[HighScoreBoggart][g_GameModeStackContext.dwCurrentGameModeArg3])
+                g_saveManager.highScores.aadwHighScores[HighScoreBoggart][g_GameModeStackContext.dwCurrentGameModeArg3] =
                     g_BoggartMinigame.dwScore;
 
             PlaySoundById(1);
